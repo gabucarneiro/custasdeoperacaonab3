@@ -1,0 +1,380 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".QntAcoesValorDisponivel"
+    android:orientation="vertical"
+    android:paddingLeft="20dp"
+    android:paddingRight="20dp"
+    style="@style/BasicLayout">
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical"
+            android:paddingTop="20dp"
+            android:paddingBottom="20dp">
+        <TextView
+            style="@style/Header"
+            android:text="Quantidade de ações por valor disponível"
+            android:layout_marginBottom="30dp"
+            android:textAllCaps="true"/>
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+            <TextView
+                style="@style/Conteudo"
+                android:text="Valor disponível: R$">
+            </TextView>
+            <EditText
+                android:id="@+id/valDisponivel"
+                style="@style/Conteudo"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:hint="0,00"
+                android:inputType="numberDecimal">
+            </EditText>
+        </LinearLayout>
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+            <TextView
+                style="@style/Conteudo"
+                android:text="Valor do papel: R$">
+            </TextView>
+            <EditText
+                android:id="@+id/valPapel"
+                style="@style/Conteudo"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:hint="0,00"
+                android:inputType="numberDecimal">
+            </EditText>
+        </LinearLayout>
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+            <TextView
+                style="@style/Conteudo"
+                android:text="Quantidade de ações: ">
+            </TextView>
+            <TextView
+                android:id="@+id/quantidade"
+                style="@style/Conteudo"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:hint="0"
+                android:inputType="number">
+            </TextView>
+        </LinearLayout>
+
+        <Button
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:text="calcular"
+            android:textSize="20dp"
+            android:textAllCaps="true"
+            android:layout_marginTop="10dp"
+            android:onClick="calQuantidadeAcaoValBruto">
+        </Button>
+
+        <!--  ***** RESUMO *****  -->
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="resumo"
+            android:textColor="@color/darkblue"
+            android:textSize="23dp"
+            android:textAllCaps="true"
+            android:textAlignment="center"
+            android:layout_marginTop="25dp">
+        </TextView>
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:layout_gravity="center">
+            <TextView
+                style="@style/Conteudo"
+                android:textColor="@color/darkblue"
+                android:textSize="23dp"
+                android:text="Valor necessário para investir:">
+            </TextView>
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:layout_gravity="center">
+                <TextView
+                    style="@style/Conteudo"
+                    android:textColor="@color/darkblue"
+                    android:textSize="23dp"
+                    android:text="R$">
+                </TextView>
+                <TextView
+                    android:id="@+id/valNecessarioParaInvestir"
+                    style="@style/Conteudo"
+                    android:textColor="@color/darkgreen"
+                    android:textSize="23dp"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:hint="0,00">
+                </TextView>
+            </LinearLayout>
+        </LinearLayout>
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+            <TextView
+                style="@style/Conteudo"
+                android:text="Valor do papel: R$">
+            </TextView>
+            <TextView
+                android:id="@+id/valPapelResumo"
+                style="@style/Conteudo"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:hint="0,00">
+            </TextView>
+        </LinearLayout>
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+            <TextView
+                style="@style/Conteudo"
+                android:text="Quantidade de ações: ">
+            </TextView>
+            <TextView
+                android:id="@+id/quantidadeResumo"
+                style="@style/Conteudo"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:hint="0">
+            </TextView>
+        </LinearLayout>
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:layout_gravity="center">
+                <TextView
+                    style="@style/Conteudo"
+                    android:textColor="@color/darkred"
+                    android:textSize="18dp"
+                    android:text="Custas, emolumentos e impostos:">
+                </TextView>
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:layout_gravity="center">
+                    <TextView
+                        style="@style/Conteudo"
+                        android:textColor="@color/darkred"
+                        android:textSize="18dp"
+                        android:text="R$">
+                    </TextView>
+                    <TextView
+                        android:id="@+id/valCustaEmolImpostos"
+                        style="@style/Conteudo"
+                        android:textColor="@color/darkred"
+                        android:textSize="18dp"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:hint="0,00">
+                    </TextView>
+                </LinearLayout>
+            </LinearLayout>
+        <!--<TextView
+            android:id="@+id/resumo"
+            style="@style/Conteudo"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:hint="0"
+            android:inputType="number">
+        </TextView>-->
+
+        <!--  ***** CUSTOS OPERACIONAIS *****  -->
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="custos operacionais"
+            android:textColor="@color/darkblue"
+            android:textSize="23dp"
+            android:textAllCaps="true"
+            android:textAlignment="center"
+            android:layout_marginTop="25dp">
+        </TextView>
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+                <TextView
+                    style="@style/Conteudo"
+                    android:text="Valor utilizado na compra do papel:">
+                </TextView>
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+                    <TextView
+                        style="@style/Conteudo"
+                        android:layout_marginLeft="15dp"
+                        android:text="R$">
+                    </TextView>
+                    <TextView
+                        android:id="@+id/valCompraDoPapel"
+                        style="@style/Conteudo"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:hint="0,00">
+                    </TextView>
+                </LinearLayout>
+            </LinearLayout>
+
+            <!--  ***** CORRETORA *****  -->
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+                <TextView
+                    style="@style/Conteudo"
+                    android:text="Corretagem: R$">
+                </TextView>
+                <TextView
+                    android:id="@+id/corretagem"
+                    style="@style/Conteudo"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:hint="0,00">
+                </TextView>
+            </LinearLayout>
+
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+                <TextView
+                    style="@style/Conteudo"
+                    android:text="Custódia (CBLC): R$">
+                </TextView>
+                <TextView
+                    android:id="@+id/custodia"
+                    style="@style/Conteudo"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:hint="0,00">
+                </TextView>
+            </LinearLayout>
+
+            <!--  ***** B3 *****  -->
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+                <TextView
+                    style="@style/Conteudo"
+                    android:text="Emolumentos: R$">
+                </TextView>
+                <TextView
+                    android:id="@+id/emolumentos"
+                    style="@style/Conteudo"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:hint="0,00">
+                </TextView>
+            </LinearLayout>
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:paddingLeft="8dp">
+                <TextView
+                    style="@style/Conteudo"
+                    android:text="(Taxa de liquidação da CBLC): R$"
+                    android:textSize="15dp">
+                </TextView>
+                <TextView
+                    android:id="@+id/tax_liquidacao"
+                    style="@style/Conteudo"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:hint="0,00"
+                    android:textSize="15dp">
+                </TextView>
+            </LinearLayout>
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:paddingLeft="8dp">
+                <TextView
+                    style="@style/Conteudo"
+                    android:text="(Taxa de negociação): R$"
+                    android:textSize="15dp">
+                </TextView>
+                <TextView
+                    android:id="@+id/tax_negociacao"
+                    style="@style/Conteudo"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:hint="0,00"
+                    android:textSize="15dp">
+                </TextView>
+            </LinearLayout>
+
+            <!--  ***** GOVERNO - IMPOSTOS *****  -->
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+                <TextView
+                    style="@style/Conteudo"
+                    android:text="ISS: R$">
+                </TextView>
+                <TextView
+                    android:id="@+id/iss"
+                    style="@style/Conteudo"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:hint="0,00">
+                </TextView>
+            </LinearLayout>
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+                <TextView
+                    style="@style/Conteudo"
+                    android:text="IR da compra: R$">
+                </TextView>
+                <TextView
+                    android:id="@+id/impostoDeRenda"
+                    style="@style/Conteudo"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:hint="0,00">
+                </TextView>
+            </LinearLayout>
+            <TextView
+                style="@style/Conteudo"
+                android:text="Lembre-se que os custos da venda não foram lançados"
+                android:textColor="@color/darkred"
+                android:textAlignment="center">
+            </TextView>
+    </LinearLayout>
+</ScrollView>

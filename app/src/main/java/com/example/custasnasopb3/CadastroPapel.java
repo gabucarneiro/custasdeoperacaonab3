@@ -1,0 +1,368 @@
+package com.example.custasnasopb3;
+
+import androidx.appcompat.app.AppCompatActivity;
+
+import android.content.ContentValues;
+import android.content.Context;
+import android.database.sqlite.SQLiteDatabase;
+import android.os.Bundle;
+import android.view.View;
+import android.widget.Button;
+import android.widget.EditText;
+import android.widget.LinearLayout;
+import android.widget.TextView;
+import android.widget.Toast;
+
+import java.sql.DatabaseMetaData;
+import java.util.ArrayList;
+import java.util.List;
+
+import static com.example.custasnasopb3.R.color.black;
+import static com.example.custasnasopb3.R.color.red;
+
+public class CadastroPapel extends AppCompatActivity {
+
+    private int idPapel=0;
+    private String cpNomePapel;
+    private Double cpValor;
+
+    String idaux = "";
+    int ID_PAPEL;
+
+    Papel papel = new Papel();
+    ArrayList<Papel> papelList = new ArrayList<>();
+
+    EditText et_nomePapel, et_valCadastroPapel;
+    TextView tvIdPapel;
+
+    TextView resumoBD;
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_cadadastro_papel);
+
+        et_nomePapel = findViewById(R.id.nomePapel);
+        et_valCadastroPapel = findViewById(R.id.valCadastroPapel);
+
+        papelList.add(new Papel("CIEL3F", 8.5));
+        papelList.add(new Papel("ABEV3F", 16.3));
+        papelList.add(new Papel("EMBR3F", 16.9));
+        papelList.add(new Papel("PETR3F", 14.78));
+        papelList.add(new Papel("BBDC4F", 21.65));
+        papelList.add(new Papel("CVCB3F", 16.22));
+        papelList.add(new Papel("DMMO3F", 8.1));
+        Listar(papelList);
+    }
+    public void cadastrarPapel (View view){
+        try{
+            cpNomePapel = et_nomePapel.getText().toString();
+
+            cpValor = Double.parseDouble(et_valCadastroPapel.getText().toString());
+
+            if(cpValor!= null && !(cpValor<= 0) && !(cpNomePapel.equals(""))){
+
+                papel = new Papel(cpNomePapel, cpValor);
+                papelList.add(papel);
+
+                TextView resumoCadastrarPapel = (TextView) findViewById(R.id.resumoCadastrPapel);
+                resumoCadastrarPapel.setTextColor(getResources().getColor(black));
+                resumoCadastrarPapel.setText(papel.toString());
+
+                CharSequence texto = "Cadastro realizado!";
+                int duracao = Toast.LENGTH_SHORT;
+                Toaster(texto, duracao);
+            }
+            else{
+                if(cpValor == null){
+                    CharSequence texto = "Valor não pode ser nulo";
+                    int duracao = Toast.LENGTH_SHORT;
+                    Toaster(texto, duracao);
+                }
+                else if(cpValor <= 0){
+                    CharSequence texto = "Valor não pode ser menor ou igual a zero";
+                    int duracao = Toast.LENGTH_SHORT;
+                    Toaster(texto, duracao);
+                }
+                else if(cpNomePapel.equals("")){
+                    CharSequence texto = "Nome do papel não pode ser nulo";
+                    int duracao = Toast.LENGTH_SHORT;
+                    Toaster(texto, duracao);
+                }
+            }
+
+            Listar(papelList);
+
+        /* CRIAÇÃO DO TOAST INLINE
+        Context context = getApplicationContext();
+        CharSequence text = "Cadastro realizado!";
+        int duration = Toast.LENGTH_SHORT;
+
+        Toast toast = Toast.makeText(context, text, duration);
+        toast.show();*/
+
+
+
+
+
+
+            //dar continuidade criação do método de cadastro dos papéis; OK
+            //fazer lista de papeis para cadastrar; OK
+            //mostrar em list views dinâmicas os papeis cadastrados; OK
+            //criar banco de dados; ok
+            //implementar a função de exclusão;
+
+
+        }
+        catch(Exception e){
+
+            String erro = "";
+            if(cpValor == null){
+                CharSequence texto = "Valor não pode ser nulo";
+                int duracao = Toast.LENGTH_SHORT;
+                Toaster(texto, duracao);
+                erro = "**Valor nulo**";
+            }
+            else if(cpValor <= 0){
+                CharSequence texto = "Valor não pode ser menor ou igual a zero";
+                int duracao = Toast.LENGTH_SHORT;
+                Toaster(texto, duracao);
+                erro = "**Valor menor ou igual a 0**";
+            }
+            else if(cpNomePapel.equals("")){
+                CharSequence texto = "Nome do papel não pode ser nulo";
+                int duracao = Toast.LENGTH_SHORT;
+                Toaster(texto, duracao);
+                erro = "**Nome do papel nulo**";
+            }
+            /*
+            CharSequence texto = "Cadastro NÃO realizado!";
+            int duracao = Toast.LENGTH_SHORT;
+            Toaster(texto, duracao);*/
+
+            TextView resumoCadastrarPapel = (TextView) findViewById(R.id.resumoCadastrPapel);
+            resumoCadastrarPapel.setTextColor(getResources().getColor(red));
+            resumoCadastrarPapel.setText(erro);
+        }
+
+    }
+
+    public void Toaster(CharSequence text, int duration){
+        Context context = getApplicationContext();
+
+        Toast toast = Toast.makeText(context, text, duration);
+        toast.show();
+    }
+    public void Toaster(CharSequence text){
+        Context context = getApplicationContext();
+        int duracao = Toast.LENGTH_SHORT;
+
+        Toast toast = Toast.makeText(context, text, duracao);
+        toast.show();
+    }
+    public void Listar(ArrayList<Papel> papel){
+        TextView resumo2 = (TextView) findViewById(R.id.resumo);
+        /*LinearLayout resumoView = (LinearLayout) findViewById(R.id.resumoView);
+
+        for(int i=0; i<papelList.size(); i++){
+            TextView listagem = new TextView(this);
+            listagem.setText(papelList.toString());
+            resumoView.addView(listagem);
+        }*/
+
+        StringBuilder sbListaPapel = new StringBuilder();
+        for(int i=0; i<papel.size(); i++){
+
+            sbListaPapel.append("Papel: ");
+            sbListaPapel.append(papel.get(i).getNomePapel());
+            sbListaPapel.append(" / Valor: R$");
+            sbListaPapel.append(papel.get(i).getValor());
+            sbListaPapel.append("\n");
+            sbListaPapel.append("\n");
+        }
+        resumo2.setText(sbListaPapel);
+    }
+
+    public void Clear(){
+        tvIdPapel.setText("0");
+        et_nomePapel.setText("");
+        et_valCadastroPapel.setText("");
+    }
+
+
+
+    public void pesquisarPapel(View view){
+        encontrarPapel();
+    }
+
+    public long encontrarPapel(){
+        DataBaseHelper dbh = new DataBaseHelper(this);
+
+        tvIdPapel=findViewById(R.id.idPapel);
+        idaux = tvIdPapel.getText().toString();
+
+        if(idaux.equals("")){
+            Toaster("Insira um ID");
+            return 0;
+        }
+        else{
+            ID_PAPEL = Integer.parseInt(idaux);
+            Papel papel = dbh.getPapel(ID_PAPEL);
+
+            if(papel.getNomePapel().equals("")){
+                tvIdPapel.setText("0");
+                et_nomePapel.setText("");
+                et_valCadastroPapel.setText("");
+
+                Toaster("Não encontrado");
+                return 0;
+            }
+            else{
+                try{
+                    /*int i = ID_PAPEL;
+                    dbh.getPapel(i).getId();
+                    int idTemp = dbh.getPapel(ID_PAPEL).getId();
+                    String nomeTemp = dbh.getPapel(ID_PAPEL).getNomePapel();
+                    Double valorTemp = dbh.getPapel(ID_PAPEL).getValor();
+                    String nomeTmp = papel.getNomePapel();*/
+
+                    //tvIdPapel.setText(dbh.getPapel(ID_PAPEL).getId());
+                    et_nomePapel.setText(dbh.getPapel(ID_PAPEL).getNomePapel());
+                    et_valCadastroPapel.setText(dbh.getPapel(ID_PAPEL).getValor().toString());
+                    //Toaster("Sucesso!");
+                }
+                catch (Exception e){
+                    e.printStackTrace();
+                    Toaster("Erro ao buscar!");
+                }
+                return ID_PAPEL;
+            }
+        }
+    }
+
+    public void salvarPapel(View view) {
+        tvIdPapel=findViewById(R.id.idPapel);
+        idaux = tvIdPapel.getText().toString();
+        resumoBD = (TextView) findViewById(R.id.resumoBD);
+
+        if (idaux.equals("")) {
+            Toaster("Insira um ID");
+        } else {
+            try {
+                ID_PAPEL = 555;
+                ID_PAPEL = Integer.parseInt(idaux);
+
+                Papel papel = new Papel();
+
+                String nomePapel = et_nomePapel.getText().toString();
+                //papel.setNomePapel(nomePapel);
+
+                Double valorPapel = Double.parseDouble(et_valCadastroPapel.getText().toString());
+                //papel.setValor(valorPapel);
+
+                papel = new Papel(ID_PAPEL, nomePapel, valorPapel);
+
+                resumoBD.setText(papel.toString());
+
+                long encontrado = encontrarPapel();
+
+                if(encontrado>0){
+                    DataBaseHelper helper = new DataBaseHelper(this);
+                    helper.updatePapel(papel, ID_PAPEL);
+                    Clear();
+
+                    Toaster(papel.getNomePapel()+ " foi ALTERADO com sucesso!");
+                }
+                else{
+                    DataBaseHelper helper = new DataBaseHelper(this);
+                    helper.addPapel(papel);
+
+                    Toaster(papel.getNomePapel()+ " foi SALVO com sucesso!");
+                }
+            }
+            catch (Exception e){
+                e.printStackTrace();
+                Toaster("Erro ao salvar!");
+            }
+        }
+    }
+    public void recuperarBD(View view){
+        DataBaseHelper dbh = new DataBaseHelper(this);
+
+        tvIdPapel=findViewById(R.id.idPapel);
+        /*idaux = tvIdPapel.getText().toString();
+        ID_PAPEL = Integer.parseInt(idaux);*/
+
+        String papel = "Não funcionou...";
+
+        LinearLayout resumoView2BD = (LinearLayout) findViewById(R.id.resumoView2BD);
+
+        try{
+            resumoView2BD.removeAllViewsInLayout();
+            TextView resumoBD = new TextView(this);
+        } catch (Exception e){
+            Toaster("Erro, não foi possível limpar");
+        }
+        long contador =0;
+        contador = dbh.contador();
+        String stgcontador = String.valueOf(contador);
+
+        TextView tvcontador = new TextView(this);
+        tvcontador.setText("Papeis encontrados: " + stgcontador+"\n"+"****LISTA****"+"\n");
+        resumoView2BD.addView(tvcontador);
+
+        for(int i=0; i<contador; i++){
+            try{
+                TextView listagem = new TextView(this);
+                papel = dbh.getPapel(i).toString();
+                listagem.setText(dbh.getPapel(i).toString());
+                resumoView2BD.addView(listagem);
+            }catch (Exception e){
+                Toaster("Erro ao listar!");
+            }
+        }
+        TextView resumoBD = new TextView(this);
+        resumoBD.setText(papel);
+        dbh.close();
+    }
+
+    //IMPLEMENTAR EXCLUIR PAPEL
+
+
+    public long excluirPapelBD(){
+        DataBaseHelper dbh = new DataBaseHelper(this);
+
+        tvIdPapel=findViewById(R.id.idPapel);
+        idaux = tvIdPapel.getText().toString();
+
+        if(idaux.equals("")){
+            Toaster("Insira um ID");
+            return 0;
+        }
+        else{
+            ID_PAPEL = Integer.parseInt(idaux);
+            Papel papel = dbh.getPapel(ID_PAPEL);
+
+            if(papel.getNomePapel().equals("")){
+                tvIdPapel.setText("0");
+                et_nomePapel.setText("");
+                et_valCadastroPapel.setText("");
+
+                Toaster("Não encontrado");
+                return 0;
+            }
+            else{
+                try{
+                    et_nomePapel.setText(dbh.getPapel(ID_PAPEL).getNomePapel());
+                    et_valCadastroPapel.setText(dbh.getPapel(ID_PAPEL).getValor().toString());
+                    //Toaster("Sucesso!");
+                }
+                catch (Exception e){
+                    e.printStackTrace();
+                    Toaster("Erro ao buscar!");
+                }
+                return ID_PAPEL;
+            }
+        }
+    }
+}

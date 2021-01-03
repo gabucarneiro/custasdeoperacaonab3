@@ -1,0 +1,7 @@
+<resources>
+    <string name="app_name">Custas nas operações da B3</string>
+    <string name="qntAcoesValorDisponivel">Quantidade de ações por valor disponível</string>
+    <string name="acoesDiferencaCompraVenda">Diferença da compra e venda pretendida</string>
+    <string name="app_part2">Carteira</string>
+    <string name="cadastroPapel">Cadastro do papel</string>
+</resources>
