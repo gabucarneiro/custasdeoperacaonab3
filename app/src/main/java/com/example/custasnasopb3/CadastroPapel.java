@@ -1,6 +1,7 @@
 package com.example.custasnasopb3;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.content.ContextCompat;
 
 import android.content.ContentValues;
 import android.content.Context;
@@ -66,7 +67,8 @@ public class CadastroPapel extends AppCompatActivity {
                 papelList.add(papel);
 
                 TextView resumoCadastrarPapel = (TextView) findViewById(R.id.resumoCadastrPapel);
-                resumoCadastrarPapel.setTextColor(getResources().getColor(black));
+                resumoCadastrarPapel.setTextColor(ContextCompat.getColor(this, black));
+
                 resumoCadastrarPapel.setText(papel.toString());
 
                 CharSequence texto = "Cadastro realizado!";
@@ -141,7 +143,7 @@ public class CadastroPapel extends AppCompatActivity {
             Toaster(texto, duracao);*/
 
             TextView resumoCadastrarPapel = (TextView) findViewById(R.id.resumoCadastrPapel);
-            resumoCadastrarPapel.setTextColor(getResources().getColor(red));
+            resumoCadastrarPapel.setTextColor(ContextCompat.getColor(this, black));
             resumoCadastrarPapel.setText(erro);
         }
 
