@@ -113,6 +113,10 @@ public class CadastroPapel extends AppCompatActivity {
             //mostrar em list views dinâmicas os papeis cadastrados; OK
             //criar banco de dados; ok
             //implementar a função de exclusão;
+            //Botão de exclusão de papel da WatchList;
+            //Transformar o cadastro de papel em WatchList;
+            //Fazer o View do sistema de verificação da venda mínima sem perdas;
+            //Fazer um side View para calcular ganhos/perdas com a venda num determinado valor;
 
 
         }
@@ -254,8 +258,6 @@ public class CadastroPapel extends AppCompatActivity {
                 ID_PAPEL = 555;
                 ID_PAPEL = Integer.parseInt(idaux);
 
-                Papel papel = new Papel();
-
                 String nomePapel = et_nomePapel.getText().toString();
                 //papel.setNomePapel(nomePapel);
 
@@ -331,15 +333,17 @@ public class CadastroPapel extends AppCompatActivity {
     //IMPLEMENTAR EXCLUIR PAPEL
 
 
-    public long excluirPapelBD(){
+    public void excluirPapelBD(View view){
+        Toaster("Até aqui, ok!");
         DataBaseHelper dbh = new DataBaseHelper(this);
 
         tvIdPapel=findViewById(R.id.idPapel);
         idaux = tvIdPapel.getText().toString();
 
+        //dbh.excludePapel(1);
+
         if(idaux.equals("")){
             Toaster("Insira um ID");
-            return 0;
         }
         else{
             ID_PAPEL = Integer.parseInt(idaux);
@@ -351,19 +355,16 @@ public class CadastroPapel extends AppCompatActivity {
                 et_valCadastroPapel.setText("");
 
                 Toaster("Não encontrado");
-                return 0;
             }
             else{
                 try{
-                    et_nomePapel.setText(dbh.getPapel(ID_PAPEL).getNomePapel());
-                    et_valCadastroPapel.setText(dbh.getPapel(ID_PAPEL).getValor().toString());
-                    //Toaster("Sucesso!");
+                    dbh.excludePapel(ID_PAPEL);
+                    Toaster("Papel excluido com sucesso!");
                 }
                 catch (Exception e){
                     e.printStackTrace();
                     Toaster("Erro ao buscar!");
                 }
-                return ID_PAPEL;
             }
         }
     }

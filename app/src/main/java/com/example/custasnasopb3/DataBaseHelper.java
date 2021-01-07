@@ -50,6 +50,27 @@ public class DataBaseHelper extends SQLiteOpenHelper {
         return id;
     }
 
+    public Papel excludePapel(int id){
+        SQLiteDatabase db = this.getWritableDatabase();
+
+        Papel papel = new Papel();
+        Cursor cursor = db.rawQuery("DELETE FROM PAPEL WHERE ID = ?", new String[]{String.valueOf(id)});
+
+        if(cursor.getCount()>0){
+            cursor.moveToFirst();
+
+            papel.setId(cursor.getInt(0));
+            papel.setNomePapel(cursor.getString(1));
+            papel.setValor(cursor.getDouble(2));
+        }
+        /*else{
+            papel.setId(0);
+            papel.setNomePapel("");
+            papel.setValor(0.0);
+        }*/
+        return papel;
+    }
+
     public Papel getPapel(int id){
         SQLiteDatabase db = this.getReadableDatabase();
 
@@ -74,7 +95,34 @@ public class DataBaseHelper extends SQLiteOpenHelper {
     public long contador(){
         SQLiteDatabase db = this.getReadableDatabase();
 
-        long contagem = DatabaseUtils.queryNumEntries(db, banco_dados);
+        Cursor cursor = db.rawQuery("SELECT * FROM PAPEL WHERE PAPEL != ?", new String[]{""});
+        long contagem =0;
+        if(cursor.getCount()>0){
+            contagem = cursor.getCount();
+            cursor.moveToFirst();
+        }
+
+        //long contagem = DatabaseUtils.queryNumEntries(db, banco_dados);
+        return contagem;
+    }
+
+    //PEGANDO O ÚLTIMO ID COM NOME != DE NULL NO BANCO DE DADOS
+    // ************ AINDA NÃO ESTÁ CORRETO - TESTAR E SUBSTITUIR O CONTADOR!!! ************
+
+    public long idLastNomeNotNull(){
+        SQLiteDatabase db = this.getReadableDatabase();
+
+        Cursor cursor = db.rawQuery("SELECT * FROM PAPEL WHERE ID !=? OR PAPEL != ?", new String[]{"",""});
+        long contagem =0;
+        if(cursor.isLast()){
+            contagem = cursor.getPosition();
+        }
+        /*if(cursor.getCount()>0){
+            contagem = cursor.getCount();
+            cursor.moveToFirst();
+        }*/
+
+        //long contagem = DatabaseUtils.queryNumEntries(db, banco_dados);
         return contagem;
     }
 
