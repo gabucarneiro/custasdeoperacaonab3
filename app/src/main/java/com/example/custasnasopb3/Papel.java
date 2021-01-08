@@ -44,6 +44,11 @@ public class Papel extends AppCompatActivity {
 
     @Override
     public String toString() {
+        return "ID: " + id + "\n" +
+                "Papel: " + nomePapel + "\n" +
+                "Valor: R$" + valor + "\n";
+    }
+    public String toString2() {
         return "Papel: " + nomePapel + "\n" +
                 "Valor: R$" + valor + "\n";
     }

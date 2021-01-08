@@ -95,12 +95,20 @@ public class DataBaseHelper extends SQLiteOpenHelper {
     public long contador(){
         SQLiteDatabase db = this.getReadableDatabase();
 
-        Cursor cursor = db.rawQuery("SELECT * FROM PAPEL WHERE PAPEL != ?", new String[]{""});
+        Cursor cursor = db.rawQuery("SELECT * FROM PAPEL", new String[]{});
+
+        long contagem =cursor.getCount();
+
+        /*SQLiteDatabase db = this.getReadableDatabase();
+
+        Cursor cursor = db.rawQuery("SELECT * FROM PAPEL WHERE ID !=? AND PAPEL != ?", new String[]{"0",""});
         long contagem =0;
-        if(cursor.getCount()>0){
+        contagem = cursor.getCount();*/
+
+        /*if(cursor.getCount()>0){
             contagem = cursor.getCount();
             cursor.moveToFirst();
-        }
+        }*/
 
         //long contagem = DatabaseUtils.queryNumEntries(db, banco_dados);
         return contagem;
@@ -112,11 +120,18 @@ public class DataBaseHelper extends SQLiteOpenHelper {
     public long idLastNomeNotNull(){
         SQLiteDatabase db = this.getReadableDatabase();
 
-        Cursor cursor = db.rawQuery("SELECT * FROM PAPEL WHERE ID !=? OR PAPEL != ?", new String[]{"",""});
-        long contagem =0;
-        if(cursor.isLast()){
+        Cursor cursor = db.rawQuery("SELECT * FROM PAPEL", new String[]{});
+
+        long contagem =cursor.getCount();
+
+        /*if(cursor.isLast()){
             contagem = cursor.getPosition();
         }
+        for(int i=0; i>contagem; i++){
+
+        }*/
+
+
         /*if(cursor.getCount()>0){
             contagem = cursor.getCount();
             cursor.moveToFirst();

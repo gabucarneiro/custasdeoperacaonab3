@@ -53,6 +53,7 @@ public class CadastroPapel extends AppCompatActivity {
         papelList.add(new Papel("BBDC4F", 21.65));
         papelList.add(new Papel("CVCB3F", 16.22));
         papelList.add(new Papel("DMMO3F", 8.1));
+        papelList.add(new Papel("COGN3", 6.72));
         Listar(papelList);
     }
     public void cadastrarPapel (View view){
@@ -112,8 +113,9 @@ public class CadastroPapel extends AppCompatActivity {
             //fazer lista de papeis para cadastrar; OK
             //mostrar em list views dinâmicas os papeis cadastrados; OK
             //criar banco de dados; ok
-            //implementar a função de exclusão;
-            //Botão de exclusão de papel da WatchList;
+            //implementar a função de exclusão; ok
+            //Botão de exclusão de papel da WatchList; ok
+            //Montar sistema de pilha para os papeis cadastrados;
             //Transformar o cadastro de papel em WatchList;
             //Fazer o View do sistema de verificação da venda mínima sem perdas;
             //Fazer um side View para calcular ganhos/perdas com a venda num determinado valor;
@@ -216,11 +218,12 @@ public class CadastroPapel extends AppCompatActivity {
             Papel papel = dbh.getPapel(ID_PAPEL);
 
             if(papel.getNomePapel().equals("")){
-                tvIdPapel.setText("0");
+                Clear();
+                /*tvIdPapel.setText("0");
                 et_nomePapel.setText("");
-                et_valCadastroPapel.setText("");
+                et_valCadastroPapel.setText("");*/
 
-                Toaster("Não encontrado");
+                Toaster("Nenhum registro encontrado");
                 return 0;
             }
             else{
@@ -252,19 +255,40 @@ public class CadastroPapel extends AppCompatActivity {
         resumoBD = (TextView) findViewById(R.id.resumoBD);
 
         if (idaux.equals("")) {
-            Toaster("Insira um ID");
+            //Se não insere um ID específico para sobrepor, é adicionado ao último ID
+
+            DataBaseHelper dbh = new DataBaseHelper(this);
+            long longUltimo = dbh.contador();
+
+            int ultimo = Integer.parseInt(String.valueOf(longUltimo));
+            String nomePapel = et_nomePapel.getText().toString();
+            Double valorPapel = Double.parseDouble(et_valCadastroPapel.getText().toString());
+            papel = new Papel(ultimo, nomePapel, valorPapel);
+
+
+            /*try {
+                resumoBD.setText(papel.toString2());
+            } catch (Exception e){
+                Toaster("Erro de TargetException");
+            }*/
+
+            dbh.addPapel(papel);
+
+            Toaster(papel.getNomePapel()+ " foi SALVO com sucesso!");
+            dbh.close();
+
+            //Toaster("Último: " + String.valueOf(ultimo));
         } else {
             try {
-                ID_PAPEL = 555;
+                ID_PAPEL = 0;
                 ID_PAPEL = Integer.parseInt(idaux);
+                DataBaseHelper dbh = new DataBaseHelper(this);
+                long longUltimo = dbh.contador();
+                int ultimo = Integer.parseInt(String.valueOf(longUltimo));
 
                 String nomePapel = et_nomePapel.getText().toString();
-                //papel.setNomePapel(nomePapel);
-
                 Double valorPapel = Double.parseDouble(et_valCadastroPapel.getText().toString());
-                //papel.setValor(valorPapel);
-
-                papel = new Papel(ID_PAPEL, nomePapel, valorPapel);
+                papel = new Papel(ultimo, nomePapel, valorPapel);
 
                 resumoBD.setText(papel.toString());
 
@@ -289,7 +313,9 @@ public class CadastroPapel extends AppCompatActivity {
                 Toaster("Erro ao salvar!");
             }
         }
+        recuperarBD(view);
     }
+
     public void recuperarBD(View view){
         DataBaseHelper dbh = new DataBaseHelper(this);
 
@@ -300,6 +326,10 @@ public class CadastroPapel extends AppCompatActivity {
         String papel = "Não funcionou...";
 
         LinearLayout resumoView2BD = (LinearLayout) findViewById(R.id.resumoView2BD);
+        LinearLayout layout_teste = (LinearLayout) findViewById(R.id.layout_teste);
+        TextView teste = new TextView(this);
+        teste.setText(String.valueOf(dbh.idLastNomeNotNull()));
+        layout_teste.addView(teste);
 
         try{
             resumoView2BD.removeAllViewsInLayout();
@@ -308,12 +338,14 @@ public class CadastroPapel extends AppCompatActivity {
             Toaster("Erro, não foi possível limpar");
         }
         long contador =0;
-        contador = dbh.contador();
+        contador = dbh.idLastNomeNotNull();
         String stgcontador = String.valueOf(contador);
 
-        TextView tvcontador = new TextView(this);
+
+// *********** VIEW CRIADA PARA TESTAR O CONTADOR ***********
+        /*TextView tvcontador = new TextView(this);
         tvcontador.setText("Papeis encontrados: " + stgcontador+"\n"+"****LISTA****"+"\n");
-        resumoView2BD.addView(tvcontador);
+        resumoView2BD.addView(tvcontador);*/
 
         for(int i=0; i<contador; i++){
             try{
