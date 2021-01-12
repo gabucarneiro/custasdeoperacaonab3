@@ -25,6 +25,7 @@ public class DataBaseHelper extends SQLiteOpenHelper {
         //db.execSQL("DROP TABLE IF EXISTS PAPEL");
         db.execSQL("CREATE TABLE PAPEL (ID INTEGER(3), PAPEL VARCHAR(6) NOT NULL," +
                 "VALOR DOUBLE(10));" );
+
     }
 
     @Override
@@ -50,6 +51,7 @@ public class DataBaseHelper extends SQLiteOpenHelper {
 
         long id = db.insert("PAPEL", null, values);
 
+        db.close();
         return id;
     }
 
@@ -71,6 +73,9 @@ public class DataBaseHelper extends SQLiteOpenHelper {
             papel.setNomePapel("");
             papel.setValor(0.0);
         }*/
+
+        cursor.close();
+        db.close();
         return papel;
     }
 
@@ -91,6 +96,8 @@ public class DataBaseHelper extends SQLiteOpenHelper {
             papel.setNomePapel("");
             papel.setValor(0.0);
         }
+        cursor.close();
+        db.close();
         return papel;
     }
 
@@ -134,6 +141,8 @@ public class DataBaseHelper extends SQLiteOpenHelper {
         }*/
 
         //long contagem = DatabaseUtils.queryNumEntries(db, banco_dados);
+        cursor.close();
+        db.close();
         return contagem;
     }
 
@@ -161,6 +170,8 @@ public class DataBaseHelper extends SQLiteOpenHelper {
         }*/
 
         //long contagem = DatabaseUtils.queryNumEntries(db, banco_dados);
+        cursor.close();
+        db.close();
         return contagem;
     }
 
@@ -174,6 +185,7 @@ public class DataBaseHelper extends SQLiteOpenHelper {
 
         long id = db.update("PAPEL", values, "id = ?", new String[]{String.valueOf(id_papel)});
 
+        db.close();
         return id;
     }
     public long updateIDPapel(int id_papel){
@@ -185,6 +197,7 @@ public class DataBaseHelper extends SQLiteOpenHelper {
 
         long id = db.update("PAPEL", values, "id = ?", new String[]{String.valueOf(id_papel)});
 
+        db.close();
         return id;
     }
     public void dropTable() {

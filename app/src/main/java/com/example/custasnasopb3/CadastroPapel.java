@@ -3,23 +3,17 @@ package com.example.custasnasopb3;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.ContextCompat;
 
-import android.content.ContentValues;
 import android.content.Context;
-import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.view.View;
-import android.widget.Button;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import java.sql.DatabaseMetaData;
 import java.util.ArrayList;
-import java.util.List;
 
 import static com.example.custasnasopb3.R.color.black;
-import static com.example.custasnasopb3.R.color.red;
 
 public class CadastroPapel extends AppCompatActivity {
 
@@ -34,9 +28,21 @@ public class CadastroPapel extends AppCompatActivity {
     ArrayList<Papel> papelList = new ArrayList<>();
 
     EditText et_nomePapel, et_valCadastroPapel;
-    TextView tvIdPapel;
+    EditText et_IdPapel;
 
     TextView resumoBD;
+
+
+    //dar continuidade criação do método de cadastro dos papéis; OK
+    //fazer lista de papeis para cadastrar; OK
+    //mostrar em list views dinâmicas os papeis cadastrados; OK
+    //criar banco de dados; ok
+    //implementar a função de exclusão; ok
+    //Botão de exclusão de papel da WatchList; ok
+    //Montar sistema de pilha para os papeis cadastrados;
+    //Transformar o cadastro de papel em WatchList;
+    //Fazer o View do sistema de verificação da venda mínima sem perdas;
+    //Fazer um side View para calcular ganhos/perdas com a venda num determinado valor;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -75,6 +81,7 @@ public class CadastroPapel extends AppCompatActivity {
                 CharSequence texto = "Cadastro realizado!";
                 int duracao = Toast.LENGTH_SHORT;
                 Toaster(texto, duracao);
+                Clear();
             }
             else{
                 if(cpValor == null){
@@ -103,23 +110,6 @@ public class CadastroPapel extends AppCompatActivity {
 
         Toast toast = Toast.makeText(context, text, duration);
         toast.show();*/
-
-
-
-
-
-
-            //dar continuidade criação do método de cadastro dos papéis; OK
-            //fazer lista de papeis para cadastrar; OK
-            //mostrar em list views dinâmicas os papeis cadastrados; OK
-            //criar banco de dados; ok
-            //implementar a função de exclusão; ok
-            //Botão de exclusão de papel da WatchList; ok
-            //Montar sistema de pilha para os papeis cadastrados;
-            //Transformar o cadastro de papel em WatchList;
-            //Fazer o View do sistema de verificação da venda mínima sem perdas;
-            //Fazer um side View para calcular ganhos/perdas com a venda num determinado valor;
-
 
         }
         catch(Exception e){
@@ -192,7 +182,7 @@ public class CadastroPapel extends AppCompatActivity {
     }
 
     public void Clear(){
-        tvIdPapel.setText("0");
+        et_IdPapel.setText("");
         et_nomePapel.setText("");
         et_valCadastroPapel.setText("");
     }
@@ -206,11 +196,12 @@ public class CadastroPapel extends AppCompatActivity {
     public long encontrarPapel(){
         DataBaseHelper dbh = new DataBaseHelper(this);
 
-        tvIdPapel=findViewById(R.id.idPapel);
-        idaux = tvIdPapel.getText().toString();
+        et_IdPapel =findViewById(R.id.idPapel);
+        idaux = et_IdPapel.getText().toString();
 
         if(idaux.equals("")){
             Toaster("Insira um ID");
+            dbh.close();
             return 0;
         }
         else{
@@ -219,11 +210,12 @@ public class CadastroPapel extends AppCompatActivity {
 
             if(papel.getNomePapel().equals("")){
                 Clear();
-                /*tvIdPapel.setText("0");
+                /*et_IdPapel.setText("");
                 et_nomePapel.setText("");
                 et_valCadastroPapel.setText("");*/
 
                 Toaster("Nenhum registro encontrado");
+                dbh.close();
                 return 0;
             }
             else{
@@ -235,23 +227,25 @@ public class CadastroPapel extends AppCompatActivity {
                     Double valorTemp = dbh.getPapel(ID_PAPEL).getValor();
                     String nomeTmp = papel.getNomePapel();*/
 
-                    //tvIdPapel.setText(dbh.getPapel(ID_PAPEL).getId());
+                    //et_IdPapel.setText(dbh.getPapel(ID_PAPEL).getId());
                     et_nomePapel.setText(dbh.getPapel(ID_PAPEL).getNomePapel());
                     et_valCadastroPapel.setText(dbh.getPapel(ID_PAPEL).getValor().toString());
                     //Toaster("Sucesso!");
+                    dbh.close();
                 }
                 catch (Exception e){
                     e.printStackTrace();
                     Toaster("Erro ao buscar!");
                 }
+                dbh.close();
                 return ID_PAPEL;
             }
         }
     }
 
     public void salvarPapel(View view) {
-        tvIdPapel=findViewById(R.id.idPapel);
-        idaux = tvIdPapel.getText().toString();
+        et_IdPapel =findViewById(R.id.idPapel);
+        idaux = et_IdPapel.getText().toString();
         resumoBD = (TextView) findViewById(R.id.resumoBD);
 
         if (idaux.equals("")) {
@@ -307,6 +301,7 @@ public class CadastroPapel extends AppCompatActivity {
 
                     Toaster(papel.getNomePapel()+ " foi SALVO com sucesso!");
                 }
+                dbh.close();
             }
             catch (Exception e){
                 e.printStackTrace();
@@ -319,8 +314,8 @@ public class CadastroPapel extends AppCompatActivity {
     public void recuperarBD(View view){
         DataBaseHelper dbh = new DataBaseHelper(this);
 
-        tvIdPapel=findViewById(R.id.idPapel);
-        /*idaux = tvIdPapel.getText().toString();
+        et_IdPapel =findViewById(R.id.idPapel);
+        /*idaux = et_IdPapel.getText().toString();
         ID_PAPEL = Integer.parseInt(idaux);*/
 
         String papel = "Não funcionou...";
@@ -369,8 +364,8 @@ public class CadastroPapel extends AppCompatActivity {
         Toaster("Excluído com sucesso!");
         DataBaseHelper dbh = new DataBaseHelper(this);
 
-        tvIdPapel=findViewById(R.id.idPapel);
-        idaux = tvIdPapel.getText().toString();
+        et_IdPapel =findViewById(R.id.idPapel);
+        idaux = et_IdPapel.getText().toString();
 
         if(idaux.equals("")){
             Toaster("Insira um ID");
@@ -380,7 +375,7 @@ public class CadastroPapel extends AppCompatActivity {
             Papel papel = dbh.getPapel(ID_PAPEL);
 
             if(papel.getNomePapel().equals("")){
-                tvIdPapel.setText("0");
+                et_IdPapel.setText("");
                 et_nomePapel.setText("");
                 et_valCadastroPapel.setText("");
 
@@ -399,5 +394,6 @@ public class CadastroPapel extends AppCompatActivity {
                 }
             }
         }
+        dbh.close();
     }
 }
