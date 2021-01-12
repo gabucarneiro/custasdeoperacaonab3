@@ -366,13 +366,11 @@ public class CadastroPapel extends AppCompatActivity {
 
 
     public void excluirPapelBD(View view){
-        Toaster("Até aqui, ok!");
+        Toaster("Excluído com sucesso!");
         DataBaseHelper dbh = new DataBaseHelper(this);
 
         tvIdPapel=findViewById(R.id.idPapel);
         idaux = tvIdPapel.getText().toString();
-
-        //dbh.excludePapel(1);
 
         if(idaux.equals("")){
             Toaster("Insira um ID");
@@ -391,6 +389,8 @@ public class CadastroPapel extends AppCompatActivity {
             else{
                 try{
                     dbh.excludePapel(ID_PAPEL);
+                    int ID_PAPELPlus = ID_PAPEL+1;
+                    dbh.updateIDPapel(ID_PAPELPlus);
                     Toaster("Papel excluido com sucesso!");
                 }
                 catch (Exception e){

@@ -8,6 +8,9 @@ import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.widget.Toast;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class DataBaseHelper extends SQLiteOpenHelper {
 
     private static int versao = 1;
@@ -91,6 +94,26 @@ public class DataBaseHelper extends SQLiteOpenHelper {
         return papel;
     }
 
+    /*public Papel moveAllItems(int id){
+        SQLiteDatabase db = this.getWritableDatabase();
+
+        Papel papel = new Papel();
+        List<Papel> tempList = new ArrayList<>();
+        Cursor cursor1 = db.rawQuery("SELECT * FROM PAPEL WHERE ID > ?", new String[]{String.valueOf(id)});
+
+        long contagem =cursor1.getCount();
+
+        for (; id<=contagem;id++){
+            papel.setId(cursor.getInt(0));
+            papel.setNomePapel(cursor.getString(1));
+            papel.setValor(cursor.getDouble(2));
+        }
+
+        Cursor cursor = db.query(banco_dados, new String[]);
+
+
+    }*/
+
     //FAZENDO UM CONTADOR DE CADASTROS NO BANCO DE DADOS
     public long contador(){
         SQLiteDatabase db = this.getReadableDatabase();
@@ -148,6 +171,17 @@ public class DataBaseHelper extends SQLiteOpenHelper {
 
         values.put("PAPEL", papel.getNomePapel());
         values.put("VALOR", papel.getValor());
+
+        long id = db.update("PAPEL", values, "id = ?", new String[]{String.valueOf(id_papel)});
+
+        return id;
+    }
+    public long updateIDPapel(int id_papel){
+        SQLiteDatabase db = this.getWritableDatabase();
+
+        ContentValues values = new ContentValues();
+        int id_papelMinus = id_papel-1;
+        values.put("ID", id_papelMinus);
 
         long id = db.update("PAPEL", values, "id = ?", new String[]{String.valueOf(id_papel)});
 
