@@ -79,6 +79,25 @@ public class DataBaseHelper extends SQLiteOpenHelper {
         return papel;
     }
 
+
+    //A FUNÇÃO CLEARDB() FOI CRIADA COM A INTENÇÃO DE DELETAR TODOS REGISTROS INVÁLIDOS
+    public void clearDB(){
+        SQLiteDatabase db = this.getWritableDatabase();
+
+        Papel papel = new Papel();
+        Cursor cursor = db.rawQuery("DELETE FROM PAPEL WHERE ID = '0' AND PAPEL = ''", null);
+
+        if(cursor.getCount()>0){
+            cursor.moveToFirst();
+
+            papel.setId(cursor.getInt(0));
+            papel.setNomePapel(cursor.getString(1));
+            papel.setValor(cursor.getDouble(2));
+        }
+        cursor.close();
+        db.close();
+    }
+
     public Papel getPapel(int id){
         SQLiteDatabase db = this.getReadableDatabase();
 
