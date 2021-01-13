@@ -314,6 +314,7 @@ public class CadastroPapel extends AppCompatActivity {
     public void recuperarBD(View view){
         DataBaseHelper dbh = new DataBaseHelper(this);
 
+        dbh.clearDB();
         et_IdPapel =findViewById(R.id.idPapel);
         /*idaux = et_IdPapel.getText().toString();
         ID_PAPEL = Integer.parseInt(idaux);*/
@@ -323,7 +324,7 @@ public class CadastroPapel extends AppCompatActivity {
         LinearLayout resumoView2BD = (LinearLayout) findViewById(R.id.resumoView2BD);
         LinearLayout layout_teste = (LinearLayout) findViewById(R.id.layout_teste);
         TextView teste = new TextView(this);
-        teste.setText(String.valueOf(dbh.idLastNomeNotNull()));
+        teste.setText(String.valueOf(dbh.contador()));
         layout_teste.addView(teste);
 
         try{
@@ -333,7 +334,7 @@ public class CadastroPapel extends AppCompatActivity {
             Toaster("Erro, não foi possível limpar");
         }
         long contador =0;
-        contador = dbh.idLastNomeNotNull();
+        contador = dbh.contador();
         String stgcontador = String.valueOf(contador);
 
 
@@ -385,7 +386,18 @@ public class CadastroPapel extends AppCompatActivity {
                 try{
                     dbh.excludePapel(ID_PAPEL);
                     int ID_PAPELPlus = ID_PAPEL+1;
-                    dbh.updateIDPapel(ID_PAPELPlus);
+                    while (ID_PAPELPlus!= 0){
+                        Papel temp = dbh.getPapel(ID_PAPELPlus);
+                        if(temp.getNomePapel() != ""){
+                            dbh.updateIDPapel(ID_PAPELPlus);
+                            ID_PAPELPlus+=1;
+                        }
+                        else{
+                            ID_PAPELPlus = 0;
+                        }
+
+                    }
+
                     Toaster("Papel excluido com sucesso!");
                 }
                 catch (Exception e){
