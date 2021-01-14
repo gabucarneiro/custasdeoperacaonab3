@@ -55,7 +55,7 @@ public class CadastroPapel extends AppCompatActivity {
         papelList.add(new Papel("CIEL3F", 8.5));
         papelList.add(new Papel("ABEV3F", 16.3));
         papelList.add(new Papel("EMBR3F", 16.9));
-        papelList.add(new Papel("PETR3F", 14.78));
+        //papelList.add(new Papel("PETR3F", 14.78));
         papelList.add(new Papel("BBDC4F", 21.65));
         papelList.add(new Papel("CVCB3F", 16.22));
         papelList.add(new Papel("DMMO3F", 8.1));
@@ -253,11 +253,54 @@ public class CadastroPapel extends AppCompatActivity {
 
             DataBaseHelper dbh = new DataBaseHelper(this);
             long longUltimo = dbh.contador();
-
-            int ultimo = Integer.parseInt(String.valueOf(longUltimo));
             String nomePapel = et_nomePapel.getText().toString();
-            Double valorPapel = Double.parseDouble(et_valCadastroPapel.getText().toString());
-            papel = new Papel(ultimo, nomePapel, valorPapel);
+            Double valorPapel=0.0;
+            try {
+                valorPapel = Double.parseDouble(et_valCadastroPapel.getText().toString());
+            }
+            catch (Exception e){
+                valorPapel=0.0;
+            }
+
+
+            try {
+                int ultimo = Integer.parseInt(String.valueOf(longUltimo));
+
+                if(valorPapel!= null && !(valorPapel<= 0) && !(nomePapel.equals(""))){
+                    papel = new Papel(ultimo, nomePapel, valorPapel);
+                    dbh.addPapel(papel);
+
+                    Toaster(papel.getNomePapel()+ " foi SALVO com sucesso!");
+                }
+                else{
+                    if(valorPapel == null){
+                        CharSequence texto = "Valor não pode ser nulo";
+                        Toaster(texto);
+                    }
+                    else if(valorPapel <= 0){
+                        CharSequence texto = "Valor não pode ser menor ou igual a zero";
+                        Toaster(texto);
+                    }
+                    else if(nomePapel.equals("")){
+                        CharSequence texto = "Nome do papel não pode ser nulo";
+                        Toaster(texto);
+                    }
+                }
+            }
+            catch(Exception e){
+                if(valorPapel == null){
+                    CharSequence texto = "Valor não pode ser nulo";
+                    Toaster(texto);
+                }
+                else if(valorPapel <= 0){
+                    CharSequence texto = "Valor não pode ser menor ou igual a zero";
+                    Toaster(texto);
+                }
+                else if(nomePapel.equals("")){
+                    CharSequence texto = "Nome do papel não pode ser nulo";
+                    Toaster(texto);
+                }
+            }
 
 
             /*try {
@@ -266,13 +309,11 @@ public class CadastroPapel extends AppCompatActivity {
                 Toaster("Erro de TargetException");
             }*/
 
-            dbh.addPapel(papel);
-
-            Toaster(papel.getNomePapel()+ " foi SALVO com sucesso!");
             dbh.close();
 
             //Toaster("Último: " + String.valueOf(ultimo));
-        } else {
+        }
+        else {
             try {
                 ID_PAPEL = 0;
                 ID_PAPEL = Integer.parseInt(idaux);
@@ -282,24 +323,25 @@ public class CadastroPapel extends AppCompatActivity {
 
                 String nomePapel = et_nomePapel.getText().toString();
                 Double valorPapel = Double.parseDouble(et_valCadastroPapel.getText().toString());
-                papel = new Papel(ultimo, nomePapel, valorPapel);
 
-                resumoBD.setText(papel.toString());
+                if(valorPapel!= null && !(valorPapel<= 0) && !(nomePapel.equals(""))){
+                    papel = new Papel(ultimo, nomePapel, valorPapel);
 
-                long encontrado = encontrarPapel();
+                    long encontrado = encontrarPapel();
 
-                if(encontrado>0){
-                    DataBaseHelper helper = new DataBaseHelper(this);
-                    helper.updatePapel(papel, ID_PAPEL);
-                    Clear();
+                    if(encontrado>0){
+                        DataBaseHelper helper = new DataBaseHelper(this);
+                        helper.updatePapel(papel, ID_PAPEL);
+                        Clear();
 
-                    Toaster(papel.getNomePapel()+ " foi ALTERADO com sucesso!");
-                }
-                else{
-                    DataBaseHelper helper = new DataBaseHelper(this);
-                    helper.addPapel(papel);
+                        Toaster(papel.getNomePapel()+ " foi ALTERADO com sucesso!");
+                    }
+                    else{
+                        DataBaseHelper helper = new DataBaseHelper(this);
+                        helper.addPapel(papel);
 
-                    Toaster(papel.getNomePapel()+ " foi SALVO com sucesso!");
+                        Toaster(papel.getNomePapel()+ " foi SALVO com sucesso!");
+                    }
                 }
                 dbh.close();
             }
