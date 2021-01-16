@@ -32,17 +32,15 @@ public class CadastroPapel extends AppCompatActivity {
 
     TextView resumoBD;
 
-
-    //dar continuidade criação do método de cadastro dos papéis; OK
-    //fazer lista de papeis para cadastrar; OK
-    //mostrar em list views dinâmicas os papeis cadastrados; OK
-    //criar banco de dados; ok
-    //implementar a função de exclusão; ok
-    //Botão de exclusão de papel da WatchList; ok
-    //Montar sistema de pilha para os papeis cadastrados;
-    //Transformar o cadastro de papel em WatchList;
-    //Fazer o View do sistema de verificação da venda mínima sem perdas;
-    //Fazer um side View para calcular ganhos/perdas com a venda num determinado valor;
+    // *** TASKS ***
+    //*** OK *** dar continuidade criação do método de cadastro dos papéis; OK
+    //*** OK *** fazer lista de papeis para cadastrar; OK
+    //*** OK *** mostrar em list views dinâmicas os papeis cadastrados; OK
+    //*** OK *** criar banco de dados; ok
+    //*** OK *** implementar a função de exclusão; ok
+    //*** OK *** Botão de exclusão de papel da WatchList; ok
+    //*** OK *** Montar sistema de pilha para os papeis cadastrados; ok
+    //*** OK *** Transformar o cadastro de papel em WatchList; (não será necessário - talvez atualização futura)
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

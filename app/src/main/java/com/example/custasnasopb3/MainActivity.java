@@ -9,6 +9,9 @@ import android.widget.Button;
 
 public class MainActivity extends AppCompatActivity {
 
+    // TODO Fazer o View do sistema de verificação da venda mínima sem perdas;
+    // TODO Fazer um side View para calcular ganhos/perdas com a venda num determinado valor;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

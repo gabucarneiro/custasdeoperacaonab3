@@ -11,6 +11,16 @@ import java.text.DecimalFormat;
 
 public class QntAcoesValorDisponivel extends AppCompatActivity {
 
+    //  *** TASKs ***
+    // *** OK *** DEFINIR PRIMEIRO O VALOR BRUTO UTILIZADO PARA A COMPRA DAS AÇÕES.
+    // *** OK *** CALCULAR CUSTAS E EMOLUMENTOS.
+    // *** OK *** VERIFICAR SE MANTÉM A QUANTIDADE DE AÇÕES CONSIDERANDO O VALOR DISPONÍVEL, CASO NÃO, DIMINUIR A QUANTIDADE EM 1 AÇÃO.
+    //TODO Incluir checkbutton para alterar valores, como tx_liquidacao, tx_negociacao, custodia, corretagem, iss
+    // quando marcado o checkbutton, inserir um editView para permitir a alteração dos valores.
+    //TODO Separrar os calculos das custas em funções.
+    // Lembrar que o que for salvo no banco de dados, deverá ser estático,
+    // Portatnto, deverá ser inserido em uma String antes de ir para o banco de dados.
+
     @Override
     protected void onCreate (Bundle savedInstanceState){
         super.onCreate(savedInstanceState);
@@ -62,10 +72,7 @@ public class QntAcoesValorDisponivel extends AppCompatActivity {
     //custoPorOperação corresponde ao valor total das custas e emolumentos;
     //val_DisponivelLiquido corresponde ao valor retirando as custas - JÁ É O VALOR FINAL PARA INVESTIR
 
-            //  *** TASKs ***
-            // *** OK *** DEFINIR PRIMEIRO O VALOR BRUTO UTILIZADO PARA A COMPRA DAS AÇÕES.
-            //CALCULAR CUSTAS E EMOLUMENTOS.
-            //VERIFICAR SE MANTÉM A QUANTIDADE DE AÇÕES CONSIDERANDO O VALOR DISPONÍVEL, CASO NÃO, DIMINUIR A QUANTIDADE EM 1 AÇÃO.
+
 
             Double partOneValor = val_Disponivel/val_Papel;
             Integer partTwoQuantidade = Integer.valueOf(partOneValor.intValue());
@@ -190,6 +197,8 @@ public class QntAcoesValorDisponivel extends AppCompatActivity {
             }
         }
     }
+
+    //Ex.: tem 50, precisamos saber o valor de 25% do 50 citado. Resultado: 12,5.
     public double Porcentagem(double valor, double porcentagem){
         Double resultado = (valor*porcentagem)/100;
         return resultado;
