@@ -22,6 +22,10 @@ public class MainActivity extends AppCompatActivity {
         Intent intent = new Intent(this, QntAcoesValorDisponivel.class);
         startActivity(intent);
     }
+    public void valor_min_para_venda_sem_perdas(View view){
+        Intent intent = new Intent(this, ValorMinParaVendaSemPerdas.class);
+        startActivity(intent);
+    }
     public void cadastro_papel(View view){
         Intent intent = new Intent(this, CadastroPapel.class);
         startActivity(intent);

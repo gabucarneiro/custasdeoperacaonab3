@@ -2,6 +2,7 @@ package com.example.custasnasopb3;
 
 import android.os.Bundle;
 import android.view.View;
+import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.TextView;
 
@@ -15,8 +16,9 @@ public class QntAcoesValorDisponivel extends AppCompatActivity {
     // *** OK *** DEFINIR PRIMEIRO O VALOR BRUTO UTILIZADO PARA A COMPRA DAS AÇÕES.
     // *** OK *** CALCULAR CUSTAS E EMOLUMENTOS.
     // *** OK *** VERIFICAR SE MANTÉM A QUANTIDADE DE AÇÕES CONSIDERANDO O VALOR DISPONÍVEL, CASO NÃO, DIMINUIR A QUANTIDADE EM 1 AÇÃO.
-    //TODO Incluir checkbutton para alterar valores, como tx_liquidacao, tx_negociacao, custodia, corretagem, iss
+    // *** OK *** Incluir checkbutton para alterar valores, como tx_liquidacao, tx_negociacao, custodia, corretagem, iss
     // quando marcado o checkbutton, inserir um editView para permitir a alteração dos valores.
+    //TODO Checkar os checkbuttons e valores;
     //TODO Separrar os calculos das custas em funções.
     // Lembrar que o que for salvo no banco de dados, deverá ser estático,
     // Portatnto, deverá ser inserido em uma String antes de ir para o banco de dados.
@@ -25,14 +27,19 @@ public class QntAcoesValorDisponivel extends AppCompatActivity {
     protected void onCreate (Bundle savedInstanceState){
         super.onCreate(savedInstanceState);
         setContentView(R.layout.qnt_acoes_valor_disponivel);
-    }
-    public void calQuantidadeAcaoValBruto (View view){
+
         DecimalFormat df2 = new DecimalFormat("0.00");
         DecimalFormat df3 = new DecimalFormat("0.000");
         DecimalFormat df4 = new DecimalFormat("0.0000");
 
         EditText valDisponivel = (EditText) findViewById(R.id.valDisponivel);
         EditText valPapel = (EditText) findViewById(R.id.valPapel);
+        EditText pct_Corretagem = findViewById(R.id.pctCorretagem);
+        EditText pct_Custodia = findViewById(R.id.pctCustodia);
+        EditText pct_Liquidacao = findViewById(R.id.pctLiquidacao);
+        EditText pct_Negociacao = findViewById(R.id.pctNegociacao);
+        EditText pct_Iss = findViewById(R.id.pctIss);
+        TextView pct_Emolumentos = findViewById(R.id.pctEmolumentos);
 
         Double val_Disponivel = 0.0;
         Double val_Papel = 0.0;
@@ -62,6 +69,63 @@ public class QntAcoesValorDisponivel extends AppCompatActivity {
         double ir_venda;
         double calc_ir_venda;
 
+        pct_Corretagem.setText(String.valueOf(corretagem));
+        pct_Custodia.setText(String.valueOf(custodia));
+        pct_Liquidacao.setText(String.valueOf(tx_liquidacao));
+        pct_Negociacao.setText(String.valueOf(tx_negociacao));
+        pct_Iss.setText(String.valueOf(iss));
+        pct_Emolumentos.setText(String.valueOf(tx_liquidacao+tx_negociacao));
+
+    }
+    public void calQuantidadeAcaoValBruto (View view){
+        DecimalFormat df2 = new DecimalFormat("0.00");
+        DecimalFormat df3 = new DecimalFormat("0.000");
+        DecimalFormat df4 = new DecimalFormat("0.0000");
+
+        EditText valDisponivel = (EditText) findViewById(R.id.valDisponivel);
+        EditText valPapel = (EditText) findViewById(R.id.valPapel);
+        EditText pct_Corretagem = findViewById(R.id.pctCorretagem);
+        EditText pct_Custodia = findViewById(R.id.pctCustodia);
+        EditText pct_Liquidacao = findViewById(R.id.pctLiquidacao);
+        EditText pct_Negociacao = findViewById(R.id.pctNegociacao);
+        EditText pct_Iss = findViewById(R.id.pctIss);
+        TextView pct_Emolumentos = findViewById(R.id.pctEmolumentos);
+
+        Double val_Disponivel = 0.0;
+        Double val_Papel = 0.0;
+        Double custoPorOperacao = 0.0;
+
+        //CUSTOS OPERACIONAIS
+        boolean corretagemFixa = true;
+        double corretagem = 2.49;
+        double calc_Corretagem = 0.0;
+
+        boolean custodiaFixa = false;
+        double custodia = 0.0;
+        double calc_Custodia= 0.0;
+
+        double emolumentos;
+        double tx_liquidacao = 0.0275;
+        double calc_tx_liquidacao;
+        double tx_negociacao = 0.003247;
+        double calc_tx_negociacao;
+
+        boolean issCobrado = true;
+        double iss = 0.01;
+        double calc_iss;
+
+        double ir_compra;
+        double calc_ir_compra;
+        double ir_venda;
+        double calc_ir_venda;
+
+        /*pct_Corretagem.setText(String.valueOf(corretagem));
+        pct_Custodia.setText(String.valueOf(custodia));
+        pct_Liquidacao.setText(String.valueOf(tx_liquidacao));
+        pct_Negociacao.setText(String.valueOf(tx_negociacao));
+        pct_Iss.setText(String.valueOf(iss));
+        pct_Emolumentos.setText(String.valueOf(tx_liquidacao+tx_negociacao));*/
+
         if(valDisponivel != null && valPapel != null){
             val_Disponivel = Double.parseDouble(valDisponivel.getText().toString());
             val_Papel = Double.parseDouble(valPapel.getText().toString());
@@ -83,6 +147,13 @@ public class QntAcoesValorDisponivel extends AppCompatActivity {
         // CÁLCULO DAS CUSTAS
             //CORRETAGEM
 
+                CheckBox cb_Corretagem = findViewById(R.id.cbCorretagem);
+                if (cb_Corretagem.isChecked()){
+                    corretagemFixa=false;
+                    double db_pct_Corretagem = Double.parseDouble(pct_Corretagem.getText().toString());
+                    corretagem = db_pct_Corretagem;
+                }
+
                 if(!corretagemFixa || corretagem!=0 || val_Disponivel==0){
                     calc_Corretagem = corretagem;
                 }
@@ -95,6 +166,14 @@ public class QntAcoesValorDisponivel extends AppCompatActivity {
                 tvCorretagem.setText(calculo_Corretagem);
 
             //CUSTODIA
+
+                CheckBox cb_Custodia = findViewById(R.id.cbCustodia);
+                if (cb_Custodia.isChecked()){
+                    custodiaFixa=false;
+                    pct_Custodia.setClickable(true);
+                    double db_pct_Custodia = Double.parseDouble(pct_Custodia.getText().toString());
+                    custodia = db_pct_Custodia;
+                }
 
                 if(!custodiaFixa || custodia!=0 || val_Disponivel==0){
                     calc_Custodia = custodia;
@@ -110,6 +189,12 @@ public class QntAcoesValorDisponivel extends AppCompatActivity {
             //EMOLUMENTOS
                 //TAXA DE LIQUIDAÇÃO
 
+                CheckBox cb_Liquidacao = findViewById(R.id.cbLiquidacao);
+                if (cb_Liquidacao.isChecked()){
+                    pct_Liquidacao.setClickable(true);
+                    double db_pct_Liquidacao = Double.parseDouble(pct_Liquidacao.getText().toString());
+                    tx_liquidacao = db_pct_Liquidacao;
+                }
                 if(tx_liquidacao ==0 || val_Disponivel==0){
                     calc_tx_liquidacao = tx_liquidacao;
                 }
@@ -123,6 +208,12 @@ public class QntAcoesValorDisponivel extends AppCompatActivity {
 
                 //TAXA DE NEGOCIAÇÃO
 
+                CheckBox cb_Negociacao = findViewById(R.id.cbNegociacao);
+                if (cb_Negociacao.isChecked()){
+                    pct_Negociacao.setClickable(true);
+                    double db_pct_Negociacao = Double.parseDouble(pct_Negociacao.getText().toString());
+                    tx_negociacao = db_pct_Negociacao;
+                }
                 if(tx_negociacao ==0 || val_Disponivel==0){
                     calc_tx_negociacao = tx_negociacao;
                 }
@@ -142,7 +233,12 @@ public class QntAcoesValorDisponivel extends AppCompatActivity {
                 tv_emolumentos.setText(str_emolumentos);
 
             //ISS
-
+                CheckBox cb_Iss = findViewById(R.id.cbIss);
+                if (cb_Iss.isChecked()){
+                    pct_Iss.setClickable(true);
+                    double db_pct_Iss = Double.parseDouble(pct_Iss.getText().toString());
+                    tx_negociacao = db_pct_Iss;
+                }
                 if(!issCobrado || iss ==0 || val_Disponivel==0){
                     calc_iss = iss;
                 }

@@ -28,7 +28,8 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/acoesDiferencaCompraVenda"
-        android:textSize="20sp">
+        android:textSize="20sp"
+        android:onClick="valor_min_para_venda_sem_perdas">
     </Button>
 
     <TextView

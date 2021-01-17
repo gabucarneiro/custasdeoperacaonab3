@@ -217,7 +217,7 @@
         </TextView>
 
             <LinearLayout
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="vertical">
                 <TextView
@@ -244,132 +244,259 @@
             </LinearLayout>
 
             <!--  ***** CORRETORA *****  -->
-
             <LinearLayout
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="horizontal">
+                android:orientation="vertical"
+                android:gravity="right">
                 <TextView
                     style="@style/Conteudo"
-                    android:text="Corretagem: R$">
-                </TextView>
-                <TextView
-                    android:id="@+id/corretagem"
-                    style="@style/Conteudo"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:hint="0,00">
-                </TextView>
-            </LinearLayout>
-
-
-            <LinearLayout
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal">
-                <TextView
-                    style="@style/Conteudo"
-                    android:text="Custódia (CBLC): R$">
-                </TextView>
-                <TextView
-                    android:id="@+id/custodia"
-                    style="@style/Conteudo"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:hint="0,00">
-                </TextView>
-            </LinearLayout>
-
-            <!--  ***** B3 *****  -->
-
-            <LinearLayout
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal">
-                <TextView
-                    style="@style/Conteudo"
-                    android:text="Emolumentos: R$">
-                </TextView>
-                <TextView
-                    android:id="@+id/emolumentos"
-                    style="@style/Conteudo"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:hint="0,00">
-                </TextView>
-            </LinearLayout>
-            <LinearLayout
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                android:paddingLeft="8dp">
-                <TextView
-                    style="@style/Conteudo"
-                    android:text="(Taxa de liquidação da CBLC): R$"
-                    android:textSize="15dp">
-                </TextView>
-                <TextView
-                    android:id="@+id/tax_liquidacao"
-                    style="@style/Conteudo"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:hint="0,00"
+                    android:text="Alterar %"
                     android:textSize="15dp">
                 </TextView>
             </LinearLayout>
-            <LinearLayout
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                android:paddingLeft="8dp">
-                <TextView
-                    style="@style/Conteudo"
-                    android:text="(Taxa de negociação): R$"
-                    android:textSize="15dp">
-                </TextView>
-                <TextView
-                    android:id="@+id/tax_negociacao"
-                    style="@style/Conteudo"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:hint="0,00"
-                    android:textSize="15dp">
-                </TextView>
-            </LinearLayout>
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
 
-            <!--  ***** GOVERNO - IMPOSTOS *****  -->
+
+
             <LinearLayout
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:orientation="horizontal">
-                <TextView
-                    style="@style/Conteudo"
-                    android:text="ISS: R$">
-                </TextView>
-                <TextView
-                    android:id="@+id/iss"
-                    style="@style/Conteudo"
-                    android:layout_width="wrap_content"
+                android:orientation="vertical"
+                android:layout_weight="1">
+                <LinearLayout
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:hint="0,00">
-                </TextView>
+                    android:orientation="horizontal">
+                    <TextView
+                        style="@style/Conteudo"
+                        android:text="Corretagem: R$">
+                    </TextView>
+                    <TextView
+                        android:id="@+id/corretagem"
+                        style="@style/Conteudo"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:hint="0,00">
+                    </TextView>
+                    <EditText
+                        android:layout_marginLeft="10dp"
+                        android:id="@+id/pctCorretagem"
+                        style="@style/Conteudo"
+                        android:textSize="10dp"
+                        android:hint="0,00"
+                        android:contextClickable="false">
+                    </EditText>
+                </LinearLayout>
+
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+                    <TextView
+                        style="@style/Conteudo"
+                        android:text="Custódia (CBLC): R$">
+                    </TextView>
+                    <TextView
+                        android:id="@+id/custodia"
+                        style="@style/Conteudo"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:hint="0,00">
+                    </TextView>
+                    <EditText
+                        android:layout_marginLeft="10dp"
+                        android:id="@+id/pctCustodia"
+                        style="@style/Conteudo"
+                        android:textSize="10dp"
+                        android:hint="0,00"
+                        android:clickable="false">
+                    </EditText>
+                </LinearLayout>
+
+                <!--  ***** B3 *****  -->
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+                    <TextView
+                        style="@style/Conteudo"
+                        android:text="Emolumentos: R$">
+                    </TextView>
+                    <TextView
+                        android:id="@+id/emolumentos"
+                        style="@style/Conteudo"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:hint="0,00">
+                    </TextView>
+                    <TextView
+                        android:layout_marginLeft="10dp"
+                        android:id="@+id/pctEmolumentos"
+                        style="@style/Conteudo"
+                        android:textSize="10dp"
+                        android:hint="0,00">
+                    </TextView>
+                </LinearLayout>
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:paddingLeft="8dp">
+                    <TextView
+                        style="@style/Conteudo"
+                        android:text="(Taxa de liquidação da CBLC): R$"
+                        android:textSize="15dp">
+                    </TextView>
+                    <TextView
+                        android:id="@+id/tax_liquidacao"
+                        style="@style/Conteudo"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:hint="0,00"
+                        android:textSize="15dp">
+                    </TextView>
+                    <EditText
+                        android:layout_marginLeft="10dp"
+                        android:id="@+id/pctLiquidacao"
+                        style="@style/Conteudo"
+                        android:textSize="10dp"
+                        android:hint="0,00">
+                    </EditText>
+                </LinearLayout>
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:paddingLeft="8dp">
+                    <TextView
+                        style="@style/Conteudo"
+                        android:text="(Taxa de negociação): R$"
+                        android:textSize="15dp">
+                    </TextView>
+                    <TextView
+                        android:id="@+id/tax_negociacao"
+                        style="@style/Conteudo"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:hint="0,00"
+                        android:textSize="15dp">
+                    </TextView>
+                    <EditText
+                        android:layout_marginLeft="10dp"
+                        android:id="@+id/pctNegociacao"
+                        style="@style/Conteudo"
+                        android:textSize="10dp"
+                        android:hint="0,00">
+                    </EditText>
+                </LinearLayout>
+
+                <!--  ***** GOVERNO - IMPOSTOS *****  -->
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+                    <TextView
+                        style="@style/Conteudo"
+                        android:text="ISS: R$">
+                    </TextView>
+                    <TextView
+                        android:id="@+id/iss"
+                        style="@style/Conteudo"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:hint="0,00">
+                    </TextView>
+                    <EditText
+                        android:layout_marginLeft="10dp"
+                        android:id="@+id/pctIss"
+                        style="@style/Conteudo"
+                        android:textSize="10dp"
+                        android:hint="0,00">
+                    </EditText>
+                </LinearLayout>
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+                    <TextView
+                        style="@style/Conteudo"
+                        android:text="IR da compra: R$">
+                    </TextView>
+                    <TextView
+                        android:id="@+id/impostoDeRenda"
+                        style="@style/Conteudo"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:hint="0,00">
+                    </TextView>
+                    <EditText
+                        android:layout_marginLeft="10dp"
+                        android:id="@+id/pctIr"
+                        style="@style/Conteudo"
+                        android:textSize="10dp"
+                        android:hint="0,00">
+                    </EditText>
+                </LinearLayout>
             </LinearLayout>
             <LinearLayout
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal">
-                <TextView
-                    style="@style/Conteudo"
-                    android:text="IR da compra: R$">
-                </TextView>
-                <TextView
-                    android:id="@+id/impostoDeRenda"
-                    style="@style/Conteudo"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="vertical"
+                android:layout_weight="2">
+                <LinearLayout
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:hint="0,00">
-                </TextView>
+                    android:orientation="vertical"
+                    android:layout_gravity="end">
+                    <CheckBox
+                        android:id="@+id/cbCorretagem"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content">
+                    </CheckBox>
+                    <CheckBox
+                        android:id="@+id/cbCustodia"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content">
+                    </CheckBox>
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:hint="Auto"
+                        android:textSize="15dp"
+                        android:paddingBottom="15dp"
+                        android:paddingTop="10dp">
+                    </TextView>
+
+                    <CheckBox
+                        android:id="@+id/cbLiquidacao"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content">
+                    </CheckBox>
+                    <CheckBox
+                        android:id="@+id/cbNegociacao"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content">
+                    </CheckBox>
+                    <CheckBox
+                        android:id="@+id/cbIss"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content">
+                    </CheckBox>
+                    <CheckBox
+                        android:id="@+id/cbIr"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content">
+                    </CheckBox>
+                </LinearLayout>
             </LinearLayout>
+        </LinearLayout>
             <TextView
                 style="@style/Conteudo"
                 android:text="Lembre-se que os custos da venda não foram lançados"

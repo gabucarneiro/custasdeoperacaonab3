@@ -41,6 +41,10 @@ public class CadastroPapel extends AppCompatActivity {
     //*** OK *** Botão de exclusão de papel da WatchList; ok
     //*** OK *** Montar sistema de pilha para os papeis cadastrados; ok
     //*** OK *** Transformar o cadastro de papel em WatchList; (não será necessário - talvez atualização futura)
+    //TODO fazer limpeza no que não for necessário;
+    // Retirar lista inicial (Hard-included);
+    // Retirar a visibilidade dos contadores;
+    //TODO refatorar a classe;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -50,6 +54,7 @@ public class CadastroPapel extends AppCompatActivity {
         et_nomePapel = findViewById(R.id.nomePapel);
         et_valCadastroPapel = findViewById(R.id.valCadastroPapel);
 
+        //TODO *** DADOS ABAIXO SERÃO EXCLUÍDOS - AINDA EM TESTE
         papelList.add(new Papel("CIEL3F", 8.5));
         papelList.add(new Papel("ABEV3F", 16.3));
         papelList.add(new Papel("EMBR3F", 16.9));
@@ -59,7 +64,10 @@ public class CadastroPapel extends AppCompatActivity {
         papelList.add(new Papel("DMMO3F", 8.1));
         papelList.add(new Papel("COGN3", 6.72));
         Listar(papelList);
+        //*** DADOS ACIMA SERÃO EXCLUÍDOS - AINDA EM TESTE
     }
+
+    //TODO *** FUNÇÃO QUE POSSIVELMENTE SERÁ EXCLUÍDA - AINDA EM ANÁLISE
     public void cadastrarPapel (View view){
         try{
             cpNomePapel = et_nomePapel.getText().toString();
@@ -156,6 +164,9 @@ public class CadastroPapel extends AppCompatActivity {
         Toast toast = Toast.makeText(context, text, duracao);
         toast.show();
     }
+
+
+    //TODO *** FUNÇÃO QUE POSSIVELMENTE SERÁ EXCLUÍDA - AINDA EM ANÁLISE
     public void Listar(ArrayList<Papel> papel){
         TextView resumo2 = (TextView) findViewById(R.id.resumo);
         /*LinearLayout resumoView = (LinearLayout) findViewById(R.id.resumoView);
@@ -342,6 +353,7 @@ public class CadastroPapel extends AppCompatActivity {
                     }
                 }
                 dbh.close();
+                Clear();
             }
             catch (Exception e){
                 e.printStackTrace();
@@ -439,6 +451,7 @@ public class CadastroPapel extends AppCompatActivity {
                     }
 
                     Toaster("Papel excluido com sucesso!");
+                    Clear();
                 }
                 catch (Exception e){
                     e.printStackTrace();
@@ -446,6 +459,7 @@ public class CadastroPapel extends AppCompatActivity {
                 }
             }
         }
+        recuperarBD(view);
         dbh.close();
     }
 }

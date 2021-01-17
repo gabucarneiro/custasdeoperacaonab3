@@ -1,9 +1,132 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    tools:context=".ValorMinParaVendaSemPerdas">
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        xmlns:tools="http://schemas.android.com/tools"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        style="@style/BasicLayout"
+        tools:context=".ValorMinParaVendaSemPerdas">
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        tools:context=".acoesDiferencaCompraVenda"
+        android:orientation="vertical"
+        android:paddingLeft="20dp"
+        android:paddingRight="20dp"
+        style="@style/BasicLayout">
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical"
+            android:paddingTop="20dp"
+            android:paddingBottom="20dp">
+        <TextView
+            style="@style/Header"
+            android:text="@string/acoesDiferencaCompraVenda"
+            android:layout_marginBottom="30dp"
+            android:textAllCaps="true"/>
+        </LinearLayout>
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+            <TextView
+                style="@style/Conteudo"
+                android:text="Valor quando adquirido:">
+            </TextView>
+            <EditText
+                android:id="@+id/valPapelAdquirido"
+                style="@style/Conteudo"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:hint="0,00"
+                android:inputType="numberDecimal">
+            </EditText>
+        </LinearLayout>
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+            <TextView
+                style="@style/Conteudo"
+                android:text="Quantidade de ações: ">
+            </TextView>
+            <EditText
+                android:id="@+id/quantidade"
+                style="@style/Conteudo"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:hint="0"
+                android:inputType="number">
+            </EditText>
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+            <TextView
+                style="@style/Conteudo"
+                android:text="Valor atual do papel: R$">
+            </TextView>
+            <EditText
+                android:id="@+id/valAtualPapel"
+                style="@style/Conteudo"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:hint="0,00"
+                android:inputType="numberDecimal">
+            </EditText>
+        </LinearLayout>
+
+        <Button
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:text="calcular"
+            android:textSize="20dp"
+            android:textAllCaps="true"
+            android:layout_marginTop="10dp">
+        </Button>
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+            <TextView
+                style="@style/Conteudo"
+                android:text="Valor mínimo para venda sem perdas: R$ "
+                android:textSize="15dp">
+            </TextView>
+            <TextView
+                android:id="@+id/valMinVendaSemPerdas"
+                style="@style/Conteudo"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:hint="0,00"
+                android:inputType="numberDecimal"
+                android:textSize="15dp">
+            </TextView>
+
+        </LinearLayout>
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+            <TextView
+                style="@style/Conteudo"
+                android:text="Variação em %: ">
+            </TextView>
+            <TextView
+                android:id="@+id/valVarMinEmPercent"
+                style="@style/Conteudo"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:hint="0,00"
+                android:inputType="numberDecimal">
+            </TextView>
+        </LinearLayout>
+    </LinearLayout>
+
+</ScrollView>
