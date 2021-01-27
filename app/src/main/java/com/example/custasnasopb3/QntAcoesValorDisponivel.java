@@ -19,6 +19,10 @@ public class QntAcoesValorDisponivel extends AppCompatActivity {
     // *** OK *** Incluir checkbutton para alterar valores, como tx_liquidacao, tx_negociacao, custodia, corretagem, iss
     // quando marcado o checkbutton, inserir um editView para permitir a alteração dos valores.
     //TODO Checkar os checkbuttons e valores;
+    //TODO Criar Checkbutton para opção de papel fracionário - Fazendo divisões por 100, a sobra é
+    // fracionária. Interessante deixar o usuário decidir, se for fracionário, divide a quantidade
+    // por 99 e multiplica a tarifa de corretagem. Se não for, divide por 100 e elimina o resto,
+    // contando apenas uma corretagem.
     //TODO Separrar os calculos das custas em funções.
     // Lembrar que o que for salvo no banco de dados, deverá ser estático,
     // Portatnto, deverá ser inserido em uma String antes de ir para o banco de dados.
