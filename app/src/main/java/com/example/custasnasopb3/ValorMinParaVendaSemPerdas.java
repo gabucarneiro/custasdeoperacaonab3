@@ -5,6 +5,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.content.Context;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -13,9 +14,10 @@ import java.text.DecimalFormat;
 
 public class ValorMinParaVendaSemPerdas extends AppCompatActivity {
 
-    Double valPapelAdquirido = 0.0;
+    QntAcoesValorDisponivel qavd;
+    double valPapelAdquirido = 0.0;
     int quantidade = 0;
-    Double valPretendidoVenda = 0.0;
+    double valPretendidoVenda = 0.0;
 
     //CUSTOS OPERACIONAIS
     boolean corretagemFixa = true;
@@ -46,19 +48,21 @@ public class ValorMinParaVendaSemPerdas extends AppCompatActivity {
     DecimalFormat df4 = new DecimalFormat("0.0000");
 
 
-/*    EditText valDisponivel = (EditText) findViewById(R.id.valDisponivel);
-    EditText valPapel = (EditText) findViewById(R.id.valPapel);
-    EditText pct_Corretagem = findViewById(R.id.pctCorretagem);
-    EditText pct_Custodia = findViewById(R.id.pctCustodia);
-    EditText pct_Liquidacao = findViewById(R.id.pctLiquidacao);
-    EditText pct_Negociacao = findViewById(R.id.pctNegociacao);
-    EditText pct_Iss = findViewById(R.id.pctIss);
-    TextView pct_Emolumentos = findViewById(R.id.pctEmolumentos);*/
+    /*EditText et_valPapelAdquirido = (EditText) findViewById(R.id.valPapelAdquirido);
+    EditText et_quantidade = (EditText) findViewById(R.id.quantidade2);
+    EditText et_valPretendidoVenda = (EditText) findViewById(R.id.valPretendidoVenda);
+    EditText pct_Corretagem = findViewById(R.id.pctCorretagem2);
+    EditText pct_Custodia = findViewById(R.id.pctCustodia2);
+    EditText pct_Liquidacao = findViewById(R.id.pctLiquidacao2);
+    EditText pct_Negociacao = findViewById(R.id.pctNegociacao2);
+    EditText pct_Iss = findViewById(R.id.pctIss2);
+    TextView pct_Emolumentos = findViewById(R.id.pctEmolumentos2);*/
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_valor_min_para_venda_sem_perdas);
+
     }
 
     public Double getValPapelAdquirido() {
@@ -88,19 +92,28 @@ public class ValorMinParaVendaSemPerdas extends AppCompatActivity {
     public void calcular(View view){
         try {
             EditText et_valPapelAdquirido = (EditText) findViewById(R.id.valPapelAdquirido);
-            EditText et_quantidade = (EditText) findViewById(R.id.quantidade);
+            EditText et_quantidade = (EditText) findViewById(R.id.quantidade2);
             EditText et_valPretendidoVenda = (EditText) findViewById(R.id.valPretendidoVenda);
 
             if (et_valPapelAdquirido != null && et_quantidade != null && et_valPretendidoVenda != null) {
                 try {
-                    valPapelAdquirido = Double.parseDouble(String.valueOf(et_valPapelAdquirido));
-                    quantidade = Integer.parseInt(String.valueOf(et_quantidade));
-                    valPretendidoVenda = Double.parseDouble(String.valueOf(et_valPretendidoVenda));
+                    valPapelAdquirido = Double.parseDouble(et_valPapelAdquirido.getText().toString());
+                    quantidade = Integer.parseInt(et_quantidade.getText().toString());
+                    valPretendidoVenda = Double.parseDouble(et_valPretendidoVenda.getText().toString());
 
-                    TextView tv_valCompraDoPapel = (TextView) findViewById(R.id.valCompraDoPapel);
-                    tv_valCompraDoPapel.setText(String.valueOf(valPapelAdquirido * quantidade));
 
-                } catch (Exception e) {
+                    TextView tvCorretagem = (TextView) findViewById(R.id.corretagem2);
+                    Double tempCorretagem = Corretagem(valPapelAdquirido, quantidade);
+                    String calculo_Corretagem = String.valueOf(tempCorretagem);
+                    tvCorretagem.setText(calculo_Corretagem);
+
+                    //TODO Criar e chamar os cálculos das custas.
+
+                    TextView tv_valCompraDoPapel = (TextView) findViewById(R.id.valCompraDoPapel2);
+                    tv_valCompraDoPapel.setText(String.valueOf((valPapelAdquirido * quantidade)+tempCorretagem));
+
+                }
+                catch (Exception e) {
                     Toaster("Erro ao calcular");
                 }
             }
@@ -113,8 +126,40 @@ public class ValorMinParaVendaSemPerdas extends AppCompatActivity {
         }
     }
 
+    //TODO Dar continuidade à separação dos cálculos das custas/emolumentos/taxas.
 
-    public double valMinSemPerdas(double valPapelAdquirido, double quantidade){
+    public Double Corretagem(Double valPapelCalcular, Integer quantidade){
+
+        if(valPapelCalcular != null && quantidade != null){
+
+            if(quantidade>=1) {
+
+                CheckBox cb_Corretagem = findViewById(R.id.cbCorretagem2);
+                if (cb_Corretagem.isChecked()) {
+                    corretagemFixa = false;
+                    EditText pct_Corretagem = findViewById(R.id.pctCorretagem2);
+                    double db_pct_Corretagem = Double.parseDouble(pct_Corretagem.getText().toString());
+                    corretagem = db_pct_Corretagem;
+                }
+
+                if (!corretagemFixa || corretagem != 0 || valPapelCalcular == 0) {
+                    calc_Corretagem = corretagem;
+                    return calc_Corretagem;
+                }
+                else {
+                    calc_Corretagem = qavd.Porcentagem(valPapelCalcular, corretagem);
+                    return calc_Corretagem;
+                }
+            }
+        }
+        return calc_Corretagem;
+    }
+
+
+
+
+
+    public double valMinSemPerdas(double valPapelAdquirido, int quantidade){
         double totalSum = valPapelAdquirido * quantidade;
         totalSum -= totalSum - corretagem - tx_liquidacao - tx_negociacao;
 

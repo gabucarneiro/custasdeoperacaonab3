@@ -54,7 +54,7 @@
                 android:text="Quantidade de ações: ">
             </TextView>
             <EditText
-                android:id="@+id/quantidade"
+                android:id="@+id/quantidade2"
                 style="@style/Conteudo"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -110,7 +110,7 @@
                     android:text="R$">
                 </TextView>
                 <TextView
-                    android:id="@+id/valCompraDoPapel"
+                    android:id="@+id/valCompraDoPapel2"
                     style="@style/Conteudo"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -164,7 +164,7 @@
                         android:text="Corretagem: R$">
                     </TextView>
                     <TextView
-                        android:id="@+id/corretagem"
+                        android:id="@+id/corretagem2"
                         style="@style/Conteudo"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
@@ -172,7 +172,7 @@
                     </TextView>
                     <EditText
                         android:layout_marginLeft="10dp"
-                        android:id="@+id/pctCorretagem"
+                        android:id="@+id/pctCorretagem2"
                         style="@style/Conteudo"
                         android:textSize="10dp"
                         android:hint="0,00"
@@ -190,7 +190,7 @@
                         android:text="Custódia (CBLC): R$">
                     </TextView>
                     <TextView
-                        android:id="@+id/custodia"
+                        android:id="@+id/custodia2"
                         style="@style/Conteudo"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
@@ -198,7 +198,7 @@
                     </TextView>
                     <EditText
                         android:layout_marginLeft="10dp"
-                        android:id="@+id/pctCustodia"
+                        android:id="@+id/pctCustodia2"
                         style="@style/Conteudo"
                         android:textSize="10dp"
                         android:hint="0,00"
@@ -217,7 +217,7 @@
                         android:text="Emolumentos: R$">
                     </TextView>
                     <TextView
-                        android:id="@+id/emolumentos"
+                        android:id="@+id/emolumentos2"
                         style="@style/Conteudo"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
@@ -225,7 +225,7 @@
                     </TextView>
                     <TextView
                         android:layout_marginLeft="10dp"
-                        android:id="@+id/pctEmolumentos"
+                        android:id="@+id/pctEmolumentos2"
                         style="@style/Conteudo"
                         android:textSize="10dp"
                         android:hint="0,00">
@@ -242,7 +242,7 @@
                         android:textSize="15dp">
                     </TextView>
                     <TextView
-                        android:id="@+id/tax_liquidacao"
+                        android:id="@+id/tax_liquidacao2"
                         style="@style/Conteudo"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
@@ -251,7 +251,7 @@
                     </TextView>
                     <EditText
                         android:layout_marginLeft="10dp"
-                        android:id="@+id/pctLiquidacao"
+                        android:id="@+id/pctLiquidacao2"
                         style="@style/Conteudo"
                         android:textSize="10dp"
                         android:hint="0,00">
@@ -268,7 +268,7 @@
                         android:textSize="15dp">
                     </TextView>
                     <TextView
-                        android:id="@+id/tax_negociacao"
+                        android:id="@+id/tax_negociacao2"
                         style="@style/Conteudo"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
@@ -277,7 +277,7 @@
                     </TextView>
                     <EditText
                         android:layout_marginLeft="10dp"
-                        android:id="@+id/pctNegociacao"
+                        android:id="@+id/pctNegociacao2"
                         style="@style/Conteudo"
                         android:textSize="10dp"
                         android:hint="0,00">
@@ -294,7 +294,7 @@
                         android:text="ISS: R$">
                     </TextView>
                     <TextView
-                        android:id="@+id/iss"
+                        android:id="@+id/iss2"
                         style="@style/Conteudo"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
@@ -302,7 +302,7 @@
                     </TextView>
                     <EditText
                         android:layout_marginLeft="10dp"
-                        android:id="@+id/pctIss"
+                        android:id="@+id/pctIss2"
                         style="@style/Conteudo"
                         android:textSize="10dp"
                         android:hint="0,00">
@@ -317,7 +317,7 @@
                         android:text="IR da compra: R$">
                     </TextView>
                     <TextView
-                        android:id="@+id/impostoDeRenda"
+                        android:id="@+id/impostoDeRenda2"
                         style="@style/Conteudo"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
@@ -325,7 +325,7 @@
                     </TextView>
                     <EditText
                         android:layout_marginLeft="10dp"
-                        android:id="@+id/pctIr"
+                        android:id="@+id/pctIr2"
                         style="@style/Conteudo"
                         android:textSize="10dp"
                         android:hint="0,00">
@@ -343,13 +343,13 @@
                     android:orientation="vertical"
                     android:layout_gravity="end">
                     <CheckBox
-                        android:id="@+id/cbCorretagem"
+                        android:id="@+id/cbCorretagem2"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginBottom="20dp">
                     </CheckBox>
                     <CheckBox
-                        android:id="@+id/cbCustodia"
+                        android:id="@+id/cbCustodia2"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content">
                     </CheckBox>
@@ -364,25 +364,25 @@
                     </TextView>
 
                     <CheckBox
-                        android:id="@+id/cbLiquidacao"
+                        android:id="@+id/cbLiquidacao2"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginBottom="10dp">
                     </CheckBox>
                     <CheckBox
-                        android:id="@+id/cbNegociacao"
+                        android:id="@+id/cbNegociacao2"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginBottom="5dp">
                     </CheckBox>
                     <CheckBox
-                        android:id="@+id/cbIss"
+                        android:id="@+id/cbIss2"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginBottom="5dp">
                     </CheckBox>
                     <CheckBox
-                        android:id="@+id/cbIr"
+                        android:id="@+id/cbIr2"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content">
                     </CheckBox>
