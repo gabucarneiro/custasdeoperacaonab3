@@ -15,6 +15,7 @@ import java.text.DecimalFormat;
 public class ValorMinParaVendaSemPerdas extends AppCompatActivity {
 
     QntAcoesValorDisponivel qavd;
+    CadastroPapel cp;
     double valPapelAdquirido = 0.0;
     int quantidade = 0;
     double valPretendidoVenda = 0.0;
@@ -24,7 +25,7 @@ public class ValorMinParaVendaSemPerdas extends AppCompatActivity {
     double corretagem = 2.49;
     double calc_Corretagem = 0.0;
 
-    boolean custodiaFixa = false;
+    boolean custodiaFixa = true;
     double custodia = 0.0;
     double calc_Custodia= 0.0;
 
@@ -107,10 +108,34 @@ public class ValorMinParaVendaSemPerdas extends AppCompatActivity {
                     String calculo_Corretagem = String.valueOf(tempCorretagem);
                     tvCorretagem.setText(calculo_Corretagem);
 
+                    TextView val_Custodia = (TextView) findViewById(R.id.custodia2);
+                    Double tempCustodia = Custodia(valPapelAdquirido, quantidade);
+                    String str_val_Custodia = df2.format(tempCustodia);
+                    val_Custodia.setText(str_val_Custodia);
+
+                    TextView val_tx_liquidacao = (TextView) findViewById(R.id.tax_liquidacao2);
+                    Double tempTxLiquidacao = Liquidacao(valPapelAdquirido, quantidade);
+                    String str_val_tx_liquidacao = df3.format(tempTxLiquidacao);
+                    val_tx_liquidacao.setText(str_val_tx_liquidacao);
+
+                    TextView val_tx_negociacao = (TextView) findViewById(R.id.tax_negociacao2);
+                    Double tempTxNegociacao = Negociacao(valPapelAdquirido, quantidade);
+                    String str_val_tx_negociacao = df3.format(tempTxNegociacao);
+                    val_tx_negociacao.setText(str_val_tx_negociacao);
+
+                    TextView val_emolumentos = (TextView) findViewById(R.id.emolumentos2);
+                    Double tempEmolumentos = tempTxLiquidacao + tempTxNegociacao;
+                    String str_val_emolumentos = df4.format(tempEmolumentos);
+                    val_emolumentos.setText(str_val_emolumentos);
+
+                    TextView pctEmolumentos2 = (TextView) findViewById(R.id.pctEmolumentos2);
+                    String tempPctEmolumentos = df3.format(Double.valueOf(tx_liquidacao + tx_negociacao));
+                    pctEmolumentos2.setText(tempPctEmolumentos);
+
                     //TODO Criar e chamar os cálculos das custas.
 
                     TextView tv_valCompraDoPapel = (TextView) findViewById(R.id.valCompraDoPapel2);
-                    tv_valCompraDoPapel.setText(String.valueOf((valPapelAdquirido * quantidade)+tempCorretagem));
+                    tv_valCompraDoPapel.setText(String.valueOf((valPapelAdquirido * quantidade)+tempCorretagem+tempCustodia+tempTxLiquidacao+tempTxNegociacao));
 
                 }
                 catch (Exception e) {
@@ -147,7 +172,7 @@ public class ValorMinParaVendaSemPerdas extends AppCompatActivity {
                     return calc_Corretagem;
                 }
                 else {
-                    calc_Corretagem = qavd.Porcentagem(valPapelCalcular, corretagem);
+                    calc_Corretagem = Porcentagem(valPapelCalcular, corretagem);
                     return calc_Corretagem;
                 }
             }
@@ -155,6 +180,79 @@ public class ValorMinParaVendaSemPerdas extends AppCompatActivity {
         return calc_Corretagem;
     }
 
+    public Double Custodia(Double valPapelCalcular, Integer quantidade){
+
+        if(valPapelCalcular != null && quantidade != null) {
+
+            if (quantidade >= 1) {
+                CheckBox cb_Custodia = findViewById(R.id.cbCustodia2);
+                if (cb_Custodia.isChecked()) {
+                    custodiaFixa = false;
+                    EditText pct_Custodia = findViewById(R.id.pctCustodia2);
+                    double db_pct_Custodia = Double.parseDouble(pct_Custodia.getText().toString());
+                    custodia = db_pct_Custodia;
+                }
+
+                if (custodiaFixa || custodia == 0 || valPapelCalcular == 0) {
+                    calc_Custodia = custodia;
+                    return calc_Custodia;
+                }
+                else {
+                    calc_Custodia = Porcentagem((valPapelCalcular*quantidade), custodia);
+                    return calc_Custodia;
+                }
+            }
+        }
+        return calc_Custodia;
+    }
+
+    public Double Liquidacao(Double valPapelCalcular, Integer quantidade){
+
+        if(valPapelCalcular != null && quantidade != null) {
+
+            if (quantidade >= 1) {
+                CheckBox cb_Liquidacao = findViewById(R.id.cbLiquidacao2);
+                if (cb_Liquidacao.isChecked()) {
+                    EditText pct_Liquidacao = findViewById(R.id.pctLiquidacao2);
+                    double db_pct_Liquidacao = Double.parseDouble(pct_Liquidacao.getText().toString());
+                    tx_liquidacao = db_pct_Liquidacao;
+                }
+                if (tx_liquidacao == 0 || valPapelCalcular == 0) {
+                    calc_tx_liquidacao = tx_liquidacao;
+                    return calc_tx_liquidacao;
+                }
+                else {
+                    calc_tx_liquidacao = Porcentagem((valPapelCalcular*quantidade), tx_liquidacao);
+                    return calc_tx_liquidacao;
+                }
+            }
+        }
+        return calc_tx_liquidacao;
+    }
+
+    public Double Negociacao(Double valPapelCalcular, Integer quantidade){
+
+        if(valPapelCalcular != null && quantidade != null) {
+
+            if (quantidade >= 1) {
+                CheckBox cb_Negociacao = findViewById(R.id.cbNegociacao2);
+                if (cb_Negociacao.isChecked()) {
+                    EditText pct_Negociacao = findViewById(R.id.pctNegociacao2);
+                    double db_pct_Negociacao = Double.parseDouble(pct_Negociacao.getText().toString());
+                    tx_negociacao = db_pct_Negociacao;
+                }
+                if (tx_negociacao == 0 || valPapelCalcular == 0) {
+                    calc_tx_negociacao = tx_negociacao;
+                    return calc_tx_negociacao;
+                }
+                else {
+                    calc_tx_negociacao = Porcentagem((valPapelCalcular*quantidade), tx_negociacao);
+                    return calc_tx_negociacao;
+                }
+            }
+        }
+        return calc_tx_negociacao;
+    }
 
 
 
@@ -173,5 +271,10 @@ public class ValorMinParaVendaSemPerdas extends AppCompatActivity {
 
         Toast toast = Toast.makeText(context, text, duracao);
         toast.show();
+    }
+
+    public double Porcentagem(double valor, double porcentagem){
+        Double resultado = (valor*porcentagem)/100;
+        return resultado;
     }
 }

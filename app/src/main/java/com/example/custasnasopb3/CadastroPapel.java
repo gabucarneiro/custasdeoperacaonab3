@@ -190,6 +190,8 @@ public class CadastroPapel extends AppCompatActivity {
         resumo2.setText(sbListaPapel);
     }
 
+    //TODO Verificar se podem ser excluídas as duas funções (listar e cadastrarPapel) acima desta linha.
+
     public void Clear(){
         et_IdPapel.setText("");
         et_nomePapel.setText("");
