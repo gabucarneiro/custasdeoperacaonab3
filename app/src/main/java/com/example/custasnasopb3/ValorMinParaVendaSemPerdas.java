@@ -39,7 +39,7 @@ public class ValorMinParaVendaSemPerdas extends AppCompatActivity {
     double iss = 0.01;
     double calc_iss;
 
-    double ir_compra;
+    double ir_compra=0.0;
     double calc_ir_compra;
     double ir_venda;
     double calc_ir_venda;
@@ -63,6 +63,23 @@ public class ValorMinParaVendaSemPerdas extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_valor_min_para_venda_sem_perdas);
+
+        EditText et_valPapelAdquirido = (EditText) findViewById(R.id.valPapelAdquirido);
+        EditText et_quantidade = (EditText) findViewById(R.id.quantidade2);
+        EditText et_valPretendidoVenda = (EditText) findViewById(R.id.valPretendidoVenda);
+        EditText pct_Corretagem = findViewById(R.id.pctCorretagem2);
+        EditText pct_Custodia = findViewById(R.id.pctCustodia2);
+        EditText pct_Liquidacao = findViewById(R.id.pctLiquidacao2);
+        EditText pct_Negociacao = findViewById(R.id.pctNegociacao2);
+        EditText pct_Iss = findViewById(R.id.pctIss2);
+        TextView pct_Emolumentos = findViewById(R.id.pctEmolumentos2);
+
+        pct_Corretagem.setText(String.valueOf(corretagem));
+        pct_Custodia.setText(String.valueOf(custodia));
+        pct_Liquidacao.setText(String.valueOf(tx_liquidacao));
+        pct_Negociacao.setText(String.valueOf(tx_negociacao));
+        pct_Iss.setText(String.valueOf(iss));
+        pct_Emolumentos.setText(String.valueOf(tx_liquidacao+tx_negociacao));
 
     }
 
@@ -131,6 +148,16 @@ public class ValorMinParaVendaSemPerdas extends AppCompatActivity {
                     TextView pctEmolumentos2 = (TextView) findViewById(R.id.pctEmolumentos2);
                     String tempPctEmolumentos = df3.format(Double.valueOf(tx_liquidacao + tx_negociacao));
                     pctEmolumentos2.setText(tempPctEmolumentos);
+
+                    TextView val_iss = (TextView) findViewById(R.id.iss2);
+                    Double tempIss = Iss(valPapelAdquirido, quantidade);
+                    String str_val_iss = df3.format(tempIss);
+                    val_iss.setText(str_val_iss);
+
+                    TextView val_ir2 = (TextView) findViewById(R.id.impostoDeRenda2);
+                    Double tempIr2 = Iss(valPapelAdquirido, quantidade);
+                    String str_val_ir2 = df3.format(tempIr2);
+                    val_ir2.setText(str_val_ir2);
 
                     //TODO Criar e chamar os cálculos das custas.
 
@@ -254,7 +281,55 @@ public class ValorMinParaVendaSemPerdas extends AppCompatActivity {
         return calc_tx_negociacao;
     }
 
+    public Double Iss(Double valPapelCalcular, Integer quantidade){
 
+        if(valPapelCalcular != null && quantidade != null) {
+
+            if (quantidade >= 1) {
+                CheckBox cb_Iss2 = findViewById(R.id.cbIss2);
+                if (cb_Iss2.isChecked()) {
+                    issCobrado = false;
+                    EditText pct_Iss2 = findViewById(R.id.pctIss2);
+                    double db_pct_Iss2 = Double.parseDouble(pct_Iss2.getText().toString());
+                    iss = db_pct_Iss2;
+                }
+
+                if (issCobrado || iss == 0 || valPapelCalcular == 0) {
+                    calc_iss = iss;
+                    return calc_iss;
+                }
+                else {
+                    calc_iss = Porcentagem((valPapelCalcular*quantidade), iss);
+                    return calc_iss;
+                }
+            }
+        }
+        return calc_iss;
+    }
+
+    public Double Ir(Double valPapelCalcular, Integer quantidade){
+
+        if(valPapelCalcular != null && quantidade != null) {
+
+            if (quantidade >= 1) {
+                CheckBox cb_Ir2 = findViewById(R.id.cbIr2);
+                if (cb_Ir2.isChecked()) {
+                    EditText pct_Ir2 = findViewById(R.id.pctIr2);
+                    double db_pct_Ir2 = Double.parseDouble(pct_Ir2.getText().toString());
+                    ir_compra = db_pct_Ir2;
+                }
+                if (ir_compra == 0 || valPapelCalcular == 0) {
+                    calc_ir_compra = ir_compra;
+                    return calc_ir_compra;
+                }
+                else {
+                    calc_ir_compra = Porcentagem((valPapelCalcular*quantidade), ir_compra);
+                    return calc_ir_compra;
+                }
+            }
+        }
+        return calc_ir_compra;
+    }
 
 
     public double valMinSemPerdas(double valPapelAdquirido, int quantidade){
