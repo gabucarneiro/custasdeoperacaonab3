@@ -7,8 +7,11 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.CheckBox;
 import android.widget.EditText;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import org.w3c.dom.Text;
 
 import java.text.DecimalFormat;
 
@@ -170,8 +173,23 @@ public class ValorMinParaVendaSemPerdas extends AppCompatActivity {
                     TextView tv_valVendaDoPapel = (TextView) findViewById(R.id.valVendaDoPapel2);
                     double temp_CustasCompra = tempCorretagemCompra+tempCustodiaCompra+tempTxLiquidacaoCompra+tempTxNegociacaoCompra+tempIssCompra+tempIr2Compra;
                     double temp_CustasVenda = tempCorretagemVenda+tempCustodiaVenda+tempTxLiquidacaoVenda+tempTxNegociacaoVenda+tempIssVenda+tempIr2Venda;
-                    tv_valCompraDoPapel.setText(String.valueOf((valPapelAdquirido * quantidade)+temp_CustasCompra));
-                    tv_valVendaDoPapel.setText(String.valueOf((valPretendidoVenda * quantidade)+temp_CustasVenda));
+                    tv_valCompraDoPapel.setText(df2.format((valPapelAdquirido * quantidade)+temp_CustasCompra));
+                    tv_valVendaDoPapel.setText(df2.format((valPretendidoVenda * quantidade)-temp_CustasVenda));
+
+                    TextView resulCalcVendaLiquido = (TextView) findViewById(R.id.resultVendaLiquido);
+                    double calcVendaLiquido = calc_Venda_Liquido(valPapelAdquirido, quantidade, valPretendidoVenda);
+                    String str_venda_Liquido = df2.format(calcVendaLiquido);
+                    resulCalcVendaLiquido.setText(str_venda_Liquido);
+
+                    //TODO Dar continuidade ao cálculo de venda mínima
+
+                    try {
+                        String str_valMinVenda = df2.format(valMinVenda(valPapelAdquirido, quantidade, valPretendidoVenda));
+                        Toaster(str_valMinVenda);
+                    }
+                    catch (Exception e){
+                        Toaster("Erro para definir valor mínimo!");
+                    }
 
                 }
                 catch (Exception e) {
@@ -342,12 +360,99 @@ public class ValorMinParaVendaSemPerdas extends AppCompatActivity {
     }
 
 
-    public double valMinSemPerdas(double valPapelAdquirido, int quantidade){
-        double totalSum = valPapelAdquirido * quantidade;
-        totalSum -= totalSum - corretagem - tx_liquidacao - tx_negociacao;
+    public double calc_Venda_Liquido(double valPapelAdquirido, int quantidade, double valPretendidoVenda){
 
-        double valMinSemPerdas=0.0;
-        return valMinSemPerdas;
+        Double tempCorretagemCompra = Corretagem(valPapelAdquirido, quantidade);
+        Double tempCorretagemVenda = Corretagem(valPretendidoVenda, quantidade);
+
+        Double tempCustodiaCompra = Custodia(valPapelAdquirido, quantidade);
+        Double tempCustodiaVenda = Custodia(valPretendidoVenda, quantidade);
+
+        Double tempTxLiquidacaoCompra = Liquidacao(valPapelAdquirido, quantidade);
+        Double tempTxLiquidacaoVenda = Liquidacao(valPretendidoVenda, quantidade);
+
+        Double tempTxNegociacaoCompra = Negociacao(valPapelAdquirido, quantidade);
+        Double tempTxNegociacaoVenda = Negociacao(valPretendidoVenda, quantidade);
+
+        Double tempIssCompra = Iss(valPapelAdquirido, quantidade);
+        Double tempIssVenda = Iss(valPretendidoVenda, quantidade);
+
+        Double tempIr2Compra = Ir(valPapelAdquirido, quantidade);
+        Double tempIr2Venda = Ir(valPretendidoVenda, quantidade);
+
+
+        double custasCompra = tempCorretagemCompra + tempCustodiaCompra + tempTxLiquidacaoCompra + tempTxNegociacaoCompra + tempIssCompra + tempIr2Compra;
+        double custasVenda = tempCorretagemVenda + tempCustodiaVenda + tempTxLiquidacaoVenda + tempTxNegociacaoVenda + tempIssVenda + tempIr2Venda;
+        Double totalCustas = (valPapelAdquirido * quantidade) + custasCompra + custasVenda;
+
+
+        //TODO Excluir views adicionadas dinamicamente para teste
+        /*VIEWS ADICIONADAS DINAMICAMENTE PARA TESTE
+        LinearLayout LL_SaldoVendaLiquido = findViewById(R.id.LLSaldoVendaLiquido);
+
+        TextView TV_LLSaldoVendaLiquido = new TextView(this);
+        TextView TV_custasCompra = new TextView(this);
+        TextView TV_custasVenda = new TextView(this);
+        TextView TV_LLCompraComCustas = new TextView(this);
+
+        TV_LLSaldoVendaLiquido.setText(String.valueOf((valPapelAdquirido*quantidade)+custasCompra));
+        TV_custasCompra.setText(String.valueOf(custasCompra));
+        TV_custasVenda.setText(String.valueOf(custasVenda));
+        TV_LLCompraComCustas.setText(String.valueOf((valPretendidoVenda*quantidade)-custasVenda));
+
+        LL_SaldoVendaLiquido.addView(TV_LLSaldoVendaLiquido);
+        LL_SaldoVendaLiquido.addView(TV_custasCompra);
+        LL_SaldoVendaLiquido.addView(TV_custasVenda);
+        LL_SaldoVendaLiquido.addView(TV_LLCompraComCustas);*/
+
+        Double venda_Liquida = (valPretendidoVenda * quantidade) - totalCustas;
+        return venda_Liquida;
+    }
+
+    public double valMinVenda(double valPapelAdquirido, int quantidade, double valPretendidoVenda){
+        Double tempCorretagemCompra = Corretagem(valPapelAdquirido, quantidade);
+        Double tempCorretagemVenda = Corretagem(valPretendidoVenda, quantidade);
+
+        Double tempCustodiaCompra = Custodia(valPapelAdquirido, quantidade);
+        Double tempCustodiaVenda = Custodia(valPretendidoVenda, quantidade);
+
+        Double tempTxLiquidacaoCompra = Liquidacao(valPapelAdquirido, quantidade);
+        Double tempTxLiquidacaoVenda = Liquidacao(valPretendidoVenda, quantidade);
+
+        Double tempTxNegociacaoCompra = Negociacao(valPapelAdquirido, quantidade);
+        Double tempTxNegociacaoVenda = Negociacao(valPretendidoVenda, quantidade);
+
+        Double tempIssCompra = Iss(valPapelAdquirido, quantidade);
+        Double tempIssVenda = Iss(valPretendidoVenda, quantidade);
+
+        Double tempIr2Compra = Ir(valPapelAdquirido, quantidade);
+        Double tempIr2Venda = Ir(valPretendidoVenda, quantidade);
+
+        //TODO Refazer o cálculo pois, para todos efeitos, as custas de venda só podem ser calculadas depois.
+
+        double custasCompra = tempCorretagemCompra + tempCustodiaCompra + tempTxLiquidacaoCompra + tempTxNegociacaoCompra + tempIssCompra + tempIr2Compra;
+        double custasVenda = tempCorretagemVenda + tempCustodiaVenda + tempTxLiquidacaoVenda + tempTxNegociacaoVenda + tempIssVenda + tempIr2Venda;
+        Double totalCustas = (valPapelAdquirido * quantidade) + custasCompra + custasVenda;
+
+        Double venda_Liquida = (valPretendidoVenda * quantidade) - totalCustas;
+        if(venda_Liquida<0){
+            while (venda_Liquida<0){
+                valPretendidoVenda += 0.01;
+                venda_Liquida = (valPretendidoVenda * quantidade) - totalCustas;
+            }
+            return valPretendidoVenda;
+        }
+        else if(venda_Liquida>0){
+            while (venda_Liquida>0){
+                valPretendidoVenda -= 0.01;
+                venda_Liquida = (valPretendidoVenda * quantidade) - totalCustas;
+            }
+            valPretendidoVenda += 0.01;
+            return valPretendidoVenda;
+        }
+        else {
+            return valPretendidoVenda;
+        }
     }
 
     public void Toaster(CharSequence text){

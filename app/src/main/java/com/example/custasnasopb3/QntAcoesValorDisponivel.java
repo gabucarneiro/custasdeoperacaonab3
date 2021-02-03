@@ -18,7 +18,7 @@ public class QntAcoesValorDisponivel extends AppCompatActivity {
     // *** OK *** VERIFICAR SE MANTÉM A QUANTIDADE DE AÇÕES CONSIDERANDO O VALOR DISPONÍVEL, CASO NÃO, DIMINUIR A QUANTIDADE EM 1 AÇÃO.
     // *** OK *** Incluir checkbutton para alterar valores, como tx_liquidacao, tx_negociacao, custodia, corretagem, iss
     // quando marcado o checkbutton, inserir um editView para permitir a alteração dos valores.
-    //TODO Checkar os checkbuttons e valores;
+    // *** OK *** Checkar os checkbuttons e valores;
     //TODO Criar Checkbutton para opção de papel fracionário - Fazendo divisões por 100, a sobra é
     // fracionária. Interessante deixar o usuário decidir, se for fracionário, divide a quantidade
     // por 99 e multiplica a tarifa de corretagem. Se não for, divide por 100 e elimina o resto,
