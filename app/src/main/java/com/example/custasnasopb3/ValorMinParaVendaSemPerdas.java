@@ -121,28 +121,33 @@ public class ValorMinParaVendaSemPerdas extends AppCompatActivity {
 
 
                     TextView tvCorretagem = (TextView) findViewById(R.id.corretagem2);
-                    Double tempCorretagem = Corretagem(valPapelAdquirido, quantidade);
-                    String calculo_Corretagem = String.valueOf(tempCorretagem);
+                    Double tempCorretagemCompra = Corretagem(valPapelAdquirido, quantidade);
+                    Double tempCorretagemVenda = Corretagem(valPretendidoVenda, quantidade);
+                    String calculo_Corretagem = String.valueOf(tempCorretagemCompra);
                     tvCorretagem.setText(calculo_Corretagem);
 
                     TextView val_Custodia = (TextView) findViewById(R.id.custodia2);
-                    Double tempCustodia = Custodia(valPapelAdquirido, quantidade);
-                    String str_val_Custodia = df2.format(tempCustodia);
+                    Double tempCustodiaCompra = Custodia(valPapelAdquirido, quantidade);
+                    Double tempCustodiaVenda = Custodia(valPretendidoVenda, quantidade);
+                    String str_val_Custodia = df2.format(tempCustodiaCompra);
                     val_Custodia.setText(str_val_Custodia);
 
                     TextView val_tx_liquidacao = (TextView) findViewById(R.id.tax_liquidacao2);
-                    Double tempTxLiquidacao = Liquidacao(valPapelAdquirido, quantidade);
-                    String str_val_tx_liquidacao = df3.format(tempTxLiquidacao);
+                    Double tempTxLiquidacaoCompra = Liquidacao(valPapelAdquirido, quantidade);
+                    Double tempTxLiquidacaoVenda = Liquidacao(valPretendidoVenda, quantidade);
+                    String str_val_tx_liquidacao = df3.format(tempTxLiquidacaoCompra);
                     val_tx_liquidacao.setText(str_val_tx_liquidacao);
 
                     TextView val_tx_negociacao = (TextView) findViewById(R.id.tax_negociacao2);
-                    Double tempTxNegociacao = Negociacao(valPapelAdquirido, quantidade);
-                    String str_val_tx_negociacao = df3.format(tempTxNegociacao);
+                    Double tempTxNegociacaoCompra = Negociacao(valPapelAdquirido, quantidade);
+                    Double tempTxNegociacaoVenda = Negociacao(valPretendidoVenda, quantidade);
+                    String str_val_tx_negociacao = df3.format(tempTxNegociacaoCompra);
                     val_tx_negociacao.setText(str_val_tx_negociacao);
 
                     TextView val_emolumentos = (TextView) findViewById(R.id.emolumentos2);
-                    Double tempEmolumentos = tempTxLiquidacao + tempTxNegociacao;
-                    String str_val_emolumentos = df4.format(tempEmolumentos);
+                    Double tempEmolumentosCompra = tempTxLiquidacaoCompra + tempTxNegociacaoCompra;
+                    Double tempEmolumentosVenda = tempTxLiquidacaoVenda + tempTxNegociacaoVenda;
+                    String str_val_emolumentos = df4.format(tempEmolumentosCompra);
                     val_emolumentos.setText(str_val_emolumentos);
 
                     TextView pctEmolumentos2 = (TextView) findViewById(R.id.pctEmolumentos2);
@@ -150,19 +155,23 @@ public class ValorMinParaVendaSemPerdas extends AppCompatActivity {
                     pctEmolumentos2.setText(tempPctEmolumentos);
 
                     TextView val_iss = (TextView) findViewById(R.id.iss2);
-                    Double tempIss = Iss(valPapelAdquirido, quantidade);
-                    String str_val_iss = df3.format(tempIss);
+                    Double tempIssCompra = Iss(valPapelAdquirido, quantidade);
+                    Double tempIssVenda = Iss(valPretendidoVenda, quantidade);
+                    String str_val_iss = df3.format(tempIssCompra);
                     val_iss.setText(str_val_iss);
 
                     TextView val_ir2 = (TextView) findViewById(R.id.impostoDeRenda2);
-                    Double tempIr2 = Iss(valPapelAdquirido, quantidade);
-                    String str_val_ir2 = df3.format(tempIr2);
+                    Double tempIr2Compra = Ir(valPapelAdquirido, quantidade);
+                    Double tempIr2Venda = Ir(valPretendidoVenda, quantidade);
+                    String str_val_ir2 = df3.format(tempIr2Compra);
                     val_ir2.setText(str_val_ir2);
 
-                    //TODO Criar e chamar os cálculos das custas.
-
                     TextView tv_valCompraDoPapel = (TextView) findViewById(R.id.valCompraDoPapel2);
-                    tv_valCompraDoPapel.setText(String.valueOf((valPapelAdquirido * quantidade)+tempCorretagem+tempCustodia+tempTxLiquidacao+tempTxNegociacao));
+                    TextView tv_valVendaDoPapel = (TextView) findViewById(R.id.valVendaDoPapel2);
+                    double temp_CustasCompra = tempCorretagemCompra+tempCustodiaCompra+tempTxLiquidacaoCompra+tempTxNegociacaoCompra+tempIssCompra+tempIr2Compra;
+                    double temp_CustasVenda = tempCorretagemVenda+tempCustodiaVenda+tempTxLiquidacaoVenda+tempTxNegociacaoVenda+tempIssVenda+tempIr2Venda;
+                    tv_valCompraDoPapel.setText(String.valueOf((valPapelAdquirido * quantidade)+temp_CustasCompra));
+                    tv_valVendaDoPapel.setText(String.valueOf((valPretendidoVenda * quantidade)+temp_CustasVenda));
 
                 }
                 catch (Exception e) {
@@ -179,6 +188,7 @@ public class ValorMinParaVendaSemPerdas extends AppCompatActivity {
     }
 
     //TODO Dar continuidade à separação dos cálculos das custas/emolumentos/taxas.
+    //TODO Verificar a possibilidade de ativar o cálculo das funções a medida que os checkbuttons são ativados - onClickListener();
 
     public Double Corretagem(Double valPapelCalcular, Integer quantidade){
 
