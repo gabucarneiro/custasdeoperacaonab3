@@ -181,15 +181,20 @@ public class ValorMinParaVendaSemPerdas extends AppCompatActivity {
                     String str_venda_Liquido = df2.format(calcVendaLiquido);
                     resulCalcVendaLiquido.setText(str_venda_Liquido);
 
-                    //TODO Dar continuidade ao cálculo de venda mínima
+                    TextView TV_valMinVendaSemPerdas = (TextView) findViewById(R.id.valMinVendaSemPerdas);
+                    TV_valMinVendaSemPerdas.setText(df2.format(valMinVenda(valPapelAdquirido, quantidade)));
 
+
+                    /*
+                    //TODO Excluir try-catch com Toaster após conclusão de testes.
+                    TRY-CATCH PARA TESTES
                     try {
-                        String str_valMinVenda = df2.format(valMinVenda(valPapelAdquirido, quantidade, valPretendidoVenda));
+                        String str_valMinVenda = df2.format(valMinVenda(valPapelAdquirido, quantidade));
                         Toaster(str_valMinVenda);
                     }
                     catch (Exception e){
                         Toaster("Erro para definir valor mínimo!");
-                    }
+                    }*/
 
                 }
                 catch (Exception e) {
@@ -205,7 +210,6 @@ public class ValorMinParaVendaSemPerdas extends AppCompatActivity {
         }
     }
 
-    //TODO Dar continuidade à separação dos cálculos das custas/emolumentos/taxas.
     //TODO Verificar a possibilidade de ativar o cálculo das funções a medida que os checkbuttons são ativados - onClickListener();
 
     public Double Corretagem(Double valPapelCalcular, Integer quantidade){
@@ -409,50 +413,38 @@ public class ValorMinParaVendaSemPerdas extends AppCompatActivity {
         return venda_Liquida;
     }
 
-    public double valMinVenda(double valPapelAdquirido, int quantidade, double valPretendidoVenda){
+    public double valMinVenda(double valPapelAdquirido, int quantidade){
+
+        double temp_valMinVenda = valPapelAdquirido+0.01;
+
         Double tempCorretagemCompra = Corretagem(valPapelAdquirido, quantidade);
-        Double tempCorretagemVenda = Corretagem(valPretendidoVenda, quantidade);
+        Double tempCorretagemVenda = Corretagem(temp_valMinVenda, quantidade);
 
         Double tempCustodiaCompra = Custodia(valPapelAdquirido, quantidade);
-        Double tempCustodiaVenda = Custodia(valPretendidoVenda, quantidade);
+        Double tempCustodiaVenda = Custodia(temp_valMinVenda, quantidade);
 
         Double tempTxLiquidacaoCompra = Liquidacao(valPapelAdquirido, quantidade);
-        Double tempTxLiquidacaoVenda = Liquidacao(valPretendidoVenda, quantidade);
+        Double tempTxLiquidacaoVenda = Liquidacao(temp_valMinVenda, quantidade);
 
         Double tempTxNegociacaoCompra = Negociacao(valPapelAdquirido, quantidade);
-        Double tempTxNegociacaoVenda = Negociacao(valPretendidoVenda, quantidade);
+        Double tempTxNegociacaoVenda = Negociacao(temp_valMinVenda, quantidade);
 
         Double tempIssCompra = Iss(valPapelAdquirido, quantidade);
-        Double tempIssVenda = Iss(valPretendidoVenda, quantidade);
+        Double tempIssVenda = Iss(temp_valMinVenda, quantidade);
 
         Double tempIr2Compra = Ir(valPapelAdquirido, quantidade);
-        Double tempIr2Venda = Ir(valPretendidoVenda, quantidade);
+        Double tempIr2Venda = Ir(temp_valMinVenda, quantidade);
 
-        //TODO Refazer o cálculo pois, para todos efeitos, as custas de venda só podem ser calculadas depois.
-
+        double temp_custasVenda = tempCorretagemVenda + tempCustodiaVenda + tempTxLiquidacaoVenda + tempTxNegociacaoVenda + tempIssVenda + tempIr2Venda;
         double custasCompra = tempCorretagemCompra + tempCustodiaCompra + tempTxLiquidacaoCompra + tempTxNegociacaoCompra + tempIssCompra + tempIr2Compra;
-        double custasVenda = tempCorretagemVenda + tempCustodiaVenda + tempTxLiquidacaoVenda + tempTxNegociacaoVenda + tempIssVenda + tempIr2Venda;
-        Double totalCustas = (valPapelAdquirido * quantidade) + custasCompra + custasVenda;
 
-        Double venda_Liquida = (valPretendidoVenda * quantidade) - totalCustas;
-        if(venda_Liquida<0){
-            while (venda_Liquida<0){
-                valPretendidoVenda += 0.01;
-                venda_Liquida = (valPretendidoVenda * quantidade) - totalCustas;
-            }
-            return valPretendidoVenda;
+        double resul_vendaLiquido = ((temp_valMinVenda * quantidade)-temp_custasVenda)-((valPapelAdquirido * quantidade)+custasCompra);
+
+        while (resul_vendaLiquido<0){
+            temp_valMinVenda +=0.01;
+            resul_vendaLiquido = ((temp_valMinVenda * quantidade)-temp_custasVenda)-((valPapelAdquirido * quantidade)+custasCompra);
         }
-        else if(venda_Liquida>0){
-            while (venda_Liquida>0){
-                valPretendidoVenda -= 0.01;
-                venda_Liquida = (valPretendidoVenda * quantidade) - totalCustas;
-            }
-            valPretendidoVenda += 0.01;
-            return valPretendidoVenda;
-        }
-        else {
-            return valPretendidoVenda;
-        }
+        return temp_valMinVenda;
     }
 
     public void Toaster(CharSequence text){

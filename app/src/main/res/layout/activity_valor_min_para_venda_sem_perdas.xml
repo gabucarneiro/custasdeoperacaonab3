@@ -168,6 +168,42 @@
                 </TextView>
             </LinearLayout>
         </LinearLayout>
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+            <TextView
+                style="@style/Conteudo"
+                android:text="Valor mínimo para venda sem perdas: R$ "
+                android:textSize="15dp">
+            </TextView>
+            <TextView
+                android:id="@+id/valMinVendaSemPerdas"
+                style="@style/Conteudo"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:hint="0,00"
+                android:inputType="numberDecimal"
+                android:textSize="15dp">
+            </TextView>
+        </LinearLayout>
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+            <TextView
+                style="@style/Conteudo"
+                android:text="Variação em %: ">
+            </TextView>
+            <TextView
+                android:id="@+id/valVarMinEmPercent"
+                style="@style/Conteudo"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:hint="0,00"
+                android:inputType="numberDecimal">
+            </TextView>
+        </LinearLayout>
 
         <!--  ***** CUSTOS OPERACIONAIS *****  -->
 
@@ -225,7 +261,7 @@
                         android:id="@+id/pctCorretagem2"
                         style="@style/Conteudo"
                         android:textSize="10dp"
-                        android:hint="0,00"
+                        android:hint="R$0,00"
                         android:inputType="numberDecimal"
                         android:contextClickable="false">
                     </EditText>
@@ -245,14 +281,14 @@
                         style="@style/Conteudo"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:hint="0,00">
+                        android:hint="R$0,00">
                     </TextView>
                     <EditText
                         android:layout_marginLeft="10dp"
                         android:id="@+id/pctCustodia2"
                         style="@style/Conteudo"
                         android:textSize="10dp"
-                        android:hint="0,00"
+                        android:hint="R$0,00"
                         android:inputType="numberDecimal"
                         android:clickable="false">
                     </EditText>
@@ -281,7 +317,7 @@
                         style="@style/Conteudo"
                         android:layout_width="wrap_content"
                         android:layout_marginLeft="10dp"
-                        android:hint="0,00"
+                        android:hint="0,00%"
                         android:inputType="numberDecimal"
                         android:textSize="10dp"></TextView>
                 </LinearLayout>
@@ -308,7 +344,7 @@
                         android:id="@+id/pctLiquidacao2"
                         style="@style/Conteudo"
                         android:textSize="10dp"
-                        android:hint="0,00"
+                        android:hint="0,00%"
                         android:inputType="numberDecimal">
                     </EditText>
                 </LinearLayout>
@@ -335,7 +371,7 @@
                         android:id="@+id/pctNegociacao2"
                         style="@style/Conteudo"
                         android:textSize="10dp"
-                        android:hint="0,00"
+                        android:hint="0,00%"
                         android:inputType="numberDecimal">
                     </EditText>
                 </LinearLayout>
@@ -361,7 +397,7 @@
                         android:id="@+id/pctIss2"
                         style="@style/Conteudo"
                         android:textSize="10dp"
-                        android:hint="0,00"
+                        android:hint="0,00%"
                         android:inputType="numberDecimal">
                     </EditText>
                 </LinearLayout>
@@ -385,7 +421,7 @@
                         android:id="@+id/pctIr2"
                         style="@style/Conteudo"
                         android:textSize="10dp"
-                        android:hint="0,00"
+                        android:hint="0,00%"
                         android:inputType="numberDecimal">
                     </EditText>
                 </LinearLayout>
@@ -446,45 +482,6 @@
                     </CheckBox>
                 </LinearLayout>
             </LinearLayout>
-        </LinearLayout>
-
-
-        <LinearLayout
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal">
-            <TextView
-                style="@style/Conteudo"
-                android:text="Valor mínimo para venda sem perdas: R$ "
-                android:textSize="15dp">
-            </TextView>
-            <TextView
-                android:id="@+id/valMinVendaSemPerdas"
-                style="@style/Conteudo"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:hint="0,00"
-                android:inputType="numberDecimal"
-                android:textSize="15dp">
-            </TextView>
-
-        </LinearLayout>
-        <LinearLayout
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal">
-            <TextView
-                style="@style/Conteudo"
-                android:text="Variação em %: ">
-            </TextView>
-            <TextView
-                android:id="@+id/valVarMinEmPercent"
-                style="@style/Conteudo"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:hint="0,00"
-                android:inputType="numberDecimal">
-            </TextView>
         </LinearLayout>
     </LinearLayout>
 
