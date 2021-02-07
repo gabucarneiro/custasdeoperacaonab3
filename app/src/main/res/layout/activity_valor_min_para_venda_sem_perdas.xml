@@ -96,48 +96,66 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="vertical">
-            <TextView
-                style="@style/Conteudo"
-                android:text="Valor utilizado na compra do papel:">
-            </TextView>
+            android:orientation="horizontal">
             <LinearLayout
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:orientation="horizontal">
+                android:orientation="vertical"
+                android:layout_weight="1">
                 <TextView
                     style="@style/Conteudo"
-                    android:layout_marginLeft="15dp"
-                    android:text="R$">
+                    android:text="Valor de compra com custas:"
+                    android:gravity="center">
                 </TextView>
-                <TextView
-                    android:id="@+id/valCompraDoPapel2"
-                    style="@style/Conteudo"
+                <LinearLayout
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:hint="0,00">
-                </TextView>
+                    android:orientation="horizontal"
+                    android:layout_gravity="center">
+                    <TextView
+                        style="@style/Conteudo"
+                        android:layout_marginLeft="15dp"
+                        android:text="R$">
+                    </TextView>
+                    <TextView
+                        android:id="@+id/valCompraDoPapel2"
+                        style="@style/Conteudo"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:hint="0,00"
+                        android:textColor="@color/darkred">
+                    </TextView>
+                </LinearLayout>
             </LinearLayout>
-            <TextView
-                style="@style/Conteudo"
-                android:text="Valor utilizado na venda do papel:">
-            </TextView>
             <LinearLayout
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:orientation="horizontal">
+                android:orientation="vertical"
+                android:layout_weight="1">
                 <TextView
                     style="@style/Conteudo"
-                    android:layout_marginLeft="15dp"
-                    android:text="R$">
+                    android:text="Valor de venda menos custas:"
+                    android:gravity="center">
                 </TextView>
-                <TextView
-                    android:id="@+id/valVendaDoPapel2"
-                    style="@style/Conteudo"
+                <LinearLayout
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:hint="0,00">
-                </TextView>
+                    android:orientation="horizontal"
+                    android:layout_gravity="center">
+                    <TextView
+                        style="@style/Conteudo"
+                        android:layout_marginLeft="15dp"
+                        android:text="R$">
+                    </TextView>
+                    <TextView
+                        android:id="@+id/valVendaDoPapel2"
+                        style="@style/Conteudo"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:hint="0,00"
+                        android:textColor="@color/darkgreen">
+                    </TextView>
+                </LinearLayout>
             </LinearLayout>
         </LinearLayout>
 
@@ -148,12 +166,14 @@
             android:id="@+id/LLSaldoVendaLiquido">
             <TextView
                 style="@style/Conteudo"
-                android:text="Saldo pós venda do papel:">
+                android:text="Saldo pós venda do papel:"
+                android:layout_gravity="center">
             </TextView>
             <LinearLayout
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:orientation="horizontal">
+                android:orientation="horizontal"
+                android:layout_gravity="center">
                 <TextView
                     style="@style/Conteudo"
                     android:layout_marginLeft="15dp"
@@ -171,7 +191,8 @@
         <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:orientation="horizontal">
+            android:orientation="horizontal"
+            android:layout_gravity="center">
             <TextView
                 style="@style/Conteudo"
                 android:text="Valor mínimo para venda sem perdas: R$ "
@@ -187,23 +208,7 @@
                 android:textSize="15dp">
             </TextView>
         </LinearLayout>
-        <LinearLayout
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal">
-            <TextView
-                style="@style/Conteudo"
-                android:text="Variação em %: ">
-            </TextView>
-            <TextView
-                android:id="@+id/valVarMinEmPercent"
-                style="@style/Conteudo"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:hint="0,00"
-                android:inputType="numberDecimal">
-            </TextView>
-        </LinearLayout>
+
 
         <!--  ***** CUSTOS OPERACIONAIS *****  -->
 

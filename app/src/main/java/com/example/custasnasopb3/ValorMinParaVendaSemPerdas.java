@@ -1,6 +1,7 @@
 package com.example.custasnasopb3;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.content.ContextCompat;
 
 import android.content.Context;
 import android.os.Bundle;
@@ -115,8 +116,11 @@ public class ValorMinParaVendaSemPerdas extends AppCompatActivity {
             EditText et_valPapelAdquirido = (EditText) findViewById(R.id.valPapelAdquirido);
             EditText et_quantidade = (EditText) findViewById(R.id.quantidade2);
             EditText et_valPretendidoVenda = (EditText) findViewById(R.id.valPretendidoVenda);
+            Double zero = 0.0;
 
-            if (et_valPapelAdquirido != null && et_quantidade != null && et_valPretendidoVenda != null) {
+            if (et_valPapelAdquirido != null && !et_valPapelAdquirido.equals(zero)
+                    && et_quantidade != null && !et_quantidade.equals(zero)
+                    && et_valPretendidoVenda != null && !et_valPretendidoVenda.equals(zero)) {
                 try {
                     valPapelAdquirido = Double.parseDouble(et_valPapelAdquirido.getText().toString());
                     quantidade = Integer.parseInt(et_quantidade.getText().toString());
@@ -178,6 +182,16 @@ public class ValorMinParaVendaSemPerdas extends AppCompatActivity {
 
                     TextView resulCalcVendaLiquido = (TextView) findViewById(R.id.resultVendaLiquido);
                     double calcVendaLiquido = calc_Venda_Liquido(valPapelAdquirido, quantidade, valPretendidoVenda);
+                    try {
+                        if (calcVendaLiquido>=0){
+                            resulCalcVendaLiquido.setTextColor(ContextCompat.getColor(this, R.color.darkgreen));
+                        }
+                        else{
+                            resulCalcVendaLiquido.setTextColor(ContextCompat.getColor(this, R.color.darkred));
+                        }
+                    }
+                    catch (Exception e){Toaster("Cor não funcionando");}
+
                     String str_venda_Liquido = df2.format(calcVendaLiquido);
                     resulCalcVendaLiquido.setText(str_venda_Liquido);
 
