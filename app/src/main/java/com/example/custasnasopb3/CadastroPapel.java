@@ -20,6 +20,7 @@ public class CadastroPapel extends AppCompatActivity {
     private int idPapel=0;
     private String cpNomePapel;
     private Double cpValor;
+    private int cpQuantidade;
 
     String idaux = "";
     int ID_PAPEL;
@@ -28,7 +29,7 @@ public class CadastroPapel extends AppCompatActivity {
     ArrayList<Papel> papelList = new ArrayList<>();
 
     EditText et_nomePapel, et_valCadastroPapel;
-    EditText et_IdPapel;
+    EditText et_IdPapel, et_QuantidadePapel;
 
     TextView resumoBD;
 
@@ -53,16 +54,17 @@ public class CadastroPapel extends AppCompatActivity {
 
         et_nomePapel = findViewById(R.id.nomePapel);
         et_valCadastroPapel = findViewById(R.id.valCadastroPapel);
+        et_QuantidadePapel = findViewById(R.id.valQuantidadePapel);
 
         //TODO *** DADOS ABAIXO SERÃO EXCLUÍDOS - AINDA EM TESTE
-        papelList.add(new Papel("CIEL3F", 8.5));
-        papelList.add(new Papel("ABEV3F", 16.3));
-        papelList.add(new Papel("EMBR3F", 16.9));
+        papelList.add(new Papel(00,"CIEL3F", 8.5, 51));
+        papelList.add(new Papel(01,"ABEV3F", 16.3,81));
+        papelList.add(new Papel(02,"EMBR3F", 16.9,98));
         //papelList.add(new Papel("PETR3F", 14.78));
-        papelList.add(new Papel("BBDC4F", 21.65));
-        papelList.add(new Papel("CVCB3F", 16.22));
-        papelList.add(new Papel("DMMO3F", 8.1));
-        papelList.add(new Papel("COGN3", 6.72));
+        papelList.add(new Papel(03,"BBDC4F", 21.65,48));
+        papelList.add(new Papel(04,"CVCB3F", 16.22, 99));
+        papelList.add(new Papel(05,"DMMO3F", 8.1,10));
+        papelList.add(new Papel(06,"COGN3", 6.72,300));
         Listar(papelList);
         //*** DADOS ACIMA SERÃO EXCLUÍDOS - AINDA EM TESTE
     }
@@ -70,19 +72,23 @@ public class CadastroPapel extends AppCompatActivity {
     //TODO *** FUNÇÃO QUE POSSIVELMENTE SERÁ EXCLUÍDA - AINDA EM ANÁLISE
     public void cadastrarPapel (View view){
         try{
+            idPapel = Integer.parseInt(et_IdPapel.getText().toString());
+
             cpNomePapel = et_nomePapel.getText().toString();
 
             cpValor = Double.parseDouble(et_valCadastroPapel.getText().toString());
 
-            if(cpValor!= null && !(cpValor<= 0) && !(cpNomePapel.equals(""))){
+            cpQuantidade = Integer.parseInt(et_QuantidadePapel.getText().toString());
 
-                papel = new Papel(cpNomePapel, cpValor);
+            if(cpValor!= null && !(cpValor<= 0) && !(cpNomePapel.equals("")) && !(cpQuantidade<=0)){
+                idPapel = papelList.size();
+                papel = new Papel(idPapel, cpNomePapel, cpValor, cpQuantidade);
                 papelList.add(papel);
 
                 TextView resumoCadastrarPapel = (TextView) findViewById(R.id.resumoCadastrPapel);
                 resumoCadastrarPapel.setTextColor(ContextCompat.getColor(this, black));
 
-                resumoCadastrarPapel.setText(papel.toString());
+                resumoCadastrarPapel.setText(papel.toString3());
 
                 CharSequence texto = "Cadastro realizado!";
                 int duracao = Toast.LENGTH_SHORT;
@@ -184,6 +190,8 @@ public class CadastroPapel extends AppCompatActivity {
             sbListaPapel.append(papel.get(i).getNomePapel());
             sbListaPapel.append(" / Valor: R$");
             sbListaPapel.append(papel.get(i).getValor());
+            sbListaPapel.append(" / Quantidade: ");
+            sbListaPapel.append(papel.get(i).getQuantidade());
             sbListaPapel.append("\n");
             sbListaPapel.append("\n");
         }
@@ -196,6 +204,7 @@ public class CadastroPapel extends AppCompatActivity {
         et_IdPapel.setText("");
         et_nomePapel.setText("");
         et_valCadastroPapel.setText("");
+        et_QuantidadePapel.setText("");
     }
 
 
@@ -241,6 +250,7 @@ public class CadastroPapel extends AppCompatActivity {
                     //et_IdPapel.setText(dbh.getPapel(ID_PAPEL).getId());
                     et_nomePapel.setText(dbh.getPapel(ID_PAPEL).getNomePapel());
                     et_valCadastroPapel.setText(dbh.getPapel(ID_PAPEL).getValor().toString());
+                    et_QuantidadePapel.setText(String.valueOf(dbh.getPapel(ID_PAPEL).getQuantidade()));
                     //Toaster("Sucesso!");
                     dbh.close();
                 }
@@ -266,19 +276,22 @@ public class CadastroPapel extends AppCompatActivity {
             long longUltimo = dbh.contador();
             String nomePapel = et_nomePapel.getText().toString();
             Double valorPapel=0.0;
+            Integer quantidade=0;
             try {
                 valorPapel = Double.parseDouble(et_valCadastroPapel.getText().toString());
+                quantidade = Integer.parseInt(et_QuantidadePapel.getText().toString());
             }
             catch (Exception e){
                 valorPapel=0.0;
+                quantidade = 0;
             }
 
 
             try {
                 int ultimo = Integer.parseInt(String.valueOf(longUltimo));
 
-                if(valorPapel!= null && !(valorPapel<= 0) && !(nomePapel.equals(""))){
-                    papel = new Papel(ultimo, nomePapel, valorPapel);
+                if(valorPapel!= null && !(valorPapel<= 0) && !(nomePapel.equals("")) && !(quantidade<= 0) && quantidade!= null){
+                    papel = new Papel(ultimo, nomePapel, valorPapel, quantidade);
                     dbh.addPapel(papel);
 
                     Toaster(papel.getNomePapel()+ " foi SALVO com sucesso!");
@@ -296,6 +309,10 @@ public class CadastroPapel extends AppCompatActivity {
                         CharSequence texto = "Nome do papel não pode ser nulo";
                         Toaster(texto);
                     }
+                    else if(quantidade <= 0){
+                        CharSequence texto = "Quantidade não pode ser menor ou igual a zero";
+                        Toaster(texto);
+                    }
                 }
             }
             catch(Exception e){
@@ -309,6 +326,10 @@ public class CadastroPapel extends AppCompatActivity {
                 }
                 else if(nomePapel.equals("")){
                     CharSequence texto = "Nome do papel não pode ser nulo";
+                    Toaster(texto);
+                }
+                else if(quantidade <= 0){
+                    CharSequence texto = "Quantidade não pode ser menor ou igual a zero";
                     Toaster(texto);
                 }
             }
@@ -334,9 +355,10 @@ public class CadastroPapel extends AppCompatActivity {
 
                 String nomePapel = et_nomePapel.getText().toString();
                 Double valorPapel = Double.parseDouble(et_valCadastroPapel.getText().toString());
+                Integer quantidade = Integer.parseInt(et_QuantidadePapel.getText().toString());
 
-                if(valorPapel!= null && !(valorPapel<= 0) && !(nomePapel.equals(""))){
-                    papel = new Papel(ultimo, nomePapel, valorPapel);
+                if(valorPapel!= null && !(valorPapel<= 0) && !(nomePapel.equals("")) && !(quantidade<= 0) && quantidade!= null){
+                    papel = new Papel(ultimo, nomePapel, valorPapel, quantidade);
 
                     long encontrado = encontrarPapel();
 
@@ -400,8 +422,8 @@ public class CadastroPapel extends AppCompatActivity {
         for(int i=0; i<contador; i++){
             try{
                 TextView listagem = new TextView(this);
-                papel = dbh.getPapel(i).toString();
-                listagem.setText(dbh.getPapel(i).toString());
+                papel = dbh.getPapel(i).toString3();
+                listagem.setText(dbh.getPapel(i).toString3());
                 resumoView2BD.addView(listagem);
             }catch (Exception e){
                 Toaster("Erro ao listar!");
@@ -433,6 +455,7 @@ public class CadastroPapel extends AppCompatActivity {
                 et_IdPapel.setText("");
                 et_nomePapel.setText("");
                 et_valCadastroPapel.setText("");
+                et_QuantidadePapel.setText("");
 
                 Toaster("Não encontrado");
             }

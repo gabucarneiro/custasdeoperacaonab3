@@ -1,9 +1,11 @@
 package com.example.custasnasopb3;
 
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.ContextCompat;
 
 import android.content.Context;
+import android.content.DialogInterface;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.CheckBox;
@@ -15,6 +17,7 @@ import android.widget.Toast;
 import org.w3c.dom.Text;
 
 import java.text.DecimalFormat;
+import java.util.List;
 
 public class ValorMinParaVendaSemPerdas extends AppCompatActivity {
 
@@ -84,6 +87,8 @@ public class ValorMinParaVendaSemPerdas extends AppCompatActivity {
         pct_Negociacao.setText(String.valueOf(tx_negociacao));
         pct_Iss.setText(String.valueOf(iss));
         pct_Emolumentos.setText(String.valueOf(tx_liquidacao+tx_negociacao));
+
+        //AlertDialogListar();
 
     }
 
@@ -472,5 +477,37 @@ public class ValorMinParaVendaSemPerdas extends AppCompatActivity {
     public double Porcentagem(double valor, double porcentagem){
         Double resultado = (valor*porcentagem)/100;
         return resultado;
+    }
+
+
+    //TODO dar continuidade à criação da função de caixa de diálogo
+    public void AlertDialogListar(){
+        AlertDialog.Builder listaPapeisCadastrados = new AlertDialog.Builder(this);
+        listaPapeisCadastrados.setTitle("Selecione o papel:");
+
+        LinearLayout ll_dinamico = new LinearLayout(this);
+        ll_dinamico.setOrientation(LinearLayout.HORIZONTAL);
+
+        TextView novaTv = new TextView(this);
+        novaTv.setText("Nada não, só mais um teste");
+
+
+        ll_dinamico.addView(novaTv);
+
+        listaPapeisCadastrados.setView(ll_dinamico);
+        listaPapeisCadastrados.setPositiveButton("Selecionar", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                Toaster("Yey!");
+            }
+        });
+        listaPapeisCadastrados.setNegativeButton("Cancelar", new DialogInterface.OnClickListener(){
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+
+            }
+        });
+
+        listaPapeisCadastrados.show();
     }
 }

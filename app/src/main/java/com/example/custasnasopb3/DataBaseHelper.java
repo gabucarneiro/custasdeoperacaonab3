@@ -24,7 +24,7 @@ public class DataBaseHelper extends SQLiteOpenHelper {
     public void onCreate(SQLiteDatabase db) {
         //db.execSQL("DROP TABLE IF EXISTS PAPEL");
         db.execSQL("CREATE TABLE PAPEL (ID INTEGER(3), PAPEL VARCHAR(6) NOT NULL," +
-                "VALOR DOUBLE(10));" );
+                "VALOR DOUBLE(10), QUANTIDADE INTEGER(10))");
 
     }
 
@@ -48,6 +48,22 @@ public class DataBaseHelper extends SQLiteOpenHelper {
         values.put("ID", papel.getId());
         values.put("PAPEL", papel.getNomePapel());
         values.put("VALOR", papel.getValor());
+        values.put("QUANTIDADE", papel.getQuantidade());
+
+        long id = db.insert("PAPEL", null, values);
+
+        db.close();
+        return id;
+    }
+    public long addPapelPlusQnt(Papel papel){
+        SQLiteDatabase db = this.getWritableDatabase();
+
+        ContentValues values = new ContentValues();
+
+        values.put("ID", papel.getId());
+        values.put("PAPEL", papel.getNomePapel());
+        values.put("VALOR", papel.getValor());
+        values.put("QUANTIDADE", papel.getQuantidade());
 
         long id = db.insert("PAPEL", null, values);
 
@@ -67,6 +83,7 @@ public class DataBaseHelper extends SQLiteOpenHelper {
             papel.setId(cursor.getInt(0));
             papel.setNomePapel(cursor.getString(1));
             papel.setValor(cursor.getDouble(2));
+            papel.setQuantidade(cursor.getInt(3));
         }
         /*else{
             papel.setId(0);
@@ -93,6 +110,7 @@ public class DataBaseHelper extends SQLiteOpenHelper {
             papel.setId(cursor.getInt(0));
             papel.setNomePapel(cursor.getString(1));
             papel.setValor(cursor.getDouble(2));
+            papel.setQuantidade(cursor.getInt(3));
         }
         cursor.close();
         db.close();
@@ -110,10 +128,12 @@ public class DataBaseHelper extends SQLiteOpenHelper {
             papel.setId(cursor.getInt(0));
             papel.setNomePapel(cursor.getString(1));
             papel.setValor(cursor.getDouble(2));
+            papel.setQuantidade(cursor.getInt(3));
         }else{
             papel.setId(0);
             papel.setNomePapel("");
             papel.setValor(0.0);
+            papel.setQuantidade(0);
         }
         cursor.close();
         db.close();
@@ -201,6 +221,7 @@ public class DataBaseHelper extends SQLiteOpenHelper {
 
         values.put("PAPEL", papel.getNomePapel());
         values.put("VALOR", papel.getValor());
+        values.put("QUANTIDADE",papel.getQuantidade());
 
         long id = db.update("PAPEL", values, "id = ?", new String[]{String.valueOf(id_papel)});
 
