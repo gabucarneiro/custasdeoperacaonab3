@@ -47,7 +47,7 @@
             </EditText>
         </LinearLayout>
         <LinearLayout
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="horizontal">
             <TextView
@@ -62,6 +62,17 @@
                 android:hint="0"
                 android:inputType="number">
             </EditText>
+            <Button
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:layout_gravity="right"
+                android:text="Buscar"
+                android:textSize="15dp"
+                android:textAllCaps="true"
+                android:onClick="AlertDialogListar"
+                android:layout_weight="2">
+            </Button>
         </LinearLayout>
 
         <LinearLayout

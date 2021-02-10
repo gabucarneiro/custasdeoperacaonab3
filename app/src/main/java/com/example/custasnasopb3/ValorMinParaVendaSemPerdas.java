@@ -4,8 +4,10 @@ import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.ContextCompat;
 
+import android.content.ContentValues;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.CheckBox;
@@ -72,9 +74,9 @@ public class ValorMinParaVendaSemPerdas extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_valor_min_para_venda_sem_perdas);
 
-        EditText et_valPapelAdquirido = (EditText) findViewById(R.id.valPapelAdquirido);
-        EditText et_quantidade = (EditText) findViewById(R.id.quantidade2);
-        EditText et_valPretendidoVenda = (EditText) findViewById(R.id.valPretendidoVenda);
+        EditText et_valPapelAdquirido = findViewById(R.id.valPapelAdquirido);
+        EditText et_quantidade = findViewById(R.id.quantidade2);
+        EditText et_valPretendidoVenda = findViewById(R.id.valPretendidoVenda);
         EditText pct_Corretagem = findViewById(R.id.pctCorretagem2);
         EditText pct_Custodia = findViewById(R.id.pctCustodia2);
         EditText pct_Liquidacao = findViewById(R.id.pctLiquidacao2);
@@ -89,7 +91,7 @@ public class ValorMinParaVendaSemPerdas extends AppCompatActivity {
         pct_Iss.setText(String.valueOf(iss));
         pct_Emolumentos.setText(String.valueOf(tx_liquidacao+tx_negociacao));
 
-        AlertDialogListar();
+        //AlertDialogListar();
 
     }
 
@@ -480,9 +482,31 @@ public class ValorMinParaVendaSemPerdas extends AppCompatActivity {
         return resultado;
     }
 
+    public void AlertDialogListar(View view){
+        DataBaseHelper dbh = new DataBaseHelper(this);
+        long contador = dbh.contador();
+        int contadorInt = (int)contador;
+        //TODO Verificar a possibilidade de fazer >>> int contadorInt = (int)dbh.contador();
 
-    //TODO dar continuidade à criação da função de caixa de diálogo
-    public void AlertDialogListar(){
+        CharSequence arrayPapeis[] = new CharSequence[contadorInt];
+
+        try {
+            for(int i = 0; i<contadorInt; i++){
+                Papel papel;
+                papel = dbh.getPapel(i);
+                String tempNomePapel = String.valueOf(papel.getNomePapel());
+                if (!(tempNomePapel.equals(""))){
+                    arrayPapeis[i] = String.valueOf(papel.getNomePapel());
+                }
+                else{
+                    arrayPapeis[i] = "Empty";
+                }
+            }
+        }
+        catch (Exception e){
+            Toaster("Deu ruim!");
+        }
+
         AlertDialog.Builder listaPapeisCadastrados = new AlertDialog.Builder(this);
         listaPapeisCadastrados.setTitle("Selecione o papel:");
 
@@ -493,40 +517,24 @@ public class ValorMinParaVendaSemPerdas extends AppCompatActivity {
         novaTv.setPadding(25,5,5,5);
         novaTv.setText("Mais um teste");
 
-        /*DataBaseHelper dbh = new DataBaseHelper(this);
-        CadastroPapel cPapel = new CadastroPapel();
-        long contador = dbh.contador();*/
-        String stringArray[] = new String[5]; //(int)contador
-
-        for(int i = 0; i<=stringArray.length; i++){
-            //cPapel.encontrarPapel();
-            Toaster(String.valueOf(i));
-        }
-
-        List<Integer> papelArrayList = new ArrayList<>();
-
-        papelArrayList.add(1);
-        papelArrayList.add(2);
-
-
-
-        listaPapeisCadastrados.setItems(R.array.arrayPapeis, new DialogInterface.OnClickListener() {
+        listaPapeisCadastrados.setItems(arrayPapeis, new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
-                Toaster(String.valueOf(which));
+                EditText et_valPapelAdquirido = findViewById(R.id.valPapelAdquirido);
+                EditText et_quantidade = findViewById(R.id.quantidade2);
+
+                Papel papel;
+                papel = dbh.getPapel(which);
+                et_valPapelAdquirido.setText(String.valueOf(papel.getValor()));
+                et_quantidade.setText(String.valueOf(papel.getQuantidade()));
+                Toaster(papel.getNomePapel());
             }
         });
 
 
-        ll_dinamico.addView(novaTv);
+        /*ll_dinamico.addView(novaTv);
+        listaPapeisCadastrados.setView(ll_dinamico);*/
 
-        listaPapeisCadastrados.setView(ll_dinamico);
-        listaPapeisCadastrados.setPositiveButton("Selecionar", new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-                Toaster("Yey!");
-            }
-        });
         listaPapeisCadastrados.setNegativeButton("Cancelar", new DialogInterface.OnClickListener(){
             @Override
             public void onClick(DialogInterface dialog, int which) {

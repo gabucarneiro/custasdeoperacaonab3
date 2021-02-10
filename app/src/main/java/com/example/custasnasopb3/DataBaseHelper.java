@@ -55,21 +55,6 @@ public class DataBaseHelper extends SQLiteOpenHelper {
         db.close();
         return id;
     }
-    public long addPapelPlusQnt(Papel papel){
-        SQLiteDatabase db = this.getWritableDatabase();
-
-        ContentValues values = new ContentValues();
-
-        values.put("ID", papel.getId());
-        values.put("PAPEL", papel.getNomePapel());
-        values.put("VALOR", papel.getValor());
-        values.put("QUANTIDADE", papel.getQuantidade());
-
-        long id = db.insert("PAPEL", null, values);
-
-        db.close();
-        return id;
-    }
 
     public Papel excludePapel(int id){
         SQLiteDatabase db = this.getWritableDatabase();
