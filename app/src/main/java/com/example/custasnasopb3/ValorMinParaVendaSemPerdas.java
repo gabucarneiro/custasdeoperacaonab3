@@ -17,6 +17,7 @@ import android.widget.Toast;
 import org.w3c.dom.Text;
 
 import java.text.DecimalFormat;
+import java.util.ArrayList;
 import java.util.List;
 
 public class ValorMinParaVendaSemPerdas extends AppCompatActivity {
@@ -88,7 +89,7 @@ public class ValorMinParaVendaSemPerdas extends AppCompatActivity {
         pct_Iss.setText(String.valueOf(iss));
         pct_Emolumentos.setText(String.valueOf(tx_liquidacao+tx_negociacao));
 
-        //AlertDialogListar();
+        AlertDialogListar();
 
     }
 
@@ -489,7 +490,32 @@ public class ValorMinParaVendaSemPerdas extends AppCompatActivity {
         ll_dinamico.setOrientation(LinearLayout.HORIZONTAL);
 
         TextView novaTv = new TextView(this);
-        novaTv.setText("Nada não, só mais um teste");
+        novaTv.setPadding(25,5,5,5);
+        novaTv.setText("Mais um teste");
+
+        /*DataBaseHelper dbh = new DataBaseHelper(this);
+        CadastroPapel cPapel = new CadastroPapel();
+        long contador = dbh.contador();*/
+        String stringArray[] = new String[5]; //(int)contador
+
+        for(int i = 0; i<=stringArray.length; i++){
+            //cPapel.encontrarPapel();
+            Toaster(String.valueOf(i));
+        }
+
+        List<Integer> papelArrayList = new ArrayList<>();
+
+        papelArrayList.add(1);
+        papelArrayList.add(2);
+
+
+
+        listaPapeisCadastrados.setItems(R.array.arrayPapeis, new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                Toaster(String.valueOf(which));
+            }
+        });
 
 
         ll_dinamico.addView(novaTv);
@@ -504,7 +530,7 @@ public class ValorMinParaVendaSemPerdas extends AppCompatActivity {
         listaPapeisCadastrados.setNegativeButton("Cancelar", new DialogInterface.OnClickListener(){
             @Override
             public void onClick(DialogInterface dialog, int which) {
-
+                Toaster("Cancelado");
             }
         });
 
