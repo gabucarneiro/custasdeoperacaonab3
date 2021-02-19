@@ -42,7 +42,7 @@ public class CadastroPapel extends AppCompatActivity {
     //*** OK *** Botão de exclusão de papel da WatchList; ok
     //*** OK *** Montar sistema de pilha para os papeis cadastrados; ok
     //*** OK *** Transformar o cadastro de papel em WatchList; (não será necessário - talvez atualização futura)
-    //TODO fazer limpeza no que não for necessário;
+    //TODO fazer limpeza no que não for necessário - iniciado - comentada as funções e views a serem excluidas;
     // Retirar lista inicial (Hard-included);
     // Retirar a visibilidade dos contadores;
     //TODO refatorar a classe;
@@ -65,12 +65,12 @@ public class CadastroPapel extends AppCompatActivity {
         papelList.add(new Papel(04,"CVCB3F", 16.22, 99));
         papelList.add(new Papel(05,"DMMO3F", 8.1,10));
         papelList.add(new Papel(06,"COGN3", 6.72,300));
-        Listar(papelList);
+        //Listar(papelList);
         //*** DADOS ACIMA SERÃO EXCLUÍDOS - AINDA EM TESTE
     }
 
     //TODO *** FUNÇÃO QUE POSSIVELMENTE SERÁ EXCLUÍDA - AINDA EM ANÁLISE
-    public void cadastrarPapel (View view){
+    /*public void cadastrarPapel (View view){
         try{
             idPapel = Integer.parseInt(et_IdPapel.getText().toString());
 
@@ -85,10 +85,10 @@ public class CadastroPapel extends AppCompatActivity {
                 papel = new Papel(idPapel, cpNomePapel, cpValor, cpQuantidade);
                 papelList.add(papel);
 
-                TextView resumoCadastrarPapel = (TextView) findViewById(R.id.resumoCadastrPapel);
-                resumoCadastrarPapel.setTextColor(ContextCompat.getColor(this, black));
+                //TextView resumoCadastrarPapel = (TextView) findViewById(R.id.resumoCadastrPapel);
+                //resumoCadastrarPapel.setTextColor(ContextCompat.getColor(this, black));
 
-                resumoCadastrarPapel.setText(papel.toString3());
+                //resumoCadastrarPapel.setText(papel.toString3());
 
                 CharSequence texto = "Cadastro realizado!";
                 int duracao = Toast.LENGTH_SHORT;
@@ -115,13 +115,13 @@ public class CadastroPapel extends AppCompatActivity {
 
             Listar(papelList);
 
-        /* CRIAÇÃO DO TOAST INLINE
+        *//* CRIAÇÃO DO TOAST INLINE
         Context context = getApplicationContext();
         CharSequence text = "Cadastro realizado!";
         int duration = Toast.LENGTH_SHORT;
 
         Toast toast = Toast.makeText(context, text, duration);
-        toast.show();*/
+        toast.show();*//*
 
         }
         catch(Exception e){
@@ -145,17 +145,17 @@ public class CadastroPapel extends AppCompatActivity {
                 Toaster(texto, duracao);
                 erro = "**Nome do papel nulo**";
             }
-            /*
+            *//*
             CharSequence texto = "Cadastro NÃO realizado!";
             int duracao = Toast.LENGTH_SHORT;
-            Toaster(texto, duracao);*/
+            Toaster(texto, duracao);*//*
 
-            TextView resumoCadastrarPapel = (TextView) findViewById(R.id.resumoCadastrPapel);
-            resumoCadastrarPapel.setTextColor(ContextCompat.getColor(this, black));
-            resumoCadastrarPapel.setText(erro);
+            //TextView resumoCadastrarPapel = (TextView) findViewById(R.id.resumoCadastrPapel);
+            //resumoCadastrarPapel.setTextColor(ContextCompat.getColor(this, black));
+            //resumoCadastrarPapel.setText(erro);
         }
 
-    }
+    }*/
 
     public void Toaster(CharSequence text, int duration){
         Context context = getApplicationContext();
@@ -173,15 +173,15 @@ public class CadastroPapel extends AppCompatActivity {
 
 
     //TODO *** FUNÇÃO QUE POSSIVELMENTE SERÁ EXCLUÍDA - AINDA EM ANÁLISE
-    public void Listar(ArrayList<Papel> papel){
+    /*public void Listar(ArrayList<Papel> papel){
         TextView resumo2 = (TextView) findViewById(R.id.resumo);
-        /*LinearLayout resumoView = (LinearLayout) findViewById(R.id.resumoView);
+        LinearLayout resumoView = (LinearLayout) findViewById(R.id.resumoView);
 
         for(int i=0; i<papelList.size(); i++){
             TextView listagem = new TextView(this);
             listagem.setText(papelList.toString());
             resumoView.addView(listagem);
-        }*/
+        }*//*
 
         StringBuilder sbListaPapel = new StringBuilder();
         for(int i=0; i<papel.size(); i++){
@@ -196,7 +196,7 @@ public class CadastroPapel extends AppCompatActivity {
             sbListaPapel.append("\n");
         }
         resumo2.setText(sbListaPapel);
-    }
+    }*/
 
     //TODO Verificar se podem ser excluídas as duas funções (listar e cadastrarPapel) acima desta linha.
 
@@ -230,9 +230,6 @@ public class CadastroPapel extends AppCompatActivity {
 
             if(papel.getNomePapel().equals("")){
                 Clear();
-                /*et_IdPapel.setText("");
-                et_nomePapel.setText("");
-                et_valCadastroPapel.setText("");*/
 
                 Toaster("Nenhum registro encontrado");
                 dbh.close();
@@ -398,10 +395,10 @@ public class CadastroPapel extends AppCompatActivity {
         String papel = "Não funcionou...";
 
         LinearLayout resumoView2BD = (LinearLayout) findViewById(R.id.resumoView2BD);
-        LinearLayout layout_teste = (LinearLayout) findViewById(R.id.layout_teste);
+        //LinearLayout layout_teste = (LinearLayout) findViewById(R.id.layout_teste);
         TextView teste = new TextView(this);
         teste.setText(String.valueOf(dbh.contador()));
-        layout_teste.addView(teste);
+        //layout_teste.addView(teste);
 
         try{
             resumoView2BD.removeAllViewsInLayout();
@@ -434,15 +431,14 @@ public class CadastroPapel extends AppCompatActivity {
         dbh.close();
     }
 
-    //IMPLEMENTAR EXCLUIR PAPEL
-
-
     public void excluirPapelBD(View view){
         Toaster("Excluído com sucesso!");
         DataBaseHelper dbh = new DataBaseHelper(this);
 
         et_IdPapel =findViewById(R.id.idPapel);
         idaux = et_IdPapel.getText().toString();
+
+        pesquisarPapel(et_IdPapel);
 
         if(idaux.equals("")){
             Toaster("Insira um ID");
