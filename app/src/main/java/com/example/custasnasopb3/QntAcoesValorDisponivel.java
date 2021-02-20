@@ -3,8 +3,10 @@ package com.example.custasnasopb3;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.CheckBox;
+import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -19,11 +21,11 @@ public class QntAcoesValorDisponivel extends AppCompatActivity {
     // *** OK *** Incluir checkbutton para alterar valores, como tx_liquidacao, tx_negociacao, custodia, corretagem, iss
     // quando marcado o checkbutton, inserir um editView para permitir a alteração dos valores.
     // *** OK *** Checkar os checkbuttons e valores;
-    //TODO Criar Checkbutton para opção de papel fracionário - Fazendo divisões por 100, a sobra é
-    // fracionária. Interessante deixar o usuário decidir, se for fracionário, divide a quantidade
-    // por 99 e multiplica a tarifa de corretagem. Se não for, divide por 100 e elimina o resto,
-    // contando apenas uma corretagem.
-    //TODO Separrar os calculos das custas em funções.
+    //TODO Criar o banco de dados para os Custos Operacionais.
+    //TODO Dar continuidade às implementações do Checkbutton para opção de papel fracionário -
+    // testar e corrigir os cálculos - colocar para mudança automática da quantidade de corretagens
+    // necessárias e recalculo.
+    //TODO Separrar os cálculos das custas em funções.
     // Lembrar que o que for salvo no banco de dados, deverá ser estático,
     // Portatnto, deverá ser inserido em uma String antes de ir para o banco de dados.
 
@@ -286,6 +288,28 @@ public class QntAcoesValorDisponivel extends AppCompatActivity {
                 String custo_PorOperacao = String.valueOf(0-custoPorOperacao);
                 val_CustaEmolImpostos.setText(custo_PorOperacao);
 
+                try {
+
+                    CheckBox cb_Fracionario = findViewById(R.id.cbFracionario);
+                    cb_Fracionario.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+                        @Override
+                        public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                            if (cb_Fracionario.isChecked()){
+                                String temp = String.valueOf(qntFracionaria(qnt));
+                                cb_Fracionario.setText(temp);
+                            }
+                            else {
+                                String temp = String.valueOf(qntLote(qnt));
+                                cb_Fracionario.setText(temp);
+                            }
+                        }
+                    });
+                }
+                catch (Exception e){
+                    Toast toast = Toast.makeText(this, "Damn! O fracionario não funcionou", Toast.LENGTH_SHORT);
+                    toast.show();
+                }
+
                 /*TextView resumo = (TextView) findViewById(R.id.resumo);
                 resumo.setText(val_DisponivelLiquido.toString());*/
             }
@@ -302,5 +326,14 @@ public class QntAcoesValorDisponivel extends AppCompatActivity {
     public double Porcentagem(double valor, double porcentagem){
         Double resultado = (valor*porcentagem)/100;
         return resultado;
+    }
+
+    public int qntFracionaria(int quantidade){
+        int qntFracionaria = Math.round(quantidade / 99);
+        return qntFracionaria;
+    }
+    public int qntLote (int quantidade){
+        int qntLote = Math.round(quantidade / 100);
+        return qntLote;
     }
 }

@@ -56,21 +56,38 @@
             </EditText>
         </LinearLayout>
         <LinearLayout
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="horizontal">
-            <TextView
-                style="@style/Conteudo"
-                android:text="Quantidade de ações: ">
-            </TextView>
-            <TextView
-                android:id="@+id/quantidade"
-                style="@style/Conteudo"
+            <LinearLayout
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:hint="0"
-                android:inputType="number">
-            </TextView>
+                android:orientation="horizontal"
+                android:layout_weight="1">
+                <TextView
+                    style="@style/Conteudo"
+                    android:text="Quantidade de ações: ">
+                </TextView>
+                <TextView
+                    android:id="@+id/quantidade"
+                    style="@style/Conteudo"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:hint="0"
+                    android:inputType="number">
+                </TextView>
+            </LinearLayout>
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:gravity="right">
+                <CheckBox
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/cbFracionario"
+                    android:text="Fracionário"/>
+            </LinearLayout>
         </LinearLayout>
 
         <Button
