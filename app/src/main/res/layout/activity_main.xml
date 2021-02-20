@@ -16,7 +16,7 @@
             style="@style/Header"
             android:text="@string/app_name"
             android:textAllCaps="true"
-            android:layout_marginTop="80dp"
+            android:layout_marginTop="40dp"
             android:layout_marginBottom="30dp"/>
         <Button
             android:id="@+id/qntAcoesValorDisponivel"
@@ -39,7 +39,7 @@
             style="@style/Header"
             android:text="@string/app_part2"
             android:textAllCaps="true"
-            android:layout_marginTop="80dp"
+            android:layout_marginTop="60dp"
             android:layout_marginBottom="30dp"/>
         <Button
             android:id="@+id/acoesDiferencaCompraVenda"
@@ -49,6 +49,22 @@
             android:layout_gravity="center"
             android:textSize="20sp"
             android:onClick="cadastro_papel">
+        </Button>
+
+        <TextView
+            style="@style/Header"
+            android:text="@string/app_part3"
+            android:textAllCaps="true"
+            android:layout_marginTop="60dp"
+            android:layout_marginBottom="30dp"/>
+        <Button
+            android:id="@+id/parametros"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/parametros"
+            android:layout_gravity="center"
+            android:textSize="20sp"
+            android:onClick="parametros">
         </Button>
     </LinearLayout>
 </ScrollView>

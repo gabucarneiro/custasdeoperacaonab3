@@ -13,7 +13,7 @@ import java.util.List;
 
 public class DataBaseHelper extends SQLiteOpenHelper {
 
-    private static int versao = 1;
+    private static int versao = 2;
     private static final String banco_dados = "Papel";
 
     public DataBaseHelper(Context context){
@@ -26,19 +26,35 @@ public class DataBaseHelper extends SQLiteOpenHelper {
         db.execSQL("CREATE TABLE PAPEL (ID INTEGER(3), PAPEL VARCHAR(6) NOT NULL," +
                 "VALOR DOUBLE(10), QUANTIDADE INTEGER(10))");
 
+        /*db.execSQL("CREATE TABLE CUSTAS (ID INTEGER(3), " +
+                "CORRETAGEM DOUBLE(10), " +
+                "CUSTODIA DOUBLE(10), " +
+                "LIQUIDACAO DOUBLE(10), " +
+                "NEGOCIACAO DOUBLE(10), " +
+                "ISS DOUBLE(10))");*/
+
+        /*Custas custasStandard = new Custas(999, 1.99,0.0,0.0275,0.003247, 0.01);
+        addCustas(custasStandard);*/
     }
 
     @Override
     public void onUpgrade(SQLiteDatabase db, int i, int i1) {
-        /*switch (i){
+        switch (i){
             case 1:{
             }
 
             case 2:{
-                db.execSQL("ALTER TABLE PAPEL ADD OBSERVACAO VARCHAR(200);");
-                db.execSQL("ALTER TABLE PAPEL RENAME OBSERVACAO TO NOTES;");
+                /*db.execSQL("ALTER TABLE PAPEL ADD OBSERVACAO VARCHAR(200);");
+                db.execSQL("ALTER TABLE PAPEL RENAME OBSERVACAO TO NOTES;");*/
+
+                db.execSQL("CREATE TABLE CUSTAS (ID INTEGER(3), " +
+                        "CORRETAGEM DOUBLE(10), " +
+                        "CUSTODIA DOUBLE(10), " +
+                        "LIQUIDACAO DOUBLE(10), " +
+                        "NEGOCIACAO DOUBLE(10), " +
+                        "ISS DOUBLE(10))");
                 }
-        }*/
+        }
     }
     public long addPapel(Papel papel){
         SQLiteDatabase db = this.getWritableDatabase();
@@ -228,6 +244,128 @@ public class DataBaseHelper extends SQLiteOpenHelper {
     public void dropTable() {
         SQLiteDatabase db = getWritableDatabase();
         db.execSQL("DROP TABLE IF EXISTS PAPEL");
+
+        db.close();
     }
 
+
+
+    /*________________________________________ PARAMETROS _____________________________________________________*/
+
+    public long addCustas(Custas custas){
+        SQLiteDatabase db = this.getWritableDatabase();
+
+        ContentValues values = new ContentValues();
+
+        values.put("ID", custas.getId());
+        values.put("CORRETAGEM", custas.getCorretagem());
+        values.put("CUSTODIA", custas.getCustodia());
+        values.put("LIQUIDACAO", custas.getTx_liquidacao());
+        values.put("NEGOCIACAO", custas.getTx_negociacao());
+        values.put("ISS", custas.getIss());
+
+        long id = db.insert("CUSTAS", null, values);
+
+        db.close();
+        return id;
+    }
+
+    public Custas excludeCustas(int id){
+        SQLiteDatabase db = this.getWritableDatabase();
+
+        Custas custas = new Custas();
+        Cursor cursor = db.rawQuery("DELETE FROM CUSTAS WHERE ID = ?", new String[]{String.valueOf(id)});
+
+        if(cursor.getCount()>0){
+            cursor.moveToFirst();
+
+            custas.setId(cursor.getInt(0));
+            custas.setCorretagem(cursor.getDouble(1));
+            custas.setCustodia(cursor.getDouble(2));
+            custas.setTx_liquidacao(cursor.getDouble(3));
+            custas.setTx_negociacao(cursor.getDouble(4));
+            custas.setIss(cursor.getDouble(5));
+        }
+
+        cursor.close();
+        db.close();
+        return custas;
+    }
+
+    public void clearDBCustas(){
+        SQLiteDatabase db = this.getWritableDatabase();
+
+        Custas custas = new Custas();
+        Cursor cursor = db.rawQuery("DELETE FROM CUSTAS WHERE ID = '0' AND CORRETAGEM = ''", null);
+
+        if(cursor.getCount()>0){
+            cursor.moveToFirst();
+
+            custas.setId(cursor.getInt(0));
+            custas.setCorretagem(cursor.getDouble(1));
+            custas.setCustodia(cursor.getDouble(2));
+            custas.setTx_liquidacao(cursor.getDouble(3));
+            custas.setTx_negociacao(cursor.getDouble(4));
+            custas.setIss(cursor.getDouble(5));
+        }
+        cursor.close();
+        db.close();
+    }
+
+    public Custas getCustas(int id){
+        SQLiteDatabase db = this.getReadableDatabase();
+
+        Custas custas = new Custas();
+        Cursor cursor = db.rawQuery("SELECT * FROM CUSTAS WHERE ID = ?", new String[]{String.valueOf(id)});
+
+        if(cursor.getCount()>0){
+            cursor.moveToFirst();
+
+            custas.setId(cursor.getInt(0));
+            custas.setCorretagem(cursor.getDouble(1));
+            custas.setCustodia(cursor.getDouble(2));
+            custas.setTx_liquidacao(cursor.getDouble(3));
+            custas.setTx_negociacao(cursor.getDouble(4));
+            custas.setIss(cursor.getDouble(5));
+        }else{
+            custas.setId(0);
+            custas.setCorretagem(0.0);
+            custas.setCustodia(0.0);
+            custas.setTx_liquidacao(0.0);
+            custas.setTx_negociacao(0.0);
+            custas.setIss(0.0);
+        }
+        cursor.close();
+        db.close();
+        return custas;
+    }
+
+    public long updateCustas(Custas custas, int id_custas){
+        SQLiteDatabase db = this.getWritableDatabase();
+
+        ContentValues values = new ContentValues();
+
+        values.put("CORRETAGEM", custas.getCorretagem());
+        values.put("CUSTODIA", custas.getCustodia());
+        values.put("LIQUIDACAO",custas.getTx_liquidacao());
+        values.put("NEGOCIACAO",custas.getTx_negociacao());
+        values.put("ISS",custas.getIss());
+
+        long id = db.update("CUSTAS", values, "id = ?", new String[]{String.valueOf(id_custas)});
+
+        db.close();
+        return id;
+    }
+    public long updateIDCustas(int id_custas){
+        SQLiteDatabase db = this.getWritableDatabase();
+
+        ContentValues values = new ContentValues();
+        int id_CustasMinus = id_custas-1;
+        values.put("ID", id_CustasMinus);
+
+        long id = db.update("CUSTAS", values, "id = ?", new String[]{String.valueOf(id_custas)});
+
+        db.close();
+        return id;
+    }
 }

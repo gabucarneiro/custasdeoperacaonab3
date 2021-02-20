@@ -11,6 +11,7 @@ public class MainActivity extends AppCompatActivity {
 
     // ***OK*** Fazer o View do sistema de verificação da venda mínima sem perdas;
     // ***OK*** Fazer um side View para calcular ganhos/perdas com a venda num determinado valor;
+    // ***OK*** Criar tela para parâmetros
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -28,6 +29,10 @@ public class MainActivity extends AppCompatActivity {
     }
     public void cadastro_papel(View view){
         Intent intent = new Intent(this, CadastroPapel.class);
+        startActivity(intent);
+    }
+    public void parametros(View view){
+        Intent intent = new Intent(this, Custas.class);
         startActivity(intent);
     }
 }

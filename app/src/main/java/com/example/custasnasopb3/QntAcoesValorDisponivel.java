@@ -29,6 +29,12 @@ public class QntAcoesValorDisponivel extends AppCompatActivity {
     // Lembrar que o que for salvo no banco de dados, deverá ser estático,
     // Portatnto, deverá ser inserido em uma String antes de ir para o banco de dados.
 
+
+
+    /*Go after, do and keep practicing what you think is utopic, and it'll become reality. Gabriel, 20/02/2021 12:45*/
+
+
+
     @Override
     protected void onCreate (Bundle savedInstanceState){
         super.onCreate(savedInstanceState);
