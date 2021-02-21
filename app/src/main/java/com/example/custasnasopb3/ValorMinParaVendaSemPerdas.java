@@ -32,7 +32,7 @@ public class ValorMinParaVendaSemPerdas extends AppCompatActivity {
 
     //CUSTOS OPERACIONAIS
     boolean corretagemFixa = true;
-    double corretagem = 2.49;
+    double corretagem;
     double calc_Corretagem = 0.0;
 
     boolean custodiaFixa = true;
@@ -40,16 +40,19 @@ public class ValorMinParaVendaSemPerdas extends AppCompatActivity {
     double calc_Custodia= 0.0;
 
     double emolumentos;
-    double tx_liquidacao = 0.0275;
+    boolean tx_liquidacaoFixa = false;
+    double tx_liquidacao;
     double calc_tx_liquidacao;
-    double tx_negociacao = 0.003247;
+    boolean tx_negociacaoFixa = false;
+    double tx_negociacao;
     double calc_tx_negociacao;
 
+    boolean issFixo = false;
     boolean issCobrado = true;
-    double iss = 0.01;
+    double iss;
     double calc_iss;
 
-    double ir_compra=0.0;
+    double ir_compra;
     double calc_ir_compra;
     double ir_venda;
     double calc_ir_venda;
@@ -57,6 +60,8 @@ public class ValorMinParaVendaSemPerdas extends AppCompatActivity {
     DecimalFormat df2 = new DecimalFormat("0.00");
     DecimalFormat df3 = new DecimalFormat("0.000");
     DecimalFormat df4 = new DecimalFormat("0.0000");
+
+    DataBaseHelper dbhCustas = new DataBaseHelper(this);
 
 
     /*EditText et_valPapelAdquirido = (EditText) findViewById(R.id.valPapelAdquirido);
@@ -84,13 +89,15 @@ public class ValorMinParaVendaSemPerdas extends AppCompatActivity {
         EditText pct_Iss = findViewById(R.id.pctIss2);
         TextView pct_Emolumentos = findViewById(R.id.pctEmolumentos2);
 
-        pct_Corretagem.setText(String.valueOf(corretagem));
-        pct_Custodia.setText(String.valueOf(custodia));
-        pct_Liquidacao.setText(String.valueOf(tx_liquidacao));
-        pct_Negociacao.setText(String.valueOf(tx_negociacao));
-        pct_Iss.setText(String.valueOf(iss));
-        pct_Emolumentos.setText(String.valueOf(tx_liquidacao+tx_negociacao));
 
+        pct_Corretagem.setText(String.valueOf(dbhCustas.getCustas(999).getCorretagem()));
+        pct_Custodia.setText(String.valueOf(dbhCustas.getCustas(999).getCustodia()));
+        pct_Liquidacao.setText(String.valueOf(dbhCustas.getCustas(999).getTx_liquidacao()));
+        pct_Negociacao.setText(String.valueOf(dbhCustas.getCustas(999).getTx_negociacao()));
+        pct_Iss.setText(String.valueOf(dbhCustas.getCustas(999).getIss()));
+        pct_Emolumentos.setText(String.valueOf(dbhCustas.getCustas(999).getTx_liquidacao()+dbhCustas.getCustas(999).getTx_negociacao()));
+
+        dbhCustas.close();
         //AlertDialogListar();
 
     }
@@ -236,24 +243,30 @@ public class ValorMinParaVendaSemPerdas extends AppCompatActivity {
 
     public Double Corretagem(Double valPapelCalcular, Integer quantidade){
 
-        if(valPapelCalcular != null && quantidade != null){
+        EditText pct_Corretagem = findViewById(R.id.pctCorretagem2);
 
-            if(quantidade>=1) {
+        if(valPapelCalcular != null && quantidade != null && quantidade >=1){
 
-                CheckBox cb_Corretagem = findViewById(R.id.cbCorretagem2);
-                if (cb_Corretagem.isChecked()) {
-                    corretagemFixa = false;
-                    EditText pct_Corretagem = findViewById(R.id.pctCorretagem2);
-                    double db_pct_Corretagem = Double.parseDouble(pct_Corretagem.getText().toString());
-                    corretagem = db_pct_Corretagem;
-                }
+            Double tempPct_Corretagem = Double.valueOf(String.valueOf(pct_Corretagem.getText()));
+            String stringtempPct_Corretagem = String.valueOf(pct_Corretagem.getText());
 
-                if (!corretagemFixa || corretagem != 0 || valPapelCalcular == 0) {
-                    calc_Corretagem = corretagem;
+            if(!corretagemFixa){
+                if (stringtempPct_Corretagem != null  && !(stringtempPct_Corretagem.equals("")) && tempPct_Corretagem != 0.0){
+                    calc_Corretagem = Porcentagem((valPapelCalcular * quantidade), tempPct_Corretagem);
                     return calc_Corretagem;
                 }
                 else {
-                    calc_Corretagem = Porcentagem(valPapelCalcular, corretagem);
+                    calc_Corretagem = 0.0;
+                    return calc_Corretagem;
+                }
+            }
+            else {
+                if (stringtempPct_Corretagem != null  && !(stringtempPct_Corretagem.equals("")) && tempPct_Corretagem != 0.0){
+                    calc_Corretagem = tempPct_Corretagem;
+                    return calc_Corretagem;
+                }
+                else {
+                    calc_Corretagem = 0.0;
                     return calc_Corretagem;
                 }
             }
@@ -263,23 +276,29 @@ public class ValorMinParaVendaSemPerdas extends AppCompatActivity {
 
     public Double Custodia(Double valPapelCalcular, Integer quantidade){
 
-        if(valPapelCalcular != null && quantidade != null) {
+        EditText pct_Custodia = findViewById(R.id.pctCustodia2);
 
-            if (quantidade >= 1) {
-                CheckBox cb_Custodia = findViewById(R.id.cbCustodia2);
-                if (cb_Custodia.isChecked()) {
-                    custodiaFixa = false;
-                    EditText pct_Custodia = findViewById(R.id.pctCustodia2);
-                    double db_pct_Custodia = Double.parseDouble(pct_Custodia.getText().toString());
-                    custodia = db_pct_Custodia;
-                }
+        if(valPapelCalcular != null && quantidade != null && quantidade >=1) {
+            Double tempPct_Custodia = Double.valueOf(String.valueOf(pct_Custodia.getText()));
+            String stringtempPct_Custodia = String.valueOf(pct_Custodia.getText());
 
-                if (custodiaFixa || custodia == 0 || valPapelCalcular == 0) {
-                    calc_Custodia = custodia;
+            if(!custodiaFixa){
+                if (stringtempPct_Custodia != null  && !(stringtempPct_Custodia.equals("")) && tempPct_Custodia != 0.0){
+                    calc_Custodia = Porcentagem((valPapelCalcular * quantidade), tempPct_Custodia);
                     return calc_Custodia;
                 }
                 else {
-                    calc_Custodia = Porcentagem((valPapelCalcular*quantidade), custodia);
+                    calc_Custodia = 0.0;
+                    return calc_Custodia;
+                }
+            }
+            else {
+                if (stringtempPct_Custodia != null  && !(stringtempPct_Custodia.equals("")) && tempPct_Custodia != 0.0){
+                    calc_Custodia = tempPct_Custodia;
+                    return calc_Custodia;
+                }
+                else {
+                    calc_Custodia = 0.0;
                     return calc_Custodia;
                 }
             }
@@ -289,21 +308,29 @@ public class ValorMinParaVendaSemPerdas extends AppCompatActivity {
 
     public Double Liquidacao(Double valPapelCalcular, Integer quantidade){
 
-        if(valPapelCalcular != null && quantidade != null) {
+        EditText pct_tx_Liquidacao = findViewById(R.id.pctLiquidacao2);
 
-            if (quantidade >= 1) {
-                CheckBox cb_Liquidacao = findViewById(R.id.cbLiquidacao2);
-                if (cb_Liquidacao.isChecked()) {
-                    EditText pct_Liquidacao = findViewById(R.id.pctLiquidacao2);
-                    double db_pct_Liquidacao = Double.parseDouble(pct_Liquidacao.getText().toString());
-                    tx_liquidacao = db_pct_Liquidacao;
-                }
-                if (tx_liquidacao == 0 || valPapelCalcular == 0) {
-                    calc_tx_liquidacao = tx_liquidacao;
+        if(valPapelCalcular != null && quantidade != null && quantidade >=1) {
+            Double tempPct_Tx_Liquidacao = Double.valueOf(String.valueOf(pct_tx_Liquidacao.getText()));
+            String stringtempPct_Tx_Liquidacao = String.valueOf(pct_tx_Liquidacao.getText());
+
+            if(!tx_liquidacaoFixa){
+                if (stringtempPct_Tx_Liquidacao != null  && !(stringtempPct_Tx_Liquidacao.equals("")) && tempPct_Tx_Liquidacao != 0.0){
+                    calc_tx_liquidacao = Porcentagem((valPapelCalcular * quantidade), tempPct_Tx_Liquidacao);
                     return calc_tx_liquidacao;
                 }
                 else {
-                    calc_tx_liquidacao = Porcentagem((valPapelCalcular*quantidade), tx_liquidacao);
+                    calc_tx_liquidacao = 0.0;
+                    return calc_tx_liquidacao;
+                }
+            }
+            else {
+                if (stringtempPct_Tx_Liquidacao != null  && !(stringtempPct_Tx_Liquidacao.equals("")) && tempPct_Tx_Liquidacao != 0.0){
+                    calc_tx_liquidacao = tempPct_Tx_Liquidacao;
+                    return calc_tx_liquidacao;
+                }
+                else {
+                    calc_tx_liquidacao = 0.0;
                     return calc_tx_liquidacao;
                 }
             }
@@ -313,21 +340,29 @@ public class ValorMinParaVendaSemPerdas extends AppCompatActivity {
 
     public Double Negociacao(Double valPapelCalcular, Integer quantidade){
 
-        if(valPapelCalcular != null && quantidade != null) {
+        EditText pct_tx_Negociacao = findViewById(R.id.pctNegociacao2);
 
-            if (quantidade >= 1) {
-                CheckBox cb_Negociacao = findViewById(R.id.cbNegociacao2);
-                if (cb_Negociacao.isChecked()) {
-                    EditText pct_Negociacao = findViewById(R.id.pctNegociacao2);
-                    double db_pct_Negociacao = Double.parseDouble(pct_Negociacao.getText().toString());
-                    tx_negociacao = db_pct_Negociacao;
-                }
-                if (tx_negociacao == 0 || valPapelCalcular == 0) {
-                    calc_tx_negociacao = tx_negociacao;
+        if(valPapelCalcular != null && quantidade != null && quantidade >=1) {
+            Double tempPct_Tx_Negociacao = Double.valueOf(String.valueOf(pct_tx_Negociacao.getText()));
+            String stringtempPct_Tx_Negociacao = String.valueOf(pct_tx_Negociacao.getText());
+
+            if(!tx_negociacaoFixa){
+                if (stringtempPct_Tx_Negociacao != null  && !(stringtempPct_Tx_Negociacao.equals("")) && tempPct_Tx_Negociacao != 0.0){
+                    calc_tx_negociacao = Porcentagem((valPapelCalcular * quantidade), tempPct_Tx_Negociacao);
                     return calc_tx_negociacao;
                 }
                 else {
-                    calc_tx_negociacao = Porcentagem((valPapelCalcular*quantidade), tx_negociacao);
+                    calc_tx_negociacao = 0.0;
+                    return calc_tx_negociacao;
+                }
+            }
+            else {
+                if (stringtempPct_Tx_Negociacao != null  && !(stringtempPct_Tx_Negociacao.equals("")) && tempPct_Tx_Negociacao != 0.0){
+                    calc_tx_negociacao = tempPct_Tx_Negociacao;
+                    return calc_tx_negociacao;
+                }
+                else {
+                    calc_tx_negociacao = 0.0;
                     return calc_tx_negociacao;
                 }
             }
@@ -337,25 +372,37 @@ public class ValorMinParaVendaSemPerdas extends AppCompatActivity {
 
     public Double Iss(Double valPapelCalcular, Integer quantidade){
 
-        if(valPapelCalcular != null && quantidade != null) {
+        EditText pct_Iss = findViewById(R.id.pctIss2);
 
-            if (quantidade >= 1) {
-                CheckBox cb_Iss2 = findViewById(R.id.cbIss2);
-                if (cb_Iss2.isChecked()) {
-                    issCobrado = false;
-                    EditText pct_Iss2 = findViewById(R.id.pctIss2);
-                    double db_pct_Iss2 = Double.parseDouble(pct_Iss2.getText().toString());
-                    iss = db_pct_Iss2;
-                }
+        if(valPapelCalcular != null && quantidade != null && quantidade >=1) {
+            Double tempPct_Iss = Double.valueOf(String.valueOf(pct_Iss.getText()));
+            String stringtempPct_Iss = String.valueOf(pct_Iss.getText());
 
-                if (issCobrado || iss == 0 || valPapelCalcular == 0) {
-                    calc_iss = iss;
-                    return calc_iss;
+            if (issCobrado){
+                if(!issFixo){
+                    if (stringtempPct_Iss != null  && !(stringtempPct_Iss.equals("")) && tempPct_Iss != 0.0){
+                        calc_iss = Porcentagem((valPapelCalcular * quantidade), tempPct_Iss);
+                        return calc_iss;
+                    }
+                    else {
+                        calc_iss = 0.0;
+                        return calc_iss;
+                    }
                 }
                 else {
-                    calc_iss = Porcentagem((valPapelCalcular*quantidade), iss);
-                    return calc_iss;
+                    if (stringtempPct_Iss != null  && !(stringtempPct_Iss.equals("")) && tempPct_Iss != 0.0){
+                        calc_iss = tempPct_Iss;
+                        return calc_iss;
+                    }
+                    else {
+                        calc_iss = 0.0;
+                        return calc_iss;
+                    }
                 }
+            }
+            else {
+                calc_iss = 0.0;
+                return calc_iss;
             }
         }
         return calc_iss;

@@ -17,6 +17,7 @@ import static com.example.custasnasopb3.R.color.black;
 
 public class CadastroPapel extends AppCompatActivity {
 
+    //TODO *** EM CASO DE EXCLUSÃO DAS FUNÇÕES COMENTADAS, EXCLUIR TAMBÉM AS DECLARAÇÕES ABAIXO
     private int idPapel=0;
     private String cpNomePapel;
     private Double cpValor;
@@ -42,7 +43,7 @@ public class CadastroPapel extends AppCompatActivity {
     //*** OK *** Botão de exclusão de papel da WatchList; ok
     //*** OK *** Montar sistema de pilha para os papeis cadastrados; ok
     //*** OK *** Transformar o cadastro de papel em WatchList; (não será necessário - talvez atualização futura)
-    //TODO fazer limpeza no que não for necessário - iniciado - comentada as funções e views a serem excluidas;
+    //TODO fazer limpeza no que não for necessário - iniciado: comentada as funções e views a serem excluidas;
     // Retirar lista inicial (Hard-included);
     // Retirar a visibilidade dos contadores;
     //TODO refatorar a classe;
