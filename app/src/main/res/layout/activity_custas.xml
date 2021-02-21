@@ -8,13 +8,15 @@
         android:orientation="vertical"
         android:paddingLeft="20dp"
         android:paddingRight="20dp"
+        android:id="@+id/sv_ActivityCustas"
         style="@style/BasicLayout">
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical"
         android:paddingTop="20dp"
-        android:paddingBottom="20dp">
+        android:paddingBottom="20dp"
+        android:id="@+id/LL_ActivityCustas">
         <TextView
             style="@style/Header"
             android:text="Custas Operacionais"

@@ -2,6 +2,7 @@ package com.example.custasnasopb3;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.CheckBox;
@@ -271,5 +272,20 @@ public class Custas extends AppCompatActivity {
         dbhCustas.updateCustas(custas, 999);
         Toast.makeText(this, "Salvo!", Toast.LENGTH_SHORT).show();
 
+    }
+
+    public String toStringId(Integer id) {
+        return "Custas:\n" +
+                "id=" + dbhCustas.getCustas(id).getId() +
+                ", \n corretagem=" + dbhCustas.getCustas(id).getCorretagem() +
+                ", \n calc_Corretagem=" + dbhCustas.getCustas(id).getCalc_Corretagem() +
+                ", \n custodia=" + dbhCustas.getCustas(id).getCustodia() +
+                ", \n calc_Custodia=" + dbhCustas.getCustas(id).getCalc_Custodia() +
+                ", \n tx_liquidacao=" + dbhCustas.getCustas(id).getTx_liquidacao() +
+                ", \n calc_tx_liquidacao=" + dbhCustas.getCustas(id).getCalc_tx_liquidacao() +
+                ", \n tx_negociacao=" + dbhCustas.getCustas(id).getTx_negociacao() +
+                ", \n calc_tx_negociacao=" + dbhCustas.getCustas(id).getCalc_tx_negociacao() +
+                ", \n iss=" + dbhCustas.getCustas(id).getIss() +
+                ", \n calc_iss=" + dbhCustas.getCustas(id).getCalc_iss() + "\n";
     }
 }

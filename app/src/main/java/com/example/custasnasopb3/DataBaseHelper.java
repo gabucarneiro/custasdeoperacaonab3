@@ -327,7 +327,8 @@ public class DataBaseHelper extends SQLiteOpenHelper {
             custas.setTx_liquidacao(cursor.getDouble(3));
             custas.setTx_negociacao(cursor.getDouble(4));
             custas.setIss(cursor.getDouble(5));
-        }else{
+        }
+        else{
             custas.setId(0);
             custas.setCorretagem(0.0);
             custas.setCustodia(0.0);

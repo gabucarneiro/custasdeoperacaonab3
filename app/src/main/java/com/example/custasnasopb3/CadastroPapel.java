@@ -1,11 +1,14 @@
 package com.example.custasnasopb3;
 
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.ContextCompat;
 
 import android.content.Context;
 import android.os.Bundle;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -483,5 +486,29 @@ public class CadastroPapel extends AppCompatActivity {
         }
         recuperarBD(view);
         dbh.close();
+    }
+
+    public void AlertDialogCustas (View view){
+        DataBaseHelper dbhCustas = new DataBaseHelper(this);
+        Custas custas = new Custas();
+
+        AlertDialog.Builder ad_toStringCustas = new AlertDialog.Builder(this);
+
+        //CharSequence arrayCustas[] = new CharSequence[1];
+
+        LinearLayout ll_TesteStringCustas = new LinearLayout(this);
+        ll_TesteStringCustas.setOrientation(LinearLayout.VERTICAL);
+
+        TextView TV_lltoStringCustas = new TextView(this);
+        String toStringCustas = String.valueOf(dbhCustas.getCustas(999).getCorretagem());
+        TV_lltoStringCustas.setText(toStringCustas);
+
+        ll_TesteStringCustas.addView(ll_TesteStringCustas);
+        //arrayCustas[0] = toStringCustas;
+
+
+        ad_toStringCustas.setView(R.layout.activity_custas);
+        //ad_toStringCustas.setView(ll_TesteStringCustas);
+        ad_toStringCustas.show();
     }
 }
