@@ -16,8 +16,6 @@ import android.widget.Toast;
 
 import java.util.ArrayList;
 
-import static com.example.custasnasopb3.R.color.black;
-
 public class CadastroPapel extends AppCompatActivity {
 
     //TODO *** EM CASO DE EXCLUSÃO DAS FUNÇÕES COMENTADAS, EXCLUIR TAMBÉM AS DECLARAÇÕES ABAIXO
@@ -488,27 +486,39 @@ public class CadastroPapel extends AppCompatActivity {
         dbh.close();
     }
 
+    //TODO Dar continuidade ao desenvolvimento da função.
+
     public void AlertDialogCustas (View view){
         DataBaseHelper dbhCustas = new DataBaseHelper(this);
         Custas custas = new Custas();
 
-        AlertDialog.Builder ad_toStringCustas = new AlertDialog.Builder(this);
-
-        //CharSequence arrayCustas[] = new CharSequence[1];
-
         LinearLayout ll_TesteStringCustas = new LinearLayout(this);
         ll_TesteStringCustas.setOrientation(LinearLayout.VERTICAL);
+        ll_TesteStringCustas.setPadding(20, 10, 10,10);
+
+        AlertDialog.Builder ad_toStringCustas = new AlertDialog.Builder(this);
+
+        StringBuilder sbCustas = new StringBuilder();
+        sbCustas.append("ID: " + (dbhCustas.getCustas(999).getId()) + "\n");
+        sbCustas.append("Corretagem: R$" + (dbhCustas.getCustas(999).getCorretagem()) + "\n");
+        sbCustas.append("Custodia: R$" + (dbhCustas.getCustas(999).getCustodia()) + "\n");
+        sbCustas.append("Taxa de Liquidação: " + (dbhCustas.getCustas(999).getTx_liquidacao()) + "%\n");
+        sbCustas.append("Taxa de Negociação: " + (dbhCustas.getCustas(999).getTx_negociacao()) + "%\n");
+        //CharSequence arrayCustas[] = new CharSequence[1];
 
         TextView TV_lltoStringCustas = new TextView(this);
-        String toStringCustas = String.valueOf(dbhCustas.getCustas(999).getCorretagem());
+        TV_lltoStringCustas.setTextSize(16);
+        TV_lltoStringCustas.setTextColor(getColor(R.color.black));
+        String toStringCustas = sbCustas.toString();
         TV_lltoStringCustas.setText(toStringCustas);
 
-        ll_TesteStringCustas.addView(ll_TesteStringCustas);
+        ll_TesteStringCustas.addView(TV_lltoStringCustas);
         //arrayCustas[0] = toStringCustas;
 
 
-        ad_toStringCustas.setView(R.layout.activity_custas);
-        //ad_toStringCustas.setView(ll_TesteStringCustas);
+        //ad_toStringCustas.setView(R.layout.activity_custas);
+        ad_toStringCustas.setView(ll_TesteStringCustas);
         ad_toStringCustas.show();
+        //dbhCustas.close();
     }
 }
