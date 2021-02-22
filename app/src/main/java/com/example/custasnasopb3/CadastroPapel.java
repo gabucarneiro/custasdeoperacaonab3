@@ -486,11 +486,27 @@ public class CadastroPapel extends AppCompatActivity {
         dbh.close();
     }
 
-    //TODO Dar continuidade ao desenvolvimento da função.
+    //TODO Dar continuidade ao desenvolvimento da função - Após cadastro do primeiro papel com parâmetros,
+    // testar a função, pois, até então, não possui vinculo com o ID do papel ao salvar.
 
     public void AlertDialogCustas (View view){
         DataBaseHelper dbhCustas = new DataBaseHelper(this);
         Custas custas = new Custas();
+        Integer idPapelCustas;
+        try {
+            et_IdPapel =findViewById(R.id.idPapel);
+
+            if (et_IdPapel!=null || !(et_IdPapel.equals(""))){
+                idPapelCustas = Integer.parseInt(String.valueOf(et_IdPapel));
+            }
+            else {
+                idPapelCustas = 999;
+            }
+        }
+        catch (Exception e){
+            idPapelCustas = 999;
+            Toaster("Parâmetros padrão utilizado");
+        }
 
         LinearLayout ll_TesteStringCustas = new LinearLayout(this);
         ll_TesteStringCustas.setOrientation(LinearLayout.VERTICAL);
@@ -499,11 +515,11 @@ public class CadastroPapel extends AppCompatActivity {
         AlertDialog.Builder ad_toStringCustas = new AlertDialog.Builder(this);
 
         StringBuilder sbCustas = new StringBuilder();
-        sbCustas.append("ID: " + (dbhCustas.getCustas(999).getId()) + "\n");
-        sbCustas.append("Corretagem: R$" + (dbhCustas.getCustas(999).getCorretagem()) + "\n");
-        sbCustas.append("Custodia: R$" + (dbhCustas.getCustas(999).getCustodia()) + "\n");
-        sbCustas.append("Taxa de Liquidação: " + (dbhCustas.getCustas(999).getTx_liquidacao()) + "%\n");
-        sbCustas.append("Taxa de Negociação: " + (dbhCustas.getCustas(999).getTx_negociacao()) + "%\n");
+        sbCustas.append("ID: " + (dbhCustas.getCustas(idPapelCustas).getId()) + "\n");
+        sbCustas.append("Corretagem: R$" + (dbhCustas.getCustas(idPapelCustas).getCorretagem()) + "\n");
+        sbCustas.append("Custodia: R$" + (dbhCustas.getCustas(idPapelCustas).getCustodia()) + "\n");
+        sbCustas.append("Taxa de Liquidação: " + (dbhCustas.getCustas(idPapelCustas).getTx_liquidacao()) + "%\n");
+        sbCustas.append("Taxa de Negociação: " + (dbhCustas.getCustas(idPapelCustas).getTx_negociacao()) + "%\n");
         //CharSequence arrayCustas[] = new CharSequence[1];
 
         TextView TV_lltoStringCustas = new TextView(this);
