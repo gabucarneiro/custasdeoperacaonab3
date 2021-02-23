@@ -489,10 +489,19 @@ public class CadastroPapel extends AppCompatActivity {
     //TODO Dar continuidade ao desenvolvimento da função - Após cadastro do primeiro papel com parâmetros,
     // testar a função, pois, até então, não possui vinculo com o ID do papel ao salvar.
 
+
+    //TODO IDEIA - Criar um onClickListener para ser chamado pelo botão de buscar as custas, porém,
+    // antes de chamar as custas ele vai pegar o ID do papel (se existir, do contrário, pega o padrão 999),
+    // jogar em IDTEMP no servidor, e chamar a AlertDialogCustas que buscará o IDTEMP no servidor.
+
     public void AlertDialogCustas (View view){
+
+        AlertDialog.Builder ad_toStringCustas = new AlertDialog.Builder(this);
+
         DataBaseHelper dbhCustas = new DataBaseHelper(this);
         Custas custas = new Custas();
-        Integer idPapelCustas;
+
+        /*Integer idPapelCustas;
         try {
             et_IdPapel =findViewById(R.id.idPapel);
 
@@ -506,13 +515,13 @@ public class CadastroPapel extends AppCompatActivity {
         catch (Exception e){
             idPapelCustas = 999;
             Toaster("Parâmetros padrão utilizado");
-        }
+        }*/
 
-        LinearLayout ll_TesteStringCustas = new LinearLayout(this);
+
+
+        /*LinearLayout ll_TesteStringCustas = new LinearLayout(this);
         ll_TesteStringCustas.setOrientation(LinearLayout.VERTICAL);
         ll_TesteStringCustas.setPadding(20, 10, 10,10);
-
-        AlertDialog.Builder ad_toStringCustas = new AlertDialog.Builder(this);
 
         StringBuilder sbCustas = new StringBuilder();
         sbCustas.append("ID: " + (dbhCustas.getCustas(idPapelCustas).getId()) + "\n");
@@ -528,12 +537,118 @@ public class CadastroPapel extends AppCompatActivity {
         String toStringCustas = sbCustas.toString();
         TV_lltoStringCustas.setText(toStringCustas);
 
-        ll_TesteStringCustas.addView(TV_lltoStringCustas);
+        ll_TesteStringCustas.addView(TV_lltoStringCustas);*/
         //arrayCustas[0] = toStringCustas;
 
 
+
+        Integer idPapelCustas;
+        try {
+            EditText tempEt_IdPapel = (EditText) findViewById(R.id.idPapel);
+            idPapelCustas = Integer.parseInt(String.valueOf(tempEt_IdPapel));
+        }
+        catch (Exception e){
+            Toaster("Erro no editText do ID");
+            idPapelCustas = 666;
+        }
+
+        //Layout vertical que recebe todos outros
+        LinearLayout ll_ADVertical = new LinearLayout(this);
+        ll_ADVertical.setOrientation(LinearLayout.VERTICAL);
+        ll_ADVertical.setPadding(20, 10, 10,10);
+
+
+        //Layout horizontal que recebe o valor de corretagem
+        LinearLayout ll_ADHorizontalCorretagem = new LinearLayout(this);
+        ll_ADHorizontalCorretagem.setOrientation(LinearLayout.HORIZONTAL);
+
+        TextView TV_lltoStringCorretagem = new TextView(this);
+        TV_lltoStringCorretagem.setTextSize(16);
+        TV_lltoStringCorretagem.setTextColor(getColor(R.color.black));
+        TV_lltoStringCorretagem.setText("Corretagem: R$");
+
+        EditText et_ADCorretagemTemp = new EditText(this);
+        et_ADCorretagemTemp.setText(String.valueOf((dbhCustas.getCustas(999).getCorretagem())));
+
+
+        //Layout horizontal que recebe o valor de custas
+        LinearLayout ll_ADHorizontalCustodia = new LinearLayout(this);
+        ll_ADHorizontalCustodia.setOrientation(LinearLayout.HORIZONTAL);
+
+        TextView TV_llADCustodia = new TextView(this);
+        TV_llADCustodia.setTextSize(16);
+        TV_llADCustodia.setTextColor(getColor(R.color.black));
+        TV_llADCustodia.setText("Custodia: R$");
+
+        EditText et_ADCustodiaTemp = new EditText(this);
+        et_ADCustodiaTemp.setText(String.valueOf((dbhCustas.getCustas(999).getCustodia())));
+
+
+        //Layout horizontal que recebe o valor de taxa de liquidação
+        LinearLayout ll_ADHorizontalTxLiquidacao = new LinearLayout(this);
+        ll_ADHorizontalTxLiquidacao.setOrientation(LinearLayout.HORIZONTAL);
+
+        TextView TV_llADTxLiquidacao = new TextView(this);
+        TV_llADTxLiquidacao.setTextSize(16);
+        TV_llADTxLiquidacao.setTextColor(getColor(R.color.black));
+        TV_llADTxLiquidacao.setText("Taxa de Liquidação: %");
+
+        EditText et_ADTxLiquidacaoTemp = new EditText(this);
+        et_ADTxLiquidacaoTemp.setText(String.valueOf((dbhCustas.getCustas(999).getTx_liquidacao())));
+
+
+        //Layout horizontal que recebe o valor de taxa de negociação
+        LinearLayout ll_ADHorizontalTxNegociacao = new LinearLayout(this);
+        ll_ADHorizontalTxNegociacao.setOrientation(LinearLayout.HORIZONTAL);
+
+        TextView TV_llADTxNegociacao = new TextView(this);
+        TV_llADTxNegociacao.setTextSize(16);
+        TV_llADTxNegociacao.setTextColor(getColor(R.color.black));
+        TV_llADTxNegociacao.setText("Taxa de Negociação: %");
+
+        EditText et_ADTxNegociacaoTemp = new EditText(this);
+        et_ADTxNegociacaoTemp.setText(String.valueOf((dbhCustas.getCustas(999).getTx_negociacao())));
+
+
+        //Layout horizontal que recebe o valor do ISS
+        LinearLayout ll_ADHorizontalIss = new LinearLayout(this);
+        ll_ADHorizontalIss.setOrientation(LinearLayout.HORIZONTAL);
+
+        TextView TV_llADIss = new TextView(this);
+        TV_llADIss.setTextSize(16);
+        TV_llADIss.setTextColor(getColor(R.color.black));
+        TV_llADIss.setText("Iss: %");
+
+        EditText et_ADIssTemp = new EditText(this);
+        et_ADIssTemp.setText(String.valueOf((dbhCustas.getCustas(999).getIss())));
+
+
+        //Layouts horizontais chamando as Views
+        ll_ADHorizontalCorretagem.addView(TV_lltoStringCorretagem);
+        ll_ADHorizontalCorretagem.addView(et_ADCorretagemTemp);
+
+        ll_ADHorizontalCustodia.addView(TV_llADCustodia);
+        ll_ADHorizontalCustodia.addView(et_ADCustodiaTemp);
+
+        ll_ADHorizontalTxLiquidacao.addView(TV_llADTxLiquidacao);
+        ll_ADHorizontalTxLiquidacao.addView(et_ADTxLiquidacaoTemp);
+
+        ll_ADHorizontalTxNegociacao.addView(TV_llADTxNegociacao);
+        ll_ADHorizontalTxNegociacao.addView(et_ADTxNegociacaoTemp);
+
+        ll_ADHorizontalIss.addView(TV_llADIss);
+        ll_ADHorizontalIss.addView(et_ADIssTemp);
+
+
+        //Layout vertical que chama os layouts horizontais
+        ll_ADVertical.addView(ll_ADHorizontalCorretagem);
+        ll_ADVertical.addView(ll_ADHorizontalCustodia);
+        ll_ADVertical.addView(ll_ADHorizontalTxLiquidacao);
+        ll_ADVertical.addView(ll_ADHorizontalTxNegociacao);
+        ll_ADVertical.addView(ll_ADHorizontalIss);
+
         //ad_toStringCustas.setView(R.layout.activity_custas);
-        ad_toStringCustas.setView(ll_TesteStringCustas);
+        ad_toStringCustas.setView(ll_ADVertical);
         ad_toStringCustas.show();
         //dbhCustas.close();
     }
