@@ -270,6 +270,35 @@ public class DataBaseHelper extends SQLiteOpenHelper {
         return id;
     }
 
+    public long addTempIdCustas(Custas custas){
+        SQLiteDatabase db = this.getWritableDatabase();
+
+        ContentValues values = new ContentValues();
+
+        /*MODIFICAR PARA UMA VERIFICAÇÃO MELHOR*/
+        if(custas.getCorretagem()== 0.0){
+            values.put("ID", custas.getId());
+            values.put("CORRETAGEM", 0.0);
+            values.put("CUSTODIA", 0.0);
+            values.put("LIQUIDACAO", 0.0);
+            values.put("NEGOCIACAO", 0.0);
+            values.put("ISS", 0.0);
+        }
+        else{
+            values.put("ID", custas.getId());
+            values.put("CORRETAGEM", custas.getCorretagem());
+            values.put("CUSTODIA", custas.getCustodia());
+            values.put("LIQUIDACAO", custas.getTx_liquidacao());
+            values.put("NEGOCIACAO", custas.getTx_negociacao());
+            values.put("ISS", custas.getIss());
+        }
+
+        long id = db.insert("CUSTAS", null, values);
+
+        db.close();
+        return id;
+    }
+
     public Custas excludeCustas(int id){
         SQLiteDatabase db = this.getWritableDatabase();
 

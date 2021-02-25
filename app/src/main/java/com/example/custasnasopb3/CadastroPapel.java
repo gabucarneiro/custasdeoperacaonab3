@@ -5,10 +5,12 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.ContextCompat;
 
 import android.content.Context;
+import android.content.DialogInterface;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -57,6 +59,29 @@ public class CadastroPapel extends AppCompatActivity {
         et_nomePapel = findViewById(R.id.nomePapel);
         et_valCadastroPapel = findViewById(R.id.valCadastroPapel);
         et_QuantidadePapel = findViewById(R.id.valQuantidadePapel);
+
+        /*et_IdPapel = (EditText) findViewById(R.id.idPapel);
+        et_IdPapel.setText("999");
+        Toaster(String.valueOf(et_IdPapel.getText()));*/
+
+
+        //TODO dar continuidade a criação do button dinâmico.
+        Button tvteste = (Button) findViewById(R.id.tvteste);
+        tvteste.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                //AlertDialog.Builder builder = new AlertDialog.Builder(CadastroPapel.this);
+
+                //DataBaseHelper tempDBH = new DataBaseHelper(CadastroPapel.this);
+                //Custas tempID = new Custas(idPapelCustas);
+
+                pesquisarPapel(et_IdPapel);
+
+                AlertDialogCustas(et_IdPapel);
+
+                //tempDBH.close();
+            }
+        });
 
         //TODO *** DADOS ABAIXO SERÃO EXCLUÍDOS - AINDA EM TESTE
         papelList.add(new Papel(00,"CIEL3F", 8.5, 51));
@@ -494,28 +519,33 @@ public class CadastroPapel extends AppCompatActivity {
     // antes de chamar as custas ele vai pegar o ID do papel (se existir, do contrário, pega o padrão 999),
     // jogar em IDTEMP no servidor, e chamar a AlertDialogCustas que buscará o IDTEMP no servidor.
 
+
     public void AlertDialogCustas (View view){
 
         AlertDialog.Builder ad_toStringCustas = new AlertDialog.Builder(this);
+        ad_toStringCustas.setTitle(R.string.parametros);
 
         DataBaseHelper dbhCustas = new DataBaseHelper(this);
         Custas custas = new Custas();
 
-        /*Integer idPapelCustas;
+        //dbhCustas.getCustas(998).getId();
+        Integer idPapelCustas;
         try {
             et_IdPapel =findViewById(R.id.idPapel);
 
-            if (et_IdPapel!=null || !(et_IdPapel.equals(""))){
-                idPapelCustas = Integer.parseInt(String.valueOf(et_IdPapel));
+            if (et_IdPapel.getText()!=null || !(et_IdPapel.getText().equals(""))){
+                idPapelCustas = Integer.parseInt(String.valueOf(et_IdPapel.getText()));
+                Toaster("IF utilizado");
             }
             else {
                 idPapelCustas = 999;
+                Toaster("ELSE utilizado");
             }
         }
         catch (Exception e){
             idPapelCustas = 999;
-            Toaster("Parâmetros padrão utilizado");
-        }*/
+            Toaster("Parâmetro padrão utilizado");
+        }
 
 
 
@@ -541,17 +571,6 @@ public class CadastroPapel extends AppCompatActivity {
         //arrayCustas[0] = toStringCustas;
 
 
-
-        Integer idPapelCustas;
-        try {
-            EditText tempEt_IdPapel = (EditText) findViewById(R.id.idPapel);
-            idPapelCustas = Integer.parseInt(String.valueOf(tempEt_IdPapel));
-        }
-        catch (Exception e){
-            Toaster("Erro no editText do ID");
-            idPapelCustas = 666;
-        }
-
         //Layout vertical que recebe todos outros
         LinearLayout ll_ADVertical = new LinearLayout(this);
         ll_ADVertical.setOrientation(LinearLayout.VERTICAL);
@@ -568,7 +587,7 @@ public class CadastroPapel extends AppCompatActivity {
         TV_lltoStringCorretagem.setText("Corretagem: R$");
 
         EditText et_ADCorretagemTemp = new EditText(this);
-        et_ADCorretagemTemp.setText(String.valueOf((dbhCustas.getCustas(999).getCorretagem())));
+        et_ADCorretagemTemp.setText(String.valueOf((dbhCustas.getCustas(idPapelCustas).getCorretagem())));
 
 
         //Layout horizontal que recebe o valor de custas
@@ -581,7 +600,7 @@ public class CadastroPapel extends AppCompatActivity {
         TV_llADCustodia.setText("Custodia: R$");
 
         EditText et_ADCustodiaTemp = new EditText(this);
-        et_ADCustodiaTemp.setText(String.valueOf((dbhCustas.getCustas(999).getCustodia())));
+        et_ADCustodiaTemp.setText(String.valueOf((dbhCustas.getCustas(idPapelCustas).getCustodia())));
 
 
         //Layout horizontal que recebe o valor de taxa de liquidação
@@ -594,7 +613,7 @@ public class CadastroPapel extends AppCompatActivity {
         TV_llADTxLiquidacao.setText("Taxa de Liquidação: %");
 
         EditText et_ADTxLiquidacaoTemp = new EditText(this);
-        et_ADTxLiquidacaoTemp.setText(String.valueOf((dbhCustas.getCustas(999).getTx_liquidacao())));
+        et_ADTxLiquidacaoTemp.setText(String.valueOf((dbhCustas.getCustas(idPapelCustas).getTx_liquidacao())));
 
 
         //Layout horizontal que recebe o valor de taxa de negociação
@@ -607,7 +626,7 @@ public class CadastroPapel extends AppCompatActivity {
         TV_llADTxNegociacao.setText("Taxa de Negociação: %");
 
         EditText et_ADTxNegociacaoTemp = new EditText(this);
-        et_ADTxNegociacaoTemp.setText(String.valueOf((dbhCustas.getCustas(999).getTx_negociacao())));
+        et_ADTxNegociacaoTemp.setText(String.valueOf((dbhCustas.getCustas(idPapelCustas).getTx_negociacao())));
 
 
         //Layout horizontal que recebe o valor do ISS
@@ -620,8 +639,7 @@ public class CadastroPapel extends AppCompatActivity {
         TV_llADIss.setText("Iss: %");
 
         EditText et_ADIssTemp = new EditText(this);
-        et_ADIssTemp.setText(String.valueOf((dbhCustas.getCustas(999).getIss())));
-
+        et_ADIssTemp.setText(String.valueOf((dbhCustas.getCustas(idPapelCustas).getIss())));
 
         //Layouts horizontais chamando as Views
         ll_ADHorizontalCorretagem.addView(TV_lltoStringCorretagem);
@@ -649,7 +667,8 @@ public class CadastroPapel extends AppCompatActivity {
 
         //ad_toStringCustas.setView(R.layout.activity_custas);
         ad_toStringCustas.setView(ll_ADVertical);
+
         ad_toStringCustas.show();
-        //dbhCustas.close();
+        dbhCustas.close();
     }
 }

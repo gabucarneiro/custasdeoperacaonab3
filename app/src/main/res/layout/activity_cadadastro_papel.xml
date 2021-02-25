@@ -186,8 +186,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:id="@+id/tvteste"
-                    android:text="Custas"
-                    android:onClick="AlertDialogCustas">
+                    android:text="Custas">
                 </Button>
             </LinearLayout>
 

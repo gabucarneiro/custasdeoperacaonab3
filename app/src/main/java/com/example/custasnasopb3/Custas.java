@@ -198,6 +198,10 @@ public class Custas extends AppCompatActivity {
     public Custas() {
     }
 
+    public Custas(int id) {
+        this.id = id;
+    }
+
     public Custas(int id, double corretagem, double custodia, double tx_liquidacao, double tx_negociacao, double iss) {
         this.id = id;
         this.corretagem = corretagem;
