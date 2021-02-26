@@ -14,21 +14,24 @@ public class Custas extends AppCompatActivity {
 
     protected int id;
 
-    protected boolean corretagemFixa = true;
+    protected boolean corretagemFixa;
     protected double corretagem;
     protected double calc_Corretagem = 0.0;
 
-    protected boolean custodiaFixa = false;
+    protected boolean custodiaFixa;
     protected double custodia;
     protected double calc_Custodia= 0.0;
 
     protected double emolumentos;
+    protected boolean tx_liquidacaoFixa;
     protected double tx_liquidacao;
     protected double calc_tx_liquidacao;
+    protected boolean tx_negociacaoFixa;
     protected double tx_negociacao;
     protected double calc_tx_negociacao;
 
     protected boolean issCobrado = true;
+    protected boolean issFixo;
     protected double iss;
     protected double calc_iss;
 
@@ -44,12 +47,13 @@ public class Custas extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_custas);
 
-        //Custas custasStandard = new Custas(999, 1.99,0.0,0.0275,0.003247, 0.01);
+        //Custas custasStandard = new Custas(999, 1.99,0.0,0.0275,0.003247, 0.01, 1, 1, 0, 0, 0);
         //dbhCustas.addCustas(custasStandard);
 
+        int custasPadrão = 999;
         Custas custas = new Custas();
         try {
-            custas = dbhCustas.getCustas(999);
+            custas = dbhCustas.getCustas(custasPadrão);
         }
         catch (Exception e){
             Toast.makeText(this,"Erro!", Toast.LENGTH_SHORT);
@@ -73,6 +77,46 @@ public class Custas extends AppCompatActivity {
 
         EditText pctIss2 = (EditText) findViewById(R.id.pctIss2);
         pctIss2.setText(String.valueOf(custas.getIss()));
+
+        CheckBox cbCorretagem2 = (CheckBox) findViewById(R.id.cbCorretagem2);
+        if (dbhCustas.getCustas(custasPadrão).isCorretagemFixa()){
+            cbCorretagem2.setChecked(true);
+        }
+        else {
+            cbCorretagem2.setChecked(false);
+        }
+
+        CheckBox cbCustodia2 = (CheckBox) findViewById(R.id.cbCustodia2);
+        if (dbhCustas.getCustas(custasPadrão).isCustodiaFixa()){
+            cbCustodia2.setChecked(true);
+        }
+        else {
+            cbCustodia2.setChecked(false);
+        }
+
+        CheckBox cbLiquidacao2 = (CheckBox) findViewById(R.id.cbLiquidacao2);
+        if (dbhCustas.getCustas(custasPadrão).isTx_liquidacaoFixa()){
+            cbLiquidacao2.setChecked(true);
+        }
+        else {
+            cbLiquidacao2.setChecked(false);
+        }
+
+        CheckBox cbNegociacao2 = (CheckBox) findViewById(R.id.cbNegociacao2);
+        if (dbhCustas.getCustas(custasPadrão).isTx_negociacaoFixa()){
+            cbNegociacao2.setChecked(true);
+        }
+        else {
+            cbNegociacao2.setChecked(false);
+        }
+
+        CheckBox cbIss2 = (CheckBox) findViewById(R.id.cbIss2);
+        if (dbhCustas.getCustas(custasPadrão).isIssFixo()){
+            cbIss2.setChecked(true);
+        }
+        else {
+            cbIss2.setChecked(false);
+        }
     }
 
     public int getId() {
@@ -195,6 +239,30 @@ public class Custas extends AppCompatActivity {
         this.calc_iss = calc_iss;
     }
 
+    public boolean isTx_liquidacaoFixa() {
+        return tx_liquidacaoFixa;
+    }
+
+    public void setTx_liquidacaoFixa(boolean tx_liquidacaoFixa) {
+        this.tx_liquidacaoFixa = tx_liquidacaoFixa;
+    }
+
+    public boolean isTx_negociacaoFixa() {
+        return tx_negociacaoFixa;
+    }
+
+    public void setTx_negociacaoFixa(boolean tx_negociacaoFixa) {
+        this.tx_negociacaoFixa = tx_negociacaoFixa;
+    }
+
+    public boolean isIssFixo() {
+        return issFixo;
+    }
+
+    public void setIssFixo(boolean issFixo) {
+        this.issFixo = issFixo;
+    }
+
     public Custas() {
     }
 
@@ -209,6 +277,37 @@ public class Custas extends AppCompatActivity {
         this.tx_liquidacao = tx_liquidacao;
         this.tx_negociacao = tx_negociacao;
         this.iss = iss;
+    }
+
+    public Custas(int id, double corretagem, double custodia, double tx_liquidacao, double tx_negociacao, double iss, boolean corretagemFixa, boolean custodiaFixa, boolean tx_liquidacaoFixa, boolean tx_negociacaoFixa, boolean issFixo) {
+        this.id = id;
+        this.corretagem = corretagem;
+        this.custodia = custodia;
+        this.tx_liquidacao = tx_liquidacao;
+        this.tx_negociacao = tx_negociacao;
+        this.iss = iss;
+        this.corretagemFixa = corretagemFixa;
+        this.custodiaFixa = custodiaFixa;
+        this.tx_liquidacaoFixa = tx_liquidacaoFixa;
+        this.tx_negociacaoFixa = tx_negociacaoFixa;
+        this.issFixo = issFixo;
+    }
+
+    public int boolToInt(Boolean bool){
+        if(bool){
+            return 1;
+        }
+        else{
+            return 0;
+        }
+    }
+    public boolean intToBool(Integer integer){
+        if(integer == 1){
+            return true;
+        }
+        else{
+            return false;
+        }
     }
 
     //TODO Corrigir e checkar o método de salvar as custas Standard.
@@ -273,10 +372,37 @@ public class Custas extends AppCompatActivity {
         Double db_pctIss2 = Double.parseDouble((String.valueOf(pctIss2.getText())));
         custas.setIss(db_pctIss2);
 
-        dbhCustas.updateCustas(custas, 999);
-        Toast.makeText(this, "Salvo!", Toast.LENGTH_SHORT).show();
+        CheckBox cbCorretagem2 = (CheckBox) findViewById(R.id.cbCorretagem2);
+        Boolean isChecked_cbCorretagem2 = cbCorretagem2.isChecked();
+        custas.setCorretagemFixa(isChecked_cbCorretagem2);
 
+        CheckBox cbCustodia2 = (CheckBox) findViewById(R.id.cbCustodia2);
+        Boolean isChecked_cbCustodia2 = cbCustodia2.isChecked();
+        custas.setCustodiaFixa(isChecked_cbCustodia2);
+
+        CheckBox cbLiquidacao2 = (CheckBox) findViewById(R.id.cbLiquidacao2);
+        Boolean isChecked_cbLiquidacao2 = cbLiquidacao2.isChecked();
+        custas.setTx_liquidacaoFixa(isChecked_cbLiquidacao2);
+
+        CheckBox cbNegociacao2 = (CheckBox) findViewById(R.id.cbNegociacao2);
+        Boolean isChecked_cbNegociacao2 = cbNegociacao2.isChecked();
+        custas.setTx_negociacaoFixa(isChecked_cbNegociacao2);
+
+        CheckBox cbIss2 = (CheckBox) findViewById(R.id.cbIss2);
+        Boolean isChecked_cbIss2 = cbIss2.isChecked();
+        custas.setIssFixo(isChecked_cbIss2);
+
+        custas = new Custas(id, db_pctCorretagem2, db_pctCustodia2, db_pctLiquidacao2, db_pctNegociacao2, db_pctIss2, isChecked_cbCorretagem2, isChecked_cbCustodia2, isChecked_cbLiquidacao2, isChecked_cbNegociacao2, isChecked_cbIss2);
+
+        //dbhCustas.addCustas(custas);
+        dbhCustas.updateCustas(custas, id);
+        Toast.makeText(this, "Salvo!", Toast.LENGTH_SHORT).show();
+        Toast.makeText(this, dbhCustas.getCustas(998).toString(), Toast.LENGTH_SHORT).show();
+        dbhCustas.close();
     }
+
+
+
 
     public String toStringId(Integer id) {
         return "Custas:\n" +

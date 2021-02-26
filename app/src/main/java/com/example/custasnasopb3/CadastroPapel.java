@@ -11,6 +11,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -359,6 +360,7 @@ public class CadastroPapel extends AppCompatActivity {
             }
 
 
+
             /*try {
                 resumoBD.setText(papel.toString2());
             } catch (Exception e){
@@ -526,14 +528,12 @@ public class CadastroPapel extends AppCompatActivity {
         ad_toStringCustas.setTitle(R.string.parametros);
 
         DataBaseHelper dbhCustas = new DataBaseHelper(this);
-        Custas custas = new Custas();
 
-        //dbhCustas.getCustas(998).getId();
         Integer idPapelCustas;
         try {
             et_IdPapel =findViewById(R.id.idPapel);
 
-            if (et_IdPapel.getText()!=null || !(et_IdPapel.getText().equals(""))){
+            if (et_IdPapel.getText()!=null || (!et_IdPapel.getText().equals(""))){
                 idPapelCustas = Integer.parseInt(String.valueOf(et_IdPapel.getText()));
                 Toaster("IF utilizado");
             }
@@ -589,6 +589,17 @@ public class CadastroPapel extends AppCompatActivity {
         EditText et_ADCorretagemTemp = new EditText(this);
         et_ADCorretagemTemp.setText(String.valueOf((dbhCustas.getCustas(idPapelCustas).getCorretagem())));
 
+        CheckBox cb_ADCorretagemTemp = new CheckBox(this);
+        cb_ADCorretagemTemp.setText("Fixo");
+        cb_ADCorretagemTemp.setPadding(5,0,0,0);
+        boolean checarSelecionado_ADCorretagemTemp = dbhCustas.getCustas(idPapelCustas).isCorretagemFixa();
+        if (checarSelecionado_ADCorretagemTemp){
+            cb_ADCorretagemTemp.setChecked(true);
+        }
+        else {
+            cb_ADCorretagemTemp.setChecked(false);
+        }
+
 
         //Layout horizontal que recebe o valor de custas
         LinearLayout ll_ADHorizontalCustodia = new LinearLayout(this);
@@ -601,6 +612,18 @@ public class CadastroPapel extends AppCompatActivity {
 
         EditText et_ADCustodiaTemp = new EditText(this);
         et_ADCustodiaTemp.setText(String.valueOf((dbhCustas.getCustas(idPapelCustas).getCustodia())));
+
+        CheckBox cb_ADCustodiaTemp = new CheckBox(this);
+        cb_ADCustodiaTemp.setText("Fixo");
+        cb_ADCustodiaTemp.setPadding(5,0,0,0);
+        boolean checarSelecionado_ADCustodiaTemp = dbhCustas.getCustas(idPapelCustas).isCustodiaFixa();
+        if (checarSelecionado_ADCustodiaTemp){
+            cb_ADCustodiaTemp.setChecked(true);
+        }
+        else {
+            cb_ADCustodiaTemp.setChecked(false);
+        }
+
 
 
         //Layout horizontal que recebe o valor de taxa de liquidação
@@ -615,6 +638,18 @@ public class CadastroPapel extends AppCompatActivity {
         EditText et_ADTxLiquidacaoTemp = new EditText(this);
         et_ADTxLiquidacaoTemp.setText(String.valueOf((dbhCustas.getCustas(idPapelCustas).getTx_liquidacao())));
 
+        CheckBox cb_ADTxLiquidacaoTemp = new CheckBox(this);
+        cb_ADTxLiquidacaoTemp.setText("Fixo");
+        cb_ADTxLiquidacaoTemp.setPadding(5,0,0,0);
+        boolean checarSelecionado_ADTxLiquidacaoTemp = dbhCustas.getCustas(idPapelCustas).isTx_liquidacaoFixa();
+        if (checarSelecionado_ADTxLiquidacaoTemp){
+            cb_ADTxLiquidacaoTemp.setChecked(true);
+        }
+        else {
+            cb_ADTxLiquidacaoTemp.setChecked(false);
+        }
+
+
 
         //Layout horizontal que recebe o valor de taxa de negociação
         LinearLayout ll_ADHorizontalTxNegociacao = new LinearLayout(this);
@@ -627,6 +662,18 @@ public class CadastroPapel extends AppCompatActivity {
 
         EditText et_ADTxNegociacaoTemp = new EditText(this);
         et_ADTxNegociacaoTemp.setText(String.valueOf((dbhCustas.getCustas(idPapelCustas).getTx_negociacao())));
+
+        CheckBox cb_ADTxNegociacaoTemp = new CheckBox(this);
+        cb_ADTxNegociacaoTemp.setText("Fixo");
+        cb_ADTxNegociacaoTemp.setPadding(5,0,0,0);
+        boolean checarSelecionado_ADTxNegociacaoTemp = dbhCustas.getCustas(idPapelCustas).isTx_negociacaoFixa();
+        if (checarSelecionado_ADTxNegociacaoTemp){
+            cb_ADTxNegociacaoTemp.setChecked(true);
+        }
+        else {
+            cb_ADTxNegociacaoTemp.setChecked(false);
+        }
+
 
 
         //Layout horizontal que recebe o valor do ISS
@@ -641,21 +688,96 @@ public class CadastroPapel extends AppCompatActivity {
         EditText et_ADIssTemp = new EditText(this);
         et_ADIssTemp.setText(String.valueOf((dbhCustas.getCustas(idPapelCustas).getIss())));
 
+        CheckBox cb_ADIssTemp = new CheckBox(this);
+        cb_ADIssTemp.setText("Fixo");
+        cb_ADIssTemp.setPadding(5,0,0,0);
+        boolean checarSelecionado_ADIssTemp = dbhCustas.getCustas(idPapelCustas).isIssFixo();
+        if (checarSelecionado_ADIssTemp){
+            cb_ADIssTemp.setChecked(true);
+        }
+        else {
+            cb_ADIssTemp.setChecked(false);
+        }
+
+        //Layout horizontal que recebe o botão para salvar no banco de dados no ID temporário
+        LinearLayout ll_ADHorizontalBtn = new LinearLayout(this);
+        ll_ADHorizontalIss.setOrientation(LinearLayout.HORIZONTAL);
+
+        Button btnConfirmaCustaTemp = new Button(this);
+        btnConfirmaCustaTemp.setText("Salvar");
+        btnConfirmaCustaTemp.setGravity(0);
+        btnConfirmaCustaTemp.setBackgroundColor(getColor(R.color.darkblue));
+        btnConfirmaCustaTemp.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Double db_ADCorretagemTemp;
+                Double db_ADCustodiaTemp;
+                Double db_ADTxLiquidacaoTemp;
+                Double db_ADTxNegociacaoTemp;
+                Double db_ADIssTemp;
+                if (!et_ADCorretagemTemp.getText().equals("")){
+                    db_ADCorretagemTemp = Double.valueOf(String.valueOf(et_ADCorretagemTemp.getText()));
+                }
+                else {
+                    db_ADCorretagemTemp = 0.0;
+                }
+                if (!et_ADCustodiaTemp.getText().equals("")){
+                    db_ADCustodiaTemp = Double.valueOf(String.valueOf(et_ADCustodiaTemp.getText()));
+                }
+                else {
+                    db_ADCustodiaTemp = 0.0;
+                }
+                if (!et_ADTxLiquidacaoTemp.getText().equals("")){
+                    db_ADTxLiquidacaoTemp = Double.valueOf(String.valueOf(et_ADTxLiquidacaoTemp.getText()));
+                }
+                else {
+                    db_ADTxLiquidacaoTemp = 0.0;
+                }
+                if (!et_ADTxNegociacaoTemp.getText().equals("")){
+                    db_ADTxNegociacaoTemp = Double.valueOf(String.valueOf(et_ADTxNegociacaoTemp.getText()));
+                }
+                else {
+                    db_ADTxNegociacaoTemp = 0.0;
+                }
+                if (!et_ADIssTemp.getText().equals("")){
+                    db_ADIssTemp = Double.valueOf(String.valueOf(et_ADIssTemp.getText()));
+                }
+                else {
+                    db_ADIssTemp = 0.0;
+                }
+
+
+                int idTempCustas=998;
+                Custas custas = new Custas(idTempCustas, db_ADCorretagemTemp, db_ADCustodiaTemp, db_ADTxLiquidacaoTemp, db_ADTxNegociacaoTemp, db_ADIssTemp);
+                dbhCustas.addTempIdCustas(custas);
+                dbhCustas.updateTempIdCustas(custas, idTempCustas);
+                Toaster("Salvo!");
+                dbhCustas.close();
+            }
+        });
+
         //Layouts horizontais chamando as Views
         ll_ADHorizontalCorretagem.addView(TV_lltoStringCorretagem);
         ll_ADHorizontalCorretagem.addView(et_ADCorretagemTemp);
+        ll_ADHorizontalCorretagem.addView(cb_ADCorretagemTemp);
 
         ll_ADHorizontalCustodia.addView(TV_llADCustodia);
         ll_ADHorizontalCustodia.addView(et_ADCustodiaTemp);
+        ll_ADHorizontalCustodia.addView(cb_ADCustodiaTemp);
 
         ll_ADHorizontalTxLiquidacao.addView(TV_llADTxLiquidacao);
         ll_ADHorizontalTxLiquidacao.addView(et_ADTxLiquidacaoTemp);
+        ll_ADHorizontalTxLiquidacao.addView(cb_ADTxLiquidacaoTemp);
 
         ll_ADHorizontalTxNegociacao.addView(TV_llADTxNegociacao);
         ll_ADHorizontalTxNegociacao.addView(et_ADTxNegociacaoTemp);
+        ll_ADHorizontalTxNegociacao.addView(cb_ADTxNegociacaoTemp);
 
         ll_ADHorizontalIss.addView(TV_llADIss);
         ll_ADHorizontalIss.addView(et_ADIssTemp);
+        ll_ADHorizontalIss.addView(cb_ADIssTemp);
+
+        ll_ADHorizontalBtn.addView(btnConfirmaCustaTemp);
 
 
         //Layout vertical que chama os layouts horizontais
@@ -664,6 +786,7 @@ public class CadastroPapel extends AppCompatActivity {
         ll_ADVertical.addView(ll_ADHorizontalTxLiquidacao);
         ll_ADVertical.addView(ll_ADHorizontalTxNegociacao);
         ll_ADVertical.addView(ll_ADHorizontalIss);
+        ll_ADVertical.addView(ll_ADHorizontalBtn);
 
         //ad_toStringCustas.setView(R.layout.activity_custas);
         ad_toStringCustas.setView(ll_ADVertical);

@@ -47,13 +47,15 @@ public class DataBaseHelper extends SQLiteOpenHelper {
                 /*db.execSQL("ALTER TABLE PAPEL ADD OBSERVACAO VARCHAR(200);");
                 db.execSQL("ALTER TABLE PAPEL RENAME OBSERVACAO TO NOTES;");*/
 
-                db.execSQL("CREATE TABLE CUSTAS (ID INTEGER(3), " +
-                        "CORRETAGEM DOUBLE(10), " +
-                        "CUSTODIA DOUBLE(10), " +
-                        "LIQUIDACAO DOUBLE(10), " +
-                        "NEGOCIACAO DOUBLE(10), " +
-                        "ISS DOUBLE(10))");
+                db.execSQL("CREATE TABLE CUSTAS (ID INTEGER(3), CORRETAGEM DOUBLE(10), CUSTODIA DOUBLE(10), LIQUIDACAO DOUBLE(10), NEGOCIACAO DOUBLE(10), ISS DOUBLE(10), CORRETAGEMFIXA INTEGER(1), CUSTODIAFIXA INTEGER(1), LIQUIDACAOFIXA INTEGER(1), NEGOCIACAOFIXA INTEGER(1), ISSFIXO INTEGER(1))");
                 }
+            /*case 3:{
+                db.execSQL("ALTER TABLE CUSTAS ADD COLUMN CORRETAGEMFIXA INTEGER(1)");
+                db.execSQL("ALTER TABLE CUSTAS ADD COLUMN CUSTODIAFIXA INTEGER(1)");
+                db.execSQL("ALTER TABLE CUSTAS ADD COLUMN LIQUIDACAOFIXA INTEGER(1)");
+                db.execSQL("ALTER TABLE CUSTAS ADD COLUMN NEGOCIACAOFIXA INTEGER(1)");
+                db.execSQL("ALTER TABLE CUSTAS ADD COLUMN ISSFIXO INTEGER(1)");
+            }*/
         }
     }
     public long addPapel(Papel papel){
@@ -264,6 +266,13 @@ public class DataBaseHelper extends SQLiteOpenHelper {
         values.put("NEGOCIACAO", custas.getTx_negociacao());
         values.put("ISS", custas.getIss());
 
+        values.put("CORRETAGEMFIXA", custas.boolToInt(custas.isCorretagemFixa()));
+        values.put("CUSTODIAFIXA", custas.boolToInt(custas.isCustodiaFixa()));
+        values.put("LIQUIDACAOFIXA", custas.boolToInt(custas.isTx_liquidacaoFixa()));
+        values.put("NEGOCIACAOFIXA", custas.boolToInt(custas.isTx_negociacaoFixa()));
+        values.put("ISSFIXO", custas.boolToInt(custas.isIssFixo()));
+
+
         long id = db.insert("CUSTAS", null, values);
 
         db.close();
@@ -283,6 +292,12 @@ public class DataBaseHelper extends SQLiteOpenHelper {
             values.put("LIQUIDACAO", 0.0);
             values.put("NEGOCIACAO", 0.0);
             values.put("ISS", 0.0);
+
+            values.put("CORRETAGEMFIXA", 0);
+            values.put("CUSTODIAFIXA", 0);
+            values.put("LIQUIDACAOFIXA", 0);
+            values.put("NEGOCIACAOFIXA", 0);
+            values.put("ISSFIXO", 0);
         }
         else{
             values.put("ID", custas.getId());
@@ -291,9 +306,38 @@ public class DataBaseHelper extends SQLiteOpenHelper {
             values.put("LIQUIDACAO", custas.getTx_liquidacao());
             values.put("NEGOCIACAO", custas.getTx_negociacao());
             values.put("ISS", custas.getIss());
+
+            values.put("CORRETAGEMFIXA", custas.boolToInt(custas.isCorretagemFixa()));
+            values.put("CUSTODIAFIXA", custas.boolToInt(custas.isCustodiaFixa()));
+            values.put("LIQUIDACAOFIXA", custas.boolToInt(custas.isTx_liquidacaoFixa()));
+            values.put("NEGOCIACAOFIXA", custas.boolToInt(custas.isTx_negociacaoFixa()));
+            values.put("ISSFIXO", custas.boolToInt(custas.isIssFixo()));
         }
 
         long id = db.insert("CUSTAS", null, values);
+
+        db.close();
+        return id;
+    }
+
+    public long updateTempIdCustas(Custas custas, int id_custas){
+        SQLiteDatabase db = this.getWritableDatabase();
+
+        ContentValues values = new ContentValues();
+
+        values.put("CORRETAGEM", custas.getCorretagem());
+        values.put("CUSTODIA", custas.getCustodia());
+        values.put("LIQUIDACAO",custas.getTx_liquidacao());
+        values.put("NEGOCIACAO",custas.getTx_negociacao());
+        values.put("ISS",custas.getIss());
+
+        values.put("CORRETAGEMFIXA", custas.boolToInt(custas.isCorretagemFixa()));
+        values.put("CUSTODIAFIXA", custas.boolToInt(custas.isCustodiaFixa()));
+        values.put("LIQUIDACAOFIXA", custas.boolToInt(custas.isTx_liquidacaoFixa()));
+        values.put("NEGOCIACAOFIXA", custas.boolToInt(custas.isTx_negociacaoFixa()));
+        values.put("ISSFIXO", custas.boolToInt(custas.isIssFixo()));
+
+        long id = db.update("CUSTAS", values, "id = ?", new String[]{String.valueOf(id_custas)});
 
         db.close();
         return id;
@@ -314,6 +358,12 @@ public class DataBaseHelper extends SQLiteOpenHelper {
             custas.setTx_liquidacao(cursor.getDouble(3));
             custas.setTx_negociacao(cursor.getDouble(4));
             custas.setIss(cursor.getDouble(5));
+
+            custas.setCorretagemFixa(custas.intToBool(cursor.getInt(6)));
+            custas.setCustodiaFixa(custas.intToBool(cursor.getInt(7)));
+            custas.setTx_liquidacaoFixa(custas.intToBool(cursor.getInt(8)));
+            custas.setTx_negociacaoFixa(custas.intToBool(cursor.getInt(9)));
+            custas.setIssFixo(custas.intToBool(cursor.getInt(10)));
         }
 
         cursor.close();
@@ -336,6 +386,12 @@ public class DataBaseHelper extends SQLiteOpenHelper {
             custas.setTx_liquidacao(cursor.getDouble(3));
             custas.setTx_negociacao(cursor.getDouble(4));
             custas.setIss(cursor.getDouble(5));
+
+            custas.setCorretagemFixa(custas.intToBool(cursor.getInt(6)));
+            custas.setCustodiaFixa(custas.intToBool(cursor.getInt(7)));
+            custas.setTx_liquidacaoFixa(custas.intToBool(cursor.getInt(8)));
+            custas.setTx_negociacaoFixa(custas.intToBool(cursor.getInt(9)));
+            custas.setIssFixo(custas.intToBool(cursor.getInt(10)));
         }
         cursor.close();
         db.close();
@@ -356,6 +412,12 @@ public class DataBaseHelper extends SQLiteOpenHelper {
             custas.setTx_liquidacao(cursor.getDouble(3));
             custas.setTx_negociacao(cursor.getDouble(4));
             custas.setIss(cursor.getDouble(5));
+
+            custas.setCorretagemFixa(custas.intToBool(cursor.getInt(6)));
+            custas.setCustodiaFixa(custas.intToBool(cursor.getInt(7)));
+            custas.setTx_liquidacaoFixa(custas.intToBool(cursor.getInt(8)));
+            custas.setTx_negociacaoFixa(custas.intToBool(cursor.getInt(9)));
+            custas.setIssFixo(custas.intToBool(cursor.getInt(10)));
         }
         else{
             custas.setId(0);
@@ -364,6 +426,12 @@ public class DataBaseHelper extends SQLiteOpenHelper {
             custas.setTx_liquidacao(0.0);
             custas.setTx_negociacao(0.0);
             custas.setIss(0.0);
+
+            custas.setCorretagemFixa(custas.intToBool(1));
+            custas.setCustodiaFixa(custas.intToBool(1));
+            custas.setTx_liquidacaoFixa(custas.intToBool(0));
+            custas.setTx_negociacaoFixa(custas.intToBool(0));
+            custas.setIssFixo(custas.intToBool(0));
         }
         cursor.close();
         db.close();
@@ -380,6 +448,12 @@ public class DataBaseHelper extends SQLiteOpenHelper {
         values.put("LIQUIDACAO",custas.getTx_liquidacao());
         values.put("NEGOCIACAO",custas.getTx_negociacao());
         values.put("ISS",custas.getIss());
+
+        values.put("CORRETAGEMFIXA", custas.boolToInt(custas.isCorretagemFixa()));
+        values.put("CUSTODIAFIXA", custas.boolToInt(custas.isCustodiaFixa()));
+        values.put("LIQUIDACAOFIXA", custas.boolToInt(custas.isTx_liquidacaoFixa()));
+        values.put("NEGOCIACAOFIXA", custas.boolToInt(custas.isTx_negociacaoFixa()));
+        values.put("ISSFIXO", custas.boolToInt(custas.isIssFixo()));
 
         long id = db.update("CUSTAS", values, "id = ?", new String[]{String.valueOf(id_custas)});
 

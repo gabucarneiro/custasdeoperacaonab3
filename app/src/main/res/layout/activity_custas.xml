@@ -209,12 +209,14 @@
                         android:id="@+id/cbCorretagem2"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginBottom="20dp">
+                        android:layout_marginBottom="20dp"
+                        android:text="Corret. fixa">
                     </CheckBox>
                     <CheckBox
                         android:id="@+id/cbCustodia2"
                         android:layout_width="wrap_content"
-                        android:layout_height="wrap_content">
+                        android:layout_height="wrap_content"
+                        android:text="Custodia fixa">
                     </CheckBox>
 
                     <TextView
@@ -230,25 +232,28 @@
                         android:id="@+id/cbLiquidacao2"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginBottom="10dp">
+                        android:layout_marginBottom="10dp"
+                        android:text="Liquid. fixa">
                     </CheckBox>
                     <CheckBox
                         android:id="@+id/cbNegociacao2"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginBottom="5dp">
+                        android:layout_marginBottom="5dp"
+                        android:text="Negoc. fixa">
                     </CheckBox>
                     <CheckBox
                         android:id="@+id/cbIss2"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginBottom="5dp">
+                        android:layout_marginBottom="5dp"
+                        android:text="Iss. fixo">
                     </CheckBox>
-                    <CheckBox
+                    <!--<CheckBox
                         android:id="@+id/cbIr2"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content">
-                    </CheckBox>
+                    </CheckBox>-->
                 </LinearLayout>
             </LinearLayout>
         </LinearLayout>
