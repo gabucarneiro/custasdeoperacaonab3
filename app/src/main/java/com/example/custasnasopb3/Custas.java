@@ -343,6 +343,8 @@ public class Custas extends AppCompatActivity {
         Double db_pctIss2 = Double.parseDouble((String.valueOf(pctIss2.getText())));
         custas.setIss(db_pctIss2);
 
+        custas = new Custas(id, db_pctCorretagem2, db_pctCustodia2, db_pctLiquidacao2, db_pctNegociacao2, db_pctIss2);
+
         dbhCustas.addCustas(custas);
         Toast.makeText(this, "Salvo!", Toast.LENGTH_SHORT).show();
 
@@ -397,7 +399,6 @@ public class Custas extends AppCompatActivity {
         //dbhCustas.addCustas(custas);
         dbhCustas.updateCustas(custas, id);
         Toast.makeText(this, "Salvo!", Toast.LENGTH_SHORT).show();
-        Toast.makeText(this, dbhCustas.getCustas(998).toString(), Toast.LENGTH_SHORT).show();
         dbhCustas.close();
     }
 
