@@ -505,16 +505,6 @@ public class CadastroPapel extends AppCompatActivity {
                         Boolean isTxNegociacaoFixa = dbh.getCustas(idCustas).isTx_negociacaoFixa();
                         Double ultimoIss = dbh.getCustas(idCustas).getIss();
                         Boolean isIssFixo = dbh.getCustas(idCustas).isIssFixo();
-                    /*dbhCustas.getCustas(ultimo).setCorretagem(dbhCustas.getCustas(idCustas).getCorretagem());
-                    dbhCustas.getCustas(ultimo).setCorretagemFixa(dbhCustas.getCustas(idCustas).isCorretagemFixa());
-                    dbhCustas.getCustas(ultimo).setCustodia(dbhCustas.getCustas(idCustas).getCustodia());
-                    dbhCustas.getCustas(ultimo).setCustodiaFixa(dbhCustas.getCustas(idCustas).isCustodiaFixa());
-                    dbhCustas.getCustas(ultimo).setTx_liquidacao(dbhCustas.getCustas(idCustas).getTx_liquidacao());
-                    dbhCustas.getCustas(ultimo).setTx_liquidacaoFixa(dbhCustas.getCustas(idCustas).isTx_liquidacaoFixa());
-                    dbhCustas.getCustas(ultimo).setTx_negociacao(dbhCustas.getCustas(idCustas).getTx_negociacao());
-                    dbhCustas.getCustas(ultimo).setTx_negociacaoFixa(dbhCustas.getCustas(idCustas).isTx_negociacaoFixa());
-                    dbhCustas.getCustas(ultimo).setIss(dbhCustas.getCustas(idCustas).getIss());
-                    dbhCustas.getCustas(ultimo).setIssFixo(dbhCustas.getCustas(idCustas).isIssFixo());*/
 
                         custas = new Custas(ID_PAPEL, ultimoCorretagem, ultimoCustodia, ultimoTxLiquidacao, ultimoTxNegociacao, ultimoIss, isCorretagemFixa, isCustodiaFixa, isTxLiquidacaoFixa, isTxNegociacaoFixa, isIssFixo);
                         if(dbh.getCustas(ID_PAPEL).getCorretagem()== 0.0 && dbh.getCustas(ultimo).getCustodia()==0.0 && dbh.getCustas(ultimo).getTx_liquidacao()==0.0 && dbh.getCustas(ultimo).getTx_negociacao()==0.0 && dbh.getCustas(ultimo).getIss()==0.0) {

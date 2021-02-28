@@ -1,12 +1,14 @@
 package com.example.custasnasopb3;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.content.ContextCompat;
 
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.CheckBox;
 import android.widget.EditText;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -402,7 +404,68 @@ public class Custas extends AppCompatActivity {
         dbhCustas.close();
     }
 
+    public Double calc_Corretagem (EditText valorDisponivel, EditText valorPapel, EditText corretagem, Boolean corretagemFixa, Boolean fracionario){
 
+        //Função já disponibiliza o resultado do cálculo de corretagem.
+
+        //O filtro do fracionário é dentro desta função.
+
+        //Função coleta o valor do papel, quantidade - que já é o valor disponível pelo valor do papel
+        // - o valor da view de corretagem em uma view, recebe se é fracionário ou não e faz o cálculo de corretagem -
+        // na classe utilizada deve ser feito o resto dos tratamentos e recálculo.
+
+        Double db_valorDiponivel = Double.valueOf(String.valueOf(valorDisponivel.getText()));
+        Double db_valorPapel = Double.valueOf(String.valueOf(valorPapel.getText()));
+        Double db_corretagem = Double.valueOf(String.valueOf(corretagem.getText()));
+
+        Double parcialQuantidade_valdisponvelDivididovalPapel = db_valorDiponivel/db_valorPapel;
+
+        Double resultadoCalcCorretagem =0.0;
+
+        try {
+            //SE FOR FRACIONARIA
+            if (fracionario){
+                int tempQuantidade = (int) Math.round(parcialQuantidade_valdisponvelDivididovalPapel) / 99;
+                int tempparcialQuantidade_valdisponvelDivididovalPapel = (int) Math.round(parcialQuantidade_valdisponvelDivididovalPapel);
+
+                int countCorretagem = 0;
+                while (tempparcialQuantidade_valdisponvelDivididovalPapel>= 1){
+                    countCorretagem += 1;
+                    tempparcialQuantidade_valdisponvelDivididovalPapel -=99;
+                }
+
+                if (corretagemFixa) {
+                    resultadoCalcCorretagem = db_corretagem * countCorretagem;
+                    return resultadoCalcCorretagem;
+                }
+                else {
+                    tempQuantidade = Integer.valueOf(parcialQuantidade_valdisponvelDivididovalPapel.intValue());;
+                    resultadoCalcCorretagem = Porcentagem((db_valorPapel * tempQuantidade), db_corretagem);
+                    return resultadoCalcCorretagem;
+                }
+            }
+            //SE NÃO FOR FRACIONARIA
+            else {
+                int tempQuantidade = (int) (Math.round(parcialQuantidade_valdisponvelDivididovalPapel) / 100) * 100;
+                if (corretagemFixa){
+                    resultadoCalcCorretagem = db_corretagem;
+                    return resultadoCalcCorretagem;
+                }
+                else {
+                    resultadoCalcCorretagem = Porcentagem((db_valorPapel * tempQuantidade), db_corretagem);
+                    return resultadoCalcCorretagem;
+                }
+            }
+        }
+        catch (Exception e){
+            return resultadoCalcCorretagem;
+        }
+    }
+
+    public double Porcentagem(double valor, double porcentagem){
+        Double resultado = (valor*porcentagem)/100;
+        return resultado;
+    }
 
 
     public String toStringId(Integer id) {

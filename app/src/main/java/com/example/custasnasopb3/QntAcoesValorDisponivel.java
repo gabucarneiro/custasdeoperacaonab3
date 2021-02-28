@@ -34,7 +34,6 @@ public class QntAcoesValorDisponivel extends AppCompatActivity {
     /*Go after, do and keep practicing what you think is utopic, and it'll become reality. Gabriel, 20/02/2021 12:45*/
 
 
-
     @Override
     protected void onCreate (Bundle savedInstanceState){
         super.onCreate(savedInstanceState);
@@ -53,9 +52,26 @@ public class QntAcoesValorDisponivel extends AppCompatActivity {
         EditText pct_Iss = findViewById(R.id.pctIss);
         TextView pct_Emolumentos = findViewById(R.id.pctEmolumentos);
 
-        Double val_Disponivel = 0.0;
-        Double val_Papel = 0.0;
-        Double custoPorOperacao = 0.0;
+        CheckBox cbFracionaria = (CheckBox) findViewById(R.id.cbFracionario);
+
+        Double val_Disponivel, val_Papel, custoPorOperacao;
+
+        /*if (!cbFracionaria.isChecked()){
+            if (!valPapel.toString().equals("") && !quantidade.toString().equals("")){
+                        *//*Double fracionario = (Double.parseDouble(String.valueOf(valorPapel)) * Double.parseDouble(String.valueOf(quantidade)));
+                        int qntFracionaria = (int) Math.round(fracionario / 100);*//*
+
+                double valorPelaQuantidade = Double.parseDouble(String.valueOf(valorPapel)) * Double.parseDouble(String.valueOf(quantidade));
+                corretagemPadrao = Porcentagem(valorPelaQuantidade, tempCorretagemPadraoPorcentagem);
+                dbh.close();
+                return calc_Corretagem = corretagemPadrao;
+            }
+            else {
+                Toast.makeText(this, "Valor ou quantidade inválida", Toast.LENGTH_SHORT).show();
+                dbh.close();
+                return calc_Corretagem = 0.0;
+            }
+        }*/
 
         //CUSTOS OPERACIONAIS
         boolean corretagemFixa = true;
@@ -81,13 +97,16 @@ public class QntAcoesValorDisponivel extends AppCompatActivity {
         double ir_venda;
         double calc_ir_venda;
 
-        pct_Corretagem.setText(String.valueOf(corretagem));
+        DataBaseHelper dbhCustas = new DataBaseHelper(this);
+
+        pct_Corretagem.setText(String.valueOf(dbhCustas.getCustas(999).getCorretagem()));
         pct_Custodia.setText(String.valueOf(custodia));
         pct_Liquidacao.setText(String.valueOf(tx_liquidacao));
         pct_Negociacao.setText(String.valueOf(tx_negociacao));
         pct_Iss.setText(String.valueOf(iss));
         pct_Emolumentos.setText(String.valueOf(tx_liquidacao+tx_negociacao));
 
+        dbhCustas.close();
     }
     public void calQuantidadeAcaoValBruto (View view){
         DecimalFormat df2 = new DecimalFormat("0.00");
@@ -102,14 +121,57 @@ public class QntAcoesValorDisponivel extends AppCompatActivity {
         EditText pct_Negociacao = findViewById(R.id.pctNegociacao);
         EditText pct_Iss = findViewById(R.id.pctIss);
         TextView pct_Emolumentos = findViewById(R.id.pctEmolumentos);
+        TextView tv_quantidade = (TextView) findViewById(R.id.quantidade);
 
-        Double val_Disponivel = 0.0;
-        Double val_Papel = 0.0;
-        Double custoPorOperacao = 0.0;
+
+        //-------- CÁLCULO DE CORRETAGEM ----------
+
+        Custas custas = new Custas();
+
+        CheckBox cbFracionaria = findViewById(R.id.cbFracionario);
+        Boolean bool_cbFracionaria = cbFracionaria.isChecked();
+
+        CheckBox cbCorretagem = findViewById(R.id.cbCorretagem);
+        Boolean bool_cbCorretagem = cbCorretagem.isChecked();
+
+        Double val_Disponivel;
+        Double val_Papel;
+        Double custoPorOperacao;
+        Double resultadoCalcCorretagem;
+        Integer tempQuantidadeDeCotasPorValDispoivel;
+        Integer resultadoQuantidadeDeCotasPorValDispoivel;
+
+        if (!valPapel.toString().equals("") && !valDisponivel.toString().equals("") && Double.parseDouble(valPapel.getText().toString()) != 0 && Double.parseDouble(valDisponivel.getText().toString()) != 0){
+            try {
+                val_Disponivel = Double.valueOf(String.valueOf(valDisponivel.getText()));
+                val_Papel = Double.valueOf(String.valueOf(valPapel.getText()));
+                tempQuantidadeDeCotasPorValDispoivel = (int) Math.round(val_Disponivel/val_Papel);
+                //Toast.makeText(this, "Quantidade temporária de ações: " + tempQuantidadeDeCotasPorValDispoivel, Toast.LENGTH_SHORT).show();
+            }
+            catch (Exception e){
+                Toast.makeText(this, "Falha para obter os editTexts", Toast.LENGTH_SHORT).show();
+            }
+            resultadoCalcCorretagem = custas.calc_Corretagem(valDisponivel, valPapel, pct_Corretagem, bool_cbCorretagem, bool_cbFracionaria);
+
+        }
+        else {
+            val_Disponivel = 0.0;
+            custoPorOperacao = 0.0;
+            resultadoCalcCorretagem = 0.0;
+            tempQuantidadeDeCotasPorValDispoivel = 0;
+        }
+        Toast.makeText(this, "Resultado Corretagem: R$" + resultadoCalcCorretagem, Toast.LENGTH_SHORT).show();
+
+
+
+
+
+
+
 
         //CUSTOS OPERACIONAIS
         boolean corretagemFixa = true;
-        double corretagem = 2.49;
+        double corretagem = 1.99;
         double calc_Corretagem = 0.0;
 
         boolean custodiaFixa = false;
