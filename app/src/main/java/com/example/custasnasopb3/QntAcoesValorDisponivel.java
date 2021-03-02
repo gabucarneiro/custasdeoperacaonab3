@@ -21,7 +21,7 @@ public class QntAcoesValorDisponivel extends AppCompatActivity {
     // *** OK *** Incluir checkbutton para alterar valores, como tx_liquidacao, tx_negociacao, custodia, corretagem, iss
     // quando marcado o checkbutton, inserir um editView para permitir a alteração dos valores.
     // *** OK *** Checkar os checkbuttons e valores;
-    //TODO Criar o banco de dados para os Custos Operacionais.
+    // *** OK *** Criar o banco de dados para os Custos Operacionais.
     //TODO Dar continuidade às implementações do Checkbutton para opção de papel fracionário -
     // testar e corrigir os cálculos - colocar para mudança automática da quantidade de corretagens
     // necessárias e recalculo.
@@ -54,29 +54,11 @@ public class QntAcoesValorDisponivel extends AppCompatActivity {
 
         CheckBox cbFracionaria = (CheckBox) findViewById(R.id.cbFracionario);
 
-        Double val_Disponivel, val_Papel, custoPorOperacao;
-
-        /*if (!cbFracionaria.isChecked()){
-            if (!valPapel.toString().equals("") && !quantidade.toString().equals("")){
-                        *//*Double fracionario = (Double.parseDouble(String.valueOf(valorPapel)) * Double.parseDouble(String.valueOf(quantidade)));
-                        int qntFracionaria = (int) Math.round(fracionario / 100);*//*
-
-                double valorPelaQuantidade = Double.parseDouble(String.valueOf(valorPapel)) * Double.parseDouble(String.valueOf(quantidade));
-                corretagemPadrao = Porcentagem(valorPelaQuantidade, tempCorretagemPadraoPorcentagem);
-                dbh.close();
-                return calc_Corretagem = corretagemPadrao;
-            }
-            else {
-                Toast.makeText(this, "Valor ou quantidade inválida", Toast.LENGTH_SHORT).show();
-                dbh.close();
-                return calc_Corretagem = 0.0;
-            }
-        }*/
 
         //CUSTOS OPERACIONAIS
         boolean corretagemFixa = true;
-        double corretagem = 2.49;
-        double calc_Corretagem = 0.0;
+        double corretagem;
+        double calc_Corretagem;
 
         boolean custodiaFixa = false;
         double custodia = 0.0;
@@ -124,6 +106,8 @@ public class QntAcoesValorDisponivel extends AppCompatActivity {
         TextView tv_quantidade = (TextView) findViewById(R.id.quantidade);
 
 
+        //Faz o cálculo do valor disponível pelo valor do papel, pega a quantidade
+
         //-------- CÁLCULO DE CORRETAGEM ----------
 
         Custas custas = new Custas();
@@ -150,8 +134,12 @@ public class QntAcoesValorDisponivel extends AppCompatActivity {
             }
             catch (Exception e){
                 Toast.makeText(this, "Falha para obter os editTexts", Toast.LENGTH_SHORT).show();
+                tempQuantidadeDeCotasPorValDispoivel = 0;
             }
-            resultadoCalcCorretagem = custas.calc_Corretagem(valDisponivel, valPapel, pct_Corretagem, bool_cbCorretagem, bool_cbFracionaria);
+            //TODO excluir função abaixo - não recebe o cálculo da quantidade e portanto não pode ser "regulada".
+            //resultadoCalcCorretagem = custas.calc_Corretagem(valDisponivel, valPapel, pct_Corretagem, bool_cbCorretagem, bool_cbFracionaria);
+
+            resultadoCalcCorretagem = custas.calc_Corretagem2(valPapel, tempQuantidadeDeCotasPorValDispoivel, pct_Corretagem, bool_cbFracionaria, bool_cbCorretagem);
 
         }
         else {

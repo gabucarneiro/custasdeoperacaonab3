@@ -18,11 +18,11 @@ public class Custas extends AppCompatActivity {
 
     protected boolean corretagemFixa;
     protected double corretagem;
-    protected double calc_Corretagem = 0.0;
+    protected double calc_Corretagem;
 
     protected boolean custodiaFixa;
     protected double custodia;
-    protected double calc_Custodia= 0.0;
+    protected double calc_Custodia;
 
     protected double emolumentos;
     protected boolean tx_liquidacaoFixa;
@@ -32,7 +32,7 @@ public class Custas extends AppCompatActivity {
     protected double tx_negociacao;
     protected double calc_tx_negociacao;
 
-    protected boolean issCobrado = true;
+    protected boolean issCobrado;
     protected boolean issFixo;
     protected double iss;
     protected double calc_iss;
@@ -42,13 +42,14 @@ public class Custas extends AppCompatActivity {
     protected double ir_venda;
     protected double calc_ir_venda;
 
-    DataBaseHelper dbhCustas = new DataBaseHelper(this);
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_custas);
 
+        DataBaseHelper dbhCustas = new DataBaseHelper(this);
         //Custas custasStandard = new Custas(999, 1.99,0.0,0.0275,0.003247, 0.01, 1, 1, 0, 0, 0);
         //dbhCustas.addCustas(custasStandard);
 
@@ -119,6 +120,7 @@ public class Custas extends AppCompatActivity {
         else {
             cbIss2.setChecked(false);
         }
+        dbhCustas.close();
     }
 
     public int getId() {
@@ -316,6 +318,7 @@ public class Custas extends AppCompatActivity {
     //TODO Vincular as custas o "salvar" do papel no banco de dados - com base no ID - utilizar o uptadeCustas().
 
     public void salvarCustas(View view, int id){
+        DataBaseHelper dbhCustas = new DataBaseHelper(this);
         Custas custas = new Custas();
         if(id!=999){
             custas.setId(id);
@@ -349,9 +352,10 @@ public class Custas extends AppCompatActivity {
 
         dbhCustas.addCustas(custas);
         Toast.makeText(this, "Salvo!", Toast.LENGTH_SHORT).show();
-
+        dbhCustas.close();
     }
     public void standardCustas(View view){
+        DataBaseHelper dbhCustas = new DataBaseHelper(this);
         Custas custas = new Custas();
         id=999;
         custas.setId(id);
@@ -462,6 +466,74 @@ public class Custas extends AppCompatActivity {
         }
     }
 
+    //-------------------------------------------------
+
+    public Double calc_Corretagem2 (EditText valorPapel, Integer tempQuantidadeDeCotasPorValDispoivel, EditText corretagem, Boolean fracionario, Boolean corretagemFixa){
+
+        //Função já disponibiliza o resultado do cálculo de corretagem.
+
+        //O filtro do fracionário é dentro desta função.
+
+        //Função coleta o valor do papel, quantidade (que já é o valor disponível pelo valor do papel),
+        // o valor da view de corretagem em uma view, recebe se é fracionário ou não e faz o cálculo de corretagem
+        // (na classe utilizada deve ser feito o resto dos tratamentos e recálculo).
+
+        Double db_valorPapel = Double.valueOf(String.valueOf(valorPapel.getText()));
+        Double db_corretagem = Double.valueOf(String.valueOf(corretagem.getText()));
+
+        Double resultadoCalcCorretagem =0.0;
+
+        try {
+            //SE FOR FRACIONARIA
+            if (fracionario){
+                //DETERMINAR A QUANTIDADE DE MICROLOTES FRACIONÁRIOS (99 COTAS)
+                int tempQuantidade = tempQuantidadeDeCotasPorValDispoivel;
+                int countCorretagem = 0;
+                while (tempQuantidade>= 1){
+                    countCorretagem += 1;
+                    tempQuantidade -=99;
+                }
+                //SE FOR CORRETAGEM FIXA
+                if (corretagemFixa) {
+                    resultadoCalcCorretagem = db_corretagem * countCorretagem;
+                    return resultadoCalcCorretagem;
+                }
+                //SE FOR CORRETAGEM COM BASE NA PORCENTAGEM DO MONTANTE TOTAL USADO NA COMPRA
+                else {
+                    tempQuantidade = tempQuantidadeDeCotasPorValDispoivel;
+                    resultadoCalcCorretagem = Porcentagem((db_valorPapel * tempQuantidade), db_corretagem);
+                    return resultadoCalcCorretagem;
+                }
+            }
+            //SE NÃO FOR FRACIONARIA
+            else {
+                //SEPARA PARA PEGAR APENAS OS LOTES FECHADOS (100 COTAS POR LOTE)
+                int tempQuantidade = (int) (Math.round(tempQuantidadeDeCotasPorValDispoivel) / 100) * 100;
+                //SE FOR CORRETAGEM FIXA
+                if (corretagemFixa){
+                    resultadoCalcCorretagem = db_corretagem;
+                    return resultadoCalcCorretagem;
+                }
+                //SE FOR CORRETAGEM COM BASE NA PORCENTAGEM DO MONTANTE TOTAL USADO NA COMPRA
+                else {
+                    resultadoCalcCorretagem = Porcentagem((db_valorPapel * tempQuantidade), db_corretagem);
+                    return resultadoCalcCorretagem;
+                }
+            }
+        }
+        catch (Exception e){
+            return resultadoCalcCorretagem;
+        }
+    }
+
+
+
+
+
+
+
+    //--------------------------------------------------
+
     public double Porcentagem(double valor, double porcentagem){
         Double resultado = (valor*porcentagem)/100;
         return resultado;
@@ -469,17 +541,21 @@ public class Custas extends AppCompatActivity {
 
 
     public String toStringId(Integer id) {
+        DataBaseHelper dbhCustas = new DataBaseHelper(this);
+
+        int tempid =  dbhCustas.getCustas(id).getId();
+        double tempcorretagem = dbhCustas.getCustas(id).getCorretagem();
+        double tempcustodia = dbhCustas.getCustas(id).getCustodia();
+        double temptx_liquidacao = dbhCustas.getCustas(id).getTx_liquidacao();
+        double temptx_negociacao = dbhCustas.getCustas(id).getTx_negociacao();
+        double tempiss = dbhCustas.getCustas(id).getIss();
+        dbhCustas.close();
         return "Custas:\n" +
-                "id=" + dbhCustas.getCustas(id).getId() +
-                ", \n corretagem=" + dbhCustas.getCustas(id).getCorretagem() +
-                ", \n calc_Corretagem=" + dbhCustas.getCustas(id).getCalc_Corretagem() +
-                ", \n custodia=" + dbhCustas.getCustas(id).getCustodia() +
-                ", \n calc_Custodia=" + dbhCustas.getCustas(id).getCalc_Custodia() +
-                ", \n tx_liquidacao=" + dbhCustas.getCustas(id).getTx_liquidacao() +
-                ", \n calc_tx_liquidacao=" + dbhCustas.getCustas(id).getCalc_tx_liquidacao() +
-                ", \n tx_negociacao=" + dbhCustas.getCustas(id).getTx_negociacao() +
-                ", \n calc_tx_negociacao=" + dbhCustas.getCustas(id).getCalc_tx_negociacao() +
-                ", \n iss=" + dbhCustas.getCustas(id).getIss() +
-                ", \n calc_iss=" + dbhCustas.getCustas(id).getCalc_iss() + "\n";
+                "id=" + tempid +
+                ", \n corretagem=" + tempcorretagem +
+                ", \n custodia=" + tempcustodia +
+                ", \n tx_liquidacao=" + temptx_liquidacao +
+                ", \n tx_negociacao=" + temptx_negociacao +
+                ", \n iss=" + tempiss + "\n";
     }
 }
