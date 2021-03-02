@@ -527,6 +527,11 @@ public class Custas extends AppCompatActivity {
     }
 
 
+    public double calc_Custodia(){
+        double resultadoCustodia = 0;
+
+        return resultadoCustodia;
+    }
 
 
 

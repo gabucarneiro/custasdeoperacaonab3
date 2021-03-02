@@ -54,7 +54,7 @@ public class QntAcoesValorDisponivel extends AppCompatActivity {
 
         CheckBox cbFracionaria = (CheckBox) findViewById(R.id.cbFracionario);
 
-
+/*
         //CUSTOS OPERACIONAIS
         boolean corretagemFixa = true;
         double corretagem;
@@ -77,16 +77,60 @@ public class QntAcoesValorDisponivel extends AppCompatActivity {
         double ir_compra;
         double calc_ir_compra;
         double ir_venda;
-        double calc_ir_venda;
+        double calc_ir_venda;*/
 
         DataBaseHelper dbhCustas = new DataBaseHelper(this);
 
         pct_Corretagem.setText(String.valueOf(dbhCustas.getCustas(999).getCorretagem()));
-        pct_Custodia.setText(String.valueOf(custodia));
-        pct_Liquidacao.setText(String.valueOf(tx_liquidacao));
-        pct_Negociacao.setText(String.valueOf(tx_negociacao));
-        pct_Iss.setText(String.valueOf(iss));
-        pct_Emolumentos.setText(String.valueOf(tx_liquidacao+tx_negociacao));
+        pct_Custodia.setText(String.valueOf(dbhCustas.getCustas(999).getCustodia()));
+        pct_Liquidacao.setText(String.valueOf(dbhCustas.getCustas(999).getTx_liquidacao()));
+        pct_Negociacao.setText(String.valueOf(dbhCustas.getCustas(999).getTx_negociacao()));
+        pct_Iss.setText(String.valueOf(dbhCustas.getCustas(999).getIss()));
+        pct_Emolumentos.setText(String.valueOf(dbhCustas.getCustas(999).getTx_liquidacao()+dbhCustas.getCustas(999).getTx_negociacao()));
+
+
+        DataBaseHelper dbhCheckbox = new DataBaseHelper(this);
+
+        CheckBox cbCorretagem = findViewById(R.id.cbCorretagem);
+        if (dbhCheckbox.getCustas(999).isCorretagemFixa()){
+            cbCorretagem.setChecked(true);
+        }
+        else {
+            cbCorretagem.setChecked(false);
+        }
+
+        CheckBox cbCustodia = findViewById(R.id.cbCustodia);
+        if (dbhCheckbox.getCustas(999).isCustodiaFixa()){
+            cbCustodia.setChecked(true);
+        }
+        else {
+            cbCustodia.setChecked(false);
+        }
+
+        CheckBox cbLiquidacao = findViewById(R.id.cbLiquidacao);
+        if (dbhCheckbox.getCustas(999).isTx_liquidacaoFixa()){
+            cbLiquidacao.setChecked(true);
+        }
+        else {
+            cbLiquidacao.setChecked(false);
+        }
+
+        CheckBox cbNegociacao = findViewById(R.id.cbNegociacao);
+        if (dbhCheckbox.getCustas(999).isTx_negociacaoFixa()){
+            cbNegociacao.setChecked(true);
+        }
+        else {
+            cbNegociacao.setChecked(false);
+        }
+
+        CheckBox cbIss = findViewById(R.id.cbIss);
+        if (dbhCheckbox.getCustas(999).isIssFixo()){
+            cbIss.setChecked(true);
+        }
+        else {
+            cbIss.setChecked(false);
+        }
+        dbhCheckbox.close();
 
         dbhCustas.close();
     }
@@ -96,12 +140,33 @@ public class QntAcoesValorDisponivel extends AppCompatActivity {
         DecimalFormat df4 = new DecimalFormat("0.0000");
 
         EditText valDisponivel = (EditText) findViewById(R.id.valDisponivel);
+        if (valDisponivel.getText().equals("")){
+            valDisponivel.setError("Campo obrigatório");
+        }
         EditText valPapel = (EditText) findViewById(R.id.valPapel);
+        if (valPapel.getText().equals("")){
+            valPapel.setError("Campo obrigatório");
+        }
         EditText pct_Corretagem = findViewById(R.id.pctCorretagem);
+        if (pct_Corretagem.getText().equals("")){
+            pct_Corretagem.setError("Campo obrigatório");
+        }
         EditText pct_Custodia = findViewById(R.id.pctCustodia);
+        if (pct_Custodia.getText().equals("")){
+            pct_Custodia.setError("Campo obrigatório");
+        }
         EditText pct_Liquidacao = findViewById(R.id.pctLiquidacao);
+        if (pct_Liquidacao.getText().equals("")){
+            pct_Liquidacao.setError("Campo obrigatório");
+        }
         EditText pct_Negociacao = findViewById(R.id.pctNegociacao);
+        if (pct_Negociacao.getText().equals("")){
+            pct_Negociacao.setError("Campo obrigatório");
+        }
         EditText pct_Iss = findViewById(R.id.pctIss);
+        if (pct_Iss.getText().equals("")){
+            pct_Iss.setError("Campo obrigatório");
+        }
         TextView pct_Emolumentos = findViewById(R.id.pctEmolumentos);
         TextView tv_quantidade = (TextView) findViewById(R.id.quantidade);
 
@@ -111,6 +176,7 @@ public class QntAcoesValorDisponivel extends AppCompatActivity {
         //-------- CÁLCULO DE CORRETAGEM ----------
 
         Custas custas = new Custas();
+        DataBaseHelper dbhCheckbox = new DataBaseHelper(this);
 
         CheckBox cbFracionaria = findViewById(R.id.cbFracionario);
         Boolean bool_cbFracionaria = cbFracionaria.isChecked();
@@ -118,12 +184,31 @@ public class QntAcoesValorDisponivel extends AppCompatActivity {
         CheckBox cbCorretagem = findViewById(R.id.cbCorretagem);
         Boolean bool_cbCorretagem = cbCorretagem.isChecked();
 
+        CheckBox cbCustodia = findViewById(R.id.cbCustodia);
+        Boolean bool_cbCustodia = cbCustodia.isChecked();
+
+        CheckBox cbLiquidacao = findViewById(R.id.cbLiquidacao);
+        Boolean bool_cbLiquidacao = cbLiquidacao.isChecked();
+
+        CheckBox cbNegociacao = findViewById(R.id.cbNegociacao);
+        Boolean bool_cbNegociacao = cbNegociacao.isChecked();
+
+        CheckBox cbIss = findViewById(R.id.cbIss);
+        Boolean bool_cbIss = cbIss.isChecked();
+
+        dbhCheckbox.close();
+
         Double val_Disponivel;
         Double val_Papel;
         Double custoPorOperacao;
         Double resultadoCalcCorretagem;
+        Double resultadoCalcCustodia;
+        Double resultadoCalcLiquidacao;
+        Double resultadoCalcNegociacao;
+        Double resultadoCalcIss;
         Integer tempQuantidadeDeCotasPorValDispoivel;
         Integer resultadoQuantidadeDeCotasPorValDispoivel;
+        Double sumResultadoCalculoCustas;
 
         if (!valPapel.toString().equals("") && !valDisponivel.toString().equals("") && Double.parseDouble(valPapel.getText().toString()) != 0 && Double.parseDouble(valDisponivel.getText().toString()) != 0){
             try {
@@ -134,21 +219,79 @@ public class QntAcoesValorDisponivel extends AppCompatActivity {
             }
             catch (Exception e){
                 Toast.makeText(this, "Falha para obter os editTexts", Toast.LENGTH_SHORT).show();
+                val_Disponivel = 0.0;
+                val_Papel = 0.0;
                 tempQuantidadeDeCotasPorValDispoivel = 0;
             }
             //TODO excluir função abaixo - não recebe o cálculo da quantidade e portanto não pode ser "regulada".
             //resultadoCalcCorretagem = custas.calc_Corretagem(valDisponivel, valPapel, pct_Corretagem, bool_cbCorretagem, bool_cbFracionaria);
 
             resultadoCalcCorretagem = custas.calc_Corretagem2(valPapel, tempQuantidadeDeCotasPorValDispoivel, pct_Corretagem, bool_cbFracionaria, bool_cbCorretagem);
+            resultadoCalcCustodia = custas.calc_Corretagem2(valPapel, tempQuantidadeDeCotasPorValDispoivel, pct_Custodia, bool_cbFracionaria, bool_cbCustodia);
+            resultadoCalcLiquidacao = custas.calc_Corretagem2(valPapel, tempQuantidadeDeCotasPorValDispoivel, pct_Liquidacao, bool_cbFracionaria, bool_cbLiquidacao);
+            resultadoCalcNegociacao = custas.calc_Corretagem2(valPapel, tempQuantidadeDeCotasPorValDispoivel, pct_Negociacao, bool_cbFracionaria, bool_cbNegociacao);
+            resultadoCalcIss = custas.calc_Corretagem2(valPapel, tempQuantidadeDeCotasPorValDispoivel, pct_Iss, bool_cbFracionaria, bool_cbIss);
+
+            sumResultadoCalculoCustas = resultadoCalcCorretagem + resultadoCalcCustodia + resultadoCalcLiquidacao + resultadoCalcNegociacao + resultadoCalcIss;
+            Toast.makeText(this, "1 sumResultadoCalculoCustas: " + sumResultadoCalculoCustas, Toast.LENGTH_SHORT).show();
+
+            double tempValorTotaldaCompra = sumResultadoCalculoCustas + (tempQuantidadeDeCotasPorValDispoivel * val_Papel);
+            Toast.makeText(this, "1 Quantidade tempQuantidadeDeCotasPorValDispoivel: " + tempQuantidadeDeCotasPorValDispoivel, Toast.LENGTH_SHORT).show();
+
+            Toast.makeText(this, "1 Soma com emolumentos: R$" + tempValorTotaldaCompra, Toast.LENGTH_SHORT).show();
+
+
+            //TODO CONTINUAR......
+
+            if(tempValorTotaldaCompra > val_Disponivel){
+                tempQuantidadeDeCotasPorValDispoivel-=1;
+                Toast.makeText(this, "2 Quantidade tempQuantidadeDeCotasPorValDispoivel: " + tempQuantidadeDeCotasPorValDispoivel, Toast.LENGTH_SHORT).show();
+
+                resultadoCalcCorretagem = custas.calc_Corretagem2(valPapel, tempQuantidadeDeCotasPorValDispoivel, pct_Corretagem, bool_cbFracionaria, bool_cbCorretagem);
+                resultadoCalcCustodia = custas.calc_Corretagem2(valPapel, tempQuantidadeDeCotasPorValDispoivel, pct_Custodia, bool_cbFracionaria, bool_cbCustodia);
+                resultadoCalcLiquidacao = custas.calc_Corretagem2(valPapel, tempQuantidadeDeCotasPorValDispoivel, pct_Liquidacao, bool_cbFracionaria, bool_cbLiquidacao);
+                resultadoCalcNegociacao = custas.calc_Corretagem2(valPapel, tempQuantidadeDeCotasPorValDispoivel, pct_Negociacao, bool_cbFracionaria, bool_cbNegociacao);
+                resultadoCalcIss = custas.calc_Corretagem2(valPapel, tempQuantidadeDeCotasPorValDispoivel, pct_Iss, bool_cbFracionaria, bool_cbIss);
+
+                sumResultadoCalculoCustas = resultadoCalcCorretagem + resultadoCalcCustodia + resultadoCalcLiquidacao + resultadoCalcNegociacao + resultadoCalcIss;
+                Toast.makeText(this, "2 sumResultadoCalculoCustas: " + sumResultadoCalculoCustas, Toast.LENGTH_SHORT).show();
+
+                tempValorTotaldaCompra = sumResultadoCalculoCustas + (tempQuantidadeDeCotasPorValDispoivel * val_Papel);
+            }
+            Toast.makeText(this, "2 Soma com emolumentos: R$" + tempValorTotaldaCompra, Toast.LENGTH_SHORT).show();
+
+
+            /*while ((sumResultadoCalculoCustas + (tempQuantidadeDeCotasPorValDispoivel * val_Papel)) > val_Disponivel && tempQuantidadeDeCotasPorValDispoivel>1){
+                tempQuantidadeDeCotasPorValDispoivel-=1;
+                resultadoCalcCorretagem = custas.calc_Corretagem2(valPapel, tempQuantidadeDeCotasPorValDispoivel, pct_Corretagem, bool_cbFracionaria, bool_cbCorretagem);
+                resultadoCalcCustodia = custas.calc_Corretagem2(valPapel, tempQuantidadeDeCotasPorValDispoivel, pct_Custodia, bool_cbFracionaria, bool_cbCustodia);
+                resultadoCalcLiquidacao = custas.calc_Corretagem2(valPapel, tempQuantidadeDeCotasPorValDispoivel, pct_Liquidacao, bool_cbFracionaria, bool_cbLiquidacao);
+                resultadoCalcNegociacao = custas.calc_Corretagem2(valPapel, tempQuantidadeDeCotasPorValDispoivel, pct_Negociacao, bool_cbFracionaria, bool_cbNegociacao);
+                resultadoCalcIss = custas.calc_Corretagem2(valPapel, tempQuantidadeDeCotasPorValDispoivel, pct_Iss, bool_cbFracionaria, bool_cbIss);
+
+                sumResultadoCalculoCustas = resultadoCalcCorretagem + resultadoCalcCustodia + resultadoCalcLiquidacao + resultadoCalcNegociacao + resultadoCalcIss;
+            }*/
+
 
         }
         else {
             val_Disponivel = 0.0;
             custoPorOperacao = 0.0;
             resultadoCalcCorretagem = 0.0;
+            resultadoCalcCustodia = 0.0;
+            resultadoCalcLiquidacao = 0.0;
+            resultadoCalcNegociacao = 0.0;
+            resultadoCalcIss = 0.0;
             tempQuantidadeDeCotasPorValDispoivel = 0;
+            sumResultadoCalculoCustas = 0.0;
         }
-        Toast.makeText(this, "Resultado Corretagem: R$" + resultadoCalcCorretagem, Toast.LENGTH_SHORT).show();
+        /*Toast.makeText(this, "Resultado Corretagem: R$" + resultadoCalcCorretagem, Toast.LENGTH_SHORT).show();
+        Toast.makeText(this, "Resultado Custodia: R$" + resultadoCalcCustodia, Toast.LENGTH_SHORT).show();
+        Toast.makeText(this, "Resultado Liquidação: R$" + resultadoCalcLiquidacao, Toast.LENGTH_SHORT).show();
+        Toast.makeText(this, "Resultado Negociação: R$" + resultadoCalcNegociacao, Toast.LENGTH_SHORT).show();
+        Toast.makeText(this, "Resultado ISS: R$" + resultadoCalcIss, Toast.LENGTH_SHORT).show();
+
+        Toast.makeText(this, "Soma dos emolumentos: R$" + sumResultadoCalculoCustas, Toast.LENGTH_SHORT).show();*/
 
 
 
