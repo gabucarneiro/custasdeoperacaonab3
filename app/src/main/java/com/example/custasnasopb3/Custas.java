@@ -408,7 +408,7 @@ public class Custas extends AppCompatActivity {
         dbhCustas.close();
     }
 
-    public Double calc_Corretagem (EditText valorDisponivel, EditText valorPapel, EditText corretagem, Boolean corretagemFixa, Boolean fracionario){
+    public Double calc_Corretagem (Double valorPapel, Integer tempQuantidadeDeCotasPorValDispoivel, Double custa, Boolean fracionario, Boolean custaFixa){
 
         //Função já disponibiliza o resultado do cálculo de corretagem.
 
@@ -418,70 +418,10 @@ public class Custas extends AppCompatActivity {
         // - o valor da view de corretagem em uma view, recebe se é fracionário ou não e faz o cálculo de corretagem -
         // na classe utilizada deve ser feito o resto dos tratamentos e recálculo.
 
-        Double db_valorDiponivel = Double.valueOf(String.valueOf(valorDisponivel.getText()));
-        Double db_valorPapel = Double.valueOf(String.valueOf(valorPapel.getText()));
-        Double db_corretagem = Double.valueOf(String.valueOf(corretagem.getText()));
+        Double db_valorPapel = valorPapel;
+        Double db_custa = custa;
 
-        Double parcialQuantidade_valdisponvelDivididovalPapel = db_valorDiponivel/db_valorPapel;
-
-        Double resultadoCalcCorretagem =0.0;
-
-        try {
-            //SE FOR FRACIONARIA
-            if (fracionario){
-                int tempQuantidade = (int) Math.round(parcialQuantidade_valdisponvelDivididovalPapel) / 99;
-                int tempparcialQuantidade_valdisponvelDivididovalPapel = (int) Math.round(parcialQuantidade_valdisponvelDivididovalPapel);
-
-                int countCorretagem = 0;
-                while (tempparcialQuantidade_valdisponvelDivididovalPapel>= 1){
-                    countCorretagem += 1;
-                    tempparcialQuantidade_valdisponvelDivididovalPapel -=99;
-                }
-
-                if (corretagemFixa) {
-                    resultadoCalcCorretagem = db_corretagem * countCorretagem;
-                    return resultadoCalcCorretagem;
-                }
-                else {
-                    tempQuantidade = Integer.valueOf(parcialQuantidade_valdisponvelDivididovalPapel.intValue());;
-                    resultadoCalcCorretagem = Porcentagem((db_valorPapel * tempQuantidade), db_corretagem);
-                    return resultadoCalcCorretagem;
-                }
-            }
-            //SE NÃO FOR FRACIONARIA
-            else {
-                int tempQuantidade = (int) (Math.round(parcialQuantidade_valdisponvelDivididovalPapel) / 100) * 100;
-                if (corretagemFixa){
-                    resultadoCalcCorretagem = db_corretagem;
-                    return resultadoCalcCorretagem;
-                }
-                else {
-                    resultadoCalcCorretagem = Porcentagem((db_valorPapel * tempQuantidade), db_corretagem);
-                    return resultadoCalcCorretagem;
-                }
-            }
-        }
-        catch (Exception e){
-            return resultadoCalcCorretagem;
-        }
-    }
-
-    //-------------------------------------------------
-
-    public Double calc_Corretagem2 (EditText valorPapel, Integer tempQuantidadeDeCotasPorValDispoivel, EditText corretagem, Boolean fracionario, Boolean corretagemFixa){
-
-        //Função já disponibiliza o resultado do cálculo de corretagem.
-
-        //O filtro do fracionário é dentro desta função.
-
-        //Função coleta o valor do papel, quantidade (que já é o valor disponível pelo valor do papel),
-        // o valor da view de corretagem em uma view, recebe se é fracionário ou não e faz o cálculo de corretagem
-        // (na classe utilizada deve ser feito o resto dos tratamentos e recálculo).
-
-        Double db_valorPapel = Double.valueOf(String.valueOf(valorPapel.getText()));
-        Double db_corretagem = Double.valueOf(String.valueOf(corretagem.getText()));
-
-        Double resultadoCalcCorretagem =0.0;
+        Double resultadoCalcCorretagem;
 
         try {
             //SE FOR FRACIONARIA
@@ -494,7 +434,67 @@ public class Custas extends AppCompatActivity {
                     tempQuantidade -=99;
                 }
                 //SE FOR CORRETAGEM FIXA
-                if (corretagemFixa) {
+                if (custaFixa) {
+                    resultadoCalcCorretagem = db_custa * countCorretagem;
+                    return resultadoCalcCorretagem;
+                }
+                //SE FOR CORRETAGEM COM BASE NA PORCENTAGEM DO MONTANTE TOTAL USADO NA COMPRA
+                else {
+                    tempQuantidade = tempQuantidadeDeCotasPorValDispoivel;
+                    resultadoCalcCorretagem = Porcentagem((db_valorPapel * tempQuantidade), db_custa);
+                    return resultadoCalcCorretagem;
+                }
+            }
+            //SE NÃO FOR FRACIONARIA
+            else {
+                //SEPARA PARA PEGAR APENAS OS LOTES FECHADOS (100 COTAS POR LOTE)
+                int tempQuantidade = (int) (Math.round(tempQuantidadeDeCotasPorValDispoivel) / 100) * 100;
+                //SE FOR CORRETAGEM FIXA
+                if (custaFixa){
+                    resultadoCalcCorretagem = db_custa;
+                    return resultadoCalcCorretagem;
+                }
+                //SE FOR CORRETAGEM COM BASE NA PORCENTAGEM DO MONTANTE TOTAL USADO NA COMPRA
+                else {
+                    resultadoCalcCorretagem = Porcentagem((db_valorPapel * tempQuantidade), db_custa);
+                    return resultadoCalcCorretagem;
+                }
+            }
+        }
+        catch (Exception e){
+            return resultadoCalcCorretagem = 0.0;
+        }
+    }
+
+    //-------------------------------------------------
+
+    public Double calc_Corretagem2 (EditText valorPapel, Integer tempQuantidadeDeCotasPorValDispoivel, EditText custa, Boolean fracionario, Boolean custaFixa){
+
+        //Função já disponibiliza o resultado do cálculo de corretagem.
+
+        //O filtro do fracionário é dentro desta função.
+
+        //Função coleta o valor do papel, quantidade (que já é o valor disponível pelo valor do papel),
+        // o valor da view de corretagem em uma view, recebe se é fracionário ou não e faz o cálculo de corretagem
+        // (na classe utilizada deve ser feito o resto dos tratamentos e recálculo).
+
+        Double db_valorPapel = Double.valueOf(String.valueOf(valorPapel.getText()));
+        Double db_corretagem = Double.valueOf(String.valueOf(custa.getText()));
+
+        Double resultadoCalcCorretagem;
+
+        try {
+            //SE FOR FRACIONARIA
+            if (fracionario){
+                //DETERMINAR A QUANTIDADE DE MICROLOTES FRACIONÁRIOS (99 COTAS)
+                int tempQuantidade = tempQuantidadeDeCotasPorValDispoivel;
+                int countCorretagem = 0;
+                while (tempQuantidade>= 1){
+                    countCorretagem += 1;
+                    tempQuantidade -=99;
+                }
+                //SE FOR CORRETAGEM FIXA
+                if (custaFixa) {
                     resultadoCalcCorretagem = db_corretagem * countCorretagem;
                     return resultadoCalcCorretagem;
                 }
@@ -510,7 +510,7 @@ public class Custas extends AppCompatActivity {
                 //SEPARA PARA PEGAR APENAS OS LOTES FECHADOS (100 COTAS POR LOTE)
                 int tempQuantidade = (int) (Math.round(tempQuantidadeDeCotasPorValDispoivel) / 100) * 100;
                 //SE FOR CORRETAGEM FIXA
-                if (corretagemFixa){
+                if (custaFixa){
                     resultadoCalcCorretagem = db_corretagem;
                     return resultadoCalcCorretagem;
                 }
@@ -522,7 +522,7 @@ public class Custas extends AppCompatActivity {
             }
         }
         catch (Exception e){
-            return resultadoCalcCorretagem;
+            return resultadoCalcCorretagem = 0.0;
         }
     }
 
