@@ -150,6 +150,7 @@ public class QntAcoesValorDisponivel extends AppCompatActivity {
         TextView tv5 = new TextView(this);
         TextView tv6 = new TextView(this);
         TextView tv7 = new TextView(this);
+        TextView tv8 = new TextView(this);
         //TODO EXCLUIR APÓS TESTES
 
 
@@ -187,7 +188,7 @@ public class QntAcoesValorDisponivel extends AppCompatActivity {
 
         //Faz o cálculo do valor disponível pelo valor do papel, pega a quantidade
 
-        //-------- CÁLCULO DE CORRETAGEM ----------
+        //-------- CÁLCULO DE CUSTAS ----------
 
         Custas custas = new Custas();
         DataBaseHelper dbhCheckbox = new DataBaseHelper(this);
@@ -229,7 +230,7 @@ public class QntAcoesValorDisponivel extends AppCompatActivity {
                 val_Disponivel = Double.valueOf(String.valueOf(valDisponivel.getText()));
                 val_Papel = Double.valueOf(String.valueOf(valPapel.getText()));
                 tempQuantidadeDeCotasPorValDispoivel = (int) Math.round(val_Disponivel/val_Papel);
-                Toast.makeText(this, "Quantidade temporária de ações: " + tempQuantidadeDeCotasPorValDispoivel, Toast.LENGTH_SHORT).show();
+                //Toast.makeText(this, "Quantidade temporária de ações: " + tempQuantidadeDeCotasPorValDispoivel, Toast.LENGTH_SHORT).show();
             }
             catch (Exception e){
                 Toast.makeText(this, "Falha para obter os editTexts", Toast.LENGTH_SHORT).show();
@@ -237,273 +238,90 @@ public class QntAcoesValorDisponivel extends AppCompatActivity {
                 val_Papel = 0.0;
                 tempQuantidadeDeCotasPorValDispoivel = 0;
             }
-            //OS CÁLCULOS ABAIXO ESTÃO CORRETOS.
+
             resultadoCalcCorretagem = custas.calc_Corretagem2(valPapel, tempQuantidadeDeCotasPorValDispoivel, pct_Corretagem, bool_cbFracionaria, bool_cbCorretagem);
-            tv1.setText("Corretagem 1: " + String.valueOf(resultadoCalcCorretagem));
-            //Toast.makeText(this, "1 Calculo de Corretagem: " + resultadoCalcCorretagem, Toast.LENGTH_SHORT).show();
             resultadoCalcCustodia = custas.calc_Corretagem2(valPapel, tempQuantidadeDeCotasPorValDispoivel, pct_Custodia, bool_cbFracionaria, bool_cbCustodia);
-            tv2.setText("Custodia 1: " + String.valueOf(resultadoCalcCustodia));
-            //Toast.makeText(this, "1 Calculo de Custodia: " + resultadoCalcCustodia, Toast.LENGTH_SHORT).show();
             resultadoCalcLiquidacao = custas.calc_Corretagem2(valPapel, tempQuantidadeDeCotasPorValDispoivel, pct_Liquidacao, bool_cbFracionaria, bool_cbLiquidacao);
-            tv3.setText("Liquidação 1: " + String.valueOf(resultadoCalcLiquidacao));
-            //Toast.makeText(this, "1 Calculo de Liquidação: " + resultadoCalcLiquidacao, Toast.LENGTH_SHORT).show();
             resultadoCalcNegociacao = custas.calc_Corretagem2(valPapel, tempQuantidadeDeCotasPorValDispoivel, pct_Negociacao, bool_cbFracionaria, bool_cbNegociacao);
-            tv4.setText("Negociação 1: " + String.valueOf(resultadoCalcNegociacao));
-            //Toast.makeText(this, "1 Calculo de Negociação: " + resultadoCalcNegociacao, Toast.LENGTH_SHORT).show();
             resultadoCalcIss = custas.calc_Corretagem2(valPapel, tempQuantidadeDeCotasPorValDispoivel, pct_Iss, bool_cbFracionaria, bool_cbIss);
-            tv5.setText("Iss 1: " + String.valueOf(resultadoCalcIss));
-            //Toast.makeText(this, "1 Calculo de ISS: " + resultadoCalcIss, Toast.LENGTH_SHORT).show();
 
             sumResultadoCalculoCustas = resultadoCalcCorretagem + resultadoCalcCustodia + resultadoCalcLiquidacao + resultadoCalcNegociacao + resultadoCalcIss;
-            tv6.setText("Soma da custas 1: " + String.valueOf(sumResultadoCalculoCustas));
-            //Toast.makeText(this, "1 sumResultadoCalculoCustas: " + sumResultadoCalculoCustas, Toast.LENGTH_SHORT).show();
 
             if (!bool_cbFracionaria){
                 tempQuantidadeDeCotasPorValDispoivel = qntLote(tempQuantidadeDeCotasPorValDispoivel) * 100;
             }
             double tempValorTotaldaCompra = sumResultadoCalculoCustas + (tempQuantidadeDeCotasPorValDispoivel * val_Papel);
-            tv7.setText("Custas + (Valor do papel * quantidade) 1: " + String.valueOf(tempQuantidadeDeCotasPorValDispoivel) + " Resultado: " + String.valueOf(tempValorTotaldaCompra));
-            //Toast.makeText(this, "1 Quantidade tempQuantidadeDeCotasPorValDispoivel: " + tempQuantidadeDeCotasPorValDispoivel, Toast.LENGTH_SHORT).show();
 
-            //Toast.makeText(this, "1 Soma com emolumentos: R$" + tempValorTotaldaCompra, Toast.LENGTH_SHORT).show();
-
-            //TODO CONTINUAR......
-
-            /*Integer tempqnt = tempQuantidadeDeCotasPorValDispoivel-=1;
-            Custas custas2 = new Custas();
-            Double tempresultadoCalcLiquidacao;
-            CheckBox tempcbFracionaria = findViewById(R.id.cbFracionario);
-            Boolean tempbool_cbFracionaria = tempcbFracionaria.isChecked();
-            EditText tempvalPapel = (EditText) findViewById(R.id.valPapel);
-            Double ttempvalPapel = Double.parseDouble(tempvalPapel.getText().toString());
-            EditText temppct_Liquidacao = findViewById(R.id.pctLiquidacao);
-            Double ttemppct_Liquidacao = Double.parseDouble(temppct_Liquidacao.getText().toString());
-            CheckBox tempcbLiquidacao = findViewById(R.id.cbLiquidacao);
-            Boolean tempbool_cbLiquidacao = tempcbLiquidacao.isChecked();*/
-
-
-            /*Toast.makeText(this, "2 VPapel: " + ttempvalPapel, Toast.LENGTH_SHORT).show();
-            Toast.makeText(this, "2 Qnt: " + tempqnt, Toast.LENGTH_SHORT).show();
-            Toast.makeText(this, "2 pct Liquidação: " + ttemppct_Liquidacao, Toast.LENGTH_SHORT).show();
-            Toast.makeText(this, "2 bool frac: " + tempbool_cbFracionaria, Toast.LENGTH_SHORT).show();
-            Toast.makeText(this, "2 bool liq: " + tempbool_cbLiquidacao, Toast.LENGTH_SHORT).show();*/
-
-            /*tempresultadoCalcLiquidacao = custas2.calc_Corretagem(ttempvalPapel, tempqnt, ttemppct_Liquidacao, tempbool_cbFracionaria, tempbool_cbLiquidacao);
-            Toast.makeText(this, "2 Calculo de Liquidação: " + tempresultadoCalcLiquidacao, Toast.LENGTH_SHORT).show();*/
-
-
-
-
-
-
-
-            /*if(tempValorTotaldaCompra > val_Disponivel){
-                tempQuantidadeDeCotasPorValDispoivel-=1;
-                *//*Custas custas2 = new Custas();
-
-                Double tempresultadoCalcLiquidacao;
-                CheckBox tempcbFracionaria = findViewById(R.id.cbFracionario);
-                Boolean tempbool_cbFracionaria = tempcbFracionaria.isChecked();
-                EditText tempvalPapel = (EditText) findViewById(R.id.valPapel);
-                Double ttempvalPapel = Double.parseDouble(tempvalPapel.getText().toString());
-                EditText temppct_Liquidacao = findViewById(R.id.pctLiquidacao);
-                Double ttemppct_Liquidacao = Double.parseDouble(temppct_Liquidacao.getText().toString());
-                CheckBox tempcbLiquidacao = findViewById(R.id.cbLiquidacao);
-                Boolean tempbool_cbLiquidacao = tempcbLiquidacao.isChecked();*//*
-
-                *//*resultadoCalcCorretagem = custas2.calc_Corretagem(ttempvalPapel, tempQuantidadeDeCotasPorValDispoivel, pct_Corretagem, bool_cbFracionaria, bool_cbCorretagem);
-                Toast.makeText(this, "2 Calculo de Corretagem: " + resultadoCalcCorretagem, Toast.LENGTH_SHORT).show();
-                resultadoCalcCustodia = custas2.calc_Corretagem(ttempvalPapel, tempQuantidadeDeCotasPorValDispoivel, pct_Custodia, bool_cbFracionaria, bool_cbCustodia);
-                Toast.makeText(this, "2 Calculo de Custodia: " + resultadoCalcCustodia, Toast.LENGTH_SHORT).show();*//*
-
-                //tempresultadoCalcLiquidacao = custas2.calc_Corretagem(ttempvalPapel, tempQuantidadeDeCotasPorValDispoivel, ttemppct_Liquidacao, tempbool_cbFracionaria, tempbool_cbLiquidacao);
-                //Toast.makeText(this, "2 Calculo de Liquidação: " + tempresultadoCalcLiquidacao, Toast.LENGTH_SHORT).show();
-
-                *//*resultadoCalcNegociacao = custas2.calc_Corretagem(ttempvalPapel, tempQuantidadeDeCotasPorValDispoivel, pct_Negociacao, bool_cbFracionaria, bool_cbNegociacao);
-                Toast.makeText(this, "2 Calculo de Negociação: " + resultadoCalcNegociacao, Toast.LENGTH_SHORT).show();
-                resultadoCalcIss = custas2.calc_Corretagem(ttempvalPapel, tempQuantidadeDeCotasPorValDispoivel, pct_Iss, bool_cbFracionaria, bool_cbIss);
-                Toast.makeText(this, "2 Calculo de ISS: " + resultadoCalcIss, Toast.LENGTH_SHORT).show();
-
-                sumResultadoCalculoCustas = resultadoCalcCorretagem + resultadoCalcCustodia + resultadoCalcLiquidacao + resultadoCalcNegociacao + resultadoCalcIss;
-                Toast.makeText(this, "2 sumResultadoCalculoCustas: " + sumResultadoCalculoCustas, Toast.LENGTH_SHORT).show();*//*
-
-                *//*tempValorTotaldaCompra = sumResultadoCalculoCustas + (tempQuantidadeDeCotasPorValDispoivel * val_Papel);
-                Toast.makeText(this, "2 Quantidade tempQuantidadeDeCotasPorValDispoivel: " + tempQuantidadeDeCotasPorValDispoivel, Toast.LENGTH_SHORT).show();
-
-                Toast.makeText(this, "2 Soma com emolumentos: R$" + tempValorTotaldaCompra, Toast.LENGTH_SHORT).show();*//*
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-                *//*Custas custodia = new Custas();
-                Custas liquidacao = new Custas();
-
-                valPapel = (EditText) findViewById(R.id.valPapel);
-                pct_Corretagem = findViewById(R.id.pctCorretagem);
-                pct_Custodia = findViewById(R.id.pctCustodia);
-                pct_Liquidacao = findViewById(R.id.pctLiquidacao);
-                pct_Negociacao = findViewById(R.id.pctNegociacao);
-                pct_Iss = findViewById(R.id.pctIss);
-
-                dbhCheckbox = new DataBaseHelper(this);
-
-                cbFracionaria = findViewById(R.id.cbFracionario);
-                bool_cbFracionaria = cbFracionaria.isChecked();
-
-                cbCorretagem = findViewById(R.id.cbCorretagem);
-                bool_cbCorretagem = cbCorretagem.isChecked();
-
-                cbCustodia = findViewById(R.id.cbCustodia);
-                bool_cbCustodia = cbCustodia.isChecked();
-
-                cbLiquidacao = findViewById(R.id.cbLiquidacao);
-                bool_cbLiquidacao = cbLiquidacao.isChecked();
-
-                cbNegociacao = findViewById(R.id.cbNegociacao);
-                bool_cbNegociacao = cbNegociacao.isChecked();
-
-                cbIss = findViewById(R.id.cbIss);
-                bool_cbIss = cbIss.isChecked();
-
-                dbhCheckbox.close();
-
-                pct_Iss = findViewById(R.id.pctIss);
-                tempQuantidadeDeCotasPorValDispoivel-=1;*//*
-
-
-                *//*Toast.makeText(this, "2 Valor do papel: " + val_Papel, Toast.LENGTH_SHORT).show();
-                Toast.makeText(this, "2 Quantidade de cotas: " + tempQuantidadeDeCotasPorValDispoivel, Toast.LENGTH_SHORT).show();
-                Toast.makeText(this, "2 Valor da liquidacao: " + pct_Liquidacao.getText(), Toast.LENGTH_SHORT).show();
-                Toast.makeText(this, "2 Fracionaria? " + bool_cbFracionaria, Toast.LENGTH_SHORT).show();
-                Toast.makeText(this, "2 Liquidacao fixa? " + bool_cbLiquidacao, Toast.LENGTH_SHORT).show();*//*
-
-
-                LinearLayout TesteDeCustas = findViewById(R.id.TesteDeCustas);
-                TextView tv1 = new TextView(this);
-                TextView tv2 = new TextView(this);
-                TextView tv3 = new TextView(this);
-                TextView tv4 = new TextView(this);
-                TextView tv5 = new TextView(this);
-                TextView tv6 = new TextView(this);
-                TextView tv7 = new TextView(this);
-
-                Double tempresultadoCalcCorretagem=0.0;
-                if (!pct_Corretagem.getText().equals(0)) {
-                    tempresultadoCalcCorretagem = custas.calc_Corretagem2(valPapel, tempQuantidadeDeCotasPorValDispoivel, pct_Corretagem, bool_cbFracionaria, bool_cbCorretagem);
-                    //Toast.makeText(this, "2 DENTRO DO IF " + tempresultadoCalcCorretagem.toString(), Toast.LENGTH_SHORT).show();
-                }
-                //Toast.makeText(this, "2 FORA DO IF corretagem " + tempresultadoCalcCorretagem.toString(), Toast.LENGTH_SHORT).show();
-                tv1.setText(tempresultadoCalcCorretagem.toString());
-
-                Double tempresultadoCalcCustodia=0.0;
-                if (!pct_Custodia.getText().equals(0)){
-                    tempresultadoCalcCustodia = custas.calc_Corretagem2(valPapel, tempQuantidadeDeCotasPorValDispoivel, pct_Custodia, bool_cbFracionaria, bool_cbCustodia);
-                    //Toast.makeText(this, "2 CUSTODIA DENTRO DO IF " + tempresultadoCalcCustodia.toString(), Toast.LENGTH_SHORT).show();
-                }
-                //Toast.makeText(this, "2 CUSTODIA FORA DO IF de custodia " + tempresultadoCalcCustodia.toString(), Toast.LENGTH_SHORT).show();
-                tv2.setText(tempresultadoCalcCustodia.toString());
-
-                *//*EditText temppct_Liquidacao = findViewById(R.id.pctLiquidacao);
-                temppct_Liquidacao.getText();
-                Toast.makeText(this, "** Liquidação pego no EditText " + temppct_Liquidacao.getText().toString(), Toast.LENGTH_SHORT).show();*//*
-
-                Double tempresultadoCalcLiquidacao=0.0;
-                if (!pct_Liquidacao.getText().equals(0)) {
-                    tempresultadoCalcLiquidacao = custas.calc_Corretagem2(valPapel, tempQuantidadeDeCotasPorValDispoivel, pct_Liquidacao, bool_cbFracionaria, bool_cbLiquidacao);
-                    //Toast.makeText(this, "2 Liquidação DENTRO DO IF " + tempresultadoCalcLiquidacao.toString(), Toast.LENGTH_SHORT).show();
-                }
-                //Toast.makeText(this, "2 Liquidação FORA DO IF liquidacao " + tempresultadoCalcLiquidacao.toString(), Toast.LENGTH_SHORT).show();
-                tv3.setText(tempresultadoCalcLiquidacao.toString());
-
-
-                Double tempresultadoCalcNegociacao = custas.calc_Corretagem2(valPapel, tempQuantidadeDeCotasPorValDispoivel, pct_Negociacao, bool_cbFracionaria, bool_cbNegociacao);
-                //Toast.makeText(this, "2 Resultado do calculo de negociacao " + tempresultadoCalcNegociacao.toString(), Toast.LENGTH_SHORT).show();
-                tv4.setText(tempresultadoCalcNegociacao.toString());
-
-                Double tempresultadoCalcIss = custas.calc_Corretagem2(valPapel, tempQuantidadeDeCotasPorValDispoivel, pct_Iss, bool_cbFracionaria, bool_cbIss);
-                //Toast.makeText(this, "2 Resultado do calculo de Iss " + tempresultadoCalcIss.toString(), Toast.LENGTH_SHORT).show();
-                tv5.setText(tempresultadoCalcIss.toString());
-
-
-                Double tempsumResultadoCalculoCustas = tempresultadoCalcCorretagem + tempresultadoCalcCustodia + tempresultadoCalcLiquidacao + tempresultadoCalcNegociacao + tempresultadoCalcIss;
-                //Double tempsumResultadoCalculoCustas = tempresultadoCalcLiquidacao + tempresultadoCalcNegociacao + tempresultadoCalcIss;
-                //Toast.makeText(this, "2 sumResultadoCalculoCustas: " + tempsumResultadoCalculoCustas, Toast.LENGTH_SHORT).show();
-                tv6.setText(tempsumResultadoCalculoCustas.toString());
-
-                Double ixetempValorTotaldaCompra = tempsumResultadoCalculoCustas + (tempQuantidadeDeCotasPorValDispoivel * val_Papel);
-                //Toast.makeText(this, "2 Soma com emolumentos: R$" + ixetempValorTotaldaCompra, Toast.LENGTH_SHORT).show();
-                tv7.setText(tempQuantidadeDeCotasPorValDispoivel.toString() + " multiplicado por " + val_Papel.toString() + " mais " + tempsumResultadoCalculoCustas.toString() + " Resultado:" + ixetempValorTotaldaCompra.toString());
-
-
-                TesteDeCustas.addView(tv1);
-                TesteDeCustas.addView(tv2);
-                TesteDeCustas.addView(tv3);
-                TesteDeCustas.addView(tv4);
-                TesteDeCustas.addView(tv5);
-                TesteDeCustas.addView(tv6);
-                TesteDeCustas.addView(tv7);
-            }*/
-
-            //TODO EXCLUIR APÓS TESTES
-            TextView tv8 = new TextView(this);
-            TextView tv9 = new TextView(this);
-            TextView tv10 = new TextView(this);
-            TextView tv11 = new TextView(this);
-            TextView tv12 = new TextView(this);
-            TextView tv13 = new TextView(this);
-            TextView tv14 = new TextView(this);
-            //TODO EXCLUIR APÓS TESTES
-
-            while ((sumResultadoCalculoCustas + (tempQuantidadeDeCotasPorValDispoivel * val_Papel)) > val_Disponivel && tempQuantidadeDeCotasPorValDispoivel>1){
-
-
+            while (tempValorTotaldaCompra > val_Disponivel && tempQuantidadeDeCotasPorValDispoivel>1){
 
                 tempQuantidadeDeCotasPorValDispoivel-=1;
                 resultadoCalcCorretagem = custas.calc_Corretagem2(valPapel, tempQuantidadeDeCotasPorValDispoivel, pct_Corretagem, bool_cbFracionaria, bool_cbCorretagem);
-                //TODO EXCLUIR APÓS TESTES
-                tv8.setText(String.valueOf(resultadoCalcCorretagem));
                 resultadoCalcCustodia = custas.calc_Corretagem2(valPapel, tempQuantidadeDeCotasPorValDispoivel, pct_Custodia, bool_cbFracionaria, bool_cbCustodia);
-                //TODO EXCLUIR APÓS TESTES
-                tv9.setText(String.valueOf(resultadoCalcCustodia));
                 resultadoCalcLiquidacao = custas.calc_Corretagem2(valPapel, tempQuantidadeDeCotasPorValDispoivel, pct_Liquidacao, bool_cbFracionaria, bool_cbLiquidacao);
-                //TODO EXCLUIR APÓS TESTES
-                tv10.setText(String.valueOf(resultadoCalcLiquidacao));
                 resultadoCalcNegociacao = custas.calc_Corretagem2(valPapel, tempQuantidadeDeCotasPorValDispoivel, pct_Negociacao, bool_cbFracionaria, bool_cbNegociacao);
-                //TODO EXCLUIR APÓS TESTES
-                tv11.setText(String.valueOf(resultadoCalcNegociacao));
                 resultadoCalcIss = custas.calc_Corretagem2(valPapel, tempQuantidadeDeCotasPorValDispoivel, pct_Iss, bool_cbFracionaria, bool_cbIss);
-                //TODO EXCLUIR APÓS TESTES
-                tv12.setText(String.valueOf(resultadoCalcIss));
 
                 sumResultadoCalculoCustas = resultadoCalcCorretagem + resultadoCalcCustodia + resultadoCalcLiquidacao + resultadoCalcNegociacao + resultadoCalcIss;
-                //TODO EXCLUIR APÓS TESTES
-                tv13.setText(String.valueOf(sumResultadoCalculoCustas));
 
-                Double ixetempValorTotaldaCompra = sumResultadoCalculoCustas + (tempQuantidadeDeCotasPorValDispoivel * val_Papel);
-                //TODO EXCLUIR APÓS TESTES
-                tv14.setText(String.valueOf(ixetempValorTotaldaCompra));
+                tempValorTotaldaCompra = sumResultadoCalculoCustas + (tempQuantidadeDeCotasPorValDispoivel * val_Papel);
 
-                //TODO EXCLUIR APÓS TESTES
-                TesteDeCustas.addView(tv8);
-                TesteDeCustas.addView(tv9);
-                TesteDeCustas.addView(tv10);
-                TesteDeCustas.addView(tv11);
-                TesteDeCustas.addView(tv12);
-                TesteDeCustas.addView(tv13);
-                TesteDeCustas.addView(tv14);
-
-                //TODO EXCLUIR APÓS TESTES
             }
+            TextView result_val_Corretagem = (TextView) findViewById(R.id.corretagem);
+            String calculo_Corretagem = String.valueOf(resultadoCalcCorretagem);
+            result_val_Corretagem.setText(calculo_Corretagem);
+
+            TextView result_val_Custodia = (TextView) findViewById(R.id.custodia);
+            String str_val_Custodia = df2.format(resultadoCalcCustodia);
+            result_val_Custodia.setText(str_val_Custodia);
+
+            TextView result_val_tx_liquidacao = (TextView) findViewById(R.id.tax_liquidacao);
+            String str_val_tx_liquidacao = df3.format(resultadoCalcLiquidacao);
+            result_val_tx_liquidacao.setText(str_val_tx_liquidacao);
+
+            TextView result_val_tx_negociacao = (TextView) findViewById(R.id.tax_negociacao);
+            String str_val_tx_negociacao = df3.format(resultadoCalcNegociacao);
+            result_val_tx_negociacao.setText(str_val_tx_negociacao);
+
+            TextView result_tv_emolumentos = (TextView) findViewById(R.id.emolumentos);
+            String str_emolumentos = df4.format(resultadoCalcLiquidacao + resultadoCalcNegociacao);
+            result_tv_emolumentos.setText(str_emolumentos);
+
+            TextView result_tv_iss = (TextView) findViewById(R.id.iss);
+            String str_calc_iss = df4.format(resultadoCalcIss);
+            result_tv_iss.setText(str_calc_iss);
+
+            TextView quantidade = (TextView) findViewById(R.id.quantidade);
+            quantidade.setText(tempQuantidadeDeCotasPorValDispoivel.toString());
+
+            TextView valExclusivoDoPapel = (TextView) findViewById(R.id.valCompraDoPapel);
+            String str_resul_val_Disponivel = df2.format(tempQuantidadeDeCotasPorValDispoivel * val_Papel);
+            valExclusivoDoPapel.setText(str_resul_val_Disponivel);
+
+            TextView valAInvestir = (TextView) findViewById(R.id.valNecessarioParaInvestir);
+            String str_resul_valAInvestir = df2.format(tempValorTotaldaCompra);
+            valAInvestir.setText(str_resul_valAInvestir);
+
+            TextView val_PapelResumo = (TextView) findViewById(R.id.valPapelResumo);
+            val_PapelResumo.setText(val_Papel.toString());
+
+            TextView quantidadeResumo = (TextView) findViewById(R.id.quantidadeResumo);
+            quantidadeResumo.setText(tempQuantidadeDeCotasPorValDispoivel.toString());
+
+            TextView val_CustaEmolImpostos = (TextView) findViewById(R.id.valCustaEmolImpostos);
+            String custo_PorOperacao = df3.format(0-sumResultadoCalculoCustas);
+            val_CustaEmolImpostos.setText(custo_PorOperacao);
+
+
+            tv1.setText("Corretagem FINAL: " + String.valueOf(resultadoCalcCorretagem));
+            tv2.setText("Custodia FINAL: " + String.valueOf(resultadoCalcCustodia));
+            tv3.setText("Liquidação FINAL: " + String.valueOf(resultadoCalcLiquidacao));
+            tv4.setText("Negociação FINAL: " + String.valueOf(resultadoCalcNegociacao));
+            tv5.setText("ISS FINAL: " + String.valueOf(resultadoCalcIss));
+            tv6.setText("Soma das custas FINAL: " + String.valueOf(sumResultadoCalculoCustas));
+            tv7.setText("Custas com valor do papel FINAL: " + String.valueOf(tempValorTotaldaCompra));
+            tv8.setText("Quantidade de cotas FINAL: "+ String.valueOf(tempQuantidadeDeCotasPorValDispoivel));
+            //TODO EXCLUIR APÓS TESTES
+
             TesteDeCustas.addView(tv1);
             TesteDeCustas.addView(tv2);
             TesteDeCustas.addView(tv3);
@@ -511,6 +329,7 @@ public class QntAcoesValorDisponivel extends AppCompatActivity {
             TesteDeCustas.addView(tv5);
             TesteDeCustas.addView(tv6);
             TesteDeCustas.addView(tv7);
+            TesteDeCustas.addView(tv8);
 
         }
         else {
@@ -540,7 +359,7 @@ public class QntAcoesValorDisponivel extends AppCompatActivity {
 
 
         //CUSTOS OPERACIONAIS
-        boolean corretagemFixa = true;
+        /*boolean corretagemFixa = true;
         double corretagem = 1.99;
         double calc_Corretagem = 0.0;
 
@@ -561,7 +380,7 @@ public class QntAcoesValorDisponivel extends AppCompatActivity {
         double ir_compra;
         double calc_ir_compra;
         double ir_venda;
-        double calc_ir_venda;
+        double calc_ir_venda;*/
 
         /*pct_Corretagem.setText(String.valueOf(corretagem));
         pct_Custodia.setText(String.valueOf(custodia));
@@ -570,7 +389,7 @@ public class QntAcoesValorDisponivel extends AppCompatActivity {
         pct_Iss.setText(String.valueOf(iss));
         pct_Emolumentos.setText(String.valueOf(tx_liquidacao+tx_negociacao));*/
 
-        if(valDisponivel != null && valPapel != null){
+        /*if(valDisponivel != null && valPapel != null){
             val_Disponivel = Double.parseDouble(valDisponivel.getText().toString());
             val_Papel = Double.parseDouble(valPapel.getText().toString());
 
@@ -582,7 +401,7 @@ public class QntAcoesValorDisponivel extends AppCompatActivity {
 
 
 
-            Double partOneValor = val_Disponivel/val_Papel;
+            *//*Double partOneValor = val_Disponivel/val_Papel;
             Integer partTwoQuantidade = Integer.valueOf(partOneValor.intValue());
             double resul_val_Disponivel = partTwoQuantidade*val_Papel;
 
@@ -591,7 +410,7 @@ public class QntAcoesValorDisponivel extends AppCompatActivity {
         // CÁLCULO DAS CUSTAS
             //CORRETAGEM
 
-                CheckBox cb_Corretagem = findViewById(R.id.cbCorretagem);
+                *//**//*CheckBox cb_Corretagem = findViewById(R.id.cbCorretagem);
                 if (cb_Corretagem.isChecked()){
                     corretagemFixa=false;
                     double db_pct_Corretagem = Double.parseDouble(pct_Corretagem.getText().toString());
@@ -607,11 +426,11 @@ public class QntAcoesValorDisponivel extends AppCompatActivity {
 
                 TextView tvCorretagem = (TextView) findViewById(R.id.corretagem);
                 String calculo_Corretagem = String.valueOf(calc_Corretagem);
-                tvCorretagem.setText(calculo_Corretagem);
+                tvCorretagem.setText(calculo_Corretagem);*//**//*
 
             //CUSTODIA
 
-                CheckBox cb_Custodia = findViewById(R.id.cbCustodia);
+                *//**//*CheckBox cb_Custodia = findViewById(R.id.cbCustodia);
                 if (cb_Custodia.isChecked()){
                     custodiaFixa=false;
                     pct_Custodia.setClickable(true);
@@ -628,12 +447,12 @@ public class QntAcoesValorDisponivel extends AppCompatActivity {
 
                 String str_val_Custodia = df2.format(calc_Custodia);
                 TextView val_Custodia = (TextView) findViewById(R.id.custodia);
-                val_Custodia.setText(str_val_Custodia);
+                val_Custodia.setText(str_val_Custodia);*//**//*
 
             //EMOLUMENTOS
                 //TAXA DE LIQUIDAÇÃO
 
-                CheckBox cb_Liquidacao = findViewById(R.id.cbLiquidacao);
+                *//**//*CheckBox cb_Liquidacao = findViewById(R.id.cbLiquidacao);
                 if (cb_Liquidacao.isChecked()){
                     pct_Liquidacao.setClickable(true);
                     double db_pct_Liquidacao = Double.parseDouble(pct_Liquidacao.getText().toString());
@@ -648,11 +467,11 @@ public class QntAcoesValorDisponivel extends AppCompatActivity {
 
                 String str_val_tx_liquidacao = df3.format(calc_tx_liquidacao);
                 TextView val_tx_liquidacao = (TextView) findViewById(R.id.tax_liquidacao);
-                val_tx_liquidacao.setText(str_val_tx_liquidacao);
+                val_tx_liquidacao.setText(str_val_tx_liquidacao);*//**//*
 
                 //TAXA DE NEGOCIAÇÃO
 
-                CheckBox cb_Negociacao = findViewById(R.id.cbNegociacao);
+                *//**//*CheckBox cb_Negociacao = findViewById(R.id.cbNegociacao);
                 if (cb_Negociacao.isChecked()){
                     pct_Negociacao.setClickable(true);
                     double db_pct_Negociacao = Double.parseDouble(pct_Negociacao.getText().toString());
@@ -674,10 +493,10 @@ public class QntAcoesValorDisponivel extends AppCompatActivity {
 
                 TextView tv_emolumentos = (TextView) findViewById(R.id.emolumentos);
                 String str_emolumentos = df4.format(emolumentos);
-                tv_emolumentos.setText(str_emolumentos);
+                tv_emolumentos.setText(str_emolumentos);*//**//*
 
             //ISS
-                CheckBox cb_Iss = findViewById(R.id.cbIss);
+                *//**//*CheckBox cb_Iss = findViewById(R.id.cbIss);
                 if (cb_Iss.isChecked()){
                     pct_Iss.setClickable(true);
                     double db_pct_Iss = Double.parseDouble(pct_Iss.getText().toString());
@@ -692,9 +511,9 @@ public class QntAcoesValorDisponivel extends AppCompatActivity {
 
                 String str_calc_iss = df4.format(calc_iss);
                 TextView tv_iss = (TextView) findViewById(R.id.iss);
-                tv_iss.setText(str_calc_iss);
+                tv_iss.setText(str_calc_iss);*//**//*
 
-                custoPorOperacao =+ calc_Corretagem + calc_Custodia + calc_tx_liquidacao + calc_tx_negociacao + calc_iss;
+                *//**//*custoPorOperacao =+ calc_Corretagem + calc_Custodia + calc_tx_liquidacao + calc_tx_negociacao + calc_iss;
 
                 Double val_DisponivelLiquido = (val_Disponivel-custoPorOperacao)/val_Papel;
 
@@ -708,12 +527,12 @@ public class QntAcoesValorDisponivel extends AppCompatActivity {
 
                 TextView valExclusivoDoPapel = (TextView) findViewById(R.id.valCompraDoPapel);
                 String str_resul_val_Disponivel = df2.format(partTwoQuantidade*val_Papel);
-                valExclusivoDoPapel.setText(str_resul_val_Disponivel);
+                valExclusivoDoPapel.setText(str_resul_val_Disponivel);*//**//*
 
 
         //VALOR APÓS CÁLCULOS DE CUSTAS
 
-                TextView valAInvestir = (TextView) findViewById(R.id.valNecessarioParaInvestir);
+                *//**//*TextView valAInvestir = (TextView) findViewById(R.id.valNecessarioParaInvestir);
                 valAInvestir.setText(valAInvestirFormatado);
 
                 TextView val_PapelResumo = (TextView) findViewById(R.id.valPapelResumo);
@@ -724,9 +543,9 @@ public class QntAcoesValorDisponivel extends AppCompatActivity {
 
                 TextView val_CustaEmolImpostos = (TextView) findViewById(R.id.valCustaEmolImpostos);
                 String custo_PorOperacao = String.valueOf(0-custoPorOperacao);
-                val_CustaEmolImpostos.setText(custo_PorOperacao);
+                val_CustaEmolImpostos.setText(custo_PorOperacao);*//**//*
 
-                try {
+                *//**//*try {
 
                     CheckBox cb_Fracionario = findViewById(R.id.cbFracionario);
                     cb_Fracionario.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
@@ -746,18 +565,18 @@ public class QntAcoesValorDisponivel extends AppCompatActivity {
                 catch (Exception e){
                     Toast toast = Toast.makeText(this, "Damn! O fracionario não funcionou", Toast.LENGTH_SHORT);
                     toast.show();
-                }
+                }*//**//*
 
-                /*TextView resumo = (TextView) findViewById(R.id.resumo);
-                resumo.setText(val_DisponivelLiquido.toString());*/
+                *//**//*TextView resumo = (TextView) findViewById(R.id.resumo);
+                resumo.setText(val_DisponivelLiquido.toString());*//**//*
             }
             else{
                 val_Disponivel = 0.0;
                 val_Papel = 0.0;
-                /*TextView resumo = (TextView) findViewById(R.id.resumo);
-                resumo.setText("Aw no!");*/
-            }
-        }
+                *//**//*TextView resumo = (TextView) findViewById(R.id.resumo);
+                resumo.setText("Aw no!");*//**//*
+            }*//*
+        }*/
     }
 
     //Ex.: tem 50, precisamos saber o valor de 25% do 50 citado. Resultado: 12,5.

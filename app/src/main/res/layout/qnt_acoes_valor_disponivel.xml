@@ -268,7 +268,7 @@
                 android:gravity="right">
                 <TextView
                     style="@style/Conteudo"
-                    android:text="Alterar %"
+                    android:text="Valor fixo"
                     android:textSize="15dp">
                 </TextView>
             </LinearLayout>
