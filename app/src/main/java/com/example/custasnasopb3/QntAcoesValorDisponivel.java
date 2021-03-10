@@ -65,6 +65,13 @@ public class QntAcoesValorDisponivel extends AppCompatActivity {
         pct_Emolumentos.setText(String.valueOf(dbhCustas.getCustas(999).getTx_liquidacao()+dbhCustas.getCustas(999).getTx_negociacao()));
 
 
+        LinearLayout custasValordopapelBruto = (LinearLayout) findViewById(R.id.custasValordopapelBruto);
+        LinearLayout custas = (LinearLayout) findViewById(R.id.idcustas);
+        LinearLayout custasExtra = (LinearLayout) findViewById(R.id.custasExtra);
+        custasValordopapelBruto.setVisibility(View.GONE);
+        custas.setVisibility(View.GONE);
+        custasExtra.setVisibility(View.GONE);
+
         DataBaseHelper dbhCheckbox = new DataBaseHelper(this);
 
         CheckBox cbCorretagem = findViewById(R.id.cbCorretagem);
@@ -117,7 +124,8 @@ public class QntAcoesValorDisponivel extends AppCompatActivity {
 
 
         //TODO EXCLUIR APÓS TESTES
-        LinearLayout TesteDeCustas = findViewById(R.id.TesteDeCustas);
+        /*LinearLayout TesteDeCustas = findViewById(R.id.TesteDeCustas);
+        TesteDeCustas.setVisibility(View.GONE);
         TextView tv1 = new TextView(this);
         TextView tv2 = new TextView(this);
         TextView tv3 = new TextView(this);
@@ -125,7 +133,7 @@ public class QntAcoesValorDisponivel extends AppCompatActivity {
         TextView tv5 = new TextView(this);
         TextView tv6 = new TextView(this);
         TextView tv7 = new TextView(this);
-        TextView tv8 = new TextView(this);
+        TextView tv8 = new TextView(this);*/
         //TODO EXCLUIR APÓS TESTES
 
 
@@ -289,7 +297,7 @@ public class QntAcoesValorDisponivel extends AppCompatActivity {
             val_CustaEmolImpostos.setText(custo_PorOperacao);
 
 
-            tv1.setText("Corretagem FINAL: " + String.valueOf(resultadoCalcCorretagem));
+            /*tv1.setText("Corretagem FINAL: " + String.valueOf(resultadoCalcCorretagem));
             tv2.setText("Custodia FINAL: " + String.valueOf(resultadoCalcCustodia));
             tv3.setText("Liquidação FINAL: " + String.valueOf(resultadoCalcLiquidacao));
             tv4.setText("Negociação FINAL: " + String.valueOf(resultadoCalcNegociacao));
@@ -306,7 +314,7 @@ public class QntAcoesValorDisponivel extends AppCompatActivity {
             TesteDeCustas.addView(tv5);
             TesteDeCustas.addView(tv6);
             TesteDeCustas.addView(tv7);
-            TesteDeCustas.addView(tv8);
+            TesteDeCustas.addView(tv8);*/
 
         }
     }
@@ -324,5 +332,21 @@ public class QntAcoesValorDisponivel extends AppCompatActivity {
     public int qntLote (int quantidade){
         int qntLote = Math.round(quantidade / 100);
         return qntLote;
+    }
+    public void custasVisibility(View view){
+
+        LinearLayout custasValordopapelBruto = (LinearLayout) findViewById(R.id.custasValordopapelBruto);
+        LinearLayout custas = (LinearLayout) findViewById(R.id.idcustas);
+        LinearLayout custasExtra = (LinearLayout) findViewById(R.id.custasExtra);
+        if (custas.getVisibility() == View.VISIBLE || custasValordopapelBruto.getVisibility() == View.VISIBLE || custasExtra.getVisibility() == View.VISIBLE) {
+            custas.setVisibility(View.GONE);
+            custasValordopapelBruto.setVisibility(View.GONE);
+            custasExtra.setVisibility(View.GONE);
+        }
+        else {
+            custas.setVisibility(View.VISIBLE);
+            custasValordopapelBruto.setVisibility(View.VISIBLE);
+            custasExtra.setVisibility(View.VISIBLE);
+        }
     }
 }
