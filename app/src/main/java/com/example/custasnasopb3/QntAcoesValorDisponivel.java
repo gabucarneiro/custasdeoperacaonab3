@@ -140,15 +140,8 @@ public class QntAcoesValorDisponivel extends AppCompatActivity {
 
 
         EditText valDisponivel = (EditText) findViewById(R.id.valDisponivel);
-
         EditText valPapel = (EditText) findViewById(R.id.valPapel);
-        if (valPapel.getText().equals("")){
-            valPapel.setError("Campo obrigatório");
-        }
         EditText pct_Corretagem = findViewById(R.id.pctCorretagem);
-        if (pct_Corretagem.getText().equals("")){
-            pct_Corretagem.setError("Campo obrigatório");
-        }
         EditText pct_Custodia = findViewById(R.id.pctCustodia);
         if (pct_Custodia.getText().equals("")){
             pct_Custodia.setError("Campo obrigatório");
@@ -210,36 +203,112 @@ public class QntAcoesValorDisponivel extends AppCompatActivity {
 
         //TODO Criar um Try-Catch para evitar crash por edit com dado nulo ou 0.
 
-        if (!valPapel.toString().equals("") && !valDisponivel.toString().equals("") && Double.parseDouble(valPapel.getText().toString()) != 0 && Double.parseDouble(valDisponivel.getText().toString()) != 0){
-            try {
-                val_Disponivel = Double.valueOf(String.valueOf(valDisponivel.getText()));
-                val_Papel = Double.valueOf(String.valueOf(valPapel.getText()));
-                tempQuantidadeDeCotasPorValDispoivel = (int) Math.round(val_Disponivel/val_Papel);
-                //Toast.makeText(this, "Quantidade temporária de ações: " + tempQuantidadeDeCotasPorValDispoivel, Toast.LENGTH_SHORT).show();
+        boolean valPapelOk;
+        boolean valDisponivelOk;
+
+        try {
+            if (valDisponivel.getText().toString().equals("")){
+                valDisponivel.setError("Campo obrigatório");
+                valDisponivelOk = false;
             }
-            catch (Exception e){
-                Toast.makeText(this, "Falha para obter os editTexts", Toast.LENGTH_SHORT).show();
-                val_Disponivel = 0.0;
-                val_Papel = 0.0;
-                tempQuantidadeDeCotasPorValDispoivel = 0;
+            else if (Double.parseDouble(valDisponivel.getText().toString()) == 0.0){
+                valDisponivel.setError("Diferente de 0,0");
+                valDisponivelOk = false;
             }
-
-            resultadoCalcCorretagem = custas.calc_Corretagem2(valPapel, tempQuantidadeDeCotasPorValDispoivel, pct_Corretagem, bool_cbFracionaria, bool_cbCorretagem);
-            resultadoCalcCustodia = custas.calc_Corretagem2(valPapel, tempQuantidadeDeCotasPorValDispoivel, pct_Custodia, bool_cbFracionaria, bool_cbCustodia);
-            resultadoCalcLiquidacao = custas.calc_Corretagem2(valPapel, tempQuantidadeDeCotasPorValDispoivel, pct_Liquidacao, bool_cbFracionaria, bool_cbLiquidacao);
-            resultadoCalcNegociacao = custas.calc_Corretagem2(valPapel, tempQuantidadeDeCotasPorValDispoivel, pct_Negociacao, bool_cbFracionaria, bool_cbNegociacao);
-            resultadoCalcIss = custas.calc_Corretagem2(valPapel, tempQuantidadeDeCotasPorValDispoivel, pct_Iss, bool_cbFracionaria, bool_cbIss);
-
-            sumResultadoCalculoCustas = resultadoCalcCorretagem + resultadoCalcCustodia + resultadoCalcLiquidacao + resultadoCalcNegociacao + resultadoCalcIss;
-
-            if (!bool_cbFracionaria){
-                tempQuantidadeDeCotasPorValDispoivel = qntLote(tempQuantidadeDeCotasPorValDispoivel) * 100;
+            else {
+                valDisponivelOk = true;
             }
-            double tempValorTotaldaCompra = sumResultadoCalculoCustas + (tempQuantidadeDeCotasPorValDispoivel * val_Papel);
+        }
+        catch (Exception eValDisponivel){
+            valDisponivel.setError("Campo obrigatório diferente de 0,0");
+            valDisponivelOk = false;
+        }
 
-            while (tempValorTotaldaCompra > val_Disponivel && tempQuantidadeDeCotasPorValDispoivel>1){
+        try {
+            if (valPapel.getText().toString().equals("")){
+                valPapel.setError("Campo obrigatório");
+                valPapelOk = false;
+            }
+            else if (Double.parseDouble(valPapel.getText().toString()) == 0.0){
+                valPapel.setError("Diferente de 0,0");
+                valPapelOk = false;
+            }
+            else {
+                valPapelOk = true;
+            }
+        }
+        catch (Exception eValPapel){
+            Toast.makeText(this, "Falha para obter os valor do papel", Toast.LENGTH_SHORT).show();
+            valPapel.setError("Campo obrigatório diferente de 0,0");
+            valPapelOk = false;
+        }
 
-                tempQuantidadeDeCotasPorValDispoivel-=1;
+        try {
+            if (valPapelOk && valDisponivelOk){
+                try {
+                    val_Disponivel = Double.valueOf(String.valueOf(valDisponivel.getText()));
+                    val_Papel = Double.valueOf(String.valueOf(valPapel.getText()));
+                    tempQuantidadeDeCotasPorValDispoivel = (int) Math.round(val_Disponivel/val_Papel);
+                    //Toast.makeText(this, "Quantidade temporária de ações: " + tempQuantidadeDeCotasPorValDispoivel, Toast.LENGTH_SHORT).show();
+                }
+                catch (Exception e){
+                    Toast.makeText(this, "Valores nulos ou 0,0", Toast.LENGTH_SHORT).show();
+                    val_Disponivel = 0.0;
+                    val_Papel = 0.0;
+                    tempQuantidadeDeCotasPorValDispoivel = 0;
+                }
+
+
+                try {
+                    if (pct_Corretagem.getText().toString().equals("")){
+                        pct_Corretagem.setError("Campo obrigatório");
+                    }
+                }
+                catch (Exception ePct_Corretagem){
+                    Toast.makeText(this, "Valor nulo: Corretagem", Toast.LENGTH_SHORT).show();
+                    pct_Corretagem.setError("Campo obrigatório");
+                }
+
+                try {
+                    if (pct_Custodia.getText().toString().equals("")){
+                        pct_Custodia.setError("Campo obrigatório");
+                    }
+                }
+                catch (Exception ePct_Custodia){
+                    Toast.makeText(this, "Valor nulo: Custodia", Toast.LENGTH_SHORT).show();
+                    pct_Custodia.setError("Campo obrigatório");
+                }
+
+                try {
+                    if (pct_Liquidacao.getText().toString().equals("")){
+                        pct_Liquidacao.setError("Campo obrigatório");
+                    }
+                }
+                catch (Exception ePct_Liquidacao){
+                    Toast.makeText(this, "Valor nulo: Taxa de Liquidação", Toast.LENGTH_SHORT).show();
+                    pct_Liquidacao.setError("Campo obrigatório");
+                }
+
+                try {
+                    if (pct_Negociacao.getText().toString().equals("")){
+                        pct_Negociacao.setError("Campo obrigatório");
+                    }
+                }
+                catch (Exception ePct_Negociacao){
+                    Toast.makeText(this, "Valor nulo: Taxa de Negociação", Toast.LENGTH_SHORT).show();
+                    pct_Negociacao.setError("Campo obrigatório");
+                }
+
+                try {
+                    if (pct_Iss.getText().toString().equals("")){
+                        pct_Iss.setError("Campo obrigatório");
+                    }
+                }
+                catch (Exception ePct_Iss){
+                    Toast.makeText(this, "Valor nulo: ISS", Toast.LENGTH_SHORT).show();
+                    pct_Iss.setError("Campo obrigatório");
+                }
+
                 resultadoCalcCorretagem = custas.calc_Corretagem2(valPapel, tempQuantidadeDeCotasPorValDispoivel, pct_Corretagem, bool_cbFracionaria, bool_cbCorretagem);
                 resultadoCalcCustodia = custas.calc_Corretagem2(valPapel, tempQuantidadeDeCotasPorValDispoivel, pct_Custodia, bool_cbFracionaria, bool_cbCustodia);
                 resultadoCalcLiquidacao = custas.calc_Corretagem2(valPapel, tempQuantidadeDeCotasPorValDispoivel, pct_Liquidacao, bool_cbFracionaria, bool_cbLiquidacao);
@@ -248,74 +317,98 @@ public class QntAcoesValorDisponivel extends AppCompatActivity {
 
                 sumResultadoCalculoCustas = resultadoCalcCorretagem + resultadoCalcCustodia + resultadoCalcLiquidacao + resultadoCalcNegociacao + resultadoCalcIss;
 
-                tempValorTotaldaCompra = sumResultadoCalculoCustas + (tempQuantidadeDeCotasPorValDispoivel * val_Papel);
+                if (!bool_cbFracionaria){
+                    tempQuantidadeDeCotasPorValDispoivel = qntLote(tempQuantidadeDeCotasPorValDispoivel) * 100;
+                }
+                double tempValorTotaldaCompra = sumResultadoCalculoCustas + (tempQuantidadeDeCotasPorValDispoivel * val_Papel);
+
+                while (tempValorTotaldaCompra > val_Disponivel && tempQuantidadeDeCotasPorValDispoivel>1){
+
+                    tempQuantidadeDeCotasPorValDispoivel-=1;
+                    resultadoCalcCorretagem = custas.calc_Corretagem2(valPapel, tempQuantidadeDeCotasPorValDispoivel, pct_Corretagem, bool_cbFracionaria, bool_cbCorretagem);
+                    resultadoCalcCustodia = custas.calc_Corretagem2(valPapel, tempQuantidadeDeCotasPorValDispoivel, pct_Custodia, bool_cbFracionaria, bool_cbCustodia);
+                    resultadoCalcLiquidacao = custas.calc_Corretagem2(valPapel, tempQuantidadeDeCotasPorValDispoivel, pct_Liquidacao, bool_cbFracionaria, bool_cbLiquidacao);
+                    resultadoCalcNegociacao = custas.calc_Corretagem2(valPapel, tempQuantidadeDeCotasPorValDispoivel, pct_Negociacao, bool_cbFracionaria, bool_cbNegociacao);
+                    resultadoCalcIss = custas.calc_Corretagem2(valPapel, tempQuantidadeDeCotasPorValDispoivel, pct_Iss, bool_cbFracionaria, bool_cbIss);
+
+                    sumResultadoCalculoCustas = resultadoCalcCorretagem + resultadoCalcCustodia + resultadoCalcLiquidacao + resultadoCalcNegociacao + resultadoCalcIss;
+
+                    tempValorTotaldaCompra = sumResultadoCalculoCustas + (tempQuantidadeDeCotasPorValDispoivel * val_Papel);
+
+                }
+                TextView result_val_Corretagem = (TextView) findViewById(R.id.corretagem);
+                String calculo_Corretagem = String.valueOf(resultadoCalcCorretagem);
+                result_val_Corretagem.setText(calculo_Corretagem);
+
+                TextView result_val_Custodia = (TextView) findViewById(R.id.custodia);
+                String str_val_Custodia = df2.format(resultadoCalcCustodia);
+                result_val_Custodia.setText(str_val_Custodia);
+
+                TextView result_val_tx_liquidacao = (TextView) findViewById(R.id.tax_liquidacao);
+                String str_val_tx_liquidacao = df3.format(resultadoCalcLiquidacao);
+                result_val_tx_liquidacao.setText(str_val_tx_liquidacao);
+
+                TextView result_val_tx_negociacao = (TextView) findViewById(R.id.tax_negociacao);
+                String str_val_tx_negociacao = df3.format(resultadoCalcNegociacao);
+                result_val_tx_negociacao.setText(str_val_tx_negociacao);
+
+                TextView result_tv_emolumentos = (TextView) findViewById(R.id.emolumentos);
+                String str_emolumentos = df4.format(resultadoCalcLiquidacao + resultadoCalcNegociacao);
+                result_tv_emolumentos.setText(str_emolumentos);
+
+                TextView result_tv_iss = (TextView) findViewById(R.id.iss);
+                String str_calc_iss = df4.format(resultadoCalcIss);
+                result_tv_iss.setText(str_calc_iss);
+
+                TextView quantidade = (TextView) findViewById(R.id.quantidade);
+                quantidade.setText(tempQuantidadeDeCotasPorValDispoivel.toString());
+
+                TextView valExclusivoDoPapel = (TextView) findViewById(R.id.valCompraDoPapel);
+                String str_resul_val_Disponivel = df2.format(tempQuantidadeDeCotasPorValDispoivel * val_Papel);
+                valExclusivoDoPapel.setText(str_resul_val_Disponivel);
+
+                TextView valAInvestir = (TextView) findViewById(R.id.valNecessarioParaInvestir);
+                String str_resul_valAInvestir = df2.format(tempValorTotaldaCompra);
+                valAInvestir.setText(str_resul_valAInvestir);
+
+                TextView val_PapelResumo = (TextView) findViewById(R.id.valPapelResumo);
+                val_PapelResumo.setText(val_Papel.toString());
+
+                TextView quantidadeResumo = (TextView) findViewById(R.id.quantidadeResumo);
+                quantidadeResumo.setText(tempQuantidadeDeCotasPorValDispoivel.toString());
+
+                TextView val_CustaEmolImpostos = (TextView) findViewById(R.id.valCustaEmolImpostos);
+                String custo_PorOperacao = df3.format(0-sumResultadoCalculoCustas);
+                val_CustaEmolImpostos.setText(custo_PorOperacao);
+
+
+                /*tv1.setText("Corretagem FINAL: " + String.valueOf(resultadoCalcCorretagem));
+                tv2.setText("Custodia FINAL: " + String.valueOf(resultadoCalcCustodia));
+                tv3.setText("Liquidação FINAL: " + String.valueOf(resultadoCalcLiquidacao));
+                tv4.setText("Negociação FINAL: " + String.valueOf(resultadoCalcNegociacao));
+                tv5.setText("ISS FINAL: " + String.valueOf(resultadoCalcIss));
+                tv6.setText("Soma das custas FINAL: " + String.valueOf(sumResultadoCalculoCustas));
+                tv7.setText("Custas com valor do papel FINAL: " + String.valueOf(tempValorTotaldaCompra));
+                tv8.setText("Quantidade de cotas FINAL: "+ String.valueOf(tempQuantidadeDeCotasPorValDispoivel));
+                //TODO EXCLUIR APÓS TESTES
+
+                TesteDeCustas.addView(tv1);
+                TesteDeCustas.addView(tv2);
+                TesteDeCustas.addView(tv3);
+                TesteDeCustas.addView(tv4);
+                TesteDeCustas.addView(tv5);
+                TesteDeCustas.addView(tv6);
+                TesteDeCustas.addView(tv7);
+                TesteDeCustas.addView(tv8);*/
 
             }
-            TextView result_val_Corretagem = (TextView) findViewById(R.id.corretagem);
-            String calculo_Corretagem = String.valueOf(resultadoCalcCorretagem);
-            result_val_Corretagem.setText(calculo_Corretagem);
-
-            TextView result_val_Custodia = (TextView) findViewById(R.id.custodia);
-            String str_val_Custodia = df2.format(resultadoCalcCustodia);
-            result_val_Custodia.setText(str_val_Custodia);
-
-            TextView result_val_tx_liquidacao = (TextView) findViewById(R.id.tax_liquidacao);
-            String str_val_tx_liquidacao = df3.format(resultadoCalcLiquidacao);
-            result_val_tx_liquidacao.setText(str_val_tx_liquidacao);
-
-            TextView result_val_tx_negociacao = (TextView) findViewById(R.id.tax_negociacao);
-            String str_val_tx_negociacao = df3.format(resultadoCalcNegociacao);
-            result_val_tx_negociacao.setText(str_val_tx_negociacao);
-
-            TextView result_tv_emolumentos = (TextView) findViewById(R.id.emolumentos);
-            String str_emolumentos = df4.format(resultadoCalcLiquidacao + resultadoCalcNegociacao);
-            result_tv_emolumentos.setText(str_emolumentos);
-
-            TextView result_tv_iss = (TextView) findViewById(R.id.iss);
-            String str_calc_iss = df4.format(resultadoCalcIss);
-            result_tv_iss.setText(str_calc_iss);
-
-            TextView quantidade = (TextView) findViewById(R.id.quantidade);
-            quantidade.setText(tempQuantidadeDeCotasPorValDispoivel.toString());
-
-            TextView valExclusivoDoPapel = (TextView) findViewById(R.id.valCompraDoPapel);
-            String str_resul_val_Disponivel = df2.format(tempQuantidadeDeCotasPorValDispoivel * val_Papel);
-            valExclusivoDoPapel.setText(str_resul_val_Disponivel);
-
-            TextView valAInvestir = (TextView) findViewById(R.id.valNecessarioParaInvestir);
-            String str_resul_valAInvestir = df2.format(tempValorTotaldaCompra);
-            valAInvestir.setText(str_resul_valAInvestir);
-
-            TextView val_PapelResumo = (TextView) findViewById(R.id.valPapelResumo);
-            val_PapelResumo.setText(val_Papel.toString());
-
-            TextView quantidadeResumo = (TextView) findViewById(R.id.quantidadeResumo);
-            quantidadeResumo.setText(tempQuantidadeDeCotasPorValDispoivel.toString());
-
-            TextView val_CustaEmolImpostos = (TextView) findViewById(R.id.valCustaEmolImpostos);
-            String custo_PorOperacao = df3.format(0-sumResultadoCalculoCustas);
-            val_CustaEmolImpostos.setText(custo_PorOperacao);
-
-
-            /*tv1.setText("Corretagem FINAL: " + String.valueOf(resultadoCalcCorretagem));
-            tv2.setText("Custodia FINAL: " + String.valueOf(resultadoCalcCustodia));
-            tv3.setText("Liquidação FINAL: " + String.valueOf(resultadoCalcLiquidacao));
-            tv4.setText("Negociação FINAL: " + String.valueOf(resultadoCalcNegociacao));
-            tv5.setText("ISS FINAL: " + String.valueOf(resultadoCalcIss));
-            tv6.setText("Soma das custas FINAL: " + String.valueOf(sumResultadoCalculoCustas));
-            tv7.setText("Custas com valor do papel FINAL: " + String.valueOf(tempValorTotaldaCompra));
-            tv8.setText("Quantidade de cotas FINAL: "+ String.valueOf(tempQuantidadeDeCotasPorValDispoivel));
-            //TODO EXCLUIR APÓS TESTES
-
-            TesteDeCustas.addView(tv1);
-            TesteDeCustas.addView(tv2);
-            TesteDeCustas.addView(tv3);
-            TesteDeCustas.addView(tv4);
-            TesteDeCustas.addView(tv5);
-            TesteDeCustas.addView(tv6);
-            TesteDeCustas.addView(tv7);
-            TesteDeCustas.addView(tv8);*/
-
+            else {
+                //Toast.makeText(this, "Falha para obter os editTexts", Toast.LENGTH_SHORT).show();
+            }
+        }
+        catch (Exception e){
+            String excpt = e.getMessage();
+            Toast.makeText(this, excpt, Toast.LENGTH_SHORT).show();
         }
     }
 

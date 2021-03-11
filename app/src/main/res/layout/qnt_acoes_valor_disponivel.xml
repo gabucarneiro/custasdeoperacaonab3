@@ -309,6 +309,7 @@
                         style="@style/Conteudo"
                         android:textSize="10dp"
                         android:hint="0,00"
+                        android:inputType="numberDecimal"
                         android:contextClickable="false">
                     </EditText>
                 </LinearLayout>
@@ -335,6 +336,7 @@
                         style="@style/Conteudo"
                         android:textSize="10dp"
                         android:hint="0,00"
+                        android:inputType="numberDecimal"
                         android:clickable="false">
                     </EditText>
                 </LinearLayout>
@@ -387,7 +389,8 @@
                         android:id="@+id/pctLiquidacao"
                         style="@style/Conteudo"
                         android:textSize="10dp"
-                        android:hint="0,00">
+                        android:hint="0,00"
+                        android:inputType="numberDecimal">
                     </EditText>
                 </LinearLayout>
                 <LinearLayout
@@ -413,7 +416,8 @@
                         android:id="@+id/pctNegociacao"
                         style="@style/Conteudo"
                         android:textSize="10dp"
-                        android:hint="0,00">
+                        android:hint="0,00"
+                        android:inputType="numberDecimal">
                     </EditText>
                 </LinearLayout>
 
@@ -438,7 +442,8 @@
                         android:id="@+id/pctIss"
                         style="@style/Conteudo"
                         android:textSize="10dp"
-                        android:hint="0,00">
+                        android:hint="0,00"
+                        android:inputType="numberDecimal">
                     </EditText>
                 </LinearLayout>
                 <LinearLayout
@@ -461,7 +466,8 @@
                         android:id="@+id/pctIr"
                         style="@style/Conteudo"
                         android:textSize="10dp"
-                        android:hint="0,00">
+                        android:hint="0,00"
+                        android:inputType="numberDecimal">
                     </EditText>
                 </LinearLayout>
             </LinearLayout>
