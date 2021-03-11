@@ -97,6 +97,11 @@ public class ValorMinParaVendaSemPerdas extends AppCompatActivity {
         pct_Iss.setText(String.valueOf(dbhCustas.getCustas(999).getIss()));
         pct_Emolumentos.setText(String.valueOf(dbhCustas.getCustas(999).getTx_liquidacao()+dbhCustas.getCustas(999).getTx_negociacao()));
 
+        LinearLayout custas = (LinearLayout) findViewById(R.id.idcustas2);
+        LinearLayout custasExtra = (LinearLayout) findViewById(R.id.custasExtra2);
+        custas.setVisibility(View.GONE);
+        custasExtra.setVisibility(View.GONE);
+
         dbhCustas.close();
         //AlertDialogListar();
 
@@ -551,7 +556,7 @@ public class ValorMinParaVendaSemPerdas extends AppCompatActivity {
             }
         }
         catch (Exception e){
-            Toaster("Deu ruim!");
+            Toaster("Exception AlertDialogListar" + e.getMessage());
         }
 
         AlertDialog.Builder listaPapeisCadastrados = new AlertDialog.Builder(this);
@@ -590,5 +595,19 @@ public class ValorMinParaVendaSemPerdas extends AppCompatActivity {
         });
 
         listaPapeisCadastrados.show();
+    }
+
+    public void custasVisibility(View view){
+
+        LinearLayout custas = (LinearLayout) findViewById(R.id.idcustas2);
+        LinearLayout custasExtra = (LinearLayout) findViewById(R.id.custasExtra2);
+        if (custas.getVisibility() == View.VISIBLE || custasExtra.getVisibility() == View.VISIBLE) {
+            custas.setVisibility(View.GONE);
+            custasExtra.setVisibility(View.GONE);
+        }
+        else {
+            custas.setVisibility(View.VISIBLE);
+            custasExtra.setVisibility(View.VISIBLE);
+        }
     }
 }

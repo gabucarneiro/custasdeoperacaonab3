@@ -223,23 +223,25 @@
 
         <!--  ***** CUSTOS OPERACIONAIS *****  -->
 
-        <TextView
+        <Button
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="custos operacionais"
-            android:textColor="@color/darkblue"
+            android:textColor="@color/red"
             android:textSize="23dp"
             android:textAllCaps="true"
             android:textAlignment="center"
+            android:onClick="custasVisibility"
             android:layout_marginTop="25dp">
-        </TextView>
+        </Button>
 
         <!--  ***** CORRETORA *****  -->
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical"
-            android:gravity="right">
+            android:gravity="right"
+            android:id="@+id/custasExtra2">
             <TextView
                 style="@style/Conteudo"
                 android:text="Alterar %"
@@ -250,7 +252,8 @@
         <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:orientation="horizontal">
+            android:orientation="horizontal"
+            android:id="@+id/idcustas2">
 
             <LinearLayout
                 android:layout_width="wrap_content"
