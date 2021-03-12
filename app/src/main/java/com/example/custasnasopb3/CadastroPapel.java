@@ -678,7 +678,7 @@ public class CadastroPapel extends AppCompatActivity {
         catch (Exception e){
             idPapelCustas = 999;
             //Toaster("Parâmetro padrão utilizado");
-            Toaster("Exception ativado " + idPapelCustas);
+            Toaster("Custas padrão: ID" + idPapelCustas);
         }
 
 
@@ -844,6 +844,7 @@ public class CadastroPapel extends AppCompatActivity {
 
         Button btnConfirmaCustaTemp = new Button(this);
         btnConfirmaCustaTemp.setText("Salvar");
+        btnConfirmaCustaTemp.setTextColor(getColor(R.color.white));
         btnConfirmaCustaTemp.setGravity(1);
         btnConfirmaCustaTemp.setBackgroundColor(getColor(R.color.darkblue));
         btnConfirmaCustaTemp.setOnClickListener(new View.OnClickListener() {

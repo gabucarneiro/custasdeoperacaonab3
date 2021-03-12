@@ -53,13 +53,26 @@ public class Custas extends AppCompatActivity {
         //Custas custasStandard = new Custas(999, 1.99,0.0,0.0275,0.003247, 0.01, 1, 1, 0, 0, 0);
         //dbhCustas.addCustas(custasStandard);
 
-        int custasPadrão = 999;
-        Custas custas = new Custas();
+        int custasPadrao = 999;
+        Custas custas;
         try {
-            custas = dbhCustas.getCustas(custasPadrão);
+            double corret = (dbhCustas.getCustas(custasPadrao).getCorretagem());
+            double cust = (dbhCustas.getCustas(custasPadrao).getCustodia());
+            double liquid = (dbhCustas.getCustas(custasPadrao).getTx_liquidacao());
+            double negoc = (dbhCustas.getCustas(custasPadrao).getTx_negociacao());
+            double isss = (dbhCustas.getCustas(custasPadrao).getIss());
+            boolean blcorr = (dbhCustas.getCustas(custasPadrao).isCorretagemFixa());
+            boolean blcust = (dbhCustas.getCustas(custasPadrao).isCustodiaFixa());
+            boolean bltxliq = (dbhCustas.getCustas(custasPadrao).isTx_liquidacaoFixa());
+            boolean bltxneg = (dbhCustas.getCustas(custasPadrao).isTx_negociacaoFixa());
+            boolean bliss = (dbhCustas.getCustas(custasPadrao).isIssFixo());
+
+            custas = new Custas(custasPadrao, corret, cust, liquid, negoc, isss, blcorr, blcust, bltxliq, bltxneg, bliss);
         }
         catch (Exception e){
-            Toast.makeText(this,"Erro!", Toast.LENGTH_SHORT);
+            Toast.makeText(this,"Definir primeiros parâmetros!", Toast.LENGTH_SHORT).show();
+            custas = new Custas(999, 0.0,0.0,0.0,0.0, 0.0, false, false, false, false, false);
+            dbhCustas.addCustas(custas);
         }
 
 
@@ -82,7 +95,7 @@ public class Custas extends AppCompatActivity {
         pctIss2.setText(String.valueOf(custas.getIss()));
 
         CheckBox cbCorretagem2 = (CheckBox) findViewById(R.id.cbCorretagem2);
-        if (dbhCustas.getCustas(custasPadrão).isCorretagemFixa()){
+        if (dbhCustas.getCustas(custasPadrao).isCorretagemFixa()){
             cbCorretagem2.setChecked(true);
         }
         else {
@@ -90,7 +103,7 @@ public class Custas extends AppCompatActivity {
         }
 
         CheckBox cbCustodia2 = (CheckBox) findViewById(R.id.cbCustodia2);
-        if (dbhCustas.getCustas(custasPadrão).isCustodiaFixa()){
+        if (dbhCustas.getCustas(custasPadrao).isCustodiaFixa()){
             cbCustodia2.setChecked(true);
         }
         else {
@@ -98,7 +111,7 @@ public class Custas extends AppCompatActivity {
         }
 
         CheckBox cbLiquidacao2 = (CheckBox) findViewById(R.id.cbLiquidacao2);
-        if (dbhCustas.getCustas(custasPadrão).isTx_liquidacaoFixa()){
+        if (dbhCustas.getCustas(custasPadrao).isTx_liquidacaoFixa()){
             cbLiquidacao2.setChecked(true);
         }
         else {
@@ -106,7 +119,7 @@ public class Custas extends AppCompatActivity {
         }
 
         CheckBox cbNegociacao2 = (CheckBox) findViewById(R.id.cbNegociacao2);
-        if (dbhCustas.getCustas(custasPadrão).isTx_negociacaoFixa()){
+        if (dbhCustas.getCustas(custasPadrao).isTx_negociacaoFixa()){
             cbNegociacao2.setChecked(true);
         }
         else {
@@ -114,7 +127,7 @@ public class Custas extends AppCompatActivity {
         }
 
         CheckBox cbIss2 = (CheckBox) findViewById(R.id.cbIss2);
-        if (dbhCustas.getCustas(custasPadrão).isIssFixo()){
+        if (dbhCustas.getCustas(custasPadrao).isIssFixo()){
             cbIss2.setChecked(true);
         }
         else {
@@ -402,7 +415,11 @@ public class Custas extends AppCompatActivity {
 
         custas = new Custas(id, db_pctCorretagem2, db_pctCustodia2, db_pctLiquidacao2, db_pctNegociacao2, db_pctIss2, isChecked_cbCorretagem2, isChecked_cbCustodia2, isChecked_cbLiquidacao2, isChecked_cbNegociacao2, isChecked_cbIss2);
 
-        //dbhCustas.addCustas(custas);
+        try {
+            dbhCustas.addCustas(custas);
+        }catch (Exception e){
+            Toast.makeText(this, "Exception ao salvar no BD!", Toast.LENGTH_SHORT).show();
+        }
         dbhCustas.updateCustas(custas, id);
         Toast.makeText(this, "Salvo!", Toast.LENGTH_SHORT).show();
         dbhCustas.close();

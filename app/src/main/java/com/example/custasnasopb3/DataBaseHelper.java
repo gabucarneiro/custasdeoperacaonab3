@@ -13,7 +13,7 @@ import java.util.List;
 
 public class DataBaseHelper extends SQLiteOpenHelper {
 
-    private static int versao = 2;
+    private static int versao = 1;
     private static final String banco_dados = "Papel";
 
     public DataBaseHelper(Context context){
@@ -26,15 +26,13 @@ public class DataBaseHelper extends SQLiteOpenHelper {
         db.execSQL("CREATE TABLE PAPEL (ID INTEGER(3), PAPEL VARCHAR(6) NOT NULL," +
                 "VALOR DOUBLE(10), QUANTIDADE INTEGER(10))");
 
+        db.execSQL("CREATE TABLE CUSTAS (ID INTEGER(3), CORRETAGEM DOUBLE(10), CUSTODIA DOUBLE(10), LIQUIDACAO DOUBLE(10), NEGOCIACAO DOUBLE(10), ISS DOUBLE(10), CORRETAGEMFIXA INTEGER(1), CUSTODIAFIXA INTEGER(1), LIQUIDACAOFIXA INTEGER(1), NEGOCIACAOFIXA INTEGER(1), ISSFIXO INTEGER(1))");
         /*db.execSQL("CREATE TABLE CUSTAS (ID INTEGER(3), " +
                 "CORRETAGEM DOUBLE(10), " +
                 "CUSTODIA DOUBLE(10), " +
                 "LIQUIDACAO DOUBLE(10), " +
                 "NEGOCIACAO DOUBLE(10), " +
                 "ISS DOUBLE(10))");*/
-
-        /*Custas custasStandard = new Custas(999, 1.99,0.0,0.0275,0.003247, 0.01);
-        addCustas(custasStandard);*/
     }
 
     @Override
@@ -47,15 +45,8 @@ public class DataBaseHelper extends SQLiteOpenHelper {
                 /*db.execSQL("ALTER TABLE PAPEL ADD OBSERVACAO VARCHAR(200);");
                 db.execSQL("ALTER TABLE PAPEL RENAME OBSERVACAO TO NOTES;");*/
 
-                db.execSQL("CREATE TABLE CUSTAS (ID INTEGER(3), CORRETAGEM DOUBLE(10), CUSTODIA DOUBLE(10), LIQUIDACAO DOUBLE(10), NEGOCIACAO DOUBLE(10), ISS DOUBLE(10), CORRETAGEMFIXA INTEGER(1), CUSTODIAFIXA INTEGER(1), LIQUIDACAOFIXA INTEGER(1), NEGOCIACAOFIXA INTEGER(1), ISSFIXO INTEGER(1))");
+                //db.execSQL("CREATE TABLE CUSTAS (ID INTEGER(3), CORRETAGEM DOUBLE(10), CUSTODIA DOUBLE(10), LIQUIDACAO DOUBLE(10), NEGOCIACAO DOUBLE(10), ISS DOUBLE(10), CORRETAGEMFIXA INTEGER(1), CUSTODIAFIXA INTEGER(1), LIQUIDACAOFIXA INTEGER(1), NEGOCIACAOFIXA INTEGER(1), ISSFIXO INTEGER(1))");
                 }
-            /*case 3:{
-                db.execSQL("ALTER TABLE CUSTAS ADD COLUMN CORRETAGEMFIXA INTEGER(1)");
-                db.execSQL("ALTER TABLE CUSTAS ADD COLUMN CUSTODIAFIXA INTEGER(1)");
-                db.execSQL("ALTER TABLE CUSTAS ADD COLUMN LIQUIDACAOFIXA INTEGER(1)");
-                db.execSQL("ALTER TABLE CUSTAS ADD COLUMN NEGOCIACAOFIXA INTEGER(1)");
-                db.execSQL("ALTER TABLE CUSTAS ADD COLUMN ISSFIXO INTEGER(1)");
-            }*/
         }
     }
     public long addPapel(Papel papel){
@@ -254,6 +245,30 @@ public class DataBaseHelper extends SQLiteOpenHelper {
 
     /*________________________________________ PARAMETROS _____________________________________________________*/
 
+    /*public long firstAddCustas(){
+        SQLiteDatabase db = this.getWritableDatabase();
+
+        ContentValues values = new ContentValues();
+
+        values.put("ID", 999);
+        values.put("CORRETAGEM", 0.0);
+        values.put("CUSTODIA", 0.0);
+        values.put("LIQUIDACAO", 0.0);
+        values.put("NEGOCIACAO", 0.0);
+        values.put("ISS", 0.0);
+
+        values.put("CORRETAGEMFIXA", 1);
+        values.put("CUSTODIAFIXA", 1);
+        values.put("LIQUIDACAOFIXA", 0);
+        values.put("NEGOCIACAOFIXA", 0);
+        values.put("ISSFIXO", 0);
+
+        long id = db.insert("CUSTAS", null, values);
+
+        db.close();
+        return id;
+    }*/
+
     public long addCustas(Custas custas){
         SQLiteDatabase db = this.getWritableDatabase();
 
@@ -427,8 +442,8 @@ public class DataBaseHelper extends SQLiteOpenHelper {
             custas.setTx_negociacao(0.0);
             custas.setIss(0.0);
 
-            custas.setCorretagemFixa(custas.intToBool(1));
-            custas.setCustodiaFixa(custas.intToBool(1));
+            custas.setCorretagemFixa(custas.intToBool(0));
+            custas.setCustodiaFixa(custas.intToBool(0));
             custas.setTx_liquidacaoFixa(custas.intToBool(0));
             custas.setTx_negociacaoFixa(custas.intToBool(0));
             custas.setIssFixo(custas.intToBool(0));
