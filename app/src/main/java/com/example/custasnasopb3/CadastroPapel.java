@@ -322,20 +322,21 @@ public class CadastroPapel extends AppCompatActivity {
                     dbh.addPapel(papel);
                     Integer idCustas;
                     Double emptyTempCheck = dbh.getCustas(998).getCorretagem();
-                    if (emptyTempCheck==null){
+                    Toaster("emptyTempCheck = " + emptyTempCheck);
+                    if (emptyTempCheck== 0.0){
                         idCustas = 999;
                         //TODO excluir o Toaster teste abaixo
-                        Toaster("ID temporário vazio");
+                        Toaster("ID temporário vazio: " + idCustas);
                     }
                     else {
                         idCustas = 998;
                         //TODO excluir o Toaster teste abaixo
-                        Toaster("ID temporário válido");
+                        Toaster("ID temporário válido: " + idCustas);
                     }
                     Custas custas;
 
                     Double ultimoCorretagem = dbh.getCustas(idCustas).getCorretagem();
-                    // TODO excluir esse toaster teste: Toaster("Enviado para a possição " + idCustas + " : " + String.valueOf(ultimoCorretagem));
+                    Toaster("Enviado para a possição " + idCustas + " : " + String.valueOf(ultimoCorretagem));
                     Boolean isCorretagemFixa = dbh.getCustas(idCustas).isCorretagemFixa();
                     Double ultimoCustodia = dbh.getCustas(idCustas).getCustodia();
                     Boolean isCustodiaFixa = dbh.getCustas(idCustas).isCustodiaFixa();
@@ -345,16 +346,6 @@ public class CadastroPapel extends AppCompatActivity {
                     Boolean isTxNegociacaoFixa = dbh.getCustas(idCustas).isTx_negociacaoFixa();
                     Double ultimoIss = dbh.getCustas(idCustas).getIss();
                     Boolean isIssFixo = dbh.getCustas(idCustas).isIssFixo();
-                    /*dbhCustas.getCustas(ultimo).setCorretagem(dbhCustas.getCustas(idCustas).getCorretagem());
-                    dbhCustas.getCustas(ultimo).setCorretagemFixa(dbhCustas.getCustas(idCustas).isCorretagemFixa());
-                    dbhCustas.getCustas(ultimo).setCustodia(dbhCustas.getCustas(idCustas).getCustodia());
-                    dbhCustas.getCustas(ultimo).setCustodiaFixa(dbhCustas.getCustas(idCustas).isCustodiaFixa());
-                    dbhCustas.getCustas(ultimo).setTx_liquidacao(dbhCustas.getCustas(idCustas).getTx_liquidacao());
-                    dbhCustas.getCustas(ultimo).setTx_liquidacaoFixa(dbhCustas.getCustas(idCustas).isTx_liquidacaoFixa());
-                    dbhCustas.getCustas(ultimo).setTx_negociacao(dbhCustas.getCustas(idCustas).getTx_negociacao());
-                    dbhCustas.getCustas(ultimo).setTx_negociacaoFixa(dbhCustas.getCustas(idCustas).isTx_negociacaoFixa());
-                    dbhCustas.getCustas(ultimo).setIss(dbhCustas.getCustas(idCustas).getIss());
-                    dbhCustas.getCustas(ultimo).setIssFixo(dbhCustas.getCustas(idCustas).isIssFixo());*/
 
                     custas = new Custas(ultimo, ultimoCorretagem, ultimoCustodia, ultimoTxLiquidacao, ultimoTxNegociacao, ultimoIss, isCorretagemFixa, isCustodiaFixa, isTxLiquidacaoFixa, isTxNegociacaoFixa, isIssFixo);
                     if(dbh.getCustas(ultimo).getCorretagem()== 0.0 && dbh.getCustas(ultimo).getCustodia()==0.0 && dbh.getCustas(ultimo).getTx_liquidacao()==0.0 && dbh.getCustas(ultimo).getTx_negociacao()==0.0 && dbh.getCustas(ultimo).getIss()==0.0) {
@@ -444,13 +435,15 @@ public class CadastroPapel extends AppCompatActivity {
 
                         Integer idCustas;
                         Double emptyTempCheck = dbh.getCustas(998).getCorretagem();
-                        if (emptyTempCheck==null){
+                        if (emptyTempCheck== 0.0){
                             idCustas = 999;
-                            Toaster("ID temporário vazio");
+                            //TODO excluir o Toaster teste abaixo
+                            Toaster("else if ID temporário vazio: " + idCustas);
                         }
                         else {
                             idCustas = 998;
-                            Toaster("ID temporário válido");
+                            //TODO excluir o Toaster teste abaixo
+                            Toaster("else if ID temporário válido: " + idCustas);
                         }
                         Custas custas;
 
@@ -484,13 +477,15 @@ public class CadastroPapel extends AppCompatActivity {
 
                         Integer idCustas;
                         Double emptyTempCheck = dbh.getCustas(998).getCorretagem();
-                        if (emptyTempCheck==null){
+                        if (emptyTempCheck==0.0){
                             idCustas = 999;
-                            Toaster("ID temporário vazio");
+                            //TODO excluir o Toaster teste abaixo
+                            Toaster("else else ID temporário vazio: " + idCustas);
                         }
                         else {
                             idCustas = 998;
-                            Toaster("ID temporário válido");
+                            //TODO excluir o Toaster teste abaixo
+                            Toaster("else else ID temporário válido: " + idCustas);
                         }
                         Custas custas;
 
@@ -527,6 +522,17 @@ public class CadastroPapel extends AppCompatActivity {
                 Toaster("Erro ao salvar!");
             }
         }
+        //TODO Criar função para setar 0.0s e falses em todos dados do ID temporário: 998;
+        /*Custas custas = new Custas(998, 0.0, 0.0, 0.0, 0.0, 0.0, false, false, false, false, false);
+        if(dbh.getCustas(998).getCorretagem()== 0.0 && dbh.getCustas(998).getCustodia()==0.0 && dbh.getCustas(998).getTx_liquidacao()==0.0 && dbh.getCustas(998).getTx_negociacao()==0.0 && dbh.getCustas(998).getIss()==0.0) {
+            dbh.addCustas(custas);
+            Toaster("998 zerado: " + ID_PAPEL + " : " + String.valueOf(998));
+        }
+        else {
+            dbh.updateCustas(custas, 998);
+            Toaster("else 998 zerado " + ID_PAPEL + " : " + String.valueOf(998));
+        }*/
+
         recuperarBD(view);
         dbh.close();
     }
@@ -666,19 +672,23 @@ public class CadastroPapel extends AppCompatActivity {
         try {
             et_IdPapel =findViewById(R.id.idPapel);
 
-            if (et_IdPapel.getText()!=null || (!et_IdPapel.getText().equals(""))){
+            if (et_IdPapel.getText()!=null || !(String.valueOf(et_IdPapel.getText()).equals(""))){
                 idPapelCustas = Integer.parseInt(String.valueOf(et_IdPapel.getText()));
-                Toaster("If ativado idPapelCustas:" + idPapelCustas);
+                Toaster("If ativado idPapelCustas: " + idPapelCustas);
             }
             else {
                 idPapelCustas = 998;
-                Toaster("Else ativado idPapelCustas:" + idPapelCustas);
+                Toaster("Else ativado idPapelCustas: " + idPapelCustas);
             }
         }
+        /*catch (NullPointerException npe){
+            idPapelCustas = 998;
+            Toaster("Else ativado idPapelCustas: " + idPapelCustas);
+        }*/
         catch (Exception e){
             idPapelCustas = 999;
             //Toaster("Parâmetro padrão utilizado");
-            Toaster("Custas padrão: ID" + idPapelCustas);
+            Toaster("Exception padrão: ID " + idPapelCustas);
         }
 
 
@@ -860,31 +870,32 @@ public class CadastroPapel extends AppCompatActivity {
                 Boolean boo_cb_ADTxLiquidacaoTemp;
                 Boolean boo_cb_ADTxNegociacaoTemp;
                 Boolean boo_cb_ADIssTemp;
-                if (!et_ADCorretagemTemp.getText().equals("")){
+                if (!String.valueOf(et_ADCorretagemTemp.getText()).equals("")){
                     db_ADCorretagemTemp = Double.valueOf(String.valueOf(et_ADCorretagemTemp.getText()));
+                    Toaster("db_ADCorretagemTemp: "+ db_ADCorretagemTemp);
                 }
                 else {
                     db_ADCorretagemTemp = 0.0;
                 }
-                if (!et_ADCustodiaTemp.getText().equals("")){
+                if (!String.valueOf(et_ADCustodiaTemp.getText()).equals("")){
                     db_ADCustodiaTemp = Double.valueOf(String.valueOf(et_ADCustodiaTemp.getText()));
                 }
                 else {
                     db_ADCustodiaTemp = 0.0;
                 }
-                if (!et_ADTxLiquidacaoTemp.getText().equals("")){
+                if (!String.valueOf(et_ADTxLiquidacaoTemp.getText()).equals("")){
                     db_ADTxLiquidacaoTemp = Double.valueOf(String.valueOf(et_ADTxLiquidacaoTemp.getText()));
                 }
                 else {
                     db_ADTxLiquidacaoTemp = 0.0;
                 }
-                if (!et_ADTxNegociacaoTemp.getText().equals("")){
+                if (!String.valueOf(et_ADTxNegociacaoTemp.getText()).equals("")){
                     db_ADTxNegociacaoTemp = Double.valueOf(String.valueOf(et_ADTxNegociacaoTemp.getText()));
                 }
                 else {
                     db_ADTxNegociacaoTemp = 0.0;
                 }
-                if (!et_ADIssTemp.getText().equals("")){
+                if (!String.valueOf(et_ADIssTemp.getText()).equals("")){
                     db_ADIssTemp = Double.valueOf(String.valueOf(et_ADIssTemp.getText()));
                 }
                 else {
@@ -922,15 +933,15 @@ public class CadastroPapel extends AppCompatActivity {
                 }
 
                 long ultimo = dbhCustas.contador();
-                int idTempCustas=998;
-                Custas custas = new Custas(idTempCustas, db_ADCorretagemTemp, db_ADCustodiaTemp, db_ADTxLiquidacaoTemp, db_ADTxNegociacaoTemp, db_ADIssTemp, boo_cb_ADCorretagemTemp, boo_cb_ADCustodiaTemp, boo_cb_ADTxLiquidacaoTemp, boo_cb_ADTxNegociacaoTemp, boo_cb_ADIssTemp);
+                int idTempCustas = 998;
+                Custas custasTemp = new Custas(idTempCustas, db_ADCorretagemTemp, db_ADCustodiaTemp, db_ADTxLiquidacaoTemp, db_ADTxNegociacaoTemp, db_ADIssTemp, boo_cb_ADCorretagemTemp, boo_cb_ADCustodiaTemp, boo_cb_ADTxLiquidacaoTemp, boo_cb_ADTxNegociacaoTemp, boo_cb_ADIssTemp);
                 Double checkVazio = dbhCustas.getCustas(idTempCustas).getCorretagem();
-                if (checkVazio == null) {
-                    dbhCustas.addTempIdCustas(custas);
+                if (checkVazio == 0.0) {
+                    dbhCustas.addTempIdCustas(custasTemp);
                     Toaster("Salvo! If"+ ultimo);
                 }
                 else {
-                    dbhCustas.updateTempIdCustas(custas, idTempCustas);
+                    dbhCustas.updateTempIdCustas(custasTemp, idTempCustas);
                     Toaster("Salvo! Else"+ ultimo);
                 }
                 //Toaster("Salvo! "+ ultimo);
