@@ -300,7 +300,7 @@ public class DataBaseHelper extends SQLiteOpenHelper {
         ContentValues values = new ContentValues();
 
         /*MODIFICAR PARA UMA VERIFICAÇÃO MELHOR*/
-        if(custas.getCorretagem()== 0.0){
+        if(custas.getCorretagem()== 0.0 && custas.getCustodia()==0.0 && custas.getTx_liquidacao()==0.0 && custas.getTx_negociacao()==0.0 && custas.getIss()==0.0){
             values.put("ID", custas.getId());
             values.put("CORRETAGEM", 0.0);
             values.put("CUSTODIA", 0.0);
@@ -351,6 +351,30 @@ public class DataBaseHelper extends SQLiteOpenHelper {
         values.put("LIQUIDACAOFIXA", custas.boolToInt(custas.isTx_liquidacaoFixa()));
         values.put("NEGOCIACAOFIXA", custas.boolToInt(custas.isTx_negociacaoFixa()));
         values.put("ISSFIXO", custas.boolToInt(custas.isIssFixo()));
+
+        long id = db.update("CUSTAS", values, "id = ?", new String[]{String.valueOf(id_custas)});
+
+        db.close();
+        return id;
+    }
+
+    public long clearTempIdCustas(int id_custas){
+        SQLiteDatabase db = this.getWritableDatabase();
+
+        ContentValues values = new ContentValues();
+
+        values.put("ID", id_custas);
+        values.put("CORRETAGEM", 0.0);
+        values.put("CUSTODIA", 0.0);
+        values.put("LIQUIDACAO", 0.0);
+        values.put("NEGOCIACAO", 0.0);
+        values.put("ISS", 0.0);
+
+        values.put("CORRETAGEMFIXA", 0);
+        values.put("CUSTODIAFIXA", 0);
+        values.put("LIQUIDACAOFIXA", 0);
+        values.put("NEGOCIACAOFIXA", 0);
+        values.put("ISSFIXO", 0);
 
         long id = db.update("CUSTAS", values, "id = ?", new String[]{String.valueOf(id_custas)});
 
