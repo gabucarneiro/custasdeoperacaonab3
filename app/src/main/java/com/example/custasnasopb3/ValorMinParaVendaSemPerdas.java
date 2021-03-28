@@ -543,15 +543,15 @@ public class ValorMinParaVendaSemPerdas extends AppCompatActivity {
         CharSequence arrayPapeis[] = new CharSequence[contadorInt];
 
         try {
-            for(int i = 0; i<contadorInt; i++){
+            for(int i = 1; i<=contadorInt; i++){
                 Papel papel;
                 papel = dbh.getPapel(i);
                 String tempNomePapel = String.valueOf(papel.getNomePapel());
                 if (!(tempNomePapel.equals(""))){
-                    arrayPapeis[i] = String.valueOf(papel.getNomePapel());
+                    arrayPapeis[i-1] = String.valueOf(papel.getNomePapel());
                 }
                 else{
-                    arrayPapeis[i] = "Empty";
+                    arrayPapeis[i-1] = "Empty";
                 }
             }
         }
@@ -576,7 +576,7 @@ public class ValorMinParaVendaSemPerdas extends AppCompatActivity {
                 EditText et_quantidade = findViewById(R.id.quantidade2);
 
                 Papel papel;
-                papel = dbh.getPapel(which);
+                papel = dbh.getPapel(which+1);
                 et_valPapelAdquirido.setText(String.valueOf(papel.getValor()));
                 et_quantidade.setText(String.valueOf(papel.getQuantidade()));
                 Toaster(papel.getNomePapel());
