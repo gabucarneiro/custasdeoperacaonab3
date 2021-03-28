@@ -301,6 +301,12 @@ public class CadastroPapel extends AppCompatActivity {
 
 
             long longUltimo = dbh.contador();
+            if (longUltimo == 0){
+                longUltimo = 1;
+            }
+            else {
+                longUltimo+=1;
+            }
             String nomePapel = et_nomePapel.getText().toString();
             Double valorPapel=0.0;
             Integer quantidade=0;
@@ -416,6 +422,12 @@ public class CadastroPapel extends AppCompatActivity {
                 ID_PAPEL = 0;
                 ID_PAPEL = Integer.parseInt(idaux);
                 long longUltimo = dbh.contador();
+                if (longUltimo ==0){
+                    longUltimo = 1;
+                }
+                else {
+                    longUltimo+=1;
+                }
                 int ultimo = Integer.parseInt(String.valueOf(longUltimo));
 
                 String nomePapel = et_nomePapel.getText().toString();
@@ -501,14 +513,14 @@ public class CadastroPapel extends AppCompatActivity {
                         Double ultimoIss = dbh.getCustas(idCustas).getIss();
                         Boolean isIssFixo = dbh.getCustas(idCustas).isIssFixo();
 
-                        custas = new Custas(ID_PAPEL, ultimoCorretagem, ultimoCustodia, ultimoTxLiquidacao, ultimoTxNegociacao, ultimoIss, isCorretagemFixa, isCustodiaFixa, isTxLiquidacaoFixa, isTxNegociacaoFixa, isIssFixo);
-                        if(dbh.getCustas(ID_PAPEL).getCorretagem()== 0.0 && dbh.getCustas(ID_PAPEL).getCustodia()==0.0 && dbh.getCustas(ID_PAPEL).getTx_liquidacao()==0.0 && dbh.getCustas(ID_PAPEL).getTx_negociacao()==0.0 && dbh.getCustas(ID_PAPEL).getIss()==0.0) {
+                        custas = new Custas(ultimo, ultimoCorretagem, ultimoCustodia, ultimoTxLiquidacao, ultimoTxNegociacao, ultimoIss, isCorretagemFixa, isCustodiaFixa, isTxLiquidacaoFixa, isTxNegociacaoFixa, isIssFixo);
+                        if(dbh.getCustas(ultimo).getCorretagem()== 0.0 && dbh.getCustas(ultimo).getCustodia()==0.0 && dbh.getCustas(ultimo).getTx_liquidacao()==0.0 && dbh.getCustas(ultimo).getTx_negociacao()==0.0 && dbh.getCustas(ultimo).getIss()==0.0) {
                             dbh.addCustas(custas);
-                            Toaster("Add na possição " + ID_PAPEL + " : " + String.valueOf(ultimoCorretagem));
+                            Toaster("Add na possição " + ultimo + " : " + String.valueOf(ultimoCorretagem));
                         }
                         else {
                             dbh.updateCustas(custas, ultimo);
-                            Toaster("Updated na possição " + ID_PAPEL + " : " + String.valueOf(ultimoCorretagem));
+                            Toaster("Updated na possição " + ultimo + " : " + String.valueOf(ultimoCorretagem));
                         }
 
                         Toaster(papel.getNomePapel()+ " foi SALVO com sucesso!");
@@ -561,7 +573,7 @@ public class CadastroPapel extends AppCompatActivity {
         tvcontador.setText("Papeis encontrados: " + stgcontador+"\n"+"****LISTA****"+"\n");
         resumoView2BD.addView(tvcontador);*/
 
-        for(int i=0; i<contador; i++){
+        for(int i=1; i<=contador; i++){
             try{
                 TextView listagem = new TextView(this);
                 papel = dbh.getPapel(i).toString3();
@@ -656,7 +668,8 @@ public class CadastroPapel extends AppCompatActivity {
     public void AlertDialogCustas (View view){
 
         AlertDialog.Builder ad_toStringCustas = new AlertDialog.Builder(this);
-        ad_toStringCustas.setTitle(R.string.parametros);
+        AlertDialog alert = ad_toStringCustas.create();
+        alert.setTitle(R.string.parametros);
 
         DataBaseHelper dbhCustas = new DataBaseHelper(this);
 
@@ -962,6 +975,7 @@ public class CadastroPapel extends AppCompatActivity {
                 }
                 //Toaster("Salvo! "+ ultimo);
                 dbhCustas.close();
+                alert.cancel();
             }
         });
 
@@ -998,9 +1012,9 @@ public class CadastroPapel extends AppCompatActivity {
         ll_ADVertical.addView(ll_ADHorizontalBtn);
 
         //ad_toStringCustas.setView(R.layout.activity_custas);
-        ad_toStringCustas.setView(ll_ADVertical);
+        alert.setView(ll_ADVertical);
 
-        ad_toStringCustas.show();
+        alert.show();
         dbhCustas.close();
     }
 }
