@@ -36,6 +36,7 @@ public class CadastroPapel extends AppCompatActivity {
 
     EditText et_nomePapel, et_valCadastroPapel;
     EditText et_IdPapel, et_QuantidadePapel;
+    CheckBox cadastroCbFracionario;
 
     TextView resumoBD;
 
@@ -61,6 +62,7 @@ public class CadastroPapel extends AppCompatActivity {
         et_nomePapel = findViewById(R.id.nomePapel);
         et_valCadastroPapel = findViewById(R.id.valCadastroPapel);
         et_QuantidadePapel = findViewById(R.id.valQuantidadePapel);
+        cadastroCbFracionario = findViewById(R.id.cadastroCbFracionario);
 
         et_IdPapel = (EditText) findViewById(R.id.idPapel);
         /*et_IdPapel.setText("999");
@@ -87,14 +89,14 @@ public class CadastroPapel extends AppCompatActivity {
         });
 
         //TODO *** DADOS ABAIXO SERÃO EXCLUÍDOS - AINDA EM TESTE
-        papelList.add(new Papel(00,"CIEL3F", 8.5, 51));
-        papelList.add(new Papel(01,"ABEV3F", 16.3,81));
-        papelList.add(new Papel(02,"EMBR3F", 16.9,98));
+        papelList.add(new Papel(00,"CIEL3F", 8.5, 51, true));
+        papelList.add(new Papel(01,"ABEV3F", 16.3,81, true));
+        papelList.add(new Papel(02,"EMBR3F", 16.9,98, true));
         //papelList.add(new Papel("PETR3F", 14.78));
-        papelList.add(new Papel(03,"BBDC4F", 21.65,48));
-        papelList.add(new Papel(04,"CVCB3F", 16.22, 99));
-        papelList.add(new Papel(05,"DMMO3F", 8.1,10));
-        papelList.add(new Papel(06,"COGN3", 6.72,300));
+        papelList.add(new Papel(03,"BBDC4F", 21.65,48, true));
+        papelList.add(new Papel(04,"CVCB3F", 16.22, 99, true));
+        papelList.add(new Papel(05,"DMMO3F", 8.1,10, true));
+        papelList.add(new Papel(06,"COGN3", 6.72,300, false));
         //Listar(papelList);
         //*** DADOS ACIMA SERÃO EXCLUÍDOS - AINDA EM TESTE
     }
@@ -234,6 +236,7 @@ public class CadastroPapel extends AppCompatActivity {
         et_nomePapel.setText("");
         et_valCadastroPapel.setText("");
         et_QuantidadePapel.setText("");
+        cadastroCbFracionario.setChecked(false);
     }
 
 
@@ -250,6 +253,7 @@ public class CadastroPapel extends AppCompatActivity {
 
         if(idaux.equals("")){
             Toaster("Insira um ID");
+            //et_IdPapel.setError("Buscar por ID");
             dbh.close();
             return 0;
         }
@@ -277,6 +281,12 @@ public class CadastroPapel extends AppCompatActivity {
                     et_nomePapel.setText(dbh.getPapel(ID_PAPEL).getNomePapel());
                     et_valCadastroPapel.setText(String.valueOf(dbh.getPapel(ID_PAPEL).getValor()));
                     et_QuantidadePapel.setText(String.valueOf(dbh.getPapel(ID_PAPEL).getQuantidade()));
+                    if (dbh.getPapel(ID_PAPEL).isFracionario()){
+                        cadastroCbFracionario.setChecked(true);
+                    }
+                    else {
+                        cadastroCbFracionario.setChecked(false);
+                    }
                     //Toaster("Sucesso!");
                     dbh.close();
                 }
@@ -294,6 +304,7 @@ public class CadastroPapel extends AppCompatActivity {
         et_IdPapel =findViewById(R.id.idPapel);
         idaux = et_IdPapel.getText().toString();
         resumoBD = (TextView) findViewById(R.id.resumoBD);
+        cadastroCbFracionario = findViewById(R.id.cadastroCbFracionario);
         DataBaseHelper dbh = new DataBaseHelper(this);
 
         if (idaux.equals("")) {
@@ -310,21 +321,23 @@ public class CadastroPapel extends AppCompatActivity {
             String nomePapel = et_nomePapel.getText().toString();
             Double valorPapel=0.0;
             Integer quantidade=0;
+            boolean fracionario = false;
             try {
                 valorPapel = Double.parseDouble(et_valCadastroPapel.getText().toString());
                 quantidade = Integer.parseInt(et_QuantidadePapel.getText().toString());
+                fracionario = cadastroCbFracionario.isChecked();
             }
             catch (Exception e){
                 valorPapel=0.0;
                 quantidade = 0;
+                fracionario = false;
             }
-
 
             try {
                 int ultimo = Integer.parseInt(String.valueOf(longUltimo));
 
                 if(valorPapel!= null && !(valorPapel<= 0) && !(nomePapel.equals("")) && !(quantidade<= 0) && quantidade!= null){
-                    papel = new Papel(ultimo, nomePapel, valorPapel, quantidade);
+                    papel = new Papel(ultimo, nomePapel, valorPapel, quantidade, fracionario);
                     dbh.addPapel(papel);
                     Integer idCustas;
                     Double emptyTempCheck = dbh.getCustas(998).getCorretagem() + dbh.getCustas(998).getCustodia() + dbh.getCustas(998).getTx_liquidacao() + dbh.getCustas(998).getTx_negociacao() + dbh.getCustas(998).getIss();
@@ -433,9 +446,10 @@ public class CadastroPapel extends AppCompatActivity {
                 String nomePapel = et_nomePapel.getText().toString();
                 Double valorPapel = Double.parseDouble(et_valCadastroPapel.getText().toString());
                 Integer quantidade = Integer.parseInt(et_QuantidadePapel.getText().toString());
+                boolean fracionario = cadastroCbFracionario.isChecked();
 
                 if(valorPapel!= null && !(valorPapel<= 0) && !(nomePapel.equals("")) && !(quantidade<= 0) && quantidade!= null){
-                    papel = new Papel(ultimo, nomePapel, valorPapel, quantidade);
+                    papel = new Papel(ultimo, nomePapel, valorPapel, quantidade, fracionario);
 
                     long encontrado = encontrarPapel();
 
@@ -610,6 +624,7 @@ public class CadastroPapel extends AppCompatActivity {
                 et_nomePapel.setText("");
                 et_valCadastroPapel.setText("");
                 et_QuantidadePapel.setText("");
+                cadastroCbFracionario.setChecked(false);
 
                 try {
                     dbh.excludeCustas(ID_PAPEL);

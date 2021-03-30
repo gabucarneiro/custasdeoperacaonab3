@@ -85,9 +85,17 @@
                         android:hint="0,00"
                         android:inputType="numberDecimal">
                     </EditText>
+                    <Button
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="20dp"
+                        android:gravity="right|end|center"
+                        android:id="@+id/tvteste"
+                        android:text="Custas">
+                    </Button>
                 </LinearLayout>
                 <LinearLayout
-                    android:layout_width="wrap_content"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:orientation="horizontal">
                     <TextView
@@ -100,14 +108,15 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:hint="0"
-                        android:inputType="number">
+                        android:inputType="number"
+                        android:paddingRight="20dp">
                     </EditText>
-                    <Button
+                    <CheckBox
+                        android:id="@+id/cadastroCbFracionario"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:id="@+id/tvteste"
-                        android:text="Custas">
-                    </Button>
+                        android:text="Fracionário">
+                    </CheckBox>
                 </LinearLayout>
             <!--<Button
                 android:layout_width="match_parent"

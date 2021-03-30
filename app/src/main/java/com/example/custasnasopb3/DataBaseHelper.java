@@ -22,9 +22,10 @@ public class DataBaseHelper extends SQLiteOpenHelper {
 
     @Override
     public void onCreate(SQLiteDatabase db) {
-        //db.execSQL("DROP TABLE IF EXISTS PAPEL");
-        db.execSQL("CREATE TABLE PAPEL (ID INTEGER(3), PAPEL VARCHAR(6) NOT NULL," +
-                "VALOR DOUBLE(10), QUANTIDADE INTEGER(10))");
+        /*db.execSQL("CREATE TABLE PAPEL (ID INTEGER(3), PAPEL VARCHAR(6) NOT NULL," +
+                "VALOR DOUBLE(10), QUANTIDADE INTEGER(10))");*/
+
+        db.execSQL("CREATE TABLE PAPEL (ID INTEGER(3), PAPEL VARCHAR(6) NOT NULL, VALOR DOUBLE(10), QUANTIDADE INTEGER(10), FRACIONARIO INTEGER(1))");
 
         db.execSQL("CREATE TABLE CUSTAS (ID INTEGER(3), CORRETAGEM DOUBLE(10), CUSTODIA DOUBLE(10), LIQUIDACAO DOUBLE(10), NEGOCIACAO DOUBLE(10), ISS DOUBLE(10), CORRETAGEMFIXA INTEGER(1), CUSTODIAFIXA INTEGER(1), LIQUIDACAOFIXA INTEGER(1), NEGOCIACAOFIXA INTEGER(1), ISSFIXO INTEGER(1))");
         /*db.execSQL("CREATE TABLE CUSTAS (ID INTEGER(3), " +
@@ -58,6 +59,7 @@ public class DataBaseHelper extends SQLiteOpenHelper {
         values.put("PAPEL", papel.getNomePapel());
         values.put("VALOR", papel.getValor());
         values.put("QUANTIDADE", papel.getQuantidade());
+        values.put("FRACIONARIO", papel.isFracionario());
 
         long id = db.insert("PAPEL", null, values);
 
@@ -78,6 +80,7 @@ public class DataBaseHelper extends SQLiteOpenHelper {
             papel.setNomePapel(cursor.getString(1));
             papel.setValor(cursor.getDouble(2));
             papel.setQuantidade(cursor.getInt(3));
+            papel.setFracionario(papel.intToBool(cursor.getInt(4)));
         }
         /*else{
             papel.setId(0);
@@ -105,6 +108,7 @@ public class DataBaseHelper extends SQLiteOpenHelper {
             papel.setNomePapel(cursor.getString(1));
             papel.setValor(cursor.getDouble(2));
             papel.setQuantidade(cursor.getInt(3));
+            papel.setFracionario(papel.intToBool(cursor.getInt(4)));
         }
         cursor.close();
         db.close();
@@ -123,11 +127,13 @@ public class DataBaseHelper extends SQLiteOpenHelper {
             papel.setNomePapel(cursor.getString(1));
             papel.setValor(cursor.getDouble(2));
             papel.setQuantidade(cursor.getInt(3));
+            papel.setFracionario(papel.intToBool(cursor.getInt(4)));
         }else{
             papel.setId(0);
             papel.setNomePapel("");
             papel.setValor(0.0);
             papel.setQuantidade(0);
+            papel.setFracionario(false);
         }
         cursor.close();
         db.close();
@@ -216,6 +222,7 @@ public class DataBaseHelper extends SQLiteOpenHelper {
         values.put("PAPEL", papel.getNomePapel());
         values.put("VALOR", papel.getValor());
         values.put("QUANTIDADE",papel.getQuantidade());
+        values.put("FRACIONARIO", papel.isFracionario());
 
         long id = db.update("PAPEL", values, "id = ?", new String[]{String.valueOf(id_papel)});
 

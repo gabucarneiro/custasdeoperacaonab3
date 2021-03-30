@@ -9,6 +9,7 @@ public class Papel extends AppCompatActivity {
     private String nomePapel;
     private Double valor;
     private int quantidade;
+    private boolean fracionario;
 
     public int getId(){return id;}
 
@@ -38,6 +39,14 @@ public class Papel extends AppCompatActivity {
         this.quantidade = quantidade;
     }
 
+    public boolean isFracionario() {
+        return fracionario;
+    }
+
+    public void setFracionario(boolean fracionario) {
+        this.fracionario = fracionario;
+    }
+
     public Papel(String nomePapel, Double valor) {
         this.nomePapel = nomePapel;
         this.valor = valor;
@@ -53,7 +62,31 @@ public class Papel extends AppCompatActivity {
         this.valor = valor;
         this.quantidade = quantidade;
     }
+    public Papel(int id, String nomePapel, Double valor, int quantidade, boolean fracionario) {
+        this.id = id;
+        this.nomePapel = nomePapel;
+        this.valor = valor;
+        this.quantidade = quantidade;
+        this.fracionario = fracionario;
+    }
     public Papel() {
+    }
+
+    public int boolToInt(Boolean bool){
+        if(bool){
+            return 1;
+        }
+        else{
+            return 0;
+        }
+    }
+    public boolean intToBool(Integer integer){
+        if(integer == 1){
+            return true;
+        }
+        else{
+            return false;
+        }
     }
 
     @Override
