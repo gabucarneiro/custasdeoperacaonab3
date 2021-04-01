@@ -29,28 +29,75 @@
             android:textAllCaps="true"/>
         </LinearLayout>
 
-        <LinearLayout
+        <RelativeLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:orientation="horizontal">
+            android:orientation="vertical">
             <TextView
+                android:id="@+id/txtValorQuandoAdiquirido"
                 style="@style/Conteudo"
                 android:text="Valor quando adquirido: R$">
             </TextView>
             <EditText
                 android:id="@+id/valPapelAdquirido"
+                android:layout_alignBaseline="@+id/txtValorQuandoAdiquirido"
+                android:layout_toEndOf="@+id/txtValorQuandoAdiquirido"
                 style="@style/Conteudo"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:hint="0,00"
                 android:inputType="numberDecimal">
             </EditText>
-        </LinearLayout>
-        <LinearLayout
+            <TextView
+                android:id="@+id/txtQuantidadeDeAcoesActivity2"
+                android:layout_below="@+id/txtValorQuandoAdiquirido"
+                style="@style/Conteudo"
+                android:text="Quantidade de ações: ">
+            </TextView>
+            <EditText
+                android:id="@+id/quantidade2"
+                android:layout_toEndOf="@+id/txtQuantidadeDeAcoesActivity2"
+                android:layout_alignBaseline="@+id/txtQuantidadeDeAcoesActivity2"
+                style="@style/Conteudo"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:hint="0"
+                android:inputType="number">
+            </EditText>
+            <Button
+                android:id="@+id/btnBuscarActivity2"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignBaseline="@+id/quantidade2"
+                android:layout_alignParentEnd="true"
+                android:text="Buscar"
+                android:textSize="15sp"
+                android:textAllCaps="true"
+                android:onClick="AlertDialogListar">
+            </Button>
+            <TextView
+                android:id="@+id/txtValorDeVenda"
+                android:layout_below="@+id/txtQuantidadeDeAcoesActivity2"
+                style="@style/Conteudo"
+                android:text="Valor de venda: R$">
+            </TextView>
+            <EditText
+                android:id="@+id/valPretendidoVenda"
+                android:layout_toEndOf="@+id/txtValorDeVenda"
+                android:layout_alignBaseline="@+id/txtValorDeVenda"
+                style="@style/Conteudo"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:hint="0,00"
+                android:inputType="numberDecimal">
+            </EditText>
+        </RelativeLayout>
+        <!--<LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="horizontal">
-            <TextView
+            &lt;!&ndash;<TextView
+                android:id="@+id/txtQuantidadeDeAcoesActivity2"
                 style="@style/Conteudo"
                 android:text="Quantidade de ações: ">
             </TextView>
@@ -61,8 +108,9 @@
                 android:layout_height="wrap_content"
                 android:hint="0"
                 android:inputType="number">
-            </EditText>
-            <Button
+            </EditText>&ndash;&gt;
+            &lt;!&ndash;<Button
+                android:id="@+id/btnBuscarActivity2"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:gravity="center"
@@ -72,14 +120,15 @@
                 android:textAllCaps="true"
                 android:onClick="AlertDialogListar"
                 android:layout_weight="2">
-            </Button>
+            </Button>&ndash;&gt;
         </LinearLayout>
 
         <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:orientation="horizontal">
-            <TextView
+            &lt;!&ndash;<TextView
+                android:id="@+id/txtValorDeVenda"
                 style="@style/Conteudo"
                 android:text="Valor de venda: R$">
             </TextView>
@@ -90,15 +139,15 @@
                 android:layout_height="wrap_content"
                 android:hint="0,00"
                 android:inputType="numberDecimal">
-            </EditText>
-        </LinearLayout>
+            </EditText>&ndash;&gt;
+        </LinearLayout>-->
 
         <Button
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:gravity="center"
             android:text="calcular"
-            android:textSize="20dp"
+            android:textSize="20sp"
             android:textAllCaps="true"
             android:layout_marginTop="10dp"
             android:onClick="calcular">
@@ -125,7 +174,7 @@
                     android:layout_gravity="center">
                     <TextView
                         style="@style/Conteudo"
-                        android:layout_marginLeft="15dp"
+                        android:layout_marginStart="15dp"
                         android:text="R$">
                     </TextView>
                     <TextView
@@ -155,7 +204,7 @@
                     android:layout_gravity="center">
                     <TextView
                         style="@style/Conteudo"
-                        android:layout_marginLeft="15dp"
+                        android:layout_marginStart="15dp"
                         android:text="R$">
                     </TextView>
                     <TextView
@@ -187,7 +236,7 @@
                 android:layout_gravity="center">
                 <TextView
                     style="@style/Conteudo"
-                    android:layout_marginLeft="15dp"
+                    android:layout_marginStart="15dp"
                     android:text="R$">
                 </TextView>
                 <TextView
@@ -207,7 +256,7 @@
             <TextView
                 style="@style/Conteudo"
                 android:text="Valor mínimo para venda sem perdas: R$ "
-                android:textSize="15dp">
+                android:textSize="15sp">
             </TextView>
             <TextView
                 android:id="@+id/valMinVendaSemPerdas"
@@ -215,8 +264,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:hint="0,00"
-                android:inputType="numberDecimal"
-                android:textSize="15dp">
+                android:textSize="15sp">
             </TextView>
         </LinearLayout>
 
@@ -228,26 +276,270 @@
             android:layout_height="wrap_content"
             android:text="custos operacionais"
             android:textColor="@color/red"
-            android:textSize="23dp"
+            android:textSize="23sp"
             android:textAllCaps="true"
             android:textAlignment="center"
             android:onClick="custasVisibility"
             android:layout_marginTop="25dp">
         </Button>
 
-        <!--  ***** CORRETORA *****  -->
-        <LinearLayout
+        <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical"
-            android:gravity="right"
             android:id="@+id/custasExtra2">
+
             <TextView
+                android:id="@+id/txtValorFixo2"
                 style="@style/Conteudo"
-                android:text="Alterar %"
-                android:textSize="15dp">
+                android:text="Valor fixo"
+                android:textSize="15sp"
+                android:layout_alignParentEnd="true">
             </TextView>
-        </LinearLayout>
+
+            <!--  ***** CORRETORA *****  -->
+            <TextView
+                android:id="@+id/txtCorretagem2"
+                android:layout_below="@+id/txtValorFixo2"
+                style="@style/Conteudo"
+                android:text="Corretagem: R$">
+            </TextView>
+            <TextView
+                android:id="@+id/corretagem2"
+                style="@style/Conteudo"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_toEndOf="@+id/txtCorretagem2"
+                android:layout_alignBaseline="@+id/txtCorretagem2"
+                android:hint="0,00">
+            </TextView>
+            <EditText
+                android:layout_marginStart="10dp"
+                android:id="@+id/pctCorretagem2"
+                android:layout_alignBaseline="@+id/txtCorretagem2"
+                android:layout_toStartOf="@+id/cbCorretagem2"
+                style="@style/Conteudo"
+                android:textSize="10sp"
+                android:hint="0,00"
+                android:inputType="numberDecimal"
+                android:contextClickable="false">
+            </EditText>
+            <CheckBox
+                android:id="@+id/cbCorretagem2"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentEnd="true"
+                android:layout_alignBaseline="@+id/txtCorretagem2">
+            </CheckBox>
+
+
+
+            <TextView
+                android:id="@+id/txtCustodia2"
+                android:layout_below="@+id/txtCorretagem2"
+                style="@style/Conteudo"
+                android:text="Custódia (CBLC): R$">
+            </TextView>
+            <TextView
+                android:id="@+id/custodia2"
+                style="@style/Conteudo"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_toEndOf="@+id/txtCustodia2"
+                android:layout_alignBaseline="@+id/txtCustodia2"
+                android:hint="0,00">
+            </TextView>
+            <EditText
+                android:layout_marginStart="10dp"
+                android:id="@+id/pctCustodia2"
+                android:layout_toStartOf="@+id/cbCustodia2"
+                android:layout_alignBaseline="@+id/custodia2"
+                style="@style/Conteudo"
+                android:textSize="10sp"
+                android:hint="0,00"
+                android:inputType="numberDecimal"
+                android:clickable="false">
+            </EditText>
+            <CheckBox
+                android:id="@+id/cbCustodia2"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentEnd="true"
+                android:layout_alignBaseline="@+id/custodia2">
+            </CheckBox>
+
+            <!--  ***** B3 *****  -->
+
+            <TextView
+                android:id="@+id/txtEmolumentos2"
+                android:layout_below="@+id/txtCustodia2"
+                style="@style/Conteudo"
+                android:text="Emolumentos: R$">
+            </TextView>
+            <TextView
+                android:id="@+id/emolumentos2"
+                style="@style/Conteudo"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_toEndOf="@+id/txtEmolumentos2"
+                android:layout_alignBaseline="@+id/txtEmolumentos2"
+                android:hint="0,00">
+            </TextView>
+            <TextView
+                android:layout_marginStart="10dp"
+                android:id="@+id/pctEmolumentos2"
+                style="@style/Conteudo"
+                android:layout_alignStart="@+id/pctCustodia2"
+                android:layout_alignBaseline="@+id/txtEmolumentos2"
+                android:textSize="10sp"
+                android:hint="0,00">
+            </TextView>
+
+
+            <TextView
+                android:id="@+id/txtTxLiquidacao2"
+                android:layout_below="@+id/txtEmolumentos2"
+                style="@style/Conteudo"
+                android:text="(Taxa de liquidação da CBLC): R$"
+                android:layout_marginStart="8dp"
+                android:textSize="15sp">
+            </TextView>
+            <TextView
+                android:id="@+id/tax_liquidacao2"
+                style="@style/Conteudo"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_toEndOf="@+id/txtTxLiquidacao2"
+                android:layout_alignBaseline="@+id/txtTxLiquidacao2"
+                android:hint="0,00"
+                android:textSize="15sp">
+            </TextView>
+            <EditText
+                android:layout_marginStart="10dp"
+                android:id="@+id/pctLiquidacao2"
+                android:layout_alignBaseline="@+id/txtTxLiquidacao2"
+                android:layout_toStartOf="@+id/cbLiquidacao2"
+                style="@style/Conteudo"
+                android:textSize="10sp"
+                android:hint="0,00"
+                android:inputType="numberDecimal">
+            </EditText>
+            <CheckBox
+                android:id="@+id/cbLiquidacao2"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentEnd="true"
+                android:layout_alignBaseline="@+id/txtTxLiquidacao2">
+            </CheckBox>
+
+
+            <TextView
+                android:id="@+id/txtTxNegociacao2"
+                android:layout_below="@+id/txtTxLiquidacao2"
+                style="@style/Conteudo"
+                android:text="(Taxa de negociação): R$"
+                android:layout_marginStart="8dp"
+                android:textSize="15sp">
+            </TextView>
+            <TextView
+                android:id="@+id/tax_negociacao2"
+                style="@style/Conteudo"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_toEndOf="@+id/txtTxNegociacao2"
+                android:layout_alignBaseline="@+id/txtTxNegociacao2"
+                android:hint="0,00"
+                android:textSize="15sp">
+            </TextView>
+            <EditText
+                android:layout_marginStart="10dp"
+                android:id="@+id/pctNegociacao2"
+                android:layout_alignBaseline="@+id/txtTxNegociacao2"
+                android:layout_toStartOf="@+id/cbNegociacao2"
+                style="@style/Conteudo"
+                android:textSize="10sp"
+                android:hint="0,00"
+                android:inputType="numberDecimal">
+            </EditText>
+            <CheckBox
+                android:id="@+id/cbNegociacao2"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentEnd="true"
+                android:layout_alignBaseline="@+id/txtTxNegociacao2">
+            </CheckBox>
+
+            <!--  ***** GOVERNO - IMPOSTOS *****  -->
+
+            <TextView
+                android:id="@+id/txtIss2"
+                android:layout_below="@+id/txtTxNegociacao2"
+                style="@style/Conteudo"
+                android:text="ISS: R$">
+            </TextView>
+            <TextView
+                android:id="@+id/iss2"
+                style="@style/Conteudo"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_toEndOf="@+id/txtIss2"
+                android:layout_alignBaseline="@+id/txtIss2"
+                android:hint="0,00">
+            </TextView>
+            <EditText
+                android:layout_marginStart="10dp"
+                android:id="@+id/pctIss2"
+                android:layout_alignBaseline="@+id/iss2"
+                android:layout_toStartOf="@+id/cbIss2"
+                style="@style/Conteudo"
+                android:textSize="10sp"
+                android:hint="0,00"
+                android:inputType="numberDecimal">
+            </EditText>
+            <CheckBox
+                android:id="@+id/cbIss2"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentEnd="true"
+                android:layout_alignBaseline="@+id/txtIss2">
+            </CheckBox>
+
+
+            <TextView
+                android:id="@+id/impostoDeRenda2"
+                android:layout_below="@+id/txtIss2"
+                style="@style/Conteudo"
+                android:text="IR da compra: R$">
+            </TextView>
+            <TextView
+                android:id="@+id/txtPctIr2"
+                style="@style/Conteudo"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_toEndOf="@+id/impostoDeRenda2"
+                android:layout_alignBaseline="@+id/impostoDeRenda2"
+                android:hint="0,00">
+            </TextView>
+            <EditText
+                android:layout_marginStart="10dp"
+                android:id="@+id/pctIr2"
+                android:layout_alignBaseline="@+id/txtPctIr2"
+                android:layout_toStartOf="@+id/cbIr2"
+                style="@style/Conteudo"
+                android:textSize="10sp"
+                android:hint="0,00"
+                android:inputType="numberDecimal">
+            </EditText>
+            <CheckBox
+                android:id="@+id/cbIr2"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentEnd="true"
+                android:layout_alignBaseline="@+id/txtIss2">
+            </CheckBox>
+        </RelativeLayout>
+
+
 
         <LinearLayout
             android:layout_width="wrap_content"
@@ -255,12 +547,12 @@
             android:orientation="horizontal"
             android:id="@+id/idcustas2">
 
-            <LinearLayout
+            <!--<LinearLayout
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:orientation="vertical"
                 android:layout_weight="1">
-                <LinearLayout
+                &lt;!&ndash;<LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:orientation="horizontal">
@@ -284,10 +576,10 @@
                         android:inputType="numberDecimal"
                         android:contextClickable="false">
                     </EditText>
-                </LinearLayout>
+                </LinearLayout>&ndash;&gt;
 
 
-                <LinearLayout
+                &lt;!&ndash;<LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:orientation="horizontal">
@@ -311,11 +603,11 @@
                         android:inputType="numberDecimal"
                         android:clickable="false">
                     </EditText>
-                </LinearLayout>
+                </LinearLayout>&ndash;&gt;
 
-                <!--  ***** B3 *****  -->
+                &lt;!&ndash;  ***** B3 *****  &ndash;&gt;
 
-                <LinearLayout
+                &lt;!&ndash;<LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:orientation="horizontal">
@@ -339,8 +631,8 @@
                         android:hint="0,00%"
                         android:inputType="numberDecimal"
                         android:textSize="10dp"></TextView>
-                </LinearLayout>
-                <LinearLayout
+                </LinearLayout>&ndash;&gt;
+                &lt;!&ndash;<LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:orientation="horizontal"
@@ -366,8 +658,8 @@
                         android:hint="0,00%"
                         android:inputType="numberDecimal">
                     </EditText>
-                </LinearLayout>
-                <LinearLayout
+                </LinearLayout>&ndash;&gt;
+                &lt;!&ndash;<LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:orientation="horizontal"
@@ -393,10 +685,10 @@
                         android:hint="0,00%"
                         android:inputType="numberDecimal">
                     </EditText>
-                </LinearLayout>
+                </LinearLayout>&ndash;&gt;
 
-                <!--  ***** GOVERNO - IMPOSTOS *****  -->
-                <LinearLayout
+                &lt;!&ndash;  ***** GOVERNO - IMPOSTOS *****  &ndash;&gt;
+                &lt;!&ndash;<LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:orientation="horizontal">
@@ -419,8 +711,8 @@
                         android:hint="0,00%"
                         android:inputType="numberDecimal">
                     </EditText>
-                </LinearLayout>
-                <LinearLayout
+                </LinearLayout>&ndash;&gt;
+                &lt;!&ndash;<LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:orientation="horizontal">
@@ -443,7 +735,7 @@
                         android:hint="0,00%"
                         android:inputType="numberDecimal">
                     </EditText>
-                </LinearLayout>
+                </LinearLayout>&ndash;&gt;
             </LinearLayout>
             <LinearLayout
                 android:layout_width="match_parent"
@@ -455,7 +747,7 @@
                     android:layout_height="wrap_content"
                     android:orientation="vertical"
                     android:layout_gravity="end">
-                    <CheckBox
+                    &lt;!&ndash;<CheckBox
                         android:id="@+id/cbCorretagem2"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
@@ -465,42 +757,42 @@
                         android:id="@+id/cbCustodia2"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content">
-                    </CheckBox>
+                    </CheckBox>&ndash;&gt;
 
-                    <TextView
+                    &lt;!&ndash;<TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:hint="Auto"
                         android:textSize="15dp"
                         android:paddingBottom="15dp"
                         android:paddingTop="10dp">
-                    </TextView>
+                    </TextView>&ndash;&gt;
 
-                    <CheckBox
+                    &lt;!&ndash;<CheckBox
                         android:id="@+id/cbLiquidacao2"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginBottom="10dp">
-                    </CheckBox>
-                    <CheckBox
+                    </CheckBox>&ndash;&gt;
+                    &lt;!&ndash;<CheckBox
                         android:id="@+id/cbNegociacao2"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginBottom="5dp">
-                    </CheckBox>
-                    <CheckBox
+                    </CheckBox>&ndash;&gt;
+                    &lt;!&ndash;<CheckBox
                         android:id="@+id/cbIss2"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginBottom="5dp">
-                    </CheckBox>
-                    <CheckBox
+                    </CheckBox>&ndash;&gt;
+                    &lt;!&ndash;<CheckBox
                         android:id="@+id/cbIr2"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content">
-                    </CheckBox>
+                    </CheckBox>&ndash;&gt;
                 </LinearLayout>
-            </LinearLayout>
+            </LinearLayout>-->
             <LinearLayout
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"

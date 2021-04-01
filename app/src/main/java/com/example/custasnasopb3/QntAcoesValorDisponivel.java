@@ -6,6 +6,7 @@ import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -69,7 +70,7 @@ public class QntAcoesValorDisponivel extends AppCompatActivity {
 
         LinearLayout custasValordopapelBruto = (LinearLayout) findViewById(R.id.custasValordopapelBruto);
         LinearLayout custas = (LinearLayout) findViewById(R.id.idcustas);
-        LinearLayout custasExtra = (LinearLayout) findViewById(R.id.custasExtra);
+        RelativeLayout custasExtra = (RelativeLayout) findViewById(R.id.custasExtra);
         custasValordopapelBruto.setVisibility(View.GONE);
         custas.setVisibility(View.GONE);
         custasExtra.setVisibility(View.GONE);
@@ -435,7 +436,7 @@ public class QntAcoesValorDisponivel extends AppCompatActivity {
 
         LinearLayout custasValordopapelBruto = (LinearLayout) findViewById(R.id.custasValordopapelBruto);
         LinearLayout custas = (LinearLayout) findViewById(R.id.idcustas);
-        LinearLayout custasExtra = (LinearLayout) findViewById(R.id.custasExtra);
+        RelativeLayout custasExtra = (RelativeLayout) findViewById(R.id.custasExtra);
         if (custas.getVisibility() == View.VISIBLE || custasValordopapelBruto.getVisibility() == View.VISIBLE || custasExtra.getVisibility() == View.VISIBLE) {
             custas.setVisibility(View.GONE);
             custasValordopapelBruto.setVisibility(View.GONE);

@@ -6,7 +6,7 @@
     android:layout_height="match_parent"
     android:orientation="vertical"
     style="@style/BasicLayout">
-        <LinearLayout
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         tools:context=".CadastroPapel"
@@ -25,13 +25,15 @@
                 android:text="@string/cadastroPapel"
                 android:layout_marginBottom="30dp"
                 android:textAllCaps="true"/>
-                <LinearLayout
+                <RelativeLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:orientation="horizontal">
                     <TextView
+                        android:id="@+id/txtId"
                         style="@style/Conteudo"
-                        android:text="ID do papel: ">
+                        android:text="ID do papel: "
+                        android:paddingBottom="10dp">
                     </TextView>
                     <EditText
                         android:id="@+id/idPapel"
@@ -39,20 +41,92 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:hint="00"
+                        android:layout_alignBaseline="@+id/txtId"
+                        android:layout_toRightOf="@+id/txtId"
                         android:inputType="number">
                     </EditText>
                     <Button
+                        android:id="@+id/btnBuscar"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginLeft="20dp"
-                        android:gravity="right|end|center"
+                        android:layout_alignBaseline="@+id/txtId"
+                        android:layout_alignParentRight="true"
                         android:text="buscar"
                         android:textSize="15dp"
                         android:textAllCaps="true"
                         android:onClick="pesquisarPapel">
                     </Button>
-                </LinearLayout>
-                <LinearLayout
+                    <TextView
+                        android:id="@+id/txtNomedoPapel"
+                        style="@style/Conteudo"
+                        android:text="Nome do papel: "
+                        android:layout_below="@+id/txtId"
+                        android:paddingBottom="10dp">
+                    </TextView>
+                    <EditText
+                        android:id="@+id/nomePapel"
+                        style="@style/Conteudo"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_toRightOf="@+id/txtNomedoPapel"
+                        android:layout_alignBaseline="@+id/txtNomedoPapel"
+                        android:hint="ZZZZ3F"
+                        android:inputType="textCapCharacters">
+                    </EditText>
+                    <TextView
+                        android:id="@+id/txtValordeCompra"
+                        style="@style/Conteudo"
+                        android:text="Valor de compra: R$"
+                        android:layout_below="@+id/txtNomedoPapel"
+                        android:paddingBottom="10dp">
+                    </TextView>
+                    <EditText
+                        android:id="@+id/valCadastroPapel"
+                        style="@style/Conteudo"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:hint="0,00"
+                        android:inputType="numberDecimal"
+                        android:layout_alignBaseline="@+id/txtValordeCompra"
+                        android:layout_toRightOf="@+id/txtValordeCompra">
+                    </EditText>
+                    <Button
+                        android:id="@+id/tvteste"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentRight="true"
+                        android:layout_alignBaseline="@+id/txtValordeCompra"
+                        android:layout_marginLeft="20dp"
+                        android:gravity="right|end|center"
+                        android:text="Custas">
+                    </Button>
+                    <TextView
+                        android:id="@+id/txtQuantidade"
+                        style="@style/Conteudo"
+                        android:layout_below="@+id/txtValordeCompra"
+                        android:text="Quantidade: "
+                        android:paddingBottom="20dp">
+                    </TextView>
+                    <EditText
+                        android:id="@+id/valQuantidadePapel"
+                        style="@style/Conteudo"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_toRightOf="@+id/txtQuantidade"
+                        android:layout_alignBaseline="@+id/txtQuantidade"
+                        android:hint="0"
+                        android:inputType="number">
+                    </EditText>
+                    <CheckBox
+                        android:id="@+id/cadastroCbFracionario"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentEnd="true"
+                        android:layout_alignBaseline="@+id/txtQuantidade"
+                        android:text="Fracionário">
+                    </CheckBox>
+                </RelativeLayout>
+                <!--<LinearLayout
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:orientation="horizontal">
@@ -68,37 +142,44 @@
                         android:hint="ZZZZ3F"
                         android:inputType="textCapCharacters">
                     </EditText>
-                </LinearLayout>
-                <LinearLayout
+                </LinearLayout>-->
+            <!--<RelativeLayout
+                android:id="@+id/relativeLayoutTxtValorDeCompra"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+                <TextView
+                android:id="@+id/txtValordeCompra"
+                    style="@style/Conteudo"
+                    android:text="Valor de compra: R$">
+                </TextView>
+                <EditText
+                    android:id="@+id/valCadastroPapel"
+                    style="@style/Conteudo"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:orientation="horizontal">
-                    <TextView
-                        style="@style/Conteudo"
-                        android:text="Valor de compra: R$">
-                    </TextView>
-                    <EditText
-                        android:id="@+id/valCadastroPapel"
-                        style="@style/Conteudo"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:hint="0,00"
-                        android:inputType="numberDecimal">
-                    </EditText>
-                    <Button
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginLeft="20dp"
-                        android:gravity="right|end|center"
-                        android:id="@+id/tvteste"
-                        android:text="Custas">
-                    </Button>
-                </LinearLayout>
-                <LinearLayout
+                    android:hint="0,00"
+                    android:inputType="numberDecimal"
+                    android:layout_alignBaseline="@+id/txtValordeCompra"
+                    android:layout_toRightOf="@+id/txtValordeCompra">
+                </EditText>
+                <Button
+                    android:id="@+id/tvteste"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerInParent="true"
+                    android:layout_alignParentRight="true"
+                    android:layout_marginLeft="20dp"
+                    android:gravity="right|end|center"
+                    android:text="Custas">
+                </Button>
+            </RelativeLayout>-->
+                <!--<RelativeLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:orientation="horizontal">
                     <TextView
+                        android:id="@+id/txtQuantidade"
                         style="@style/Conteudo"
                         android:text="Quantidade: ">
                     </TextView>
@@ -107,6 +188,8 @@
                         style="@style/Conteudo"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
+                        android:layout_centerInParent="true"
+                        android:layout_toRightOf="@+id/txtQuantidade"
                         android:hint="0"
                         android:inputType="number"
                         android:paddingRight="20dp">
@@ -115,9 +198,11 @@
                         android:id="@+id/cadastroCbFracionario"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
+                        android:layout_centerInParent="true"
+                        android:layout_alignParentRight="true"
                         android:text="Fracionário">
                     </CheckBox>
-                </LinearLayout>
+                </RelativeLayout>-->
             <!--<Button
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"

@@ -890,7 +890,7 @@ public class CadastroPapel extends AppCompatActivity {
         ll_ADHorizontalIss.setOrientation(LinearLayout.HORIZONTAL);
 
         Button btnConfirmaCustaTemp = new Button(this);
-        btnConfirmaCustaTemp.setText("Salvar");
+        btnConfirmaCustaTemp.setText("OK");
         btnConfirmaCustaTemp.setTextColor(getColor(R.color.white));
         btnConfirmaCustaTemp.setGravity(1);
         btnConfirmaCustaTemp.setBackgroundColor(getColor(R.color.darkblue));

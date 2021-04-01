@@ -13,6 +13,7 @@ import android.view.View;
 import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -97,9 +98,9 @@ public class ValorMinParaVendaSemPerdas extends AppCompatActivity {
         pct_Iss.setText(String.valueOf(dbhCustas.getCustas(999).getIss()));
         pct_Emolumentos.setText(String.valueOf(dbhCustas.getCustas(999).getTx_liquidacao()+dbhCustas.getCustas(999).getTx_negociacao()));
 
-        LinearLayout custas = (LinearLayout) findViewById(R.id.idcustas2);
-        LinearLayout custasExtra = (LinearLayout) findViewById(R.id.custasExtra2);
-        custas.setVisibility(View.GONE);
+        //LinearLayout custas = (LinearLayout) findViewById(R.id.idcustas2);
+        RelativeLayout custasExtra = (RelativeLayout) findViewById(R.id.custasExtra2);
+        //custas.setVisibility(View.GONE);
         custasExtra.setVisibility(View.GONE);
 
         dbhCustas.close();
@@ -599,14 +600,14 @@ public class ValorMinParaVendaSemPerdas extends AppCompatActivity {
 
     public void custasVisibility(View view){
 
-        LinearLayout custas = (LinearLayout) findViewById(R.id.idcustas2);
-        LinearLayout custasExtra = (LinearLayout) findViewById(R.id.custasExtra2);
-        if (custas.getVisibility() == View.VISIBLE || custasExtra.getVisibility() == View.VISIBLE) {
-            custas.setVisibility(View.GONE);
+        //LinearLayout custas = (LinearLayout) findViewById(R.id.idcustas2);
+        RelativeLayout custasExtra = (RelativeLayout) findViewById(R.id.custasExtra2);
+        if (custasExtra.getVisibility() == View.VISIBLE) {
+            //custas.setVisibility(View.GONE);
             custasExtra.setVisibility(View.GONE);
         }
         else {
-            custas.setVisibility(View.VISIBLE);
+            //custas.setVisibility(View.VISIBLE);
             custasExtra.setVisibility(View.VISIBLE);
         }
     }
