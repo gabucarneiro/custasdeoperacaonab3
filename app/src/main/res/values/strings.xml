@@ -6,4 +6,5 @@
     <string name="cadastroPapel">Cadastro do papel</string>
     <string name="app_part3">Parâmetros</string>
     <string name="parametros">Custos operacionais</string>
+    <string name="valfix">Valor fixo</string>
 </resources>
