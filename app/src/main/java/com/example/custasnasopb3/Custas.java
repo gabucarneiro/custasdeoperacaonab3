@@ -327,8 +327,8 @@ public class Custas extends AppCompatActivity {
         }
     }
 
-    //TODO Corrigir e checkar o método de salvar as custas Standard.
-    //TODO Vincular as custas o "salvar" do papel no banco de dados - com base no ID - utilizar o uptadeCustas().
+    //*** OK *** Corrigir e checkar o método de salvar as custas Standard.
+    //*** OK *** Vincular as custas o "salvar" do papel no banco de dados - com base no ID - utilizar o uptadeCustas().
 
     public void salvarCustas(View view, int id){
         DataBaseHelper dbhCustas = new DataBaseHelper(this);
