@@ -321,7 +321,7 @@
                 android:layout_alignBaseline="@+id/txtCorretagem2Compra"
                 android:hint="0,00">
             </TextView>
-            <TextView
+            <EditText
                 android:layout_marginStart="10dp"
                 android:id="@+id/pctCorretagem2Compra"
                 android:layout_alignBaseline="@+id/txtCorretagem2Compra"
@@ -329,14 +329,13 @@
                 style="@style/Conteudo"
                 android:textSize="10sp"
                 android:hint="0,00">
-            </TextView>
+            </EditText>
             <CheckBox
                 android:id="@+id/cbCorretagem2Compra"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_alignParentEnd="true"
-                android:layout_alignBaseline="@+id/txtCorretagem2Compra"
-                android:clickable="false">
+                android:layout_alignBaseline="@+id/txtCorretagem2Compra">
             </CheckBox>
 
 
@@ -356,7 +355,7 @@
                 android:layout_alignBaseline="@+id/txtCustodia2Compra"
                 android:hint="0,00">
             </TextView>
-            <TextView
+            <EditText
                 android:layout_marginStart="10dp"
                 android:id="@+id/pctCustodia2Compra"
                 android:layout_toStartOf="@+id/cbCustodia2Compra"
@@ -364,14 +363,13 @@
                 style="@style/Conteudo"
                 android:textSize="10sp"
                 android:hint="0,00">
-            </TextView>
+            </EditText>
             <CheckBox
                 android:id="@+id/cbCustodia2Compra"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_alignParentEnd="true"
-                android:layout_alignBaseline="@+id/custodia2Compra"
-                android:clickable="false">
+                android:layout_alignBaseline="@+id/custodia2Compra">
             </CheckBox>
 
             <!--  ***** B3 *****  -->
@@ -420,7 +418,7 @@
                 android:hint="0,00"
                 android:textSize="15sp">
             </TextView>
-            <TextView
+            <EditText
                 android:layout_marginStart="10dp"
                 android:id="@+id/pctLiquidacao2Compra"
                 android:layout_alignBaseline="@+id/txtTxLiquidacao2Compra"
@@ -428,14 +426,13 @@
                 style="@style/Conteudo"
                 android:textSize="10sp"
                 android:hint="0,00">
-            </TextView>
+            </EditText>
             <CheckBox
                 android:id="@+id/cbLiquidacao2Compra"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_alignParentEnd="true"
-                android:layout_alignBaseline="@+id/txtTxLiquidacao2Compra"
-                android:clickable="false">
+                android:layout_alignBaseline="@+id/txtTxLiquidacao2Compra">
             </CheckBox>
 
 
@@ -457,7 +454,7 @@
                 android:hint="0,00"
                 android:textSize="15sp">
             </TextView>
-            <TextView
+            <EditText
                 android:layout_marginStart="10dp"
                 android:id="@+id/pctNegociacao2Compra"
                 android:layout_alignBaseline="@+id/txtTxNegociacao2Compra"
@@ -466,14 +463,13 @@
                 android:textSize="10sp"
                 android:hint="0,00"
                 android:inputType="numberDecimal">
-            </TextView>
+            </EditText>
             <CheckBox
                 android:id="@+id/cbNegociacao2Compra"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_alignParentEnd="true"
-                android:layout_alignBaseline="@+id/txtTxNegociacao2Compra"
-                android:clickable="false">
+                android:layout_alignBaseline="@+id/txtTxNegociacao2Compra">
             </CheckBox>
 
             <!--  ***** GOVERNO - IMPOSTOS *****  -->
@@ -493,7 +489,7 @@
                 android:layout_alignBaseline="@+id/txtIss2Compra"
                 android:hint="0,00">
             </TextView>
-            <TextView
+            <EditText
                 android:layout_marginStart="10dp"
                 android:id="@+id/pctIss2Compra"
                 android:layout_alignBaseline="@+id/iss2Compra"
@@ -501,14 +497,13 @@
                 style="@style/Conteudo"
                 android:textSize="10sp"
                 android:hint="0,00">
-            </TextView>
+            </EditText>
             <CheckBox
                 android:id="@+id/cbIss2Compra"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_alignParentEnd="true"
-                android:layout_alignBaseline="@+id/txtIss2Compra"
-                android:clickable="false">
+                android:layout_alignBaseline="@+id/txtIss2Compra">
             </CheckBox>
 
 
@@ -528,22 +523,13 @@
                 android:hint="0,00">
             </TextView>
             <TextView
-                android:layout_marginStart="10dp"
                 android:id="@+id/pctIr2Compra"
                 android:layout_alignBaseline="@+id/txtPctIr2Compra"
-                android:layout_toStartOf="@+id/cbIr2Compra"
+                android:layout_alignStart="@+id/pctIss2Compra"
                 style="@style/Conteudo"
                 android:textSize="10sp"
                 android:hint="0,00">
             </TextView>
-            <CheckBox
-                android:id="@+id/cbIr2Compra"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignParentEnd="true"
-                android:layout_alignBaseline="@+id/txtIss2Compra"
-                android:clickable="false">
-            </CheckBox>
         </RelativeLayout>
 
 
