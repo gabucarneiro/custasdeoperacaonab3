@@ -210,7 +210,6 @@ public class ValorMinParaVendaSemPerdas extends AppCompatActivity {
 
                     Double resultadoCustodiaCompra = custas.calc_Corretagem(valPapelAdquirido, quantidade, dbCustodia2Compra, cbFracionarioDCVP.isChecked(), cbCustodia2Compra.isChecked());
                     custodia2Compra.setText(df2.format(resultadoCustodiaCompra));
-                    Toaster(String.valueOf(resultadoCustodiaCompra));
 
                     Double resultadoLiquidacaoCompra = custas.calc_Corretagem(valPapelAdquirido, quantidade, dbLiquidacao2Compra, cbFracionarioDCVP.isChecked(), cbLiquidacao2Compra.isChecked());
                     tax_liquidacao2Compra.setText(df4.format(resultadoLiquidacaoCompra));
@@ -221,16 +220,18 @@ public class ValorMinParaVendaSemPerdas extends AppCompatActivity {
                     Double resultadoIssCompra = custas.calc_Corretagem(valPapelAdquirido, quantidade, dbIss2Compra, cbFracionarioDCVP.isChecked(), cbIss2Compra.isChecked());
                     iss2Compra.setText(df3.format(resultadoIssCompra));
 
+                    Double pctResultadoEmolumentosCompra = dbLiquidacao2Compra + dbNegociacao2Compra;
+                    pctEmolumentos2Compra.setText(df3.format(pctResultadoEmolumentosCompra));
                     Double resultadoEmolumentosCompra = resultadoLiquidacaoCompra + resultadoNegociacaoCompra;
                     emolumentos2Compra.setText(df3.format(resultadoEmolumentosCompra));
 
                     TextView tv_valCompraDoPapel = findViewById(R.id.valCompraDoPapel2);
 
-                    Toaster(String.valueOf(resultadoCorretagemCompra + resultadoCustodiaCompra + resultadoLiquidacaoCompra + resultadoNegociacaoCompra + resultadoIssCompra));
-                    Toaster(df2.format((valPapelAdquirido * quantidade) + (resultadoCorretagemCompra + resultadoCustodiaCompra + resultadoLiquidacaoCompra + resultadoNegociacaoCompra + resultadoIssCompra)));
-                    tv_valCompraDoPapel.setText(df2.format((valPapelAdquirido * quantidade) + (resultadoCorretagemCompra + resultadoCustodiaCompra + resultadoLiquidacaoCompra + resultadoNegociacaoCompra + resultadoIssCompra)));
+                    //Toaster(String.valueOf(resultadoCorretagemCompra + resultadoCustodiaCompra + resultadoLiquidacaoCompra + resultadoNegociacaoCompra + resultadoIssCompra));
+                    //Toaster(df2.format((valPapelAdquirido * quantidade) + (resultadoCorretagemCompra + resultadoCustodiaCompra + resultadoLiquidacaoCompra + resultadoNegociacaoCompra + resultadoIssCompra)));
+                    Double valTotalCompraDoPapel2 = (valPapelAdquirido * quantidade) + (resultadoCorretagemCompra + resultadoCustodiaCompra + resultadoLiquidacaoCompra + resultadoNegociacaoCompra + resultadoIssCompra);
+                    tv_valCompraDoPapel.setText(df2.format(valTotalCompraDoPapel2));
 
-                    //Double valCompraDoPapel2 = Double.parseDouble(tv_valCompraDoPapel.getText().toString());
 
 
                     TextView tvCorretagem = findViewById(R.id.corretagem2);
@@ -244,76 +245,60 @@ public class ValorMinParaVendaSemPerdas extends AppCompatActivity {
                     TextView tv_valVendaDoPapel = findViewById(R.id.valVendaDoPapel2);
                     TextView TV_valMinVendaSemPerdas = findViewById(R.id.valMinVendaSemPerdas);
 
+                    EditText pctCorretagem2 = findViewById(R.id.pctCorretagem2);
+                    EditText pctCustodia2 = findViewById(R.id.pctCustodia2);
+                    EditText pctLiquidacao2 = findViewById(R.id.pctLiquidacao2);
+                    EditText pctNegociacao2 = findViewById(R.id.pctNegociacao2);
+                    EditText pctIss2 = findViewById(R.id.pctIss2);
 
-                    //TODO dar seguimento
-
-
-                    /*EditText pctCorretagem2Compra = findViewById(R.id.pctCorretagem2Compra);
-                    EditText pctCustodia2Compra = findViewById(R.id.pctCustodia2Compra);
-                    EditText pctLiquidacao2Compra = findViewById(R.id.pctLiquidacao2Compra);
-                    EditText pctNegociacao2Compra = findViewById(R.id.pctNegociacao2Compra);
-                    EditText pctIss2Compra = findViewById(R.id.pctIss2Compra);
-                    TextView pctEmolumentos2Compra = findViewById(R.id.pctEmolumentos2Compra);
-
-                    CheckBox cbFracionarioDCVP = findViewById(R.id.cbFracionarioDCVP);
-                    CheckBox cbCorretagem2Compra = findViewById(R.id.cbCorretagem2Compra);
-                    CheckBox cbCustodia2Compra = findViewById(R.id.cbCustodia2Compra);
-                    CheckBox cbLiquidacao2Compra = findViewById(R.id.cbLiquidacao2Compra);
-                    CheckBox cbNegociacao2Compra = findViewById(R.id.cbNegociacao2Compra);
-                    CheckBox cbIss2Compra = findViewById(R.id.cbIss2Compra);
+                    CheckBox cbCorretagem2 = findViewById(R.id.cbCorretagem2);
+                    CheckBox cbCustodia2 = findViewById(R.id.cbCustodia2);
+                    CheckBox cbLiquidacao2 = findViewById(R.id.cbLiquidacao2);
+                    CheckBox cbNegociacao2 = findViewById(R.id.cbNegociacao2);
+                    CheckBox cbIss2 = findViewById(R.id.cbIss2);
 
 
-                    Double dbCorretagemCompra = Double.parseDouble(String.valueOf(pctCorretagem2Compra.getText()));
-                    Double dbCustodia2Compra = Double.parseDouble(pctCustodia2Compra.getText().toString());
-                    Double dbLiquidacao2Compra = Double.parseDouble(pctLiquidacao2Compra.getText().toString());
-                    Double dbNegociacao2Compra = Double.parseDouble(pctNegociacao2Compra.getText().toString());
-                    Double dbIss2Compra = Double.parseDouble(pctIss2Compra.getText().toString());*/
+                    Double dbCorretagem2Venda = Double.parseDouble(String.valueOf(pctCorretagem2.getText()));
+                    Double dbCustodia2Venda = Double.parseDouble(String.valueOf(pctCustodia2.getText()));
+                    Double dbLiquidacao2Venda = Double.parseDouble(String.valueOf(pctLiquidacao2.getText()));
+                    Double dbNegociacao2Venda = Double.parseDouble(String.valueOf(pctNegociacao2.getText()));
+                    Double dbIss2Venda = Double.parseDouble(String.valueOf(pctIss2.getText()));
 
-                    //Double tempCorretagemCompra = Corretagem(valPapelAdquirido, quantidade);
-                    Double tempCorretagemVenda = Corretagem(valPretendidoVenda, quantidade);
-                    //String calculo_Corretagem = String.valueOf(tempCorretagemCompra);
-                    //tvCorretagem.setText(calculo_Corretagem);
 
-                    /*Double tempCustodiaCompra = Custodia(valPapelAdquirido, quantidade);
-                    Double tempCustodiaVenda = Custodia(valPretendidoVenda, quantidade);
-                    String str_val_Custodia = df2.format(tempCustodiaCompra);
-                    val_Custodia.setText(str_val_Custodia);
+                    Double tempCorretagemVenda = custas.calc_Corretagem(valPretendidoVenda, quantidade, dbCorretagem2Venda, cbFracionarioDCVP.isChecked(), cbCorretagem2.isChecked());
+                    tvCorretagem.setText(df2.format(tempCorretagemVenda));
 
-                    Double tempTxLiquidacaoCompra = Liquidacao(valPapelAdquirido, quantidade);
-                    Double tempTxLiquidacaoVenda = Liquidacao(valPretendidoVenda, quantidade);
-                    String str_val_tx_liquidacao = df3.format(tempTxLiquidacaoCompra);
-                    val_tx_liquidacao.setText(str_val_tx_liquidacao);
+                    Double tempCustodiaVenda = custas.calc_Corretagem(valPretendidoVenda, quantidade, dbCustodia2Venda, cbFracionarioDCVP.isChecked(), cbCustodia2.isChecked());
+                    val_Custodia.setText(df2.format(tempCustodiaVenda));
 
-                    Double tempTxNegociacaoCompra = Negociacao(valPapelAdquirido, quantidade);
-                    Double tempTxNegociacaoVenda = Negociacao(valPretendidoVenda, quantidade);
-                    String str_val_tx_negociacao = df3.format(tempTxNegociacaoCompra);
-                    val_tx_negociacao.setText(str_val_tx_negociacao);
+                    Double tempTxLiquidacaoVenda = custas.calc_Corretagem(valPretendidoVenda, quantidade, dbLiquidacao2Venda, cbFracionarioDCVP.isChecked(), cbLiquidacao2.isChecked());
+                    val_tx_liquidacao.setText(df4.format(tempTxLiquidacaoVenda));
 
-                    Double tempEmolumentosCompra = tempTxLiquidacaoCompra + tempTxNegociacaoCompra;
-                    Double tempEmolumentosVenda = tempTxLiquidacaoVenda + tempTxNegociacaoVenda;
-                    String str_val_emolumentos = df4.format(tempEmolumentosCompra);
-                    val_emolumentos.setText(str_val_emolumentos);
+                    Double tempTxNegociacaoVenda = custas.calc_Corretagem(valPretendidoVenda, quantidade, dbNegociacao2Venda, cbFracionarioDCVP.isChecked(), cbNegociacao2.isChecked());
+                    val_tx_negociacao.setText(df4.format(tempTxNegociacaoVenda));
 
-                    String tempPctEmolumentos = df3.format(Double.valueOf(tx_liquidacao + tx_negociacao));
+
+                    Double resultadoEmolumentosVenda = tempTxLiquidacaoVenda + tempTxNegociacaoVenda;
+                    val_emolumentos.setText(df3.format(resultadoEmolumentosVenda));
+                    String tempPctEmolumentos = df3.format(dbLiquidacao2Venda + dbNegociacao2Venda);
                     pctEmolumentos2.setText(tempPctEmolumentos);
 
-                    Double tempIssCompra = Iss(valPapelAdquirido, quantidade);
-                    Double tempIssVenda = Iss(valPretendidoVenda, quantidade);
-                    String str_val_iss = df3.format(tempIssCompra);
-                    val_iss.setText(str_val_iss);
 
-                    Double tempIr2Compra = Ir(valPapelAdquirido, quantidade);
+                    Double tempIssVenda = custas.calc_Corretagem(valPretendidoVenda, quantidade, dbIss2Venda, cbFracionarioDCVP.isChecked(), cbIss2.isChecked());
+                    val_iss.setText(df3.format(tempIssVenda));
+
+                    /*Double tempIr2Compra = Ir(valPapelAdquirido, quantidade);
                     Double tempIr2Venda = Ir(valPretendidoVenda, quantidade);
                     String str_val_ir2 = df3.format(tempIr2Compra);
-                    val_ir2.setText(str_val_ir2);
+                    val_ir2.setText(str_val_ir2);*/
 
-                    //double temp_CustasCompra = tempCorretagemCompra+tempCustodiaCompra+tempTxLiquidacaoCompra+tempTxNegociacaoCompra+tempIssCompra+tempIr2Compra;
-                    double temp_CustasVenda = tempCorretagemVenda+tempCustodiaVenda+tempTxLiquidacaoVenda+tempTxNegociacaoVenda+tempIssVenda+tempIr2Venda;
-                    //tv_valCompraDoPapel.setText(df2.format((valPapelAdquirido * quantidade)+temp_CustasCompra));
-                    tv_valVendaDoPapel.setText(df2.format((valPretendidoVenda * quantidade)-temp_CustasVenda));
+                    double temp_CustasVenda = tempCorretagemVenda + tempCustodiaVenda + tempTxLiquidacaoVenda + tempTxNegociacaoVenda + tempIssVenda;
+                    Double valExclusivoVendaDoPapel2 = ((valPretendidoVenda * quantidade) - temp_CustasVenda);
+                    tv_valVendaDoPapel.setText(df2.format(valExclusivoVendaDoPapel2));
 
-                    TextView resulCalcVendaLiquido = (TextView) findViewById(R.id.resultVendaLiquido);
-                    double calcVendaLiquido = calc_Venda_Liquido(valPapelAdquirido, quantidade, valPretendidoVenda);
+
+                    TextView resulCalcVendaLiquido = findViewById(R.id.resultVendaLiquido);
+                    double calcVendaLiquido = valExclusivoVendaDoPapel2 - valTotalCompraDoPapel2;
                     try {
                         if (calcVendaLiquido>=0){
                             resulCalcVendaLiquido.setTextColor(ContextCompat.getColor(this, R.color.darkgreen));
@@ -327,8 +312,7 @@ public class ValorMinParaVendaSemPerdas extends AppCompatActivity {
                     String str_venda_Liquido = df2.format(calcVendaLiquido);
                     resulCalcVendaLiquido.setText(str_venda_Liquido);
 
-                    TV_valMinVendaSemPerdas.setText(df2.format(valMinVenda(valPapelAdquirido, quantidade)));*/
-
+                    TV_valMinVendaSemPerdas.setText(df2.format(valMinVenda(valPapelAdquirido, quantidade)));
 
                     /*
                     //TODO Excluir try-catch com Toaster após conclusão de testes.
