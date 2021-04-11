@@ -277,7 +277,7 @@ public class ValorMinParaVendaSemPerdas extends AppCompatActivity {
                     CheckBox cbIss2Compra = findViewById(R.id.cbIss2Compra);
 
 
-                    Double dbCorretagemCompra = Double.parseDouble(String.valueOf(pctCorretagem2Compra.getText()));
+                    Double dbCorretagemCompra = Double.parseDouble(pctCorretagem2Compra.getText().toString());
                     Double dbCustodia2Compra = Double.parseDouble(pctCustodia2Compra.getText().toString());
                     Double dbLiquidacao2Compra = Double.parseDouble(pctLiquidacao2Compra.getText().toString());
                     Double dbNegociacao2Compra = Double.parseDouble(pctNegociacao2Compra.getText().toString());
@@ -409,6 +409,7 @@ public class ValorMinParaVendaSemPerdas extends AppCompatActivity {
 
                 }
                 catch (Exception e) {
+                    Toaster(e.getMessage());
                     Toaster("Erro ao calcular");
                 }
             }
@@ -897,7 +898,7 @@ public class ValorMinParaVendaSemPerdas extends AppCompatActivity {
                 TextView corretagem2Compra = findViewById(R.id.corretagem2Compra);
                 corretagem2Compra.setText(df2.format(calculoCorretagemCompra));
                 EditText pctCorretagem2Compra = findViewById(R.id.pctCorretagem2Compra);
-                pctCorretagem2Compra.setText(df2.format(dbh.getCustas(which+1).getCorretagem()));
+                pctCorretagem2Compra.setText(String.valueOf(dbh.getCustas(which+1).getCorretagem()));
                 pctCorretagem2Compra.setEnabled(false);
                 CheckBox cbCorretagem2Compra = findViewById(R.id.cbCorretagem2Compra);
                 if (dbh.getCustas(which+1).isCorretagemFixa()){
@@ -914,7 +915,7 @@ public class ValorMinParaVendaSemPerdas extends AppCompatActivity {
                 TextView custodia2Compra = findViewById(R.id.custodia2Compra);
                 custodia2Compra.setText(df2.format(calculoCustodiaCompra));
                 EditText pctCustodia2Compra = findViewById(R.id.pctCustodia2Compra);
-                pctCustodia2Compra.setText(df2.format(dbh.getCustas(which+1).getCustodia()));
+                pctCustodia2Compra.setText(String.valueOf(dbh.getCustas(which+1).getCustodia()));
                 pctCustodia2Compra.setEnabled(false);
                 CheckBox cbCustodia2Compra = findViewById(R.id.cbCustodia2Compra);
                 if (dbh.getCustas(which+1).isCustodiaFixa()){
@@ -965,7 +966,7 @@ public class ValorMinParaVendaSemPerdas extends AppCompatActivity {
                 TextView iss2Compra = findViewById(R.id.iss2Compra);
                 iss2Compra.setText(df2.format(calculoIssCompra));
                 EditText pctIss2Compra = findViewById(R.id.pctIss2Compra);
-                pctIss2Compra.setText(df3.format(dbh.getCustas(which+1).getIss()));
+                pctIss2Compra.setText(String.valueOf(dbh.getCustas(which+1).getIss()));
                 pctIss2Compra.setEnabled(false);
                 CheckBox cbIss2Compra = findViewById(R.id.cbIss2Compra);
                 if (dbh.getCustas(which+1).isIssFixo()){
