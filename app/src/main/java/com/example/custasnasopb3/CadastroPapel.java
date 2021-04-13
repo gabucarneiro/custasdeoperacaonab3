@@ -707,9 +707,9 @@ public class CadastroPapel extends AppCompatActivity {
             Toaster(npe.getMessage());
         }*/
         catch (Exception e){
-            //TODO buscar forma de identificar 998 vazio e então receber 999 como parâmetros; caso 998 contenha dados, recuperar 998 e setar.
+            //*** OK *** buscar forma de identificar 998 vazio e então receber 999 como parâmetros; caso 998 contenha dados, recuperar 998 e setar.
             // - Por enquanto, ele apenas não recupera para o AlertDialog as informações do 998, mas salva corretamente as informações do 998 no respectivo id do papel
-            //TODO Quando estiver cadastrando um novo papel, clicar no botão das custas, salvar as custas no padrão temporário 998 e fechar, ao clicar novamente no botão das custas, o AlertDialog deverá recuperar o que consta no 998.
+            //*** OK *** Quando estiver cadastrando um novo papel, clicar no botão das custas, salvar as custas no padrão temporário 998 e fechar, ao clicar novamente no botão das custas, o AlertDialog deverá recuperar o que consta no 998.
             if (String.valueOf(et_IdPapel.getText()).equals("")){
                 if (dbhCustas.getCustas(998).getCorretagem() != 0.0 || dbhCustas.getCustas(998).getCustodia() != 0.0 || dbhCustas.getCustas(998).getTx_liquidacao() != 0.0 || dbhCustas.getCustas(998).getTx_negociacao() != 0.0 || dbhCustas.getCustas(998).getIss() != 0.0){
                     idPapelCustas = 998;

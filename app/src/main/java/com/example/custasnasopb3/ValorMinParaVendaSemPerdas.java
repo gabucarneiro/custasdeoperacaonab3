@@ -234,10 +234,13 @@ public class ValorMinParaVendaSemPerdas extends AppCompatActivity {
     }
 
 
-    //TODO Dar seguimento à modificação do cálculo, calculando com base nos dados resgatados do banco de dados.
-    //TODO Modificar a classe para utilizar a função da classe Custas.java.
-    //TODO inserir uma view para receber a informação de quantas ações serão vendidas. Afinal, você pode escolher não vender todas de uma vez.
+    //*** OK *** Dar seguimento à modificação do cálculo, calculando com base nos dados resgatados do banco de dados.
+    //*** OK *** Modificar a classe para utilizar a função da classe Custas.java.
+    //TODO continuar reduzindo as chamadas para as mesmas views - verificar a possibilidade de torná-las globais.
+    //TODO verificar como otimizar ou modificar as view ocultas dos "Custos de Venda" e "Custos de Compra".
     //TODO continuar as modificações na classe e activity.
+    //TODO POSTERGADO - inserir uma view para receber a informação de quantas ações serão vendidas. Afinal, você pode escolher não vender todas de uma vez.
+
 
     public void calcular(View view){
         try {
@@ -393,8 +396,8 @@ public class ValorMinParaVendaSemPerdas extends AppCompatActivity {
                     String str_venda_Liquido = df2.format(calcVendaLiquido);
                     resulCalcVendaLiquido.setText(str_venda_Liquido);
 
-                    TV_valMinVendaSemPerdas.setText(df2.format(valMinVenda(valPapelAdquirido, quantidade)));
-                    //TV_valMinVendaSemPerdas.setText(df2.format(valMinVendaDII(valTotalCompraDoPapel2, quantidade, quantidade)));
+                    //TV_valMinVendaSemPerdas.setText(df2.format(valMinVenda(valPapelAdquirido, quantidade)));
+                    TV_valMinVendaSemPerdas.setText(df2.format(valMinVendaDII(valPapelAdquirido, quantidade, valTotalCompraDoPapel2, cbFracionarioDCVP, dbCorretagem2Venda, cbCorretagem2, dbCustodia2Venda, cbCustodia2, dbLiquidacao2Venda, cbLiquidacao2, dbNegociacao2Venda, cbNegociacao2, dbIss2Venda, cbIss2)));
 
                     /*
                     //TODO Excluir try-catch com Toaster após conclusão de testes.
@@ -733,80 +736,26 @@ public class ValorMinParaVendaSemPerdas extends AppCompatActivity {
         return temp_valMinVenda;
     }
 
-    public double valMinVendaDII(Double valPapelAdquirido, int quantidadeCompra, int quantidadeVenda){
-
-        //TODO  **** A função valMinVendaDII precisa receber os dados já prontos dos edittexts dos custos de VENDA da Activity(não do BD), se é fracionário e a QUANTIDADE DE AÇÕES A VENDER - podendo receber os EditTexts e Cbs direto na função, como na função anterior:
-        // "public double valMinVenda(double valPapelAdquirido, int quantidade, Double calc_Corretagem, Double calc_Custodia, Double calc_tx_liquidacao, Double calc_tx_negociacao, Double calc_iss..........){};"
+    public double valMinVendaDII(Double valPapelAdquirido, int quantidadeCompra, Double valTotalCompraDoPapel2, CheckBox cbFracionarioDCVP, Double dbCorretagem2Venda, CheckBox cbCorretagem2, Double dbCustodia2Venda, CheckBox cbCustodia2, Double dbLiquidacao2Venda, CheckBox cbLiquidacao2, Double dbNegociacao2Venda, CheckBox cbNegociacao2, Double dbIss2Venda, CheckBox cbIss2){
 
         Custas custas = new Custas();
         double temp_valMinVenda = valPapelAdquirido+0.01;
 
-        EditText pctCorretagem2Compra = findViewById(R.id.pctCorretagem2Compra);
-        EditText pctCustodia2Compra = findViewById(R.id.pctCustodia2Compra);
-        EditText pctLiquidacao2Compra = findViewById(R.id.pctLiquidacao2Compra);
-        EditText pctNegociacao2Compra = findViewById(R.id.pctNegociacao2Compra);
-        EditText pctIss2Compra = findViewById(R.id.pctIss2Compra);
-
-        CheckBox cbFracionarioDCVP = findViewById(R.id.cbFracionarioDCVP);
-        CheckBox cbCorretagem2Compra = findViewById(R.id.cbCorretagem2Compra);
-        CheckBox cbCustodia2Compra = findViewById(R.id.cbCustodia2Compra);
-        CheckBox cbLiquidacao2Compra = findViewById(R.id.cbLiquidacao2Compra);
-        CheckBox cbNegociacao2Compra = findViewById(R.id.cbNegociacao2Compra);
-        CheckBox cbIss2Compra = findViewById(R.id.cbIss2Compra);
-
-        Double dbCorretagemCompra = Double.parseDouble(String.valueOf(pctCorretagem2Compra.getText()));
-        Double dbCustodia2Compra = Double.parseDouble(pctCustodia2Compra.getText().toString());
-        Double dbLiquidacao2Compra = Double.parseDouble(pctLiquidacao2Compra.getText().toString());
-        Double dbNegociacao2Compra = Double.parseDouble(pctNegociacao2Compra.getText().toString());
-        Double dbIss2Compra = Double.parseDouble(pctIss2Compra.getText().toString());
-
-
-        Double resultadoCorretagemCompra = custas.calc_Corretagem(valPapelAdquirido, quantidadeCompra, dbCorretagemCompra, cbFracionarioDCVP.isChecked(), cbCorretagem2Compra.isChecked());
-        Double resultadoCustodiaCompra = custas.calc_Corretagem(valPapelAdquirido, quantidadeCompra, dbCustodia2Compra, cbFracionarioDCVP.isChecked(), cbCustodia2Compra.isChecked());
-        Double resultadoLiquidacaoCompra = custas.calc_Corretagem(valPapelAdquirido, quantidadeCompra, dbLiquidacao2Compra, cbFracionarioDCVP.isChecked(), cbLiquidacao2Compra.isChecked());
-        Double resultadoNegociacaoCompra = custas.calc_Corretagem(valPapelAdquirido, quantidadeCompra, dbNegociacao2Compra, cbFracionarioDCVP.isChecked(), cbNegociacao2Compra.isChecked());
-        Double resultadoIssCompra = custas.calc_Corretagem(valPapelAdquirido, quantidadeCompra, dbIss2Compra, cbFracionarioDCVP.isChecked(), cbIss2Compra.isChecked());
-
-
-        //Toaster(String.valueOf(resultadoCorretagemCompra + resultadoCustodiaCompra + resultadoLiquidacaoCompra + resultadoNegociacaoCompra + resultadoIssCompra));
-        //Toaster(df2.format((valPapelAdquirido * quantidade) + (resultadoCorretagemCompra + resultadoCustodiaCompra + resultadoLiquidacaoCompra + resultadoNegociacaoCompra + resultadoIssCompra)));
-        Double valTotalCompraDoPapel2 = (valPapelAdquirido * quantidade) + (resultadoCorretagemCompra + resultadoCustodiaCompra + resultadoLiquidacaoCompra + resultadoNegociacaoCompra + resultadoIssCompra);
-
-
-        EditText pctCorretagem2 = findViewById(R.id.pctCorretagem2);
-        EditText pctCustodia2 = findViewById(R.id.pctCustodia2);
-        EditText pctLiquidacao2 = findViewById(R.id.pctLiquidacao2);
-        EditText pctNegociacao2 = findViewById(R.id.pctNegociacao2);
-        EditText pctIss2 = findViewById(R.id.pctIss2);
-
-        CheckBox cbCorretagem2 = findViewById(R.id.cbCorretagem2);
-        CheckBox cbCustodia2 = findViewById(R.id.cbCustodia2);
-        CheckBox cbLiquidacao2 = findViewById(R.id.cbLiquidacao2);
-        CheckBox cbNegociacao2 = findViewById(R.id.cbNegociacao2);
-        CheckBox cbIss2 = findViewById(R.id.cbIss2);
-
-
-        Double dbCorretagem2Venda = Double.parseDouble(String.valueOf(pctCorretagem2.getText()));
-        Double dbCustodia2Venda = Double.parseDouble(String.valueOf(pctCustodia2.getText()));
-        Double dbLiquidacao2Venda = Double.parseDouble(String.valueOf(pctLiquidacao2.getText()));
-        Double dbNegociacao2Venda = Double.parseDouble(String.valueOf(pctNegociacao2.getText()));
-        Double dbIss2Venda = Double.parseDouble(String.valueOf(pctIss2.getText()));
-
-
-        Double tempCorretagemVenda = custas.calc_Corretagem(temp_valMinVenda, quantidadeVenda, dbCorretagem2Venda, cbFracionarioDCVP.isChecked(), cbCorretagem2.isChecked());
-        Double tempCustodiaVenda = custas.calc_Corretagem(temp_valMinVenda, quantidadeVenda, dbCustodia2Venda, cbFracionarioDCVP.isChecked(), cbCustodia2.isChecked());
-        Double tempTxLiquidacaoVenda = custas.calc_Corretagem(temp_valMinVenda, quantidadeVenda, dbLiquidacao2Venda, cbFracionarioDCVP.isChecked(), cbLiquidacao2.isChecked());
-        Double tempTxNegociacaoVenda = custas.calc_Corretagem(temp_valMinVenda, quantidadeVenda, dbNegociacao2Venda, cbFracionarioDCVP.isChecked(), cbNegociacao2.isChecked());
-        Double tempIssVenda = custas.calc_Corretagem(temp_valMinVenda, quantidadeVenda, dbIss2Venda, cbFracionarioDCVP.isChecked(), cbIss2.isChecked());
+        Double tempCorretagemVenda = custas.calc_Corretagem(temp_valMinVenda, quantidadeCompra, dbCorretagem2Venda, cbFracionarioDCVP.isChecked(), cbCorretagem2.isChecked());
+        Double tempCustodiaVenda = custas.calc_Corretagem(temp_valMinVenda, quantidadeCompra, dbCustodia2Venda, cbFracionarioDCVP.isChecked(), cbCustodia2.isChecked());
+        Double tempTxLiquidacaoVenda = custas.calc_Corretagem(temp_valMinVenda, quantidadeCompra, dbLiquidacao2Venda, cbFracionarioDCVP.isChecked(), cbLiquidacao2.isChecked());
+        Double tempTxNegociacaoVenda = custas.calc_Corretagem(temp_valMinVenda, quantidadeCompra, dbNegociacao2Venda, cbFracionarioDCVP.isChecked(), cbNegociacao2.isChecked());
+        Double tempIssVenda = custas.calc_Corretagem(temp_valMinVenda, quantidadeCompra, dbIss2Venda, cbFracionarioDCVP.isChecked(), cbIss2.isChecked());
 
         double temp_CustasVenda = tempCorretagemVenda + tempCustodiaVenda + tempTxLiquidacaoVenda + tempTxNegociacaoVenda + tempIssVenda;
-        Double valExclusivoVendaDoPapel2 = ((temp_valMinVenda * quantidadeVenda) - temp_CustasVenda);
+        Double valExclusivoVendaDoPapel2 = ((temp_valMinVenda * quantidadeCompra) - temp_CustasVenda);
 
 
         double resul_vendaLiquido = (valExclusivoVendaDoPapel2 - valTotalCompraDoPapel2);
 
         while (resul_vendaLiquido<0){
             temp_valMinVenda +=0.01;
+            valExclusivoVendaDoPapel2 = ((temp_valMinVenda * quantidadeCompra) - temp_CustasVenda);
             resul_vendaLiquido = (valExclusivoVendaDoPapel2 - valTotalCompraDoPapel2);
         }
         return temp_valMinVenda;
@@ -877,10 +826,11 @@ public class ValorMinParaVendaSemPerdas extends AppCompatActivity {
                 RelativeLayout RLcustasExtraCompra = findViewById(R.id.custasExtraCompra);
                 RLcustasExtraCompra.setVisibility(View.VISIBLE);
 
-                Custas custas = new Custas();
+                Custas custas;
+                custas = dbh.getCustas(which+1);
 
                 CheckBox cbFracionarioDCVP = findViewById(R.id.cbFracionarioDCVP);
-                if (dbh.getPapel(which+1).isFracionario()){
+                if (papel.isFracionario()){
                     cbFracionarioDCVP.setChecked(true);
                 }
                 else {
@@ -893,15 +843,15 @@ public class ValorMinParaVendaSemPerdas extends AppCompatActivity {
                 cbFracionarioDCVP.setEnabled(false);
 
 
-                Double calculoCorretagemCompra = custas.calc_Corretagem(papel.getValor(), papel.getQuantidade(), dbh.getCustas(which+1).getCorretagem(), dbh.getPapel(which+1).isFracionario(), dbh.getCustas(which+1).isCorretagemFixa());
+                Double calculoCorretagemCompra = custas.calc_Corretagem(papel.getValor(), papel.getQuantidade(), custas.getCorretagem(), papel.isFracionario(), custas.isCorretagemFixa());
                 //Toaster(calculoCorretagemCompra.toString());
                 TextView corretagem2Compra = findViewById(R.id.corretagem2Compra);
                 corretagem2Compra.setText(df2.format(calculoCorretagemCompra));
                 EditText pctCorretagem2Compra = findViewById(R.id.pctCorretagem2Compra);
-                pctCorretagem2Compra.setText(String.valueOf(dbh.getCustas(which+1).getCorretagem()));
+                pctCorretagem2Compra.setText(String.valueOf(custas.getCorretagem()));
                 pctCorretagem2Compra.setEnabled(false);
                 CheckBox cbCorretagem2Compra = findViewById(R.id.cbCorretagem2Compra);
-                if (dbh.getCustas(which+1).isCorretagemFixa()){
+                if (custas.isCorretagemFixa()){
                     cbCorretagem2Compra.setChecked(true);
                 }
                 else {
@@ -910,15 +860,15 @@ public class ValorMinParaVendaSemPerdas extends AppCompatActivity {
                 cbCorretagem2Compra.setEnabled(false);
 
 
-                Double calculoCustodiaCompra = custas.calc_Corretagem(papel.getValor(), papel.getQuantidade(), dbh.getCustas(which+1).getCustodia(), dbh.getPapel(which+1).isFracionario(), dbh.getCustas(which+1).isCustodiaFixa());
+                Double calculoCustodiaCompra = custas.calc_Corretagem(papel.getValor(), papel.getQuantidade(), custas.getCustodia(), papel.isFracionario(), custas.isCustodiaFixa());
                 //Toaster(calculoCustodiaCompra.toString());
                 TextView custodia2Compra = findViewById(R.id.custodia2Compra);
                 custodia2Compra.setText(df2.format(calculoCustodiaCompra));
                 EditText pctCustodia2Compra = findViewById(R.id.pctCustodia2Compra);
-                pctCustodia2Compra.setText(String.valueOf(dbh.getCustas(which+1).getCustodia()));
+                pctCustodia2Compra.setText(String.valueOf(custas.getCustodia()));
                 pctCustodia2Compra.setEnabled(false);
                 CheckBox cbCustodia2Compra = findViewById(R.id.cbCustodia2Compra);
-                if (dbh.getCustas(which+1).isCustodiaFixa()){
+                if (custas.isCustodiaFixa()){
                     cbCustodia2Compra.setChecked(true);
                 }
                 else {
@@ -927,15 +877,15 @@ public class ValorMinParaVendaSemPerdas extends AppCompatActivity {
                 cbCustodia2Compra.setEnabled(false);
 
 
-                Double calculoLiquidacaoCompra = custas.calc_Corretagem(papel.getValor(), papel.getQuantidade(), dbh.getCustas(which+1).getTx_liquidacao(), dbh.getPapel(which+1).isFracionario(), dbh.getCustas(which+1).isTx_liquidacaoFixa());
+                Double calculoLiquidacaoCompra = custas.calc_Corretagem(papel.getValor(), papel.getQuantidade(), custas.getTx_liquidacao(), papel.isFracionario(), custas.isTx_liquidacaoFixa());
                 //Toaster(calculoLiquidacaoCompra.toString());
                 TextView tax_liquidacao2Compra = findViewById(R.id.tax_liquidacao2Compra);
                 tax_liquidacao2Compra.setText(df2.format(calculoLiquidacaoCompra));
                 EditText pctLiquidacao2Compra = findViewById(R.id.pctLiquidacao2Compra);
-                pctLiquidacao2Compra.setText(String.valueOf(dbh.getCustas(which+1).getTx_liquidacao()));
+                pctLiquidacao2Compra.setText(String.valueOf(custas.getTx_liquidacao()));
                 pctLiquidacao2Compra.setEnabled(false);
                 CheckBox cbLiquidacao2Compra = findViewById(R.id.cbLiquidacao2Compra);
-                if (dbh.getCustas(which+1).isTx_liquidacaoFixa()){
+                if (custas.isTx_liquidacaoFixa()){
                     cbLiquidacao2Compra.setChecked(true);
                 }
                 else {
@@ -944,15 +894,15 @@ public class ValorMinParaVendaSemPerdas extends AppCompatActivity {
                 cbLiquidacao2Compra.setEnabled(false);
 
 
-                Double calculoNegociacaoCompra = custas.calc_Corretagem(papel.getValor(), papel.getQuantidade(), dbh.getCustas(which+1).getTx_negociacao(), dbh.getPapel(which+1).isFracionario(), dbh.getCustas(which+1).isTx_negociacaoFixa());
+                Double calculoNegociacaoCompra = custas.calc_Corretagem(papel.getValor(), papel.getQuantidade(), custas.getTx_negociacao(), papel.isFracionario(), custas.isTx_negociacaoFixa());
                 //Toaster(calculoNegociacaoCompra.toString());
                 TextView tax_negociacao2Compra = findViewById(R.id.tax_negociacao2Compra);
                 tax_negociacao2Compra.setText(df2.format(calculoNegociacaoCompra));
                 EditText pctNegociacao2Compra = findViewById(R.id.pctNegociacao2Compra);
-                pctNegociacao2Compra.setText(String.valueOf(dbh.getCustas(which+1).getTx_negociacao()));
+                pctNegociacao2Compra.setText(String.valueOf(custas.getTx_negociacao()));
                 pctNegociacao2Compra.setEnabled(false);
                 CheckBox cbNegociacao2Compra = findViewById(R.id.cbNegociacao2Compra);
-                if (dbh.getCustas(which+1).isTx_negociacaoFixa()){
+                if (custas.isTx_negociacaoFixa()){
                     cbNegociacao2Compra.setChecked(true);
                 }
                 else {
@@ -961,15 +911,15 @@ public class ValorMinParaVendaSemPerdas extends AppCompatActivity {
                 cbNegociacao2Compra.setEnabled(false);
 
 
-                Double calculoIssCompra = custas.calc_Corretagem(papel.getValor(), papel.getQuantidade(), dbh.getCustas(which+1).getIss(), dbh.getPapel(which+1).isFracionario(), dbh.getCustas(which+1).isIssFixo());
+                Double calculoIssCompra = custas.calc_Corretagem(papel.getValor(), papel.getQuantidade(), custas.getIss(), papel.isFracionario(), custas.isIssFixo());
                 //Toaster(calculoIssCompra.toString());
                 TextView iss2Compra = findViewById(R.id.iss2Compra);
                 iss2Compra.setText(df2.format(calculoIssCompra));
                 EditText pctIss2Compra = findViewById(R.id.pctIss2Compra);
-                pctIss2Compra.setText(String.valueOf(dbh.getCustas(which+1).getIss()));
+                pctIss2Compra.setText(String.valueOf(custas.getIss()));
                 pctIss2Compra.setEnabled(false);
                 CheckBox cbIss2Compra = findViewById(R.id.cbIss2Compra);
-                if (dbh.getCustas(which+1).isIssFixo()){
+                if (custas.isIssFixo()){
                     cbIss2Compra.setChecked(true);
                 }
                 else {
