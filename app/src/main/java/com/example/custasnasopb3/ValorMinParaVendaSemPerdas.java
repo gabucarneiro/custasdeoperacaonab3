@@ -63,19 +63,13 @@ public class ValorMinParaVendaSemPerdas extends AppCompatActivity {
     DecimalFormat df3 = new DecimalFormat("0.000");
     DecimalFormat df4 = new DecimalFormat("0.0000");
 
-    //DataBaseHelper dbhCustas = new DataBaseHelper(this);
+    EditText pct_Corretagem, pct_Custodia, pct_Liquidacao, pct_Negociacao, pct_Iss, pctCorretagem2Compra, pctCustodia2Compra, pctLiquidacao2Compra, pctNegociacao2Compra, pctIss2Compra;
+    TextView pct_Emolumentos, pctEmolumentos2Compra, corretagem2Compra, custodia2Compra, tax_liquidacao2Compra, tax_negociacao2Compra, iss2Compra, emolumentos2Compra, tvCorretagem, val_Custodia, val_tx_liquidacao, val_tx_negociacao, val_emolumentos, val_iss, tv_valVendaDoPapel, TV_valMinVendaSemPerdas, tv_valCompraDoPapel;
+
+    CheckBox cbCorretagem2, cbCustodia2, cbLiquidacao2, cbNegociacao2, cbIss2, cbCorretagem2Compra, cbCustodia2Compra, cbLiquidacao2Compra, cbNegociacao2Compra, cbIss2Compra;
+
 
     private Handler handler2 = new Handler();
-
-    /*EditText et_valPapelAdquirido = (EditText) findViewById(R.id.valPapelAdquirido);
-    EditText et_quantidade = (EditText) findViewById(R.id.quantidade2);
-    EditText et_valPretendidoVenda = (EditText) findViewById(R.id.valPretendidoVenda);
-    EditText pct_Corretagem = findViewById(R.id.pctCorretagem2);
-    EditText pct_Custodia = findViewById(R.id.pctCustodia2);
-    EditText pct_Liquidacao = findViewById(R.id.pctLiquidacao2);
-    EditText pct_Negociacao = findViewById(R.id.pctNegociacao2);
-    EditText pct_Iss = findViewById(R.id.pctIss2);
-    TextView pct_Emolumentos = findViewById(R.id.pctEmolumentos2);*/
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -84,10 +78,6 @@ public class ValorMinParaVendaSemPerdas extends AppCompatActivity {
 
         DataBaseHelper dbhCustas = new DataBaseHelper(this);
 
-        EditText et_valPapelAdquirido = findViewById(R.id.valPapelAdquirido);
-        EditText et_quantidade = findViewById(R.id.quantidade2);
-        EditText et_valPretendidoVenda = findViewById(R.id.valPretendidoVenda);
-
         new Thread(){
             public void run(){
                 try {
@@ -95,12 +85,12 @@ public class ValorMinParaVendaSemPerdas extends AppCompatActivity {
                         @Override
                         public void run() {
                             /*CUSTOS DE VENDA*/
-                            EditText pct_Corretagem = findViewById(R.id.pctCorretagem2);
-                            EditText pct_Custodia = findViewById(R.id.pctCustodia2);
-                            EditText pct_Liquidacao = findViewById(R.id.pctLiquidacao2);
-                            EditText pct_Negociacao = findViewById(R.id.pctNegociacao2);
-                            EditText pct_Iss = findViewById(R.id.pctIss2);
-                            TextView pct_Emolumentos = findViewById(R.id.pctEmolumentos2);
+                            pct_Corretagem = findViewById(R.id.pctCorretagem2);
+                            pct_Custodia = findViewById(R.id.pctCustodia2);
+                            pct_Liquidacao = findViewById(R.id.pctLiquidacao2);
+                            pct_Negociacao = findViewById(R.id.pctNegociacao2);
+                            pct_Iss = findViewById(R.id.pctIss2);
+                            pct_Emolumentos = findViewById(R.id.pctEmolumentos2);
 
                             Custas custas = new Custas(999, dbhCustas.getCustas(999).getCorretagem(), dbhCustas.getCustas(999).getCustodia(), dbhCustas.getCustas(999).getTx_liquidacao(), dbhCustas.getCustas(999).getTx_negociacao(), dbhCustas.getCustas(999).getIss(), dbhCustas.getCustas(999).isCorretagemFixa(), dbhCustas.getCustas(999).isCustodiaFixa(), dbhCustas.getCustas(999).isTx_liquidacaoFixa(), dbhCustas.getCustas(999).isTx_negociacaoFixa(), dbhCustas.getCustas(999).isIssFixo());
 
@@ -111,7 +101,7 @@ public class ValorMinParaVendaSemPerdas extends AppCompatActivity {
                             pct_Iss.setText(String.valueOf(custas.getIss()));
                             pct_Emolumentos.setText(String.valueOf(custas.getTx_liquidacao()+custas.getTx_negociacao()));
 
-                            CheckBox cbCorretagem2 = findViewById(R.id.cbCorretagem2);
+                            cbCorretagem2 = findViewById(R.id.cbCorretagem2);
                             if (custas.isCorretagemFixa()){
                                 cbCorretagem2.setChecked(true);
                             }
@@ -119,7 +109,7 @@ public class ValorMinParaVendaSemPerdas extends AppCompatActivity {
                                 cbCorretagem2.setChecked(false);
                             }
 
-                            CheckBox cbCustodia2 = findViewById(R.id.cbCustodia2);
+                            cbCustodia2 = findViewById(R.id.cbCustodia2);
                             if (custas.isCustodiaFixa()){
                                 cbCustodia2.setChecked(true);
                             }
@@ -127,7 +117,7 @@ public class ValorMinParaVendaSemPerdas extends AppCompatActivity {
                                 cbCustodia2.setChecked(false);
                             }
 
-                            CheckBox cbLiquidacao2 = findViewById(R.id.cbLiquidacao2);
+                            cbLiquidacao2 = findViewById(R.id.cbLiquidacao2);
                             if (custas.isTx_liquidacaoFixa()){
                                 cbLiquidacao2.setChecked(true);
                             }
@@ -135,7 +125,7 @@ public class ValorMinParaVendaSemPerdas extends AppCompatActivity {
                                 cbLiquidacao2.setChecked(false);
                             }
 
-                            CheckBox cbNegociacao2 = findViewById(R.id.cbNegociacao2);
+                            cbNegociacao2 = findViewById(R.id.cbNegociacao2);
                             if (custas.isTx_negociacaoFixa()){
                                 cbNegociacao2.setChecked(true);
                             }
@@ -143,7 +133,7 @@ public class ValorMinParaVendaSemPerdas extends AppCompatActivity {
                                 cbNegociacao2.setChecked(false);
                             }
 
-                            CheckBox cbIss2 = findViewById(R.id.cbIss2);
+                            cbIss2 = findViewById(R.id.cbIss2);
                             if (custas.isIssFixo()){
                                 cbIss2.setChecked(true);
                             }
@@ -153,32 +143,87 @@ public class ValorMinParaVendaSemPerdas extends AppCompatActivity {
 
                             RelativeLayout custasExtra = findViewById(R.id.custasExtra2);
                             custasExtra.setVisibility(View.GONE);
-                        }
-                    });
-                }
-                catch (Exception e){
-                    e.getMessage();
-                    e.printStackTrace();
-                }
-            }
-        }.start();
 
-        new Thread(){
-            public void run(){
-                try {
-                    handler2.post(new Runnable() {
-                        @Override
-                        public void run() {
+                            new Thread(){
+                                public void run(){
+                                    try {
+                                        handler2.post(new Runnable() {
+                                            @Override
+                                            public void run() {
+                                                /*CUSTOS DE COMPRA*/
+                                                pctCorretagem2Compra = findViewById(R.id.pctCorretagem2Compra);
+                                                pctCustodia2Compra = findViewById(R.id.pctCustodia2Compra);
+                                                pctLiquidacao2Compra = findViewById(R.id.pctLiquidacao2Compra);
+                                                pctNegociacao2Compra = findViewById(R.id.pctNegociacao2Compra);
+                                                pctIss2Compra = findViewById(R.id.pctIss2Compra);
+                                                pctEmolumentos2Compra = findViewById(R.id.pctEmolumentos2Compra);
 
-                            Custas custas = new Custas(999, dbhCustas.getCustas(999).getCorretagem(), dbhCustas.getCustas(999).getCustodia(), dbhCustas.getCustas(999).getTx_liquidacao(), dbhCustas.getCustas(999).getTx_negociacao(), dbhCustas.getCustas(999).getIss(), dbhCustas.getCustas(999).isCorretagemFixa(), dbhCustas.getCustas(999).isCustodiaFixa(), dbhCustas.getCustas(999).isTx_liquidacaoFixa(), dbhCustas.getCustas(999).isTx_negociacaoFixa(), dbhCustas.getCustas(999).isIssFixo());
+                                                pctCorretagem2Compra.setText(String.valueOf(custas.getCorretagem()));
+                                                pctCustodia2Compra.setText(String.valueOf(custas.getCustodia()));
+                                                pctLiquidacao2Compra.setText(String.valueOf(custas.getTx_liquidacao()));
+                                                pctNegociacao2Compra.setText(String.valueOf(custas.getTx_negociacao()));
+                                                pctIss2Compra.setText(String.valueOf(custas.getIss()));
+                                                pctEmolumentos2Compra.setText(String.valueOf(custas.getTx_liquidacao()+custas.getTx_negociacao()));
 
-                            /*CUSTOS DE COMPRA*/
-                            EditText pctCorretagem2Compra = findViewById(R.id.pctCorretagem2Compra);
-                            TextView pctCustodia2Compra = findViewById(R.id.pctCustodia2Compra);
-                            TextView pctLiquidacao2Compra = findViewById(R.id.pctLiquidacao2Compra);
-                            TextView pctNegociacao2Compra = findViewById(R.id.pctNegociacao2Compra);
-                            TextView pctIss2Compra = findViewById(R.id.pctIss2Compra);
-                            TextView pctEmolumentos2Compra = findViewById(R.id.pctEmolumentos2Compra);
+                                                cbCorretagem2Compra = findViewById(R.id.cbCorretagem2Compra);
+                                                if (custas.isCorretagemFixa()){
+                                                    cbCorretagem2Compra.setChecked(true);
+                                                }
+                                                else {
+                                                    cbCorretagem2Compra.setChecked(false);
+                                                }
+
+                                                cbCustodia2Compra = findViewById(R.id.cbCustodia2Compra);
+                                                if (custas.isCustodiaFixa()){
+                                                    cbCustodia2Compra.setChecked(true);
+                                                }
+                                                else {
+                                                    cbCustodia2Compra.setChecked(false);
+                                                }
+
+                                                cbLiquidacao2Compra = findViewById(R.id.cbLiquidacao2Compra);
+
+                                                if (custas.isTx_liquidacaoFixa()){
+                                                    cbLiquidacao2Compra.setChecked(true);
+                                                }
+                                                else {
+                                                    cbLiquidacao2Compra.setChecked(false);
+                                                }
+
+                                                cbNegociacao2Compra = findViewById(R.id.cbNegociacao2Compra);
+                                                if (custas.isTx_negociacaoFixa()){
+                                                    cbNegociacao2Compra.setChecked(true);
+                                                }
+                                                else {
+                                                    cbNegociacao2Compra.setChecked(false);
+                                                }
+
+                                                cbIss2Compra = findViewById(R.id.cbIss2Compra);
+                                                if (custas.isIssFixo()){
+                                                    cbIss2Compra.setChecked(true);
+                                                }
+                                                else {
+                                                    cbIss2Compra.setChecked(false);
+                                                }
+
+                                                RelativeLayout RLcustasExtraCompra = findViewById(R.id.custasExtraCompra);
+                                                RLcustasExtraCompra.setVisibility(View.GONE);
+                                            }
+                                        });
+                                    }
+                                    catch (Exception e){
+                                        e.getMessage();
+                                        e.printStackTrace();
+                                    }
+
+                                }
+                            }.start();
+                            /*pctCorretagem2Compra = findViewById(R.id.pctCorretagem2Compra);
+                            pctCustodia2Compra = findViewById(R.id.pctCustodia2Compra);
+                            pctLiquidacao2Compra = findViewById(R.id.pctLiquidacao2Compra);
+                            pctNegociacao2Compra = findViewById(R.id.pctNegociacao2Compra);
+                            pctIss2Compra = findViewById(R.id.pctIss2Compra);
+                            pctEmolumentos2Compra = findViewById(R.id.pctEmolumentos2Compra);
 
                             pctCorretagem2Compra.setText(String.valueOf(custas.getCorretagem()));
                             pctCustodia2Compra.setText(String.valueOf(custas.getCustodia()));
@@ -187,7 +232,7 @@ public class ValorMinParaVendaSemPerdas extends AppCompatActivity {
                             pctIss2Compra.setText(String.valueOf(custas.getIss()));
                             pctEmolumentos2Compra.setText(String.valueOf(custas.getTx_liquidacao()+custas.getTx_negociacao()));
 
-                            CheckBox cbCorretagem2Compra = findViewById(R.id.cbCorretagem2Compra);
+                            cbCorretagem2Compra = findViewById(R.id.cbCorretagem2Compra);
                             if (custas.isCorretagemFixa()){
                                 cbCorretagem2Compra.setChecked(true);
                             }
@@ -195,7 +240,7 @@ public class ValorMinParaVendaSemPerdas extends AppCompatActivity {
                                 cbCorretagem2Compra.setChecked(false);
                             }
 
-                            CheckBox cbCustodia2Compra = findViewById(R.id.cbCustodia2Compra);
+                            cbCustodia2Compra = findViewById(R.id.cbCustodia2Compra);
                             if (custas.isCustodiaFixa()){
                                 cbCustodia2Compra.setChecked(true);
                             }
@@ -203,7 +248,7 @@ public class ValorMinParaVendaSemPerdas extends AppCompatActivity {
                                 cbCustodia2Compra.setChecked(false);
                             }
 
-                            CheckBox cbLiquidacao2Compra = findViewById(R.id.cbLiquidacao2Compra);
+                            cbLiquidacao2Compra = findViewById(R.id.cbLiquidacao2Compra);
 
                             if (custas.isTx_liquidacaoFixa()){
                                 cbLiquidacao2Compra.setChecked(true);
@@ -212,7 +257,7 @@ public class ValorMinParaVendaSemPerdas extends AppCompatActivity {
                                 cbLiquidacao2Compra.setChecked(false);
                             }
 
-                            CheckBox cbNegociacao2Compra = findViewById(R.id.cbNegociacao2Compra);
+                            cbNegociacao2Compra = findViewById(R.id.cbNegociacao2Compra);
                             if (custas.isTx_negociacaoFixa()){
                                 cbNegociacao2Compra.setChecked(true);
                             }
@@ -220,7 +265,7 @@ public class ValorMinParaVendaSemPerdas extends AppCompatActivity {
                                 cbNegociacao2Compra.setChecked(false);
                             }
 
-                            CheckBox cbIss2Compra = findViewById(R.id.cbIss2Compra);
+                            cbIss2Compra = findViewById(R.id.cbIss2Compra);
                             if (custas.isIssFixo()){
                                 cbIss2Compra.setChecked(true);
                             }
@@ -228,11 +273,29 @@ public class ValorMinParaVendaSemPerdas extends AppCompatActivity {
                                 cbIss2Compra.setChecked(false);
                             }
 
-                            RelativeLayout custasExtra = findViewById(R.id.custasExtra2);
-                            custasExtra.setVisibility(View.GONE);
-
                             RelativeLayout RLcustasExtraCompra = findViewById(R.id.custasExtraCompra);
-                            RLcustasExtraCompra.setVisibility(View.GONE);
+                            RLcustasExtraCompra.setVisibility(View.GONE);*/
+                        }
+                    });
+                }
+                catch (Exception e){
+                    e.getMessage();
+                    e.printStackTrace();
+                }
+            }
+        }.start();
+
+        /*new Thread(){
+            public void run(){
+                try {
+                    handler2.post(new Runnable() {
+                        @Override
+                        public void run() {
+
+                            //Custas custas = new Custas(999, dbhCustas.getCustas(999).getCorretagem(), dbhCustas.getCustas(999).getCustodia(), dbhCustas.getCustas(999).getTx_liquidacao(), dbhCustas.getCustas(999).getTx_negociacao(), dbhCustas.getCustas(999).getIss(), dbhCustas.getCustas(999).isCorretagemFixa(), dbhCustas.getCustas(999).isCustodiaFixa(), dbhCustas.getCustas(999).isTx_liquidacaoFixa(), dbhCustas.getCustas(999).isTx_negociacaoFixa(), dbhCustas.getCustas(999).isIssFixo());
+
+                            *//*CUSTOS DE COMPRA*//*
+
                         }
                     });
                 }
@@ -242,9 +305,11 @@ public class ValorMinParaVendaSemPerdas extends AppCompatActivity {
                 }
 
             }
-        }.start();
-        /*CUSTOS DE VENDA*//*
-        EditText pct_Corretagem = findViewById(R.id.pctCorretagem2);
+        }.start();*/
+
+
+        /*CUSTOS DE VENDA*/
+        /*EditText pct_Corretagem = findViewById(R.id.pctCorretagem2);
         EditText pct_Custodia = findViewById(R.id.pctCustodia2);
         EditText pct_Liquidacao = findViewById(R.id.pctLiquidacao2);
         EditText pct_Negociacao = findViewById(R.id.pctNegociacao2);
@@ -300,8 +365,9 @@ public class ValorMinParaVendaSemPerdas extends AppCompatActivity {
             cbIss2.setChecked(false);
         }
 
-        *//*CUSTOS DE COMPRA*//*
-        EditText pctCorretagem2Compra = findViewById(R.id.pctCorretagem2Compra);
+        */
+        /*CUSTOS DE COMPRA*/
+        /*EditText pctCorretagem2Compra = findViewById(R.id.pctCorretagem2Compra);
         TextView pctCustodia2Compra = findViewById(R.id.pctCustodia2Compra);
         TextView pctLiquidacao2Compra = findViewById(R.id.pctLiquidacao2Compra);
         TextView pctNegociacao2Compra = findViewById(R.id.pctNegociacao2Compra);
@@ -418,26 +484,26 @@ public class ValorMinParaVendaSemPerdas extends AppCompatActivity {
                     quantidade = Integer.parseInt(et_quantidade.getText().toString());
                     valPretendidoVenda = Double.parseDouble(et_valPretendidoVenda.getText().toString());
 
-                    TextView corretagem2Compra = findViewById(R.id.corretagem2Compra);
-                    TextView custodia2Compra = findViewById(R.id.custodia2Compra);
-                    TextView tax_liquidacao2Compra = findViewById(R.id.tax_liquidacao2Compra);
-                    TextView tax_negociacao2Compra = findViewById(R.id.tax_negociacao2Compra);
-                    TextView iss2Compra = findViewById(R.id.iss2Compra);
-                    TextView emolumentos2Compra = findViewById(R.id.emolumentos2Compra);
+                    corretagem2Compra = findViewById(R.id.corretagem2Compra);
+                    custodia2Compra = findViewById(R.id.custodia2Compra);
+                    tax_liquidacao2Compra = findViewById(R.id.tax_liquidacao2Compra);
+                    tax_negociacao2Compra = findViewById(R.id.tax_negociacao2Compra);
+                    iss2Compra = findViewById(R.id.iss2Compra);
+                    emolumentos2Compra = findViewById(R.id.emolumentos2Compra);
 
-                    EditText pctCorretagem2Compra = findViewById(R.id.pctCorretagem2Compra);
-                    EditText pctCustodia2Compra = findViewById(R.id.pctCustodia2Compra);
-                    EditText pctLiquidacao2Compra = findViewById(R.id.pctLiquidacao2Compra);
-                    EditText pctNegociacao2Compra = findViewById(R.id.pctNegociacao2Compra);
-                    EditText pctIss2Compra = findViewById(R.id.pctIss2Compra);
-                    TextView pctEmolumentos2Compra = findViewById(R.id.pctEmolumentos2Compra);
+                    pctCorretagem2Compra = findViewById(R.id.pctCorretagem2Compra);
+                    pctCustodia2Compra = findViewById(R.id.pctCustodia2Compra);
+                    pctLiquidacao2Compra = findViewById(R.id.pctLiquidacao2Compra);
+                    pctNegociacao2Compra = findViewById(R.id.pctNegociacao2Compra);
+                    pctIss2Compra = findViewById(R.id.pctIss2Compra);
+                    pctEmolumentos2Compra = findViewById(R.id.pctEmolumentos2Compra);
 
                     CheckBox cbFracionarioDCVP = findViewById(R.id.cbFracionarioDCVP);
-                    CheckBox cbCorretagem2Compra = findViewById(R.id.cbCorretagem2Compra);
-                    CheckBox cbCustodia2Compra = findViewById(R.id.cbCustodia2Compra);
-                    CheckBox cbLiquidacao2Compra = findViewById(R.id.cbLiquidacao2Compra);
-                    CheckBox cbNegociacao2Compra = findViewById(R.id.cbNegociacao2Compra);
-                    CheckBox cbIss2Compra = findViewById(R.id.cbIss2Compra);
+                    cbCorretagem2Compra = findViewById(R.id.cbCorretagem2Compra);
+                    cbCustodia2Compra = findViewById(R.id.cbCustodia2Compra);
+                    cbLiquidacao2Compra = findViewById(R.id.cbLiquidacao2Compra);
+                    cbNegociacao2Compra = findViewById(R.id.cbNegociacao2Compra);
+                    cbIss2Compra = findViewById(R.id.cbIss2Compra);
 
 
                     Double dbCorretagemCompra = Double.parseDouble(pctCorretagem2Compra.getText().toString());
@@ -469,7 +535,7 @@ public class ValorMinParaVendaSemPerdas extends AppCompatActivity {
                     Double resultadoEmolumentosCompra = resultadoLiquidacaoCompra + resultadoNegociacaoCompra;
                     emolumentos2Compra.setText(df3.format(resultadoEmolumentosCompra));
 
-                    TextView tv_valCompraDoPapel = findViewById(R.id.valCompraDoPapel2);
+                    tv_valCompraDoPapel = findViewById(R.id.valCompraDoPapel2);
 
                     //Toaster(String.valueOf(resultadoCorretagemCompra + resultadoCustodiaCompra + resultadoLiquidacaoCompra + resultadoNegociacaoCompra + resultadoIssCompra));
                     //Toaster(df2.format((valPapelAdquirido * quantidade) + (resultadoCorretagemCompra + resultadoCustodiaCompra + resultadoLiquidacaoCompra + resultadoNegociacaoCompra + resultadoIssCompra)));
@@ -478,35 +544,35 @@ public class ValorMinParaVendaSemPerdas extends AppCompatActivity {
 
 
 
-                    TextView tvCorretagem = findViewById(R.id.corretagem2);
-                    TextView val_Custodia = findViewById(R.id.custodia2);
-                    TextView val_tx_liquidacao = findViewById(R.id.tax_liquidacao2);
-                    TextView val_tx_negociacao = findViewById(R.id.tax_negociacao2);
-                    TextView val_emolumentos = findViewById(R.id.emolumentos2);
-                    TextView pctEmolumentos2 = findViewById(R.id.pctEmolumentos2);
-                    TextView val_iss = findViewById(R.id.iss2);
+                    tvCorretagem = findViewById(R.id.corretagem2);
+                    val_Custodia = findViewById(R.id.custodia2);
+                    val_tx_liquidacao = findViewById(R.id.tax_liquidacao2);
+                    val_tx_negociacao = findViewById(R.id.tax_negociacao2);
+                    val_emolumentos = findViewById(R.id.emolumentos2);
+                    pct_Emolumentos = findViewById(R.id.pctEmolumentos2);
+                    val_iss = findViewById(R.id.iss2);
                     TextView val_ir2 = findViewById(R.id.txtPctIr2);
-                    TextView tv_valVendaDoPapel = findViewById(R.id.valVendaDoPapel2);
-                    TextView TV_valMinVendaSemPerdas = findViewById(R.id.valMinVendaSemPerdas);
+                    tv_valVendaDoPapel = findViewById(R.id.valVendaDoPapel2);
+                    TV_valMinVendaSemPerdas = findViewById(R.id.valMinVendaSemPerdas);
 
-                    EditText pctCorretagem2 = findViewById(R.id.pctCorretagem2);
-                    EditText pctCustodia2 = findViewById(R.id.pctCustodia2);
-                    EditText pctLiquidacao2 = findViewById(R.id.pctLiquidacao2);
-                    EditText pctNegociacao2 = findViewById(R.id.pctNegociacao2);
-                    EditText pctIss2 = findViewById(R.id.pctIss2);
+                    pct_Corretagem = findViewById(R.id.pctCorretagem2);
+                    pct_Custodia = findViewById(R.id.pctCustodia2);
+                    pct_Liquidacao = findViewById(R.id.pctLiquidacao2);
+                    pct_Negociacao = findViewById(R.id.pctNegociacao2);
+                    pct_Iss = findViewById(R.id.pctIss2);
 
-                    CheckBox cbCorretagem2 = findViewById(R.id.cbCorretagem2);
-                    CheckBox cbCustodia2 = findViewById(R.id.cbCustodia2);
-                    CheckBox cbLiquidacao2 = findViewById(R.id.cbLiquidacao2);
-                    CheckBox cbNegociacao2 = findViewById(R.id.cbNegociacao2);
-                    CheckBox cbIss2 = findViewById(R.id.cbIss2);
+                    cbCorretagem2 = findViewById(R.id.cbCorretagem2);
+                    cbCustodia2 = findViewById(R.id.cbCustodia2);
+                    cbLiquidacao2 = findViewById(R.id.cbLiquidacao2);
+                    cbNegociacao2 = findViewById(R.id.cbNegociacao2);
+                    cbIss2 = findViewById(R.id.cbIss2);
 
 
-                    Double dbCorretagem2Venda = Double.parseDouble(String.valueOf(pctCorretagem2.getText()));
-                    Double dbCustodia2Venda = Double.parseDouble(String.valueOf(pctCustodia2.getText()));
-                    Double dbLiquidacao2Venda = Double.parseDouble(String.valueOf(pctLiquidacao2.getText()));
-                    Double dbNegociacao2Venda = Double.parseDouble(String.valueOf(pctNegociacao2.getText()));
-                    Double dbIss2Venda = Double.parseDouble(String.valueOf(pctIss2.getText()));
+                    Double dbCorretagem2Venda = Double.parseDouble(String.valueOf(pct_Corretagem.getText()));
+                    Double dbCustodia2Venda = Double.parseDouble(String.valueOf(pct_Custodia.getText()));
+                    Double dbLiquidacao2Venda = Double.parseDouble(String.valueOf(pct_Liquidacao.getText()));
+                    Double dbNegociacao2Venda = Double.parseDouble(String.valueOf(pct_Negociacao.getText()));
+                    Double dbIss2Venda = Double.parseDouble(String.valueOf(pct_Iss.getText()));
 
 
                     Double tempCorretagemVenda = custas.calc_Corretagem(valPretendidoVenda, quantidade, dbCorretagem2Venda, cbFracionarioDCVP.isChecked(), cbCorretagem2.isChecked());
@@ -525,7 +591,7 @@ public class ValorMinParaVendaSemPerdas extends AppCompatActivity {
                     Double resultadoEmolumentosVenda = tempTxLiquidacaoVenda + tempTxNegociacaoVenda;
                     val_emolumentos.setText(df3.format(resultadoEmolumentosVenda));
                     String tempPctEmolumentos = df3.format(dbLiquidacao2Venda + dbNegociacao2Venda);
-                    pctEmolumentos2.setText(tempPctEmolumentos);
+                    pct_Emolumentos.setText(tempPctEmolumentos);
 
 
                     Double tempIssVenda = custas.calc_Corretagem(valPretendidoVenda, quantidade, dbIss2Venda, cbFracionarioDCVP.isChecked(), cbIss2.isChecked());
@@ -589,7 +655,7 @@ public class ValorMinParaVendaSemPerdas extends AppCompatActivity {
 
     public Double Corretagem(Double valPapelCalcular, Integer quantidade){
 
-        EditText pct_Corretagem = findViewById(R.id.pctCorretagem2);
+        pct_Corretagem = findViewById(R.id.pctCorretagem2);
 
         if(valPapelCalcular != null && quantidade != null && quantidade >=1){
 
@@ -824,8 +890,7 @@ public class ValorMinParaVendaSemPerdas extends AppCompatActivity {
         LL_SaldoVendaLiquido.addView(TV_custasVenda);
         LL_SaldoVendaLiquido.addView(TV_LLCompraComCustas);*/
 
-        Double venda_Liquida = (valPretendidoVenda * quantidade) - totalCustas;
-        return venda_Liquida;
+        return (valPretendidoVenda * quantidade) - totalCustas;
     }
 
     public double valMinVenda(double valPapelAdquirido, int quantidade){
@@ -941,7 +1006,7 @@ public class ValorMinParaVendaSemPerdas extends AppCompatActivity {
         int contadorInt = (int)contador;
         //TODO Verificar a possibilidade de fazer >>> int contadorInt = (int)dbh.contador();
 
-        CharSequence arrayPapeis[] = new CharSequence[contadorInt];
+        CharSequence[] arrayPapeis = new CharSequence[contadorInt];
 
         try {
             for(int i = 1; i<=contadorInt; i++){
@@ -1013,12 +1078,12 @@ public class ValorMinParaVendaSemPerdas extends AppCompatActivity {
 
                                     Double calculoCorretagemCompra = custas.calc_Corretagem(papel.getValor(), papel.getQuantidade(), custas.getCorretagem(), papel.isFracionario(), custas.isCorretagemFixa());
                                     //Toaster(calculoCorretagemCompra.toString());
-                                    TextView corretagem2Compra = findViewById(R.id.corretagem2Compra);
+                                    corretagem2Compra = findViewById(R.id.corretagem2Compra);
                                     corretagem2Compra.setText(df2.format(calculoCorretagemCompra));
-                                    EditText pctCorretagem2Compra = findViewById(R.id.pctCorretagem2Compra);
+                                    pctCorretagem2Compra = findViewById(R.id.pctCorretagem2Compra);
                                     pctCorretagem2Compra.setText(String.valueOf(custas.getCorretagem()));
                                     pctCorretagem2Compra.setEnabled(false);
-                                    CheckBox cbCorretagem2Compra = findViewById(R.id.cbCorretagem2Compra);
+                                    cbCorretagem2Compra = findViewById(R.id.cbCorretagem2Compra);
                                     if (custas.isCorretagemFixa()){
                                         cbCorretagem2Compra.setChecked(true);
                                     }
@@ -1030,12 +1095,12 @@ public class ValorMinParaVendaSemPerdas extends AppCompatActivity {
 
                                     Double calculoCustodiaCompra = custas.calc_Corretagem(papel.getValor(), papel.getQuantidade(), custas.getCustodia(), papel.isFracionario(), custas.isCustodiaFixa());
                                     //Toaster(calculoCustodiaCompra.toString());
-                                    TextView custodia2Compra = findViewById(R.id.custodia2Compra);
+                                    custodia2Compra = findViewById(R.id.custodia2Compra);
                                     custodia2Compra.setText(df2.format(calculoCustodiaCompra));
-                                    EditText pctCustodia2Compra = findViewById(R.id.pctCustodia2Compra);
+                                    pctCustodia2Compra = findViewById(R.id.pctCustodia2Compra);
                                     pctCustodia2Compra.setText(String.valueOf(custas.getCustodia()));
                                     pctCustodia2Compra.setEnabled(false);
-                                    CheckBox cbCustodia2Compra = findViewById(R.id.cbCustodia2Compra);
+                                    cbCustodia2Compra = findViewById(R.id.cbCustodia2Compra);
                                     if (custas.isCustodiaFixa()){
                                         cbCustodia2Compra.setChecked(true);
                                     }
@@ -1047,12 +1112,12 @@ public class ValorMinParaVendaSemPerdas extends AppCompatActivity {
 
                                     Double calculoLiquidacaoCompra = custas.calc_Corretagem(papel.getValor(), papel.getQuantidade(), custas.getTx_liquidacao(), papel.isFracionario(), custas.isTx_liquidacaoFixa());
                                     //Toaster(calculoLiquidacaoCompra.toString());
-                                    TextView tax_liquidacao2Compra = findViewById(R.id.tax_liquidacao2Compra);
+                                    tax_liquidacao2Compra = findViewById(R.id.tax_liquidacao2Compra);
                                     tax_liquidacao2Compra.setText(df2.format(calculoLiquidacaoCompra));
-                                    EditText pctLiquidacao2Compra = findViewById(R.id.pctLiquidacao2Compra);
+                                    pctLiquidacao2Compra = findViewById(R.id.pctLiquidacao2Compra);
                                     pctLiquidacao2Compra.setText(String.valueOf(custas.getTx_liquidacao()));
                                     pctLiquidacao2Compra.setEnabled(false);
-                                    CheckBox cbLiquidacao2Compra = findViewById(R.id.cbLiquidacao2Compra);
+                                    cbLiquidacao2Compra = findViewById(R.id.cbLiquidacao2Compra);
                                     if (custas.isTx_liquidacaoFixa()){
                                         cbLiquidacao2Compra.setChecked(true);
                                     }
@@ -1064,12 +1129,12 @@ public class ValorMinParaVendaSemPerdas extends AppCompatActivity {
 
                                     Double calculoNegociacaoCompra = custas.calc_Corretagem(papel.getValor(), papel.getQuantidade(), custas.getTx_negociacao(), papel.isFracionario(), custas.isTx_negociacaoFixa());
                                     //Toaster(calculoNegociacaoCompra.toString());
-                                    TextView tax_negociacao2Compra = findViewById(R.id.tax_negociacao2Compra);
+                                    tax_negociacao2Compra = findViewById(R.id.tax_negociacao2Compra);
                                     tax_negociacao2Compra.setText(df2.format(calculoNegociacaoCompra));
-                                    EditText pctNegociacao2Compra = findViewById(R.id.pctNegociacao2Compra);
+                                    pctNegociacao2Compra = findViewById(R.id.pctNegociacao2Compra);
                                     pctNegociacao2Compra.setText(String.valueOf(custas.getTx_negociacao()));
                                     pctNegociacao2Compra.setEnabled(false);
-                                    CheckBox cbNegociacao2Compra = findViewById(R.id.cbNegociacao2Compra);
+                                    cbNegociacao2Compra = findViewById(R.id.cbNegociacao2Compra);
                                     if (custas.isTx_negociacaoFixa()){
                                         cbNegociacao2Compra.setChecked(true);
                                     }
@@ -1081,12 +1146,12 @@ public class ValorMinParaVendaSemPerdas extends AppCompatActivity {
 
                                     Double calculoIssCompra = custas.calc_Corretagem(papel.getValor(), papel.getQuantidade(), custas.getIss(), papel.isFracionario(), custas.isIssFixo());
                                     //Toaster(calculoIssCompra.toString());
-                                    TextView iss2Compra = findViewById(R.id.iss2Compra);
+                                    iss2Compra = findViewById(R.id.iss2Compra);
                                     iss2Compra.setText(df2.format(calculoIssCompra));
-                                    EditText pctIss2Compra = findViewById(R.id.pctIss2Compra);
+                                    pctIss2Compra = findViewById(R.id.pctIss2Compra);
                                     pctIss2Compra.setText(String.valueOf(custas.getIss()));
                                     pctIss2Compra.setEnabled(false);
-                                    CheckBox cbIss2Compra = findViewById(R.id.cbIss2Compra);
+                                    cbIss2Compra = findViewById(R.id.cbIss2Compra);
                                     if (custas.isIssFixo()){
                                         cbIss2Compra.setChecked(true);
                                     }
@@ -1099,10 +1164,10 @@ public class ValorMinParaVendaSemPerdas extends AppCompatActivity {
                                     et_quantidade.setEnabled(false);
                                     cbFracionarioDCVP.setEnabled(false);
 
-                                    TextView tv_valCompraDoPapel = (TextView) findViewById(R.id.valCompraDoPapel2);
+                                    tv_valCompraDoPapel = findViewById(R.id.valCompraDoPapel2);
                                     tv_valCompraDoPapel.setText(df2.format((papel.getValor() * papel.getQuantidade()) + (calculoCorretagemCompra + calculoCustodiaCompra + calculoLiquidacaoCompra + calculoNegociacaoCompra + calculoIssCompra)));
 
-                                    TextView TV_valMinVendaSemPerdas = (TextView) findViewById(R.id.valMinVendaSemPerdas);
+                                    TV_valMinVendaSemPerdas = findViewById(R.id.valMinVendaSemPerdas);
                                     TV_valMinVendaSemPerdas.setText(df2.format(valMinVenda(papel.getValor(), papel.getQuantidade(), calculoCorretagemCompra, calculoCustodiaCompra, calculoLiquidacaoCompra, calculoNegociacaoCompra, calculoIssCompra)));
                                     //TV_valMinVendaSemPerdas.setText(df2.format(valMinVendaDII(valPapelAdquirido, quantidade, valTotalCompraDoPapel2, cbFracionarioDCVP, dbCorretagem2Venda, cbCorretagem2, dbCustodia2Venda, cbCustodia2, dbLiquidacao2Venda, cbLiquidacao2, dbNegociacao2Venda, cbNegociacao2, dbIss2Venda, cbIss2)));
                                     dbh.close();
