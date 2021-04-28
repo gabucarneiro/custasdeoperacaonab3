@@ -63,7 +63,7 @@ public class ValorMinParaVendaSemPerdas extends AppCompatActivity {
     DecimalFormat df3 = new DecimalFormat("0.000");
     DecimalFormat df4 = new DecimalFormat("0.0000");
 
-
+    //TODO pesquisar se esta é a melhor forma de criar instâncias para EditTexts/TextViews/CheckBoxes.
     EditText et_valPapelAdquirido, et_quantidade, et_valPretendidoVenda, pct_Corretagem, pct_Custodia, pct_Liquidacao, pct_Negociacao, pct_Iss, pctCorretagem2Compra, pctCustodia2Compra, pctLiquidacao2Compra, pctNegociacao2Compra, pctIss2Compra;
     TextView pct_Emolumentos, pctEmolumentos2Compra, corretagem2Compra, custodia2Compra, tax_liquidacao2Compra, tax_negociacao2Compra, iss2Compra, emolumentos2Compra, tvCorretagem, val_Custodia, val_tx_liquidacao, val_tx_negociacao, val_emolumentos, val_iss, tv_valVendaDoPapel, TV_valMinVendaSemPerdas, tv_valCompraDoPapel;
     CheckBox cbCorretagem2, cbCustodia2, cbLiquidacao2, cbNegociacao2, cbIss2, cbCorretagem2Compra, cbCustodia2Compra, cbLiquidacao2Compra, cbNegociacao2Compra, cbIss2Compra;
