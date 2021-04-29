@@ -76,62 +76,81 @@ public class Custas extends AppCompatActivity {
         }
 
 
-        EditText pctCorretagem2 = (EditText) findViewById(R.id.pctCorretagem2);
-        pctCorretagem2.setText(String.valueOf(custas.getCorretagem()));
+        /*EditText pctCorretagem2 = (EditText) findViewById(R.id.pctCorretagem2);
+        pctCorretagem2.setText(String.valueOf(custas.getCorretagem()));*/
+        ((EditText) findViewById(R.id.pctCorretagem2)).setText(String.valueOf(custas.getCorretagem()));
 
-        EditText pctCustodia2 = (EditText) findViewById(R.id.pctCustodia2);
-        pctCustodia2.setText(String.valueOf(custas.getCustodia()));
+        /*EditText pctCustodia2 = (EditText) findViewById(R.id.pctCustodia2);
+        pctCustodia2.setText(String.valueOf(custas.getCustodia()));*/
+        ((EditText) findViewById(R.id.pctCustodia2)).setText(String.valueOf(custas.getCustodia()));
 
-        TextView pctEmolumentos2 = (TextView) findViewById(R.id.pctEmolumentos2);
-        pctEmolumentos2.setText(String.valueOf(custas.getTx_liquidacao()+custas.getTx_negociacao()));
+        /*TextView pctEmolumentos2 = (TextView) findViewById(R.id.pctEmolumentos2);
+        pctEmolumentos2.setText(String.valueOf(custas.getTx_liquidacao()+custas.getTx_negociacao()));*/
+        ((TextView) findViewById(R.id.pctEmolumentos2)).setText(String.valueOf(custas.getTx_liquidacao()+custas.getTx_negociacao()));
 
-        EditText pctLiquidacao2 = (EditText) findViewById(R.id.pctLiquidacao2);
-        pctLiquidacao2.setText(String.valueOf(custas.getTx_liquidacao()));
+        /*EditText pctLiquidacao2 = (EditText) findViewById(R.id.pctLiquidacao2);
+        pctLiquidacao2.setText(String.valueOf(custas.getTx_liquidacao()));*/
+        ((EditText) findViewById(R.id.pctLiquidacao2)).setText(String.valueOf(custas.getTx_liquidacao()));
 
-        EditText pctNegociacao2 = (EditText) findViewById(R.id.pctNegociacao2);
-        pctNegociacao2.setText(String.valueOf(custas.getTx_negociacao()));
+        /*EditText pctNegociacao2 = (EditText) findViewById(R.id.pctNegociacao2);
+        pctNegociacao2.setText(String.valueOf(custas.getTx_negociacao()));*/
+        ((EditText) findViewById(R.id.pctNegociacao2)).setText(String.valueOf(custas.getTx_negociacao()));
 
-        EditText pctIss2 = (EditText) findViewById(R.id.pctIss2);
-        pctIss2.setText(String.valueOf(custas.getIss()));
+        /*EditText pctIss2 = (EditText) findViewById(R.id.pctIss2);
+        pctIss2.setText(String.valueOf(custas.getIss()));*/
+        ((EditText) findViewById(R.id.pctIss2)).setText(String.valueOf(custas.getIss()));
 
-        CheckBox cbCorretagem2 = (CheckBox) findViewById(R.id.cbCorretagem2);
+        //CheckBox cbCorretagem2 = (CheckBox) findViewById(R.id.cbCorretagem2);
         if (dbhCustas.getCustas(custasPadrao).isCorretagemFixa()){
-            cbCorretagem2.setChecked(true);
+            /*cbCorretagem2.setChecked(true);*/
+            ((CheckBox) findViewById(R.id.cbCorretagem2)).setChecked(true);
+            ((TextView) findViewById(R.id.txtCOCorretagem)).setText(R.string.corretagemReal);
+            //((EditText) findViewById(R.id.pctCorretagem2)).setText(String.valueOf(custas.getCorretagem()));
         }
         else {
-            cbCorretagem2.setChecked(false);
+            ((CheckBox) findViewById(R.id.cbCorretagem2)).setChecked(false);
+            ((TextView) findViewById(R.id.txtCOCorretagem)).setText(R.string.corretagemPorcentagem);
         }
 
-        CheckBox cbCustodia2 = (CheckBox) findViewById(R.id.cbCustodia2);
+        //CheckBox cbCustodia2 = (CheckBox) findViewById(R.id.cbCustodia2);
         if (dbhCustas.getCustas(custasPadrao).isCustodiaFixa()){
-            cbCustodia2.setChecked(true);
+            //cbCustodia2.setChecked(true);
+            ((CheckBox) findViewById(R.id.cbCustodia2)).setChecked(true);
+            ((TextView) findViewById(R.id.txtCOCustodia)).setText(R.string.custodiaReal);
         }
         else {
-            cbCustodia2.setChecked(false);
+            ((CheckBox) findViewById(R.id.cbCustodia2)).setChecked(false);
+            ((TextView) findViewById(R.id.txtCOCustodia)).setText(R.string.custodiaPorcentagem);
         }
 
-        CheckBox cbLiquidacao2 = (CheckBox) findViewById(R.id.cbLiquidacao2);
+        //CheckBox cbLiquidacao2 = (CheckBox) findViewById(R.id.cbLiquidacao2);
         if (dbhCustas.getCustas(custasPadrao).isTx_liquidacaoFixa()){
-            cbLiquidacao2.setChecked(true);
+            ((CheckBox) findViewById(R.id.cbLiquidacao2)).setChecked(true);
+            ((TextView) findViewById(R.id.txtCOLiquidacao)).setText(R.string.TxLiquidacaoReal);
         }
         else {
-            cbLiquidacao2.setChecked(false);
+            ((CheckBox) findViewById(R.id.cbLiquidacao2)).setChecked(false);
+            ((TextView) findViewById(R.id.txtCOLiquidacao)).setText(R.string.TxLiquidacaoPorcentagem);
         }
 
-        CheckBox cbNegociacao2 = (CheckBox) findViewById(R.id.cbNegociacao2);
+        //CheckBox cbNegociacao2 = (CheckBox) findViewById(R.id.cbNegociacao2);
         if (dbhCustas.getCustas(custasPadrao).isTx_negociacaoFixa()){
-            cbNegociacao2.setChecked(true);
+            ((CheckBox) findViewById(R.id.cbNegociacao2)).setChecked(true);
+            ((TextView) findViewById(R.id.txtCONegociacao)).setText(R.string.TxNegociacaoReal);
         }
         else {
-            cbNegociacao2.setChecked(false);
+            ((CheckBox) findViewById(R.id.cbNegociacao2)).setChecked(false);
+            ((TextView) findViewById(R.id.txtCONegociacao)).setText(R.string.TxNegociacaoPorcentagem);
         }
 
-        CheckBox cbIss2 = (CheckBox) findViewById(R.id.cbIss2);
+        //CheckBox cbIss2 = (CheckBox) findViewById(R.id.cbIss2);
         if (dbhCustas.getCustas(custasPadrao).isIssFixo()){
-            cbIss2.setChecked(true);
+            ((CheckBox) findViewById(R.id.cbIss2)).setChecked(true);
+            ((TextView) findViewById(R.id.txtCOIss)).setText(R.string.IssReal);
         }
         else {
-            cbIss2.setChecked(false);
+            ((CheckBox) findViewById(R.id.cbIss2)).setChecked(false);
+            ((TextView) findViewById(R.id.txtCOIss)).setText(R.string.IssPorcentagem);
         }
         dbhCustas.close();
     }
@@ -414,6 +433,7 @@ public class Custas extends AppCompatActivity {
         custas.setIssFixo(isChecked_cbIss2);
 
         custas = new Custas(id, db_pctCorretagem2, db_pctCustodia2, db_pctLiquidacao2, db_pctNegociacao2, db_pctIss2, isChecked_cbCorretagem2, isChecked_cbCustodia2, isChecked_cbLiquidacao2, isChecked_cbNegociacao2, isChecked_cbIss2);
+        //custas = new Custas(id, db_pctCorretagem2, db_pctCustodia2, db_pctLiquidacao2, db_pctNegociacao2, db_pctIss2, ((CheckBox) findViewById(R.id.cbCorretagem2)).isChecked(), isChecked_cbCustodia2, isChecked_cbLiquidacao2, isChecked_cbNegociacao2, isChecked_cbIss2);
 
         try {
             dbhCustas.addCustas(custas);
