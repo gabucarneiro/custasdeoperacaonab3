@@ -70,7 +70,7 @@ public class Custas extends AppCompatActivity {
             custas = new Custas(custasPadrao, corret, cust, liquid, negoc, isss, blcorr, blcust, bltxliq, bltxneg, bliss);
         }
         catch (Exception e){
-            Toast.makeText(this,"Definir primeiros parâmetros!", Toast.LENGTH_SHORT).show();
+            Toast.makeText(this,"Parâmetros não definidos!", Toast.LENGTH_SHORT).show();
             custas = new Custas(999, 0.0,0.0,0.0,0.0, 0.0, false, false, false, false, false);
             dbhCustas.addCustas(custas);
         }
