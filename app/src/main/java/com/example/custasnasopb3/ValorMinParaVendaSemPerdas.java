@@ -102,6 +102,8 @@ public class ValorMinParaVendaSemPerdas extends AppCompatActivity {
                 }
             }
         }.start();*/
+
+        //TODO reformular essa operação pois ela está sendo executada ao iniciar o APP no Thread principal - verificar se é isso mesmo.
         Custas custas = new Custas(999, dbhCustas.getCustas(999).getCorretagem(), dbhCustas.getCustas(999).getCustodia(), dbhCustas.getCustas(999).getTx_liquidacao(), dbhCustas.getCustas(999).getTx_negociacao(), dbhCustas.getCustas(999).getIss(), dbhCustas.getCustas(999).isCorretagemFixa(), dbhCustas.getCustas(999).isCustodiaFixa(), dbhCustas.getCustas(999).isTx_liquidacaoFixa(), dbhCustas.getCustas(999).isTx_negociacaoFixa(), dbhCustas.getCustas(999).isIssFixo());
         double stdCorretagem = custas.getCorretagem();
         double stdCustodia = custas.getCustodia();

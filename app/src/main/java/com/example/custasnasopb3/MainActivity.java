@@ -7,7 +7,6 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.view.View;
 import android.widget.Button;
-import android.widget.Toast;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -70,16 +69,14 @@ public class MainActivity extends AppCompatActivity {
         Intent intent = new Intent(this, Custas.class);
         startActivity(intent);
     }
-    /*public void testeDeThread(View view){
+    public void crypto(View view){
         new Thread(){
             public void run(){
                 try {
-                    Button testeDeThread = findViewById(R.id.testeDeThread);
-
                     handler.post(new Runnable() {
                         @Override
                         public void run() {
-                            Intent intent = new Intent(MainActivity.this, ValorMinParaVendaSemPerdas.class);
+                            Intent intent = new Intent(MainActivity.this, Crypto.class);
                             startActivity(intent);
                         }
                     });
@@ -91,5 +88,5 @@ public class MainActivity extends AppCompatActivity {
                 }
             }
         }.start();
-    }*/
+    }
 }

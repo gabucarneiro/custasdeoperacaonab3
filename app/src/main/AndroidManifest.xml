@@ -9,7 +9,8 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.CustasNasOPB3">
-        <activity android:name=".Custas"></activity>
+        <activity android:name=".Crypto"></activity>
+        <activity android:name=".Custas" />
         <activity android:name=".ValorMinParaVendaSemPerdas" />
         <activity android:name=".CarteiraRepositorio" />
         <activity android:name=".MainActivity">
