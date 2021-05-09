@@ -7,33 +7,73 @@ import android.view.View;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
+
+import java.text.DecimalFormat;
 
 public class Crypto extends AppCompatActivity {
+
+    DecimalFormat df2 = new DecimalFormat("0.00");
+    DecimalFormat df3 = new DecimalFormat("0.000");
+    DecimalFormat df4 = new DecimalFormat("0.0000");
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_crypto);
 
+
     }
     public void WalletInput (View view){
         Wallet wallet = new Wallet();
-        Coin coin = new Coin(((EditText) findViewById(R.id.edCoinNome)).getText().toString(), Double.parseDouble(((EditText) findViewById(R.id.edCoinValor)).getText().toString()), Integer.parseInt(((EditText) findViewById(R.id.edCoinQuantidade)).getText().toString()));
+        try {
+            Coin coin = new Coin(((EditText) findViewById(R.id.edCoinNome)).getText().toString(), Double.parseDouble(((EditText) findViewById(R.id.edCoinValor)).getText().toString()), Integer.parseInt(((EditText) findViewById(R.id.edCoinQuantidade)).getText().toString()));
 
-        wallet.input(coin);
+            wallet.input(coin);
+            Toast.makeText(this, coin.getNome(), Toast.LENGTH_SHORT).show();
+            ListarCoins(findViewById(R.id.LL_ShowCoins), wallet);
+        }
+        catch (Exception e){
+            Toast.makeText(this, e.getMessage(), Toast.LENGTH_SHORT).show();
+        }
 
 
+    }
+    public void ListarCoins (View view, Wallet wallet){
         LinearLayout ll_ADHorizontal = findViewById(R.id.LL_ShowCoins);
+        StringBuilder sb = new StringBuilder();
+        TextView txtCoin = new TextView(this);
+
+        Toast.makeText(this, String.valueOf(wallet.coins.size()), Toast.LENGTH_SHORT).show();
+
         for (int i=0; i<wallet.coins.size(); i++){
             //ll_ADHorizontal.setOrientation(LinearLayout.HORIZONTAL);
-            TextView txtCoin = new TextView(this);
-            txtCoin.setText(wallet.coins.get(i).getNome() + " - " + wallet.coins.get(i).getValor() + " - " + wallet.coins.get(i).getQuantidade());
-            ll_ADHorizontal.removeAllViews();
-            ll_ADHorizontal.addView(txtCoin);
-            //txtCoin.setText(wallet.coins.get(i).getNome() + " - " + wallet.coins.get(i).getValor() + " - " + wallet.coins.get(i).getQuantidade());
-            //((LinearLayout) findViewById(R.id.LL_ShowCoins)).removeAllViews();
-            //((LinearLayout) findViewById(R.id.LL_ShowCoins)).addView(ll_ADHorizontal);
-            //ll_ADHorizontal.addView(ll_ADHorizontal);
+            sb.append(wallet.coins.get(i).getNome()).append(" - ").append(wallet.coins.get(i).getValor()).append(" - ").append(wallet.coins.get(i).getQuantidade()).append("\n");
         }
+        txtCoin.setText(sb);
+        ll_ADHorizontal.removeAllViews();
+        ll_ADHorizontal.addView(txtCoin);
+    }
+    public void Calcular (View view){
+        Market market = new Market();
+
+        double calculo = market.Conversion(Double.parseDouble(((EditText) findViewById(R.id.edCoinValor)).getText().toString()), Double.parseDouble(((EditText) findViewById(R.id.edCoinQuantidade)).getText().toString()), Double.parseDouble(((EditText) findViewById(R.id.edSellGoalCoinValor)).getText().toString()), 0.1);
+        ((TextView) findViewById(R.id.edBuyGoalCoinQuantidade)).setText(String.valueOf(calculo));
+        Toast.makeText(this, String.valueOf(calculo), Toast.LENGTH_SHORT).show();
+    }
+
+    public void Buy (View view){
+        Market market = new Market();
+
+        double calculo = market.Buy(Double.parseDouble(((EditText) findViewById(R.id.edBuyCoinDisponivel)).getText().toString()), Double.parseDouble(((EditText) findViewById(R.id.edBuyGoalCoinValor)).getText().toString()), 0.1);
+        ((TextView) findViewById(R.id.edBuyGoalCoinQuantidade)).setText(String.valueOf(df4.format(calculo)));
+        Toast.makeText(this, String.valueOf(calculo), Toast.LENGTH_SHORT).show();
+    }
+    public void Sell (View view){
+        Market market = new Market();
+
+        double calculo = market.Sell(Double.parseDouble(((EditText) findViewById(R.id.edSellQuantidadeCoinDisponivel)).getText().toString()), Double.parseDouble(((EditText) findViewById(R.id.edSellGoalCoinValor)).getText().toString()), 0.1);
+        ((TextView) findViewById(R.id.edSellGoalCoinSaldo)).setText(String.valueOf(df4.format(calculo)));
+        Toast.makeText(this, String.valueOf(calculo), Toast.LENGTH_SHORT).show();
     }
 }

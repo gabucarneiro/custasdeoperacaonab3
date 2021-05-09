@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    android:padding="15dp"
+    android:padding="10dp"
     style="@style/BasicLayout"
     tools:context=".Crypto">
     <LinearLayout
@@ -76,9 +76,10 @@
             android:layout_alignBaseline="@+id/txtCoinQuantidade"
             android:textSize="20sp"
             android:hint="1"
-            android:inputType="number">
+            android:inputType="numberDecimal">
         </EditText>
         <Button
+            android:id="@+id/btnCoinSalvar"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="15dp"
@@ -86,6 +87,136 @@
             android:text="Salvar"
             android:onClick="WalletInput"
             android:layout_below="@+id/txtCoinQuantidade"/>
+
+
+            <!-- BUY COIN -->
+        <RelativeLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/btnCoinSalvar"
+            android:layout_alignParentStart="true">
+            <TextView
+                android:id="@+id/txtBuyCoinDisponivel"
+                style="@style/Conteudo"
+                android:layout_alignParentStart="true"
+                android:text="Valor disponível:">
+            </TextView>
+            <EditText
+                android:id="@+id/edBuyCoinDisponivel"
+                style="@style/Conteudo"
+                android:layout_alignStart="@+id/txtBuyCoinDisponivel"
+                android:layout_below="@+id/txtBuyCoinDisponivel"
+                android:textSize="20sp"
+                android:hint="0,01"
+                android:inputType="numberDecimal">
+            </EditText>
+            <TextView
+                android:id="@+id/txtBuyGoalCoinValor"
+                style="@style/Conteudo"
+                android:layout_alignParentStart="true"
+                android:text="Valor:"
+                android:layout_below="@+id/edBuyCoinDisponivel">
+            </TextView>
+            <EditText
+                android:id="@+id/edBuyGoalCoinValor"
+                style="@style/Conteudo"
+                android:layout_alignStart="@+id/txtBuyGoalCoinValor"
+                android:layout_below="@+id/txtBuyGoalCoinValor"
+                android:textSize="20sp"
+                android:hint="0,01"
+                android:inputType="numberDecimal">
+            </EditText>
+            <TextView
+                android:id="@+id/txtBuyGoalCoinQuantidade"
+                style="@style/Conteudo"
+                android:layout_alignParentStart="true"
+                android:text="Quantidade:"
+                android:layout_below="@+id/edBuyGoalCoinValor">
+            </TextView>
+            <TextView
+                android:id="@+id/edBuyGoalCoinQuantidade"
+                style="@style/Conteudo"
+                android:layout_alignStart="@+id/txtBuyGoalCoinQuantidade"
+                android:layout_below="@+id/txtBuyGoalCoinQuantidade"
+                android:textSize="20sp"
+                android:hint="1">
+            </TextView>
+            <Button
+                android:id="@+id/btnBuy"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="15dp"
+                android:text="Buy"
+                android:onClick="Buy"
+                android:layout_below="@+id/edBuyGoalCoinQuantidade"/>
+        </RelativeLayout>
+
+            <!-- SELL COIN -->
+        <RelativeLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/btnCoinSalvar"
+            android:layout_alignParentEnd="true">
+            <TextView
+                android:id="@+id/txtSellGoalCoinValor"
+                style="@style/Conteudo"
+                android:layout_alignParentEnd="true"
+                android:text="Valor de venda:">
+            </TextView>
+            <EditText
+                android:id="@+id/edSellGoalCoinValor"
+                style="@style/Conteudo"
+                android:layout_alignParentEnd="true"
+                android:layout_below="@+id/txtSellGoalCoinValor"
+                android:textSize="20sp"
+                android:hint="0,01"
+                android:inputType="numberDecimal">
+            </EditText>
+            <TextView
+                android:id="@+id/txtSellQuantidadeCoinDisponivel"
+                style="@style/Conteudo"
+                android:layout_alignParentEnd="true"
+                android:text="Quantidade disponível:"
+                android:layout_below="@+id/edSellGoalCoinValor">
+            </TextView>
+            <EditText
+                android:id="@+id/edSellQuantidadeCoinDisponivel"
+                style="@style/Conteudo"
+                android:layout_alignParentEnd="true"
+                android:layout_below="@+id/txtSellQuantidadeCoinDisponivel"
+                android:textSize="20sp"
+                android:hint="0,01"
+                android:inputType="numberDecimal">
+            </EditText>
+            <TextView
+                android:id="@+id/txtSellGoalCoinSaldo"
+                style="@style/Conteudo"
+                android:layout_alignParentEnd="true"
+                android:text="Saldo:"
+                android:layout_below="@+id/edSellQuantidadeCoinDisponivel">
+            </TextView>
+            <TextView
+                android:id="@+id/edSellGoalCoinSaldo"
+                style="@style/Conteudo"
+                android:layout_alignParentEnd="true"
+                android:layout_below="@+id/txtSellGoalCoinSaldo"
+                android:textSize="20sp"
+                android:hint="1">
+            </TextView>
+            <Button
+                android:id="@+id/btnSell"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="15dp"
+                android:layout_alignParentEnd="true"
+                android:text="Sell"
+                android:onClick="Sell"
+                android:layout_below="@+id/edSellGoalCoinSaldo"/>
+
+        </RelativeLayout>
+
+
+
         </RelativeLayout>
         <LinearLayout
             android:id="@+id/LL_ShowCoins"
