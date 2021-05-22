@@ -45,27 +45,33 @@ public class QntAcoesValorDisponivel extends AppCompatActivity {
         DecimalFormat df3 = new DecimalFormat("0.000");
         DecimalFormat df4 = new DecimalFormat("0.0000");
 
-        EditText valDisponivel = (EditText) findViewById(R.id.valDisponivel);
+        /*EditText valDisponivel = (EditText) findViewById(R.id.valDisponivel);
         EditText valPapel = (EditText) findViewById(R.id.valPapel);
         EditText pct_Corretagem = findViewById(R.id.pctCorretagem);
         EditText pct_Custodia = findViewById(R.id.pctCustodia);
         EditText pct_Liquidacao = findViewById(R.id.pctLiquidacao);
         EditText pct_Negociacao = findViewById(R.id.pctNegociacao);
         EditText pct_Iss = findViewById(R.id.pctIss);
-        TextView pct_Emolumentos = findViewById(R.id.pctEmolumentos);
+        TextView pct_Emolumentos = findViewById(R.id.pctEmolumentos);*/
 
-        CheckBox cbFracionaria = (CheckBox) findViewById(R.id.cbFracionario);
+        //CheckBox cbFracionaria = (CheckBox) findViewById(R.id.cbFracionario);
 
         DataBaseHelper dbhCustas = new DataBaseHelper(this);
 
         int custasPadrao = 999;
 
-        pct_Corretagem.setText(String.valueOf(dbhCustas.getCustas(custasPadrao).getCorretagem()));
-        pct_Custodia.setText(String.valueOf(dbhCustas.getCustas(custasPadrao).getCustodia()));
-        pct_Liquidacao.setText(String.valueOf(dbhCustas.getCustas(custasPadrao).getTx_liquidacao()));
-        pct_Negociacao.setText(String.valueOf(dbhCustas.getCustas(custasPadrao).getTx_negociacao()));
-        pct_Iss.setText(String.valueOf(dbhCustas.getCustas(custasPadrao).getIss()));
-        pct_Emolumentos.setText(String.valueOf(dbhCustas.getCustas(custasPadrao).getTx_liquidacao()+dbhCustas.getCustas(999).getTx_negociacao()));
+        ((EditText) findViewById(R.id.pctCorretagem)).setText(String.valueOf(dbhCustas.getCustas(custasPadrao).getCorretagem()));
+        //pct_Corretagem.setText(String.valueOf(dbhCustas.getCustas(custasPadrao).getCorretagem()));
+        ((EditText) findViewById(R.id.pctCustodia)).setText(String.valueOf(dbhCustas.getCustas(custasPadrao).getCustodia()));
+        //pct_Custodia.setText(String.valueOf(dbhCustas.getCustas(custasPadrao).getCustodia()));
+        ((EditText) findViewById(R.id.pctLiquidacao)).setText(String.valueOf(dbhCustas.getCustas(custasPadrao).getTx_negociacao()));
+        //pct_Liquidacao.setText(String.valueOf(dbhCustas.getCustas(custasPadrao).getTx_liquidacao()));
+        ((EditText) findViewById(R.id.pctNegociacao)).setText(String.valueOf(dbhCustas.getCustas(custasPadrao).getTx_negociacao()));
+        //pct_Negociacao.setText(String.valueOf(dbhCustas.getCustas(custasPadrao).getTx_negociacao()));
+        ((EditText) findViewById(R.id.pctIss)).setText(String.valueOf(dbhCustas.getCustas(custasPadrao).getIss()));
+        //pct_Iss.setText(String.valueOf(dbhCustas.getCustas(custasPadrao).getIss()));
+        ((TextView) findViewById(R.id.pctEmolumentos)).setText(String.valueOf(dbhCustas.getCustas(custasPadrao).getTx_liquidacao()+dbhCustas.getCustas(999).getTx_negociacao()));
+        //pct_Emolumentos.setText(String.valueOf(dbhCustas.getCustas(custasPadrao).getTx_liquidacao()+dbhCustas.getCustas(999).getTx_negociacao()));
 
 
         LinearLayout custasValordopapelBruto = (LinearLayout) findViewById(R.id.custasValordopapelBruto);
@@ -77,45 +83,50 @@ public class QntAcoesValorDisponivel extends AppCompatActivity {
 
         DataBaseHelper dbhCheckbox = new DataBaseHelper(this);
 
-        CheckBox cbCorretagem = findViewById(R.id.cbCorretagem);
+        //CheckBox cbCorretagem = findViewById(R.id.cbCorretagem);
         if (dbhCheckbox.getCustas(custasPadrao).isCorretagemFixa()){
-            cbCorretagem.setChecked(true);
+            //cbCorretagem.setChecked(true);
+            ((CheckBox) findViewById(R.id.cbCorretagem)).setChecked(true);
         }
-        else {
+        /*else {
             cbCorretagem.setChecked(false);
-        }
+        }*/
 
-        CheckBox cbCustodia = findViewById(R.id.cbCustodia);
+        //CheckBox cbCustodia = findViewById(R.id.cbCustodia);
         if (dbhCheckbox.getCustas(custasPadrao).isCustodiaFixa()){
-            cbCustodia.setChecked(true);
+            //cbCustodia.setChecked(true);
+            ((CheckBox) findViewById(R.id.cbCustodia)).setChecked(true);
         }
-        else {
+        /*else {
             cbCustodia.setChecked(false);
-        }
+        }*/
 
-        CheckBox cbLiquidacao = findViewById(R.id.cbLiquidacao);
+        //CheckBox cbLiquidacao = findViewById(R.id.cbLiquidacao);
         if (dbhCheckbox.getCustas(custasPadrao).isTx_liquidacaoFixa()){
-            cbLiquidacao.setChecked(true);
+            //cbLiquidacao.setChecked(true);
+            ((CheckBox) findViewById(R.id.cbLiquidacao)).setChecked(true);
         }
-        else {
+        /*else {
             cbLiquidacao.setChecked(false);
-        }
+        }*/
 
-        CheckBox cbNegociacao = findViewById(R.id.cbNegociacao);
+        //CheckBox cbNegociacao = findViewById(R.id.cbNegociacao);
         if (dbhCheckbox.getCustas(custasPadrao).isTx_negociacaoFixa()){
-            cbNegociacao.setChecked(true);
+            //cbNegociacao.setChecked(true);
+            ((CheckBox) findViewById(R.id.cbNegociacao)).setChecked(true);
         }
-        else {
+        /*else {
             cbNegociacao.setChecked(false);
-        }
+        }*/
 
-        CheckBox cbIss = findViewById(R.id.cbIss);
+        //CheckBox cbIss = findViewById(R.id.cbIss);
         if (dbhCheckbox.getCustas(custasPadrao).isIssFixo()){
-            cbIss.setChecked(true);
+            //cbIss.setChecked(true);
+            ((CheckBox) findViewById(R.id.cbIss)).setChecked(true);
         }
-        else {
+        /*else {
             cbIss.setChecked(false);
-        }
+        }*/
         dbhCheckbox.close();
 
         dbhCustas.close();
