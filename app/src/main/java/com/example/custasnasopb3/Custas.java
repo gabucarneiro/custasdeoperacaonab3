@@ -7,6 +7,7 @@ import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.CheckBox;
+import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -100,28 +101,44 @@ public class Custas extends AppCompatActivity {
         pctIss2.setText(String.valueOf(custas.getIss()));*/
         ((EditText) findViewById(R.id.pctIss2)).setText(String.valueOf(custas.getIss()));
 
-        //CheckBox cbCorretagem2 = (CheckBox) findViewById(R.id.cbCorretagem2);
         if (dbhCustas.getCustas(custasPadrao).isCorretagemFixa()){
-            /*cbCorretagem2.setChecked(true);*/
             ((CheckBox) findViewById(R.id.cbCorretagem2)).setChecked(true);
             ((TextView) findViewById(R.id.txtCOCorretagem)).setText(R.string.corretagemReal);
-            //((EditText) findViewById(R.id.pctCorretagem2)).setText(String.valueOf(custas.getCorretagem()));
         }
         else {
-            ((CheckBox) findViewById(R.id.cbCorretagem2)).setChecked(false);
             ((TextView) findViewById(R.id.txtCOCorretagem)).setText(R.string.corretagemPorcentagem);
         }
+        ((CheckBox) findViewById(R.id.cbCorretagem2)).setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                if (isChecked){
+                    ((TextView) findViewById(R.id.txtCOCorretagem)).setText(R.string.corretagemReal);
+                }
+                else {
+                    ((TextView) findViewById(R.id.txtCOCorretagem)).setText(R.string.corretagemPorcentagem);
+                }
+            }
+        });
 
         //CheckBox cbCustodia2 = (CheckBox) findViewById(R.id.cbCustodia2);
         if (dbhCustas.getCustas(custasPadrao).isCustodiaFixa()){
-            //cbCustodia2.setChecked(true);
             ((CheckBox) findViewById(R.id.cbCustodia2)).setChecked(true);
             ((TextView) findViewById(R.id.txtCOCustodia)).setText(R.string.custodiaReal);
         }
         else {
-            ((CheckBox) findViewById(R.id.cbCustodia2)).setChecked(false);
             ((TextView) findViewById(R.id.txtCOCustodia)).setText(R.string.custodiaPorcentagem);
         }
+        ((CheckBox) findViewById(R.id.cbCustodia2)).setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener(){
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked){
+                if (isChecked){
+                    ((TextView) findViewById(R.id.txtCOCustodia)).setText(R.string.custodiaReal);
+                }
+                else {
+                    ((TextView) findViewById(R.id.txtCOCustodia)).setText(R.string.custodiaPorcentagem);
+                }
+            }
+        });
 
         //CheckBox cbLiquidacao2 = (CheckBox) findViewById(R.id.cbLiquidacao2);
         if (dbhCustas.getCustas(custasPadrao).isTx_liquidacaoFixa()){
@@ -129,9 +146,19 @@ public class Custas extends AppCompatActivity {
             ((TextView) findViewById(R.id.txtCOLiquidacao)).setText(R.string.TxLiquidacaoReal);
         }
         else {
-            ((CheckBox) findViewById(R.id.cbLiquidacao2)).setChecked(false);
             ((TextView) findViewById(R.id.txtCOLiquidacao)).setText(R.string.TxLiquidacaoPorcentagem);
         }
+        ((CheckBox) findViewById(R.id.cbLiquidacao2)).setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener(){
+           @Override
+           public void onCheckedChanged(CompoundButton buttonView, boolean isChecked){
+               if (isChecked){
+                   ((TextView) findViewById(R.id.txtCOLiquidacao)).setText(R.string.TxLiquidacaoReal);
+               }
+               else {
+                   ((TextView) findViewById(R.id.txtCOLiquidacao)).setText(R.string.TxLiquidacaoPorcentagem);
+               }
+           }
+        });
 
         //CheckBox cbNegociacao2 = (CheckBox) findViewById(R.id.cbNegociacao2);
         if (dbhCustas.getCustas(custasPadrao).isTx_negociacaoFixa()){
@@ -139,9 +166,19 @@ public class Custas extends AppCompatActivity {
             ((TextView) findViewById(R.id.txtCONegociacao)).setText(R.string.TxNegociacaoReal);
         }
         else {
-            ((CheckBox) findViewById(R.id.cbNegociacao2)).setChecked(false);
             ((TextView) findViewById(R.id.txtCONegociacao)).setText(R.string.TxNegociacaoPorcentagem);
         }
+        ((CheckBox) findViewById(R.id.cbNegociacao2)).setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener(){
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked){
+                if (isChecked){
+                    ((TextView) findViewById(R.id.txtCONegociacao)).setText(R.string.TxNegociacaoReal);
+                }
+                else {
+                    ((TextView) findViewById(R.id.txtCONegociacao)).setText(R.string.TxNegociacaoPorcentagem);
+                }
+            }
+        });
 
         //CheckBox cbIss2 = (CheckBox) findViewById(R.id.cbIss2);
         if (dbhCustas.getCustas(custasPadrao).isIssFixo()){
@@ -149,9 +186,19 @@ public class Custas extends AppCompatActivity {
             ((TextView) findViewById(R.id.txtCOIss)).setText(R.string.IssReal);
         }
         else {
-            ((CheckBox) findViewById(R.id.cbIss2)).setChecked(false);
             ((TextView) findViewById(R.id.txtCOIss)).setText(R.string.IssPorcentagem);
         }
+        ((CheckBox) findViewById(R.id.cbIss2)).setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener(){
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked){
+                if (isChecked){
+                    ((TextView) findViewById(R.id.txtCOIss)).setText(R.string.IssReal);
+                }
+                else {
+                    ((TextView) findViewById(R.id.txtCOIss)).setText(R.string.IssPorcentagem);
+                }
+            }
+        });
         dbhCustas.close();
     }
 

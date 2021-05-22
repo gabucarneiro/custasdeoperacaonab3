@@ -10,8 +10,8 @@
     <string name="valfix">Valor fixo</string>
     <string name="corretagemReal">Corretagem: R$</string>
     <string name="corretagemPorcentagem">Corretagem: %</string>
-    <string name="custodiaReal">Custodia: R$</string>
-    <string name="custodiaPorcentagem">Custodia: %</string>
+    <string name="custodiaReal">Custodia (CBLC): R$</string>
+    <string name="custodiaPorcentagem">Custodia (CBLC): %</string>
     <string name="TxLiquidacaoReal">(Taxa de liquidação da CBLC): R$</string>
     <string name="TxLiquidacaoPorcentagem">(Taxa de liquidação da CBLC): %</string>
     <string name="TxNegociacaoReal">(Taxa de negociação): R$</string>

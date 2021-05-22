@@ -19,7 +19,7 @@
         android:id="@+id/LL_ActivityCustas">
         <TextView
             style="@style/Header"
-            android:text="Custas Operacionais"
+            android:text="Custos Operacionais"
             android:layout_marginBottom="30dp"
             android:textAllCaps="true"/>
 
