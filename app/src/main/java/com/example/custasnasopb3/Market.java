@@ -20,13 +20,17 @@ public class Market extends AppCompatActivity {
         return (valorMenosFee / goalCoin);
     }
     public double Buy (double valorDisponivel, double goalCoin, double fee){
-
+        if (fee == 0){
+            return (valorDisponivel / goalCoin);
+        }
         //Retorna o a possível quantidade de compra da nova moeda
         return (valorDisponivel / goalCoin) - ((valorDisponivel / goalCoin) * (fee/100));
 
     }
     public double Sell (double quantidade, double goalCoin, double fee){
-
+        if (fee == 0){
+            return (quantidade * goalCoin);
+        }
         //Retorna o a possível quantidade de compra da nova moeda
         return (quantidade * goalCoin) - ((quantidade * goalCoin) * (fee/100));
 

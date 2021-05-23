@@ -173,7 +173,6 @@ public class QntAcoesValorDisponivel extends AppCompatActivity {
             pct_Iss.setError("Campo obrigatório");
         }
         TextView pct_Emolumentos = findViewById(R.id.pctEmolumentos);
-        TextView tv_quantidade = (TextView) findViewById(R.id.quantidade);
 
 
         //Faz o cálculo do valor disponível pelo valor do papel, pega a quantidade
@@ -353,50 +352,48 @@ public class QntAcoesValorDisponivel extends AppCompatActivity {
                     tempValorTotaldaCompra = sumResultadoCalculoCustas + (tempQuantidadeDeCotasPorValDispoivel * val_Papel);
 
                 }
-                TextView result_val_Corretagem = (TextView) findViewById(R.id.corretagem);
-                String calculo_Corretagem = String.valueOf(resultadoCalcCorretagem);
-                result_val_Corretagem.setText(calculo_Corretagem);
+                /*TextView result_val_Corretagem = (TextView) findViewById(R.id.corretagem);
+                String calculo_Corretagem = String.valueOf(resultadoCalcCorretagem);*/
+                ((TextView) findViewById(R.id.corretagem)).setText(String.valueOf(resultadoCalcCorretagem));
 
-                TextView result_val_Custodia = (TextView) findViewById(R.id.custodia);
-                String str_val_Custodia = df2.format(resultadoCalcCustodia);
-                result_val_Custodia.setText(str_val_Custodia);
+                /*TextView result_val_Custodia = (TextView) findViewById(R.id.custodia);
+                String str_val_Custodia = df2.format(resultadoCalcCustodia);*/
+                ((TextView) findViewById(R.id.custodia)).setText(df2.format(resultadoCalcCustodia));
 
-                TextView result_val_tx_liquidacao = (TextView) findViewById(R.id.tax_liquidacao);
-                String str_val_tx_liquidacao = df3.format(resultadoCalcLiquidacao);
-                result_val_tx_liquidacao.setText(str_val_tx_liquidacao);
+                /*TextView result_val_tx_liquidacao = (TextView) findViewById(R.id.tax_liquidacao);
+                String str_val_tx_liquidacao = df3.format(resultadoCalcLiquidacao);*/
+                ((TextView) findViewById(R.id.tax_liquidacao)).setText(df3.format(resultadoCalcLiquidacao));
 
-                TextView result_val_tx_negociacao = (TextView) findViewById(R.id.tax_negociacao);
-                String str_val_tx_negociacao = df3.format(resultadoCalcNegociacao);
-                result_val_tx_negociacao.setText(str_val_tx_negociacao);
+                /*TextView result_val_tx_negociacao = (TextView) findViewById(R.id.tax_negociacao);
+                String str_val_tx_negociacao = df3.format(resultadoCalcNegociacao);*/
+                ((TextView) findViewById(R.id.tax_negociacao)).setText(df3.format(resultadoCalcNegociacao));
 
-                TextView result_tv_emolumentos = (TextView) findViewById(R.id.emolumentos);
-                String str_emolumentos = df4.format(resultadoCalcLiquidacao + resultadoCalcNegociacao);
-                result_tv_emolumentos.setText(str_emolumentos);
+                /*TextView result_tv_emolumentos = (TextView) findViewById(R.id.emolumentos);
+                String str_emolumentos = df4.format(resultadoCalcLiquidacao + resultadoCalcNegociacao);*/
+                ((TextView) findViewById(R.id.emolumentos)).setText(df4.format(resultadoCalcLiquidacao + resultadoCalcNegociacao));
 
-                TextView result_tv_iss = (TextView) findViewById(R.id.iss);
-                String str_calc_iss = df4.format(resultadoCalcIss);
-                result_tv_iss.setText(str_calc_iss);
+                /*TextView result_tv_iss = (TextView) findViewById(R.id.iss);
+                String str_calc_iss = df4.format(resultadoCalcIss);*/
+                ((TextView) findViewById(R.id.iss)).setText(df4.format(resultadoCalcIss));
 
-                TextView quantidade = (TextView) findViewById(R.id.quantidade);
-                quantidade.setText(tempQuantidadeDeCotasPorValDispoivel.toString());
+                ((TextView) findViewById(R.id.quantidade)).setText(String.valueOf(tempQuantidadeDeCotasPorValDispoivel));
 
-                TextView valExclusivoDoPapel = (TextView) findViewById(R.id.valCompraDoPapel);
-                String str_resul_val_Disponivel = df2.format(tempQuantidadeDeCotasPorValDispoivel * val_Papel);
-                valExclusivoDoPapel.setText(str_resul_val_Disponivel);
+                //String str_resul_val_Disponivel = df2.format(tempQuantidadeDeCotasPorValDispoivel * val_Papel);
+                ((TextView) findViewById(R.id.valCompraDoPapel)).setText(df2.format(tempQuantidadeDeCotasPorValDispoivel * val_Papel));
 
-                TextView valAInvestir = (TextView) findViewById(R.id.valNecessarioParaInvestir);
-                String str_resul_valAInvestir = df2.format(tempValorTotaldaCompra);
-                valAInvestir.setText(str_resul_valAInvestir);
+                /*TextView valAInvestir = (TextView) findViewById(R.id.valNecessarioParaInvestir);
+                String str_resul_valAInvestir = df2.format(tempValorTotaldaCompra);*/
+                ((TextView) findViewById(R.id.valNecessarioParaInvestir)).setText(df2.format(tempValorTotaldaCompra));
 
-                TextView val_PapelResumo = (TextView) findViewById(R.id.valPapelResumo);
-                val_PapelResumo.setText(val_Papel.toString());
+                //TextView val_PapelResumo = (TextView) findViewById(R.id.valPapelResumo);
+                ((TextView) findViewById(R.id.valPapelResumo)).setText(df4.format(val_Papel));
 
                 TextView quantidadeResumo = (TextView) findViewById(R.id.quantidadeResumo);
-                quantidadeResumo.setText(tempQuantidadeDeCotasPorValDispoivel.toString());
+                ((TextView) findViewById(R.id.quantidadeResumo)).setText(String.valueOf(tempQuantidadeDeCotasPorValDispoivel));
 
-                TextView val_CustaEmolImpostos = (TextView) findViewById(R.id.valCustaEmolImpostos);
-                String custo_PorOperacao = df3.format(0-sumResultadoCalculoCustas);
-                val_CustaEmolImpostos.setText(custo_PorOperacao);
+                /*TextView val_CustaEmolImpostos = (TextView) findViewById(R.id.valCustaEmolImpostos);
+                String custo_PorOperacao = df3.format(0-sumResultadoCalculoCustas);*/
+                ((TextView) findViewById(R.id.valCustaEmolImpostos)).setText(df3.format(0-sumResultadoCalculoCustas));
 
 
                 /*tv1.setText("Corretagem FINAL: " + String.valueOf(resultadoCalcCorretagem));

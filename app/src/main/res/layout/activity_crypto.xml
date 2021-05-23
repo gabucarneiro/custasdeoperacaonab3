@@ -28,196 +28,194 @@
         <!--  ***** CRYPTO *****  -->
 
         <!--CADASTRO-->
-        <TextView
-            android:id="@+id/txtCoinNome"
-            style="@style/Conteudo"
-            android:layout_marginEnd="10dp"
-            android:layout_alignParentStart="true"
-            android:text="Nome:">
-        </TextView>
-        <EditText
-            android:id="@+id/edCoinNome"
-            style="@style/Conteudo"
-            android:layout_toEndOf="@+id/txtCoinNome"
-            android:layout_alignBaseline="@+id/txtCoinNome"
-            android:textSize="20sp"
-            android:hint="ADA"
-            android:inputType="textCapCharacters">
-        </EditText>
-        <TextView
-            android:id="@+id/txtCoinValor"
-            style="@style/Conteudo"
-            android:layout_marginEnd="10dp"
-            android:layout_alignParentStart="true"
-            android:text="Valor:"
-            android:layout_below="@+id/txtCoinNome">
-        </TextView>
-        <EditText
-            android:id="@+id/edCoinValor"
-            style="@style/Conteudo"
-            android:layout_toEndOf="@+id/txtCoinValor"
-            android:layout_alignBaseline="@+id/txtCoinValor"
-            android:textSize="20sp"
-            android:hint="0,01"
-            android:inputType="numberDecimal">
-        </EditText>
-        <TextView
-            android:id="@+id/txtCoinQuantidade"
-            style="@style/Conteudo"
-            android:layout_marginEnd="10dp"
-            android:layout_alignParentStart="true"
-            android:text="Quantidade:"
-            android:layout_below="@+id/txtCoinValor">
-        </TextView>
-        <EditText
-            android:id="@+id/edCoinQuantidade"
-            style="@style/Conteudo"
-            android:layout_toEndOf="@+id/txtCoinQuantidade"
-            android:layout_alignBaseline="@+id/txtCoinQuantidade"
-            android:textSize="20sp"
-            android:hint="1"
-            android:inputType="numberDecimal">
-        </EditText>
-        <Button
-            android:id="@+id/btnCoinSalvar"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="15dp"
-            android:layout_centerInParent="true"
-            android:text="Salvar"
-            android:onClick="WalletInput"
-            android:layout_below="@+id/txtCoinQuantidade"/>
-
-
-            <!-- BUY COIN -->
-        <RelativeLayout
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_below="@+id/btnCoinSalvar"
-            android:layout_alignParentStart="true">
             <TextView
-                android:id="@+id/txtBuyCoinDisponivel"
+                android:id="@+id/txtCoinNome"
                 style="@style/Conteudo"
+                android:layout_marginEnd="10dp"
                 android:layout_alignParentStart="true"
-                android:text="Valor disponível:">
+                android:text="Nome:">
             </TextView>
             <EditText
-                android:id="@+id/edBuyCoinDisponivel"
+                android:id="@+id/edCoinNome"
                 style="@style/Conteudo"
-                android:layout_alignStart="@+id/txtBuyCoinDisponivel"
-                android:layout_below="@+id/txtBuyCoinDisponivel"
+                android:layout_toEndOf="@+id/txtCoinNome"
+                android:layout_alignBaseline="@+id/txtCoinNome"
                 android:textSize="20sp"
-                android:hint="0,01"
-                android:inputType="numberDecimal">
+                android:hint="ADA"
+                android:inputType="textCapCharacters">
             </EditText>
             <TextView
-                android:id="@+id/txtBuyGoalCoinValor"
+                android:id="@+id/txtCoinValor"
                 style="@style/Conteudo"
+                android:layout_marginEnd="10dp"
                 android:layout_alignParentStart="true"
                 android:text="Valor:"
-                android:layout_below="@+id/edBuyCoinDisponivel">
+                android:layout_below="@+id/txtCoinNome">
             </TextView>
             <EditText
-                android:id="@+id/edBuyGoalCoinValor"
+                android:id="@+id/edCoinValor"
                 style="@style/Conteudo"
-                android:layout_alignStart="@+id/txtBuyGoalCoinValor"
-                android:layout_below="@+id/txtBuyGoalCoinValor"
+                android:layout_toEndOf="@+id/txtCoinValor"
+                android:layout_alignBaseline="@+id/txtCoinValor"
                 android:textSize="20sp"
                 android:hint="0,01"
                 android:inputType="numberDecimal">
             </EditText>
             <TextView
-                android:id="@+id/txtBuyGoalCoinQuantidade"
+                android:id="@+id/txtCoinQuantidade"
                 style="@style/Conteudo"
+                android:layout_marginEnd="10dp"
                 android:layout_alignParentStart="true"
                 android:text="Quantidade:"
-                android:layout_below="@+id/edBuyGoalCoinValor">
+                android:layout_below="@+id/txtCoinValor">
             </TextView>
-            <TextView
-                android:id="@+id/edBuyGoalCoinQuantidade"
+            <EditText
+                android:id="@+id/edCoinQuantidade"
                 style="@style/Conteudo"
-                android:layout_alignStart="@+id/txtBuyGoalCoinQuantidade"
-                android:layout_below="@+id/txtBuyGoalCoinQuantidade"
+                android:layout_toEndOf="@+id/txtCoinQuantidade"
+                android:layout_alignBaseline="@+id/txtCoinQuantidade"
                 android:textSize="20sp"
-                android:hint="1">
-            </TextView>
+                android:hint="1"
+                android:inputType="numberDecimal">
+            </EditText>
             <Button
-                android:id="@+id/btnBuy"
+                android:id="@+id/btnCoinSalvar"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="15dp"
-                android:text="Buy"
-                android:onClick="Buy"
-                android:layout_below="@+id/edBuyGoalCoinQuantidade"/>
-        </RelativeLayout>
+                android:layout_centerInParent="true"
+                android:text="Salvar"
+                android:onClick="WalletInput"
+                android:layout_below="@+id/txtCoinQuantidade"/>
 
-            <!-- SELL COIN -->
-        <RelativeLayout
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_below="@+id/btnCoinSalvar"
-            android:layout_alignParentEnd="true">
-            <TextView
-                android:id="@+id/txtSellGoalCoinValor"
-                style="@style/Conteudo"
-                android:layout_alignParentEnd="true"
-                android:text="Valor de venda:">
-            </TextView>
-            <EditText
-                android:id="@+id/edSellGoalCoinValor"
-                style="@style/Conteudo"
-                android:layout_alignParentEnd="true"
-                android:layout_below="@+id/txtSellGoalCoinValor"
-                android:textSize="20sp"
-                android:hint="0,01"
-                android:inputType="numberDecimal">
-            </EditText>
-            <TextView
-                android:id="@+id/txtSellQuantidadeCoinDisponivel"
-                style="@style/Conteudo"
-                android:layout_alignParentEnd="true"
-                android:text="Quantidade disponível:"
-                android:layout_below="@+id/edSellGoalCoinValor">
-            </TextView>
-            <EditText
-                android:id="@+id/edSellQuantidadeCoinDisponivel"
-                style="@style/Conteudo"
-                android:layout_alignParentEnd="true"
-                android:layout_below="@+id/txtSellQuantidadeCoinDisponivel"
-                android:textSize="20sp"
-                android:hint="0,01"
-                android:inputType="numberDecimal">
-            </EditText>
-            <TextView
-                android:id="@+id/txtSellGoalCoinSaldo"
-                style="@style/Conteudo"
-                android:layout_alignParentEnd="true"
-                android:text="Saldo:"
-                android:layout_below="@+id/edSellQuantidadeCoinDisponivel">
-            </TextView>
-            <TextView
-                android:id="@+id/edSellGoalCoinSaldo"
-                style="@style/Conteudo"
-                android:layout_alignParentEnd="true"
-                android:layout_below="@+id/txtSellGoalCoinSaldo"
-                android:textSize="20sp"
-                android:hint="1">
-            </TextView>
-            <Button
-                android:id="@+id/btnSell"
+
+                <!-- BUY COIN -->
+            <RelativeLayout
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="15dp"
-                android:layout_alignParentEnd="true"
-                android:text="Sell"
-                android:onClick="Sell"
-                android:layout_below="@+id/edSellGoalCoinSaldo"/>
+                android:layout_below="@+id/btnCoinSalvar"
+                android:layout_alignParentStart="true">
+                <TextView
+                    android:id="@+id/txtBuyCoinDisponivel"
+                    style="@style/Conteudo"
+                    android:layout_alignParentStart="true"
+                    android:text="Valor disponível:">
+                </TextView>
+                <EditText
+                    android:id="@+id/edBuyCoinDisponivel"
+                    style="@style/Conteudo"
+                    android:layout_alignStart="@+id/txtBuyCoinDisponivel"
+                    android:layout_below="@+id/txtBuyCoinDisponivel"
+                    android:textSize="20sp"
+                    android:hint="0,01"
+                    android:inputType="numberDecimal">
+                </EditText>
+                <TextView
+                    android:id="@+id/txtBuyGoalCoinValor"
+                    style="@style/Conteudo"
+                    android:layout_alignParentStart="true"
+                    android:text="Valor:"
+                    android:layout_below="@+id/edBuyCoinDisponivel">
+                </TextView>
+                <EditText
+                    android:id="@+id/edBuyGoalCoinValor"
+                    style="@style/Conteudo"
+                    android:layout_alignStart="@+id/txtBuyGoalCoinValor"
+                    android:layout_below="@+id/txtBuyGoalCoinValor"
+                    android:textSize="20sp"
+                    android:hint="0,01"
+                    android:inputType="numberDecimal">
+                </EditText>
+                <TextView
+                    android:id="@+id/txtBuyGoalCoinQuantidade"
+                    style="@style/Conteudo"
+                    android:layout_alignParentStart="true"
+                    android:text="Quantidade:"
+                    android:layout_below="@+id/edBuyGoalCoinValor">
+                </TextView>
+                <TextView
+                    android:id="@+id/edBuyGoalCoinQuantidade"
+                    style="@style/Conteudo"
+                    android:layout_alignStart="@+id/txtBuyGoalCoinQuantidade"
+                    android:layout_below="@+id/txtBuyGoalCoinQuantidade"
+                    android:textSize="20sp"
+                    android:hint="1">
+                </TextView>
+                <Button
+                    android:id="@+id/btnBuy"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="15dp"
+                    android:text="Buy"
+                    android:onClick="Buy"
+                    android:layout_below="@+id/edBuyGoalCoinQuantidade"/>
+            </RelativeLayout>
 
+                <!-- SELL COIN -->
+            <RelativeLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/btnCoinSalvar"
+                android:layout_alignParentEnd="true">
+                <TextView
+                    android:id="@+id/txtSellGoalCoinValor"
+                    style="@style/Conteudo"
+                    android:layout_alignParentEnd="true"
+                    android:text="Valor de venda:">
+                </TextView>
+                <EditText
+                    android:id="@+id/edSellGoalCoinValor"
+                    style="@style/Conteudo"
+                    android:layout_alignParentEnd="true"
+                    android:layout_below="@+id/txtSellGoalCoinValor"
+                    android:textSize="20sp"
+                    android:hint="0,01"
+                    android:inputType="numberDecimal">
+                </EditText>
+                <TextView
+                    android:id="@+id/txtSellQuantidadeCoinDisponivel"
+                    style="@style/Conteudo"
+                    android:layout_alignParentEnd="true"
+                    android:text="Quantidade disponível:"
+                    android:layout_below="@+id/edSellGoalCoinValor">
+                </TextView>
+                <EditText
+                    android:id="@+id/edSellQuantidadeCoinDisponivel"
+                    style="@style/Conteudo"
+                    android:layout_alignParentEnd="true"
+                    android:layout_below="@+id/txtSellQuantidadeCoinDisponivel"
+                    android:textSize="20sp"
+                    android:hint="0,01"
+                    android:inputType="numberDecimal">
+                </EditText>
+                <TextView
+                    android:id="@+id/txtSellGoalCoinSaldo"
+                    style="@style/Conteudo"
+                    android:layout_alignParentEnd="true"
+                    android:text="Saldo:"
+                    android:layout_below="@+id/edSellQuantidadeCoinDisponivel">
+                </TextView>
+                <TextView
+                    android:id="@+id/edSellGoalCoinSaldo"
+                    style="@style/Conteudo"
+                    android:layout_alignParentEnd="true"
+                    android:layout_below="@+id/txtSellGoalCoinSaldo"
+                    android:textSize="20sp"
+                    android:hint="1">
+                </TextView>
+                <Button
+                    android:id="@+id/btnSell"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="15dp"
+                    android:layout_alignParentEnd="true"
+                    android:text="Sell"
+                    android:onClick="Sell"
+                    android:layout_below="@+id/edSellGoalCoinSaldo"/>
+            </RelativeLayout>
         </RelativeLayout>
 
 
-
-        </RelativeLayout>
         <LinearLayout
             android:id="@+id/LL_ShowCoins"
             android:layout_width="match_parent"
@@ -228,5 +226,201 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"/>
         </LinearLayout>
+
+        <Button
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="custos operacionais"
+            android:textColor="@color/red"
+            android:textSize="23sp"
+            android:textAllCaps="true"
+            android:textAlignment="center"
+            android:layout_marginTop="25dp"
+            android:onClick="custosVisibility">
+        </Button>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:id="@+id/custosValordaMoedaBruto">
+            <TextView
+                style="@style/Conteudo"
+                android:text="Valor utilizado na compra da moeda:">
+            </TextView>
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+                <TextView
+                    android:id="@+id/valCompraDaMoeda"
+                    style="@style/Conteudo"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:hint="0,00">
+                </TextView>
+            </LinearLayout>
+        </LinearLayout>
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:id="@+id/custosCrpt">
+
+            <TextView
+                android:id="@+id/txtValorFixoCrpt"
+                style="@style/Conteudo"
+                android:text="Valor fixo"
+                android:textSize="15sp"
+                android:layout_alignParentEnd="true">
+            </TextView>
+
+            <!--  ***** CUSTOS DE COMPRA DA CRYPTO *****  -->
+            <TextView
+                android:id="@+id/txtTxCompraCrpt"
+                android:layout_below="@+id/txtValorFixoCrpt"
+                style="@style/Conteudo"
+                android:text="Taxa de compra: ">
+            </TextView>
+            <TextView
+                android:id="@+id/txCompraCrpt"
+                style="@style/Conteudo"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_toEndOf="@+id/txtTxCompraCrpt"
+                android:layout_alignBaseline="@+id/txtTxCompraCrpt"
+                android:hint="0,00">
+            </TextView>
+            <EditText
+                android:layout_marginStart="10dp"
+                android:id="@+id/pctCompraCrpt"
+                android:layout_alignBaseline="@+id/txCompraCrpt"
+                android:layout_toStartOf="@+id/cbCompraCrpt"
+                style="@style/Conteudo"
+                android:textSize="12sp"
+                android:hint="0,00"
+                android:inputType="numberDecimal"
+                android:contextClickable="false">
+            </EditText>
+            <CheckBox
+                android:id="@+id/cbCompraCrpt"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentEnd="true"
+                android:layout_alignBaseline="@+id/txCompraCrpt">
+            </CheckBox>
+
+
+
+            <TextView
+                android:id="@+id/txtTransacaoCrpt"
+                android:layout_below="@+id/txtTxCompraCrpt"
+                style="@style/Conteudo"
+                android:text="Taxa de Exchange: ">
+            </TextView>
+            <TextView
+                android:id="@+id/TransacaoCrpt"
+                style="@style/Conteudo"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_toEndOf="@+id/txtTransacaoCrpt"
+                android:layout_alignBaseline="@+id/txtTransacaoCrpt"
+                android:hint="0,00">
+            </TextView>
+            <EditText
+                android:layout_marginStart="10dp"
+                android:id="@+id/pctTransacaoCrpt"
+                android:layout_toStartOf="@+id/cbTransacaoCrpt"
+                android:layout_alignBaseline="@+id/TransacaoCrpt"
+                style="@style/Conteudo"
+                android:textSize="12sp"
+                android:hint="0,00"
+                android:inputType="numberDecimal"
+                android:clickable="false">
+            </EditText>
+            <CheckBox
+                android:id="@+id/cbTransacaoCrpt"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentEnd="true"
+                android:layout_alignBaseline="@+id/TransacaoCrpt">
+            </CheckBox>
+
+            <!--  ***** CUSTOS DE VENDA DA CRYPTO *****  -->
+
+            <TextView
+                android:id="@+id/txtTxCrptSell"
+                android:layout_below="@+id/txtTransacaoCrpt"
+                style="@style/Conteudo"
+                android:text="Taxa de venda: ">
+            </TextView>
+            <TextView
+                android:id="@+id/txCrptSell"
+                style="@style/Conteudo"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_toEndOf="@+id/txtTxCrptSell"
+                android:layout_alignBaseline="@+id/txtTxCrptSell"
+                android:hint="0,00">
+            </TextView>
+            <EditText
+                android:layout_marginStart="10dp"
+                android:id="@+id/pctCrptSell"
+                android:layout_alignBaseline="@+id/txCrptSell"
+                android:layout_toStartOf="@+id/cbCrptSell"
+                style="@style/Conteudo"
+                android:textSize="12sp"
+                android:hint="0,00"
+                android:inputType="numberDecimal"
+                android:contextClickable="false">
+            </EditText>
+            <CheckBox
+                android:id="@+id/cbCrptSell"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentEnd="true"
+                android:layout_alignBaseline="@+id/txCrptSell">
+            </CheckBox>
+
+
+
+            <TextView
+                android:id="@+id/txtTransacaoCrptSell"
+                android:layout_below="@+id/txCrptSell"
+                style="@style/Conteudo"
+                android:text="Taxa de Exchange: ">
+            </TextView>
+            <TextView
+                android:id="@+id/TransacaoCrptSell"
+                style="@style/Conteudo"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_toEndOf="@+id/txtTransacaoCrptSell"
+                android:layout_alignBaseline="@+id/txtTransacaoCrptSell"
+                android:hint="0,00">
+            </TextView>
+            <EditText
+                android:layout_marginStart="10dp"
+                android:id="@+id/pctTransacaoCrptSell"
+                android:layout_toStartOf="@+id/cbTransacaoCrptSell"
+                android:layout_alignBaseline="@+id/TransacaoCrptSell"
+                style="@style/Conteudo"
+                android:textSize="12sp"
+                android:hint="0,00"
+                android:inputType="numberDecimal"
+                android:clickable="false">
+            </EditText>
+            <CheckBox
+                android:id="@+id/cbTransacaoCrptSell"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentEnd="true"
+                android:layout_alignBaseline="@+id/TransacaoCrptSell">
+            </CheckBox>
+
+        </RelativeLayout>
+
+
     </LinearLayout>
 </ScrollView>
