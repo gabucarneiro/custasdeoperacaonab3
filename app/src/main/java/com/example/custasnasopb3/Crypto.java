@@ -17,9 +17,11 @@ import static android.view.View.GONE;
 
 public class Crypto extends AppCompatActivity {
 
-    DecimalFormat df8 = new DecimalFormat("0.00000000");
-    DecimalFormat df6 = new DecimalFormat("0.000000");
-    DecimalFormat df4 = new DecimalFormat("0.0000");
+    DecimalFormat df8 = new DecimalFormat("0.000#####");
+    DecimalFormat df6 = new DecimalFormat("0.000###");
+    DecimalFormat df4 = new DecimalFormat("0.000#");
+
+    /*STOP RETURNING!*/
 
     double taxBuy = 0.1;
     double taxExchage = 0.175;
@@ -31,10 +33,10 @@ public class Crypto extends AppCompatActivity {
         setContentView(R.layout.activity_crypto);
 
 
-        ((EditText) findViewById(R.id.pctCompraCrpt)).setText(df4.format(taxBuy));
-        ((EditText) findViewById(R.id.pctTransacaoCrpt)).setText(df4.format(taxExchage));
-        ((EditText) findViewById(R.id.pctCrptSell)).setText(df4.format(taxBuy));
-        ((EditText) findViewById(R.id.pctTransacaoCrptSell)).setText(df4.format(taxExchage));
+        ((EditText) findViewById(R.id.pctCompraCrpt)).setText(String.valueOf(taxBuy));
+        ((EditText) findViewById(R.id.pctTransacaoCrpt)).setText(String.valueOf(taxExchage));
+        ((EditText) findViewById(R.id.pctCrptSell)).setText(String.valueOf(taxBuy));
+        ((EditText) findViewById(R.id.pctTransacaoCrptSell)).setText(String.valueOf(taxExchage));
         (findViewById(R.id.custosValordaMoedaBruto)).setVisibility(GONE);
         (findViewById(R.id.custosCrpt)).setVisibility(GONE);
 
@@ -139,7 +141,7 @@ public class Crypto extends AppCompatActivity {
 
             double calculo = market.Buy(Double.parseDouble(((EditText) findViewById(R.id.edBuyCoinDisponivel)).getText().toString()), Double.parseDouble(((EditText) findViewById(R.id.edBuyGoalCoinValor)).getText().toString()), (taxBuy+taxExchage));
             ((TextView) findViewById(R.id.edBuyGoalCoinQuantidade)).setText(df6.format(calculo));
-            ((EditText) findViewById(R.id.edSellQuantidadeCoinDisponivel)).setText(df4.format(calculo));
+            ((EditText) findViewById(R.id.edSellQuantidadeCoinDisponivel)).setText(String.valueOf(calculo));
 
             ((EditText) findViewById(R.id.edSellGoalCoinValor)).setText((((EditText) findViewById(R.id.edBuyGoalCoinValor)).getText().toString()));
             Sell(view);
@@ -171,7 +173,7 @@ public class Crypto extends AppCompatActivity {
             //TODO COLOCAR A FUNÇÃO ABAIXO EM UMA NOVA THREAD
             while (Double.parseDouble(((TextView) findViewById(R.id.edSellGoalCoinSaldo)).getText().toString()) < Double.parseDouble(((EditText)findViewById(R.id.edBuyCoinDisponivel)).getText().toString())){
                 tempValorVenda = Double.parseDouble(((EditText) findViewById(R.id.edSellGoalCoinValor)).getText().toString()) + 0.001;
-                ((EditText)findViewById(R.id.edSellGoalCoinValor)).setText(df4.format(tempValorVenda));
+                ((EditText)findViewById(R.id.edSellGoalCoinValor)).setText(String.valueOf(tempValorVenda));
                 Sell(view);
             }
             //TODO COLOCAR A FUNÇÃO ACIMA EM UMA NOVA THREAD
@@ -222,7 +224,7 @@ public class Crypto extends AppCompatActivity {
                 ((EditText)findViewById(R.id.pctTransacaoCrptSell)).setText(String.valueOf(taxExchage));
             }
             double calculo = market.Sell(Double.parseDouble(((EditText) findViewById(R.id.edSellQuantidadeCoinDisponivel)).getText().toString()), Double.parseDouble(((EditText) findViewById(R.id.edSellGoalCoinValor)).getText().toString()), (taxBuy+taxExchage));
-            ((TextView) findViewById(R.id.edSellGoalCoinSaldo)).setText(df4.format(calculo));
+            ((TextView) findViewById(R.id.edSellGoalCoinSaldo)).setText(String.valueOf(calculo));
             //Toast.makeText(this, String.valueOf(calculo), Toast.LENGTH_SHORT).show();
         }
         catch (Exception e){

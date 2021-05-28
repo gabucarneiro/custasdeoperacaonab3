@@ -26,8 +26,6 @@ import java.util.List;
 
 public class ValorMinParaVendaSemPerdas extends AppCompatActivity {
 
-    QntAcoesValorDisponivel qavd;
-    CadastroPapel cp;
     double valPapelAdquirido = 0.0;
     int quantidade = 0;
     double valPretendidoVenda = 0.0;
@@ -122,39 +120,51 @@ public class ValorMinParaVendaSemPerdas extends AppCompatActivity {
                         @Override
                         public void run() {
                             /*CUSTOS DE VENDA*/
-                            pct_Corretagem = findViewById(R.id.pctCorretagem2);
-                            pct_Custodia = findViewById(R.id.pctCustodia2);
-                            pct_Liquidacao = findViewById(R.id.pctLiquidacao2);
-                            pct_Negociacao = findViewById(R.id.pctNegociacao2);
-                            pct_Iss = findViewById(R.id.pctIss2);
-                            pct_Emolumentos = findViewById(R.id.pctEmolumentos2);
+                            //pct_Corretagem = findViewById(R.id.pctCorretagem2);
+                            //pct_Custodia = findViewById(R.id.pctCustodia2);
+                            //pct_Liquidacao = findViewById(R.id.pctLiquidacao2);
+                            //pct_Negociacao = findViewById(R.id.pctNegociacao2);
+                            //pct_Iss = findViewById(R.id.pctIss2);
+                            //pct_Emolumentos = findViewById(R.id.pctEmolumentos2);
 
                             //Custas custas = new Custas(999, dbhCustas.getCustas(999).getCorretagem(), dbhCustas.getCustas(999).getCustodia(), dbhCustas.getCustas(999).getTx_liquidacao(), dbhCustas.getCustas(999).getTx_negociacao(), dbhCustas.getCustas(999).getIss(), dbhCustas.getCustas(999).isCorretagemFixa(), dbhCustas.getCustas(999).isCustodiaFixa(), dbhCustas.getCustas(999).isTx_liquidacaoFixa(), dbhCustas.getCustas(999).isTx_negociacaoFixa(), dbhCustas.getCustas(999).isIssFixo());
 
-                            pct_Corretagem.setText(String.valueOf(stdCorretagem));
-                            pct_Custodia.setText(String.valueOf(stdCustodia));
-                            pct_Liquidacao.setText(String.valueOf(stdTx_liquidacao));
-                            pct_Negociacao.setText(String.valueOf(stdTx_negociacao));
-                            pct_Iss.setText(String.valueOf(stdIss));
-                            pct_Emolumentos.setText(String.valueOf(stdTx_liquidacao+stdTx_negociacao));
+                            SetValue((findViewById(R.id.pctCorretagem2)), (stdCorretagem));
+                            SetValue((findViewById(R.id.pctCustodia2)), (stdCustodia));
+                            SetValue((findViewById(R.id.pctLiquidacao2)), (stdTx_liquidacao));
+                            SetValue((findViewById(R.id.pctNegociacao2)), (stdTx_negociacao));
+                            SetValue(((TextView) findViewById(R.id.pctEmolumentos2)), ((stdTx_liquidacao) + (stdTx_negociacao)));
+                            SetValue((findViewById(R.id.pctIss2)), (stdIss));
 
-                            cbCorretagem2 = findViewById(R.id.cbCorretagem2);
-                            cbCorretagem2.setChecked(isCorretagemFixa);
+                            //pct_Corretagem.setText(String.valueOf(stdCorretagem));
+                            //pct_Custodia.setText(String.valueOf(stdCustodia));
+                            //pct_Liquidacao.setText(String.valueOf(stdTx_liquidacao));
+                            //pct_Negociacao.setText(String.valueOf(stdTx_negociacao));
+                            //pct_Iss.setText(String.valueOf(stdIss));
+                            //pct_Emolumentos.setText(String.valueOf(stdTx_liquidacao+stdTx_negociacao));
 
-                            cbCustodia2 = findViewById(R.id.cbCustodia2);
-                            cbCustodia2.setChecked(isCustodiaFixa);
+                            /*cbCorretagem2 = findViewById(R.id.cbCorretagem2);
+                            cbCorretagem2.setChecked(isCorretagemFixa);*/
+                            SetCbTrueFalse(findViewById(R.id.cbCorretagem2), isCorretagemFixa);
 
-                            cbLiquidacao2 = findViewById(R.id.cbLiquidacao2);
-                            cbLiquidacao2.setChecked(isTx_liquidacaoFixa);
+                            /*cbCustodia2 = findViewById(R.id.cbCustodia2);
+                            cbCustodia2.setChecked(isCustodiaFixa);*/
+                            SetCbTrueFalse(findViewById(R.id.cbCustodia2), isCustodiaFixa);
 
-                            cbNegociacao2 = findViewById(R.id.cbNegociacao2);
-                            cbNegociacao2.setChecked(isTx_negociacaoFixa);
+                            /*cbLiquidacao2 = findViewById(R.id.cbLiquidacao2);
+                            cbLiquidacao2.setChecked(isTx_liquidacaoFixa);*/
+                            SetCbTrueFalse(findViewById(R.id.cbLiquidacao2), isTx_liquidacaoFixa);
 
-                            cbIss2 = findViewById(R.id.cbIss2);
-                            cbIss2.setChecked(isIssFixo);
+                            /*cbNegociacao2 = findViewById(R.id.cbNegociacao2);
+                            cbNegociacao2.setChecked(isTx_negociacaoFixa);*/
+                            SetCbTrueFalse(findViewById(R.id.cbNegociacao2), isTx_negociacaoFixa);
 
-                            RelativeLayout custasExtra = findViewById(R.id.custasExtra2);
-                            custasExtra.setVisibility(View.GONE);
+                            /*cbIss2 = findViewById(R.id.cbIss2);
+                            cbIss2.setChecked(isIssFixo);*/
+                            SetCbTrueFalse(findViewById(R.id.cbIss2), isIssFixo);
+
+                            //RelativeLayout custasExtra = findViewById(R.id.custasExtra2);
+                            (findViewById(R.id.custasExtra2)).setVisibility(View.GONE);
 
 
                             /*pctCorretagem2Compra = findViewById(R.id.pctCorretagem2Compra);
@@ -230,39 +240,51 @@ public class ValorMinParaVendaSemPerdas extends AppCompatActivity {
                         @Override
                         public void run() {
                             /*CUSTOS DE COMPRA*/
-                            pctCorretagem2Compra = findViewById(R.id.pctCorretagem2Compra);
+                            /*pctCorretagem2Compra = findViewById(R.id.pctCorretagem2Compra);
                             pctCustodia2Compra = findViewById(R.id.pctCustodia2Compra);
                             pctLiquidacao2Compra = findViewById(R.id.pctLiquidacao2Compra);
                             pctNegociacao2Compra = findViewById(R.id.pctNegociacao2Compra);
                             pctIss2Compra = findViewById(R.id.pctIss2Compra);
-                            pctEmolumentos2Compra = findViewById(R.id.pctEmolumentos2Compra);
+                            pctEmolumentos2Compra = findViewById(R.id.pctEmolumentos2Compra);*/
 
                             //Custas custas = new Custas(999);
 
-                            pctCorretagem2Compra.setText(String.valueOf(stdCorretagem));
+                            SetValue((findViewById(R.id.pctCorretagem2Compra)), (stdCorretagem));
+                            SetValue((findViewById(R.id.pctCustodia2Compra)), (stdCustodia));
+                            SetValue((findViewById(R.id.pctLiquidacao2Compra)), (stdTx_liquidacao));
+                            SetValue((findViewById(R.id.pctNegociacao2Compra)), (stdTx_negociacao));
+                            SetValue(((TextView) findViewById(R.id.pctEmolumentos2Compra)), ((stdTx_liquidacao) + (stdTx_negociacao)));
+                            SetValue((findViewById(R.id.pctIss2Compra)), (stdIss));
+
+                            /*pctCorretagem2Compra.setText(String.valueOf(stdCorretagem));
                             pctCustodia2Compra.setText(String.valueOf(stdCustodia));
                             pctLiquidacao2Compra.setText(String.valueOf(stdTx_liquidacao));
                             pctNegociacao2Compra.setText(String.valueOf(stdTx_negociacao));
                             pctIss2Compra.setText(String.valueOf(stdIss));
-                            pctEmolumentos2Compra.setText(String.valueOf(stdTx_liquidacao+stdTx_negociacao));
+                            pctEmolumentos2Compra.setText(String.valueOf(stdTx_liquidacao+stdTx_negociacao));*/
 
-                            cbCorretagem2Compra = findViewById(R.id.cbCorretagem2Compra);
-                            cbCorretagem2Compra.setChecked(isCorretagemFixa);
+                            /*cbCorretagem2Compra = findViewById(R.id.cbCorretagem2Compra);
+                            cbCorretagem2Compra.setChecked(isCorretagemFixa);*/
+                            SetCbTrueFalse(findViewById(R.id.cbCorretagem2Compra), isCorretagemFixa);
 
-                            cbCustodia2Compra = findViewById(R.id.cbCustodia2Compra);
-                            cbCustodia2Compra.setChecked(isCustodiaFixa);
+                            /*cbCustodia2Compra = findViewById(R.id.cbCustodia2Compra);
+                            cbCustodia2Compra.setChecked(isCustodiaFixa);*/
+                            SetCbTrueFalse(findViewById(R.id.cbCustodia2Compra), isCustodiaFixa);
 
-                            cbLiquidacao2Compra = findViewById(R.id.cbLiquidacao2Compra);
-                            cbLiquidacao2Compra.setChecked(isTx_liquidacaoFixa);
+                            /*cbLiquidacao2Compra = findViewById(R.id.cbLiquidacao2Compra);
+                            cbLiquidacao2Compra.setChecked(isTx_liquidacaoFixa);*/
+                            SetCbTrueFalse(findViewById(R.id.cbLiquidacao2Compra), isTx_liquidacaoFixa);
 
-                            cbNegociacao2Compra = findViewById(R.id.cbNegociacao2Compra);
-                            cbNegociacao2Compra.setChecked(isTx_negociacaoFixa);
+                            /*cbNegociacao2Compra = findViewById(R.id.cbNegociacao2Compra);
+                            cbNegociacao2Compra.setChecked(isTx_negociacaoFixa);*/
+                            SetCbTrueFalse(findViewById(R.id.cbNegociacao2Compra), isTx_negociacaoFixa);
 
-                            cbIss2Compra = findViewById(R.id.cbIss2Compra);
-                            cbIss2Compra.setChecked(isIssFixo);
+                            /*cbIss2Compra = findViewById(R.id.cbIss2Compra);
+                            cbIss2Compra.setChecked(isIssFixo);*/
+                            SetCbTrueFalse(findViewById(R.id.cbIss2Compra), isIssFixo);
 
-                            RelativeLayout RLcustasExtraCompra = findViewById(R.id.custasExtraCompra);
-                            RLcustasExtraCompra.setVisibility(View.GONE);
+                            //RelativeLayout RLcustasExtraCompra = findViewById(R.id.custasExtraCompra);
+                            (findViewById(R.id.custasExtraCompra)).setVisibility(View.GONE);
                         }
                     });
                 }
@@ -351,9 +373,9 @@ public class ValorMinParaVendaSemPerdas extends AppCompatActivity {
                         && quantidade != 0 && !String.valueOf(quantidade).equals("")
                         && valPretendidoVenda != 0 && !String.valueOf(valPretendidoVenda).equals("")) {
                     try {
-                        valPapelAdquirido = Double.parseDouble(et_valPapelAdquirido.getText().toString());
+                        /*valPapelAdquirido = Double.parseDouble(et_valPapelAdquirido.getText().toString());
                         quantidade = Integer.parseInt(et_quantidade.getText().toString());
-                        valPretendidoVenda = Double.parseDouble(et_valPretendidoVenda.getText().toString());
+                        valPretendidoVenda = Double.parseDouble(et_valPretendidoVenda.getText().toString());*/
 
                         corretagem2Compra = findViewById(R.id.corretagem2Compra);
                         custodia2Compra = findViewById(R.id.custodia2Compra);
@@ -1371,5 +1393,15 @@ public class ValorMinParaVendaSemPerdas extends AppCompatActivity {
         else {
             RLcustasExtraCompra.setVisibility(View.VISIBLE);
         }
+    }
+
+    public void SetValue (EditText edView, Double value){
+        edView.setText(String.valueOf(value));
+    }
+    public void SetValue (TextView txView, Double value){
+        txView.setText(String.valueOf(value));
+    }
+    public void SetCbTrueFalse (CheckBox cbIsChecked, boolean check){
+        cbIsChecked.setChecked(check);
     }
 }

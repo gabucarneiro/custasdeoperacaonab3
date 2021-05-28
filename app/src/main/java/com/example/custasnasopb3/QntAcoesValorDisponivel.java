@@ -41,10 +41,6 @@ public class QntAcoesValorDisponivel extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.qnt_acoes_valor_disponivel);
 
-        DecimalFormat df2 = new DecimalFormat("0.00");
-        DecimalFormat df3 = new DecimalFormat("0.000");
-        DecimalFormat df4 = new DecimalFormat("0.0000");
-
         /*EditText valDisponivel = (EditText) findViewById(R.id.valDisponivel);
         EditText valPapel = (EditText) findViewById(R.id.valPapel);
         EditText pct_Corretagem = findViewById(R.id.pctCorretagem);
@@ -74,12 +70,9 @@ public class QntAcoesValorDisponivel extends AppCompatActivity {
         //pct_Emolumentos.setText(String.valueOf(dbhCustas.getCustas(custasPadrao).getTx_liquidacao()+dbhCustas.getCustas(999).getTx_negociacao()));
 
 
-        LinearLayout custasValordopapelBruto = (LinearLayout) findViewById(R.id.custasValordopapelBruto);
-        LinearLayout custas = (LinearLayout) findViewById(R.id.idcustas);
-        RelativeLayout custasExtra = (RelativeLayout) findViewById(R.id.custasExtra);
-        custasValordopapelBruto.setVisibility(View.GONE);
-        custas.setVisibility(View.GONE);
-        custasExtra.setVisibility(View.GONE);
+        ((LinearLayout) findViewById(R.id.custasValordopapelBruto)).setVisibility(View.GONE);
+        ((LinearLayout) findViewById(R.id.idcustas)).setVisibility(View.GONE);
+        ((RelativeLayout) findViewById(R.id.custasExtra)).setVisibility(View.GONE);
 
         DataBaseHelper dbhCheckbox = new DataBaseHelper(this);
 
@@ -157,23 +150,21 @@ public class QntAcoesValorDisponivel extends AppCompatActivity {
         EditText valPapel = (EditText) findViewById(R.id.valPapel);
         EditText pct_Corretagem = findViewById(R.id.pctCorretagem);
         EditText pct_Custodia = findViewById(R.id.pctCustodia);
-        if (pct_Custodia.getText().equals("")){
+        if (pct_Custodia.getText().toString().equals("")){
             pct_Custodia.setError("Campo obrigatório");
         }
         EditText pct_Liquidacao = findViewById(R.id.pctLiquidacao);
-        if (pct_Liquidacao.getText().equals("")){
+        if (pct_Liquidacao.getText().toString().equals("")){
             pct_Liquidacao.setError("Campo obrigatório");
         }
         EditText pct_Negociacao = findViewById(R.id.pctNegociacao);
-        if (pct_Negociacao.getText().equals("")){
+        if (pct_Negociacao.getText().toString().equals("")){
             pct_Negociacao.setError("Campo obrigatório");
         }
         EditText pct_Iss = findViewById(R.id.pctIss);
-        if (pct_Iss.getText().equals("")){
+        if (pct_Iss.getText().toString().equals("")){
             pct_Iss.setError("Campo obrigatório");
         }
-        TextView pct_Emolumentos = findViewById(R.id.pctEmolumentos);
-
 
         //Faz o cálculo do valor disponível pelo valor do papel, pega a quantidade
 
@@ -214,7 +205,6 @@ public class QntAcoesValorDisponivel extends AppCompatActivity {
         Integer resultadoQuantidadeDeCotasPorValDispoivel;
         Double sumResultadoCalculoCustas;
 
-        //TODO Criar um Try-Catch para evitar crash por edit com dado nulo ou 0.
 
         boolean valPapelOk;
         boolean valDisponivelOk;
@@ -442,18 +432,16 @@ public class QntAcoesValorDisponivel extends AppCompatActivity {
     }
     public void custasVisibility(View view){
 
-        LinearLayout custasValordopapelBruto = (LinearLayout) findViewById(R.id.custasValordopapelBruto);
         LinearLayout custas = (LinearLayout) findViewById(R.id.idcustas);
-        RelativeLayout custasExtra = (RelativeLayout) findViewById(R.id.custasExtra);
-        if (custas.getVisibility() == View.VISIBLE || custasValordopapelBruto.getVisibility() == View.VISIBLE || custasExtra.getVisibility() == View.VISIBLE) {
+        if (custas.getVisibility() == View.VISIBLE || ((LinearLayout) findViewById(R.id.custasValordopapelBruto)).getVisibility() == View.VISIBLE || ((RelativeLayout) findViewById(R.id.custasExtra)).getVisibility() == View.VISIBLE) {
             custas.setVisibility(View.GONE);
-            custasValordopapelBruto.setVisibility(View.GONE);
-            custasExtra.setVisibility(View.GONE);
+            ((LinearLayout) findViewById(R.id.custasValordopapelBruto)).setVisibility(View.GONE);
+            ((RelativeLayout) findViewById(R.id.custasExtra)).setVisibility(View.GONE);
         }
         else {
             custas.setVisibility(View.VISIBLE);
-            custasValordopapelBruto.setVisibility(View.VISIBLE);
-            custasExtra.setVisibility(View.VISIBLE);
+            ((LinearLayout) findViewById(R.id.custasValordopapelBruto)).setVisibility(View.VISIBLE);
+            ((RelativeLayout) findViewById(R.id.custasExtra)).setVisibility(View.VISIBLE);
         }
     }
 }
