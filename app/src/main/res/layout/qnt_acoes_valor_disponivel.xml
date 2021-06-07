@@ -156,19 +156,18 @@
             android:textSize="23sp"
             android:textAllCaps="true"
             android:textAlignment="center"
-            android:layout_marginTop="25dp">
+            android:layout_marginTop="20dp">
         </TextView>
         <RelativeLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:orientation="vertical"
-            android:layout_gravity="center">
+            android:orientation="vertical">
             <TextView
                 android:id="@+id/txtValorNecessarioParaInvestir"
                 style="@style/Conteudo"
                 android:textColor="@color/darkblue"
                 android:textSize="23sp"
-                android:text="Valor necessário para investir:">
+                android:text="Investimento:">
             </TextView>
             <TextView
                 android:id="@+id/txtResumoReais"
@@ -191,27 +190,65 @@
                 android:layout_alignBaseline="@+id/txtResumoReais"
                 android:hint="0,00">
             </TextView>
-            <!--<LinearLayout
+            <TextView
+                android:id="@+id/txtValorMinVenda"
+                style="@style/Conteudo"
+                android:textColor="@color/darkblue"
+                android:textSize="23sp"
+                android:text="Mínimo de venda:"
+                android:layout_alignParentEnd="true">
+            </TextView>
+            <TextView
+                android:id="@+id/txtResumoReais2"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                android:layout_gravity="center">
-                <TextView
-                    style="@style/Conteudo"
-                    android:textColor="@color/darkblue"
-                    android:textSize="23dp"
-                    android:text="R$">
-                </TextView>
-                <TextView
-                    android:id="@+id/valNecessarioParaInvestir"
-                    style="@style/Conteudo"
-                    android:textColor="@color/darkgreen"
-                    android:textSize="23dp"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:hint="0,00">
-                </TextView>
-            </LinearLayout>-->
+                android:textColor="@color/darkblue"
+                android:layout_below="@+id/txtValorMinVenda"
+                android:layout_toStartOf="@+id/valMinVenda"
+                android:textSize="23sp"
+                android:text="R$">
+            </TextView>
+            <TextView
+                android:id="@+id/valMinVenda"
+                style="@style/Conteudo"
+                android:textColor="@color/darkgreen"
+                android:textSize="23sp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignBaseline="@+id/txtResumoReais2"
+                android:layout_alignParentEnd="true"
+                android:hint="0,00">
+            </TextView>
+            <TextView
+                android:id="@+id/txtStopLoss"
+                style="@style/Conteudo"
+                android:textColor="@color/darkblue"
+                android:textSize="23sp"
+                android:text="StopLoss:"
+                android:layout_alignParentEnd="true"
+                android:layout_below="@+id/valMinVenda">
+            </TextView>
+            <TextView
+                android:id="@+id/txtResumoReais3"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor="@color/darkblue"
+                android:layout_below="@+id/txtStopLoss"
+                android:layout_toStartOf="@+id/valStopLoss"
+                android:textSize="23sp"
+                android:text="R$">
+            </TextView>
+            <TextView
+                android:id="@+id/valStopLoss"
+                style="@style/Conteudo"
+                android:textColor="@color/darkgreen"
+                android:textSize="23sp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignBaseline="@+id/txtResumoReais3"
+                android:layout_alignParentEnd="true"
+                android:hint="0,00">
+            </TextView>
         </RelativeLayout>
         <RelativeLayout
             android:layout_width="wrap_content"
@@ -592,17 +629,55 @@
                     android:layout_alignBaseline="@+id/impostoDeRenda"
                     android:layout_toStartOf="@+id/cbIr"
                     style="@style/Conteudo"
-                    android:textSize="10dp"
+                    android:textSize="10sp"
                     android:hint="0,00"
-                    android:inputType="numberDecimal">
+                    android:inputType="numberDecimal"
+                    android:visibility="gone">
                 </EditText>
                 <CheckBox
                     android:id="@+id/cbIr"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_alignParentEnd="true"
-                    android:layout_alignBaseline="@+id/txtIss">
+                    android:layout_alignBaseline="@+id/pctIr"
+                    android:visibility="gone">
                 </CheckBox>
+
+
+                <TextView
+                    android:id="@+id/txtStopLossParam"
+                    android:layout_below="@+id/txtIr"
+                    style="@style/Conteudo"
+                    android:text="StopLoss: R$">
+                </TextView>
+                <TextView
+                    android:id="@+id/stopLoss"
+                    style="@style/Conteudo"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_toEndOf="@+id/txtStopLossParam"
+                    android:layout_alignBaseline="@+id/txtStopLossParam"
+                    android:hint="0,00">
+                </TextView>
+                <EditText
+                    android:layout_marginStart="10dp"
+                    android:id="@+id/pctStoLoss"
+                    android:layout_alignBaseline="@+id/stopLoss"
+                    android:layout_toStartOf="@+id/cbStopLoss"
+                    style="@style/Conteudo"
+                    android:textSize="20sp"
+                    android:hint="0,00"
+                    android:inputType="numberDecimal">
+                </EditText>
+                <TextView
+                    android:id="@+id/cbStopLoss"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textSize="20sp"
+                    android:text="%"
+                    android:layout_alignParentEnd="true"
+                    android:layout_alignBaseline="@+id/pctStoLoss">
+                </TextView>
             </RelativeLayout>
         <LinearLayout
             android:layout_width="wrap_content"

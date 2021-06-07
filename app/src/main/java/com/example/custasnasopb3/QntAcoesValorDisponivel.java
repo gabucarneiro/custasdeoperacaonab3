@@ -1,6 +1,7 @@
 package com.example.custasnasopb3;
 
 import android.os.Bundle;
+import android.os.Handler;
 import android.view.View;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
@@ -13,6 +14,7 @@ import android.widget.Toast;
 import androidx.appcompat.app.AppCompatActivity;
 
 import java.text.DecimalFormat;
+import java.util.Locale;
 
 public class QntAcoesValorDisponivel extends AppCompatActivity {
 
@@ -35,6 +37,7 @@ public class QntAcoesValorDisponivel extends AppCompatActivity {
 
     /*Go after, do and keep practicing what you think is utopic, and it'll become reality. Gabriel, 20/02/2021 12:45*/
 
+    private Handler handler3 = new Handler();
 
     @Override
     protected void onCreate (Bundle savedInstanceState){
@@ -53,6 +56,8 @@ public class QntAcoesValorDisponivel extends AppCompatActivity {
         //CheckBox cbFracionaria = (CheckBox) findViewById(R.id.cbFracionario);
 
         DataBaseHelper dbhCustas = new DataBaseHelper(this);
+        ((EditText)findViewById(R.id.pctStoLoss)).setText(String.valueOf(10));
+
 
         int custasPadrao = 999;
 
@@ -60,7 +65,7 @@ public class QntAcoesValorDisponivel extends AppCompatActivity {
         //pct_Corretagem.setText(String.valueOf(dbhCustas.getCustas(custasPadrao).getCorretagem()));
         ((EditText) findViewById(R.id.pctCustodia)).setText(String.valueOf(dbhCustas.getCustas(custasPadrao).getCustodia()));
         //pct_Custodia.setText(String.valueOf(dbhCustas.getCustas(custasPadrao).getCustodia()));
-        ((EditText) findViewById(R.id.pctLiquidacao)).setText(String.valueOf(dbhCustas.getCustas(custasPadrao).getTx_negociacao()));
+        ((EditText) findViewById(R.id.pctLiquidacao)).setText(String.valueOf(dbhCustas.getCustas(custasPadrao).getTx_liquidacao()));
         //pct_Liquidacao.setText(String.valueOf(dbhCustas.getCustas(custasPadrao).getTx_liquidacao()));
         ((EditText) findViewById(R.id.pctNegociacao)).setText(String.valueOf(dbhCustas.getCustas(custasPadrao).getTx_negociacao()));
         //pct_Negociacao.setText(String.valueOf(dbhCustas.getCustas(custasPadrao).getTx_negociacao()));
@@ -373,7 +378,7 @@ public class QntAcoesValorDisponivel extends AppCompatActivity {
 
                 /*TextView valAInvestir = (TextView) findViewById(R.id.valNecessarioParaInvestir);
                 String str_resul_valAInvestir = df2.format(tempValorTotaldaCompra);*/
-                ((TextView) findViewById(R.id.valNecessarioParaInvestir)).setText(df2.format(tempValorTotaldaCompra));
+                ((TextView) findViewById(R.id.valNecessarioParaInvestir)).setText(String.format(Locale.ENGLISH, "%.2f", tempValorTotaldaCompra));
 
                 //TextView val_PapelResumo = (TextView) findViewById(R.id.valPapelResumo);
                 ((TextView) findViewById(R.id.valPapelResumo)).setText(df4.format(val_Papel));
@@ -384,6 +389,167 @@ public class QntAcoesValorDisponivel extends AppCompatActivity {
                 /*TextView val_CustaEmolImpostos = (TextView) findViewById(R.id.valCustaEmolImpostos);
                 String custo_PorOperacao = df3.format(0-sumResultadoCalculoCustas);*/
                 ((TextView) findViewById(R.id.valCustaEmolImpostos)).setText(df3.format(0-sumResultadoCalculoCustas));
+
+
+                try {
+                    ((TextView) findViewById(R.id.valMinVenda)).setText(String.format(Locale.ENGLISH, "%.2f" , new ValorMinParaVendaSemPerdas().valMinVendaDII((Double.parseDouble(String.valueOf(((EditText) findViewById(R.id.valPapel)).getText()))), Integer.parseInt(String.valueOf(((TextView) findViewById(R.id.quantidade)).getText())), (Double.parseDouble(String.valueOf(((TextView) findViewById(R.id.valNecessarioParaInvestir)).getText()))), ((CheckBox)findViewById(R.id.cbFracionario)), (Double.parseDouble(String.valueOf(((EditText) findViewById(R.id.pctCorretagem)).getText()))), ((CheckBox)findViewById(R.id.cbCorretagem)), (Double.parseDouble(String.valueOf(((EditText) findViewById(R.id.pctCustodia)).getText()))), ((CheckBox)findViewById(R.id.cbCustodia)), (Double.parseDouble(String.valueOf(((EditText) findViewById(R.id.pctLiquidacao)).getText()))), ((CheckBox)findViewById(R.id.cbLiquidacao)), (Double.parseDouble((String.valueOf(((EditText) findViewById(R.id.pctNegociacao)).getText())))), ((CheckBox)findViewById(R.id.cbNegociacao)), (Double.parseDouble(String.valueOf(((EditText) findViewById(R.id.pctIss)).getText()))), ((CheckBox)findViewById(R.id.cbIss)))));
+                    //((TextView) findViewById(R.id.valMinVenda)).setText("13.20");
+                }
+                catch (Exception e){
+                    Toast.makeText(custas, "Erro: Valor mínimo para venda", Toast.LENGTH_SHORT).show();
+                }
+
+                new Thread(){
+                    public void run(){
+                        try {
+                            handler3.post(new Runnable() {
+                                @Override
+                                public void run() {
+                                    try {
+                                        // 1 - Recebe o valor mínimo de venda
+                                        // 2 - Multiplica pela quantidade de ações compradas
+                                        // 3 - Tira do valor achado a porcentagem do STOPLOSS
+
+                                        //((Double.parseDouble(((TextView)findViewById(R.id.valMinVenda)).getText().toString()))  * (Integer.parseInt((((TextView)findViewById(R.id.quantidadeResumo)).getText().toString()))));
+                                        //(Double.parseDouble(((EditText)findViewById(R.id.pctStoLoss)).getText().toString())/100);
+                                        double tempMaxStopLoss = (((Double.parseDouble(((TextView)findViewById(R.id.valMinVenda)).getText().toString()))  * (Integer.parseInt((((TextView)findViewById(R.id.quantidadeResumo)).getText().toString())))) - ((((Double.parseDouble(((TextView)findViewById(R.id.valMinVenda)).getText().toString()))  * (Integer.parseInt((((TextView)findViewById(R.id.quantidadeResumo)).getText().toString())))) * (Double.parseDouble(((EditText)findViewById(R.id.pctStoLoss)).getText().toString())/100))));
+
+                                        double tempresultadoCalcCorretagem = new Custas().calc_Corretagem((tempMaxStopLoss / Integer.parseInt(((TextView) findViewById(R.id.quantidade)).getText().toString())), (Integer.parseInt(((TextView) findViewById(R.id.quantidade)).getText().toString())), Double.parseDouble(((EditText)findViewById(R.id.pctCorretagem)).getText().toString()), ((CheckBox) findViewById(R.id.cbFracionario)).isChecked(), ((CheckBox) findViewById(R.id.cbCorretagem)).isChecked());
+                                        double tempresultadoCalcCustodia = new Custas().calc_Corretagem((tempMaxStopLoss / Integer.parseInt(((TextView) findViewById(R.id.quantidade)).getText().toString())), (Integer.parseInt(((TextView) findViewById(R.id.quantidade)).getText().toString())), Double.parseDouble(((EditText)findViewById(R.id.pctCustodia)).getText().toString()), ((CheckBox) findViewById(R.id.cbFracionario)).isChecked(), ((CheckBox) findViewById(R.id.cbCustodia)).isChecked());
+                                        double tempresultadoCalcLiquidacao = new Custas().calc_Corretagem((tempMaxStopLoss / Integer.parseInt(((TextView) findViewById(R.id.quantidade)).getText().toString())), (Integer.parseInt(((TextView) findViewById(R.id.quantidade)).getText().toString())), Double.parseDouble(((EditText)findViewById(R.id.pctLiquidacao)).getText().toString()), ((CheckBox) findViewById(R.id.cbFracionario)).isChecked(), ((CheckBox) findViewById(R.id.cbLiquidacao)).isChecked());
+                                        double tempresultadoCalcNegociacao = new Custas().calc_Corretagem((tempMaxStopLoss / Integer.parseInt(((TextView) findViewById(R.id.quantidade)).getText().toString())), (Integer.parseInt(((TextView) findViewById(R.id.quantidade)).getText().toString())), Double.parseDouble(((EditText)findViewById(R.id.pctNegociacao)).getText().toString()), ((CheckBox) findViewById(R.id.cbFracionario)).isChecked(), ((CheckBox) findViewById(R.id.cbNegociacao)).isChecked());
+                                        double tempresultadoCalcIss = new Custas().calc_Corretagem((tempMaxStopLoss / Integer.parseInt(((TextView) findViewById(R.id.quantidade)).getText().toString())), (Integer.parseInt(((TextView) findViewById(R.id.quantidade)).getText().toString())), Double.parseDouble(((EditText)findViewById(R.id.pctIss)).getText().toString()), ((CheckBox) findViewById(R.id.cbFracionario)).isChecked(), ((CheckBox) findViewById(R.id.cbIss)).isChecked());
+
+                                        double tempsumResultadoCalculoCustas = tempresultadoCalcCorretagem + tempresultadoCalcCustodia + tempresultadoCalcLiquidacao + tempresultadoCalcNegociacao + tempresultadoCalcIss;
+
+                                        double tempMaxStopLossLiquido = tempMaxStopLoss - tempsumResultadoCalculoCustas;
+                                        double temp2MaxStopLossLiquido = tempMaxStopLossLiquido;
+                                        double aux = 0.1;
+
+                                        //Toast.makeText(QntAcoesValorDisponivel.this, String.valueOf(tempMaxStopLoss), Toast.LENGTH_SHORT).show();
+                                        //Toast.makeText(QntAcoesValorDisponivel.this, String.valueOf(tempsumResultadoCalculoCustas), Toast.LENGTH_SHORT).show();
+                                        //Toast.makeText(QntAcoesValorDisponivel.this, String.valueOf(temp2MaxStopLossLiquido), Toast.LENGTH_SHORT).show();
+
+                                        while (temp2MaxStopLossLiquido < tempMaxStopLoss){
+
+                                            if (aux/2 == 0) {
+                                                Toast.makeText(QntAcoesValorDisponivel.this, String.valueOf(temp2MaxStopLossLiquido), Toast.LENGTH_SHORT).show();
+                                            }
+
+                                            temp2MaxStopLossLiquido += aux;
+                                            tempresultadoCalcCorretagem = new Custas().calc_Corretagem((temp2MaxStopLossLiquido / Integer.parseInt(((TextView) findViewById(R.id.quantidade)).getText().toString())), (Integer.parseInt(((TextView) findViewById(R.id.quantidade)).getText().toString())), Double.parseDouble(((EditText)findViewById(R.id.pctCorretagem)).getText().toString()), ((CheckBox) findViewById(R.id.cbFracionario)).isChecked(), ((CheckBox) findViewById(R.id.cbCorretagem)).isChecked());
+                                            tempresultadoCalcCustodia = new Custas().calc_Corretagem((temp2MaxStopLossLiquido / Integer.parseInt(((TextView) findViewById(R.id.quantidade)).getText().toString())), (Integer.parseInt(((TextView) findViewById(R.id.quantidade)).getText().toString())), Double.parseDouble(((EditText)findViewById(R.id.pctCustodia)).getText().toString()), ((CheckBox) findViewById(R.id.cbFracionario)).isChecked(), ((CheckBox) findViewById(R.id.cbCustodia)).isChecked());
+                                            tempresultadoCalcLiquidacao = new Custas().calc_Corretagem((temp2MaxStopLossLiquido / Integer.parseInt(((TextView) findViewById(R.id.quantidade)).getText().toString())), (Integer.parseInt(((TextView) findViewById(R.id.quantidade)).getText().toString())), Double.parseDouble(((EditText)findViewById(R.id.pctLiquidacao)).getText().toString()), ((CheckBox) findViewById(R.id.cbFracionario)).isChecked(), ((CheckBox) findViewById(R.id.cbLiquidacao)).isChecked());
+                                            tempresultadoCalcNegociacao = new Custas().calc_Corretagem((temp2MaxStopLossLiquido / Integer.parseInt(((TextView) findViewById(R.id.quantidade)).getText().toString())), (Integer.parseInt(((TextView) findViewById(R.id.quantidade)).getText().toString())), Double.parseDouble(((EditText)findViewById(R.id.pctNegociacao)).getText().toString()), ((CheckBox) findViewById(R.id.cbFracionario)).isChecked(), ((CheckBox) findViewById(R.id.cbNegociacao)).isChecked());
+                                            tempresultadoCalcIss = new Custas().calc_Corretagem((temp2MaxStopLossLiquido / Integer.parseInt(((TextView) findViewById(R.id.quantidade)).getText().toString())), (Integer.parseInt(((TextView) findViewById(R.id.quantidade)).getText().toString())), Double.parseDouble(((EditText)findViewById(R.id.pctIss)).getText().toString()), ((CheckBox) findViewById(R.id.cbFracionario)).isChecked(), ((CheckBox) findViewById(R.id.cbIss)).isChecked());
+
+                                            tempsumResultadoCalculoCustas = tempresultadoCalcCorretagem + tempresultadoCalcCustodia + tempresultadoCalcLiquidacao + tempresultadoCalcNegociacao + tempresultadoCalcIss;
+
+                                            aux++;
+                                            temp2MaxStopLossLiquido -= tempsumResultadoCalculoCustas;
+                                        }
+                                        //Toast.makeText(QntAcoesValorDisponivel.this, String.valueOf(temp2MaxStopLossLiquido), Toast.LENGTH_SHORT).show();
+
+                                        ((TextView)findViewById(R.id.valStopLoss)).setText(String.format(Locale.ENGLISH, "%.2f", temp2MaxStopLossLiquido / Double.parseDouble(((TextView) findViewById(R.id.quantidade)).getText().toString())));
+
+
+
+                                        //new ValorMinParaVendaSemPerdas().valMinVendaDII(((Double.parseDouble(((TextView)findViewById(R.id.valMinVenda)).getText().toString()))  * (Integer.parseInt((((TextView)findViewById(R.id.quantidadeResumo)).getText().toString())))), Integer.parseInt(((TextView) findViewById(R.id.quantidade)).getText().toString()), (Double.parseDouble(((TextView) findViewById(R.id.valNecessarioParaInvestir)).getText().toString())), ((CheckBox)findViewById(R.id.cbFracionario)), (Double.parseDouble(((EditText) findViewById(R.id.pctCorretagem)).getText().toString())), ((CheckBox)findViewById(R.id.cbCorretagem)), (Double.parseDouble(((EditText) findViewById(R.id.pctCustodia)).getText().toString())), ((CheckBox)findViewById(R.id.cbCustodia)), (Double.parseDouble(((EditText) findViewById(R.id.pctLiquidacao)).getText().toString())), ((CheckBox)findViewById(R.id.cbLiquidacao)), (Double.parseDouble(((EditText) findViewById(R.id.pctNegociacao)).getText().toString())), ((CheckBox)findViewById(R.id.cbNegociacao)), (Double.parseDouble(((EditText) findViewById(R.id.pctIss)).getText().toString())), ((CheckBox)findViewById(R.id.cbIss)));
+                                        //((TextView)findViewById(R.id.valStopLoss)).setText(df2.format ((new ValorMinParaVendaSemPerdas().valMinVendaDII((((Double.parseDouble(((TextView)findViewById(R.id.valMinVenda)).getText().toString()))  * (Integer.parseInt((((TextView)findViewById(R.id.quantidadeResumo)).getText().toString())))) * (Double.parseDouble(((EditText)findViewById(R.id.pctStoLoss)).getText().toString())/100) ), Integer.parseInt(((TextView) findViewById(R.id.quantidade)).getText().toString()), (Double.parseDouble(((TextView) findViewById(R.id.valNecessarioParaInvestir)).getText().toString())), ((CheckBox)findViewById(R.id.cbFracionario)), (Double.parseDouble(((EditText) findViewById(R.id.pctCorretagem)).getText().toString())), ((CheckBox)findViewById(R.id.cbCorretagem)), (Double.parseDouble(((EditText) findViewById(R.id.pctCustodia)).getText().toString())), ((CheckBox)findViewById(R.id.cbCustodia)), (Double.parseDouble(((EditText) findViewById(R.id.pctLiquidacao)).getText().toString())), ((CheckBox)findViewById(R.id.cbLiquidacao)), (Double.parseDouble(((EditText) findViewById(R.id.pctNegociacao)).getText().toString())), ((CheckBox)findViewById(R.id.cbNegociacao)), (Double.parseDouble(((EditText) findViewById(R.id.pctIss)).getText().toString())), ((CheckBox)findViewById(R.id.cbIss)))) ));
+
+
+
+                                        //((TextView)findViewById(R.id.valStopLoss)).setText(df2.format((new ValorMinParaVendaSemPerdas().valMinVendaDII(((Double.parseDouble(((TextView)findViewById(R.id.valMinVenda)).getText().toString()))  * (Integer.parseInt((((TextView)findViewById(R.id.quantidadeResumo)).getText().toString())))), Integer.parseInt(((TextView) findViewById(R.id.quantidade)).getText().toString()), (Double.parseDouble(((TextView) findViewById(R.id.valNecessarioParaInvestir)).getText().toString())), ((CheckBox)findViewById(R.id.cbFracionario)), (Double.parseDouble(((EditText) findViewById(R.id.pctCorretagem)).getText().toString())), ((CheckBox)findViewById(R.id.cbCorretagem)), (Double.parseDouble(((EditText) findViewById(R.id.pctCustodia)).getText().toString())), ((CheckBox)findViewById(R.id.cbCustodia)), (Double.parseDouble(((EditText) findViewById(R.id.pctLiquidacao)).getText().toString())), ((CheckBox)findViewById(R.id.cbLiquidacao)), (Double.parseDouble(((EditText) findViewById(R.id.pctNegociacao)).getText().toString())), ((CheckBox)findViewById(R.id.cbNegociacao)), (Double.parseDouble(((EditText) findViewById(R.id.pctIss)).getText().toString())), ((CheckBox)findViewById(R.id.cbIss))))  /  (Integer.parseInt((((TextView)findViewById(R.id.quantidadeResumo)).getText().toString())))));
+                                        //((TextView)findViewById(R.id.valStopLoss)).setText(df2.format(((Double.parseDouble(((TextView)findViewById(R.id.valMinVenda)).getText().toString()))  * (Integer.parseInt((((TextView)findViewById(R.id.quantidadeResumo)).getText().toString())))) * (Double.parseDouble(((EditText)findViewById(R.id.pctStoLoss)).getText().toString())/100) / (Integer.parseInt((((TextView)findViewById(R.id.quantidadeResumo)).getText().toString())))));
+                                    }
+                                    catch (Exception e) {
+                                        if (((TextView)findViewById(R.id.pctStoLoss)).getText().toString().isEmpty()) {
+                                            ((TextView)findViewById(R.id.pctStoLoss)).setText("0.0");
+                                            Toast.makeText(QntAcoesValorDisponivel.this, "StopLoss nulo - não calculado", Toast.LENGTH_SHORT).show();
+                                        }
+                                        else {
+                                            Toast.makeText(QntAcoesValorDisponivel.this, "StopLoss inválido - não calculado", Toast.LENGTH_SHORT).show();
+                                            //((TextView)findViewById(R.id.valStopLoss)).setText(df2.format((Double.parseDouble(((TextView)findViewById(R.id.valMinVenda)).getText().toString())) * (Double.parseDouble(((EditText)findViewById(R.id.pctStoLoss)).getText().toString())/100) / (Integer.parseInt((((TextView)findViewById(R.id.quantidadeResumo)).getText().toString())))));
+                                        }
+                                    }
+                                }
+                            });
+                        }
+                        catch (Exception e){
+                            Toast.makeText(QntAcoesValorDisponivel.this, "StopLoss - Exception", Toast.LENGTH_SHORT).show();
+                            e.getMessage();
+                            e.printStackTrace();
+                        }
+                    }
+                }.start();
+
+                /*try {
+                    // 1 - Recebe o valor mínimo de venda
+                    // 2 - Multiplica pela quantidade de ações compradas
+                    // 3 - Tira do valor achado a porcentagem do STOPLOSS
+
+                    //((Double.parseDouble(((TextView)findViewById(R.id.valMinVenda)).getText().toString()))  * (Integer.parseInt((((TextView)findViewById(R.id.quantidadeResumo)).getText().toString()))));
+                    //(Double.parseDouble(((EditText)findViewById(R.id.pctStoLoss)).getText().toString())/100);
+                    double tempMaxStopLoss = (((Double.parseDouble(((TextView)findViewById(R.id.valMinVenda)).getText().toString()))  * (Integer.parseInt((((TextView)findViewById(R.id.quantidadeResumo)).getText().toString())))) - ((((Double.parseDouble(((TextView)findViewById(R.id.valMinVenda)).getText().toString()))  * (Integer.parseInt((((TextView)findViewById(R.id.quantidadeResumo)).getText().toString())))) * (Double.parseDouble(((EditText)findViewById(R.id.pctStoLoss)).getText().toString())/100))));
+
+
+                    double tempresultadoCalcCorretagem = custas.calc_Corretagem((tempMaxStopLoss / Double.parseDouble(((TextView) findViewById(R.id.quantidade)).getText().toString())), tempQuantidadeDeCotasPorValDispoivel, Double.parseDouble(((EditText)findViewById(R.id.pctCorretagem)).getText().toString()), bool_cbFracionaria, bool_cbCorretagem);
+                    double tempresultadoCalcCustodia = custas.calc_Corretagem((tempMaxStopLoss / Double.parseDouble(((TextView) findViewById(R.id.quantidade)).getText().toString())), tempQuantidadeDeCotasPorValDispoivel, Double.parseDouble(((EditText)findViewById(R.id.pctCustodia)).getText().toString()), bool_cbFracionaria, bool_cbCustodia);
+                    double tempresultadoCalcLiquidacao = custas.calc_Corretagem((tempMaxStopLoss / Double.parseDouble(((TextView) findViewById(R.id.quantidade)).getText().toString())), tempQuantidadeDeCotasPorValDispoivel, Double.parseDouble(((EditText)findViewById(R.id.pctLiquidacao)).getText().toString()), bool_cbFracionaria, bool_cbLiquidacao);
+                    double tempresultadoCalcNegociacao = custas.calc_Corretagem((tempMaxStopLoss / Double.parseDouble(((TextView) findViewById(R.id.quantidade)).getText().toString())), tempQuantidadeDeCotasPorValDispoivel, Double.parseDouble(((EditText)findViewById(R.id.pctNegociacao)).getText().toString()), bool_cbFracionaria, bool_cbNegociacao);
+                    double tempresultadoCalcIss = custas.calc_Corretagem((tempMaxStopLoss / Double.parseDouble(((TextView) findViewById(R.id.quantidade)).getText().toString())), tempQuantidadeDeCotasPorValDispoivel, Double.parseDouble(((EditText)findViewById(R.id.pctIss)).getText().toString()), bool_cbFracionaria, bool_cbIss);
+
+                    double tempsumResultadoCalculoCustas = tempresultadoCalcCorretagem + tempresultadoCalcCustodia + tempresultadoCalcLiquidacao + tempresultadoCalcNegociacao + tempresultadoCalcIss;
+
+                    *//*if (!bool_cbFracionaria){
+                        tempQuantidadeDeCotasPorValDispoivel = qntLote(tempQuantidadeDeCotasPorValDispoivel) * 100;
+                    }*//*
+                    double tempMaxStopLossLiquido = tempMaxStopLoss - tempsumResultadoCalculoCustas;
+                    double temp2MaxStopLossLiquido = tempMaxStopLossLiquido;
+
+                    while (temp2MaxStopLossLiquido < tempMaxStopLoss){
+
+                        temp2MaxStopLossLiquido+=0.1;
+                        tempresultadoCalcCorretagem = custas.calc_Corretagem((temp2MaxStopLossLiquido / Double.parseDouble(((TextView) findViewById(R.id.quantidade)).getText().toString())), tempQuantidadeDeCotasPorValDispoivel, Double.parseDouble(((EditText)findViewById(R.id.pctCorretagem)).getText().toString()), bool_cbFracionaria, bool_cbCorretagem);
+                        tempresultadoCalcCustodia = custas.calc_Corretagem((temp2MaxStopLossLiquido / Double.parseDouble(((TextView) findViewById(R.id.quantidade)).getText().toString())), tempQuantidadeDeCotasPorValDispoivel, Double.parseDouble(((EditText)findViewById(R.id.pctCustodia)).getText().toString()), bool_cbFracionaria, bool_cbCustodia);
+                        tempresultadoCalcLiquidacao = custas.calc_Corretagem((temp2MaxStopLossLiquido / Double.parseDouble(((TextView) findViewById(R.id.quantidade)).getText().toString())), tempQuantidadeDeCotasPorValDispoivel, Double.parseDouble(((EditText)findViewById(R.id.pctLiquidacao)).getText().toString()), bool_cbFracionaria, bool_cbLiquidacao);
+                        tempresultadoCalcNegociacao = custas.calc_Corretagem((temp2MaxStopLossLiquido / Double.parseDouble(((TextView) findViewById(R.id.quantidade)).getText().toString())), tempQuantidadeDeCotasPorValDispoivel, Double.parseDouble(((EditText)findViewById(R.id.pctNegociacao)).getText().toString()), bool_cbFracionaria, bool_cbNegociacao);
+                        tempresultadoCalcIss = custas.calc_Corretagem((temp2MaxStopLossLiquido / Double.parseDouble(((TextView) findViewById(R.id.quantidade)).getText().toString())), tempQuantidadeDeCotasPorValDispoivel, Double.parseDouble(((EditText)findViewById(R.id.pctIss)).getText().toString()), bool_cbFracionaria, bool_cbIss);
+
+                        tempsumResultadoCalculoCustas = tempresultadoCalcCorretagem + tempresultadoCalcCustodia + tempresultadoCalcLiquidacao + tempresultadoCalcNegociacao + tempresultadoCalcIss;
+
+                        temp2MaxStopLossLiquido = temp2MaxStopLossLiquido - tempsumResultadoCalculoCustas;
+                    }
+                    Toast.makeText(custas, String.valueOf(temp2MaxStopLossLiquido), Toast.LENGTH_SHORT).show();
+
+                    ((TextView)findViewById(R.id.valStopLoss)).setText(df2.format(temp2MaxStopLossLiquido / Double.parseDouble(((TextView) findViewById(R.id.quantidade)).getText().toString())));
+
+
+
+
+                    //new ValorMinParaVendaSemPerdas().valMinVendaDII(((Double.parseDouble(((TextView)findViewById(R.id.valMinVenda)).getText().toString()))  * (Integer.parseInt((((TextView)findViewById(R.id.quantidadeResumo)).getText().toString())))), Integer.parseInt(((TextView) findViewById(R.id.quantidade)).getText().toString()), (Double.parseDouble(((TextView) findViewById(R.id.valNecessarioParaInvestir)).getText().toString())), ((CheckBox)findViewById(R.id.cbFracionario)), (Double.parseDouble(((EditText) findViewById(R.id.pctCorretagem)).getText().toString())), ((CheckBox)findViewById(R.id.cbCorretagem)), (Double.parseDouble(((EditText) findViewById(R.id.pctCustodia)).getText().toString())), ((CheckBox)findViewById(R.id.cbCustodia)), (Double.parseDouble(((EditText) findViewById(R.id.pctLiquidacao)).getText().toString())), ((CheckBox)findViewById(R.id.cbLiquidacao)), (Double.parseDouble(((EditText) findViewById(R.id.pctNegociacao)).getText().toString())), ((CheckBox)findViewById(R.id.cbNegociacao)), (Double.parseDouble(((EditText) findViewById(R.id.pctIss)).getText().toString())), ((CheckBox)findViewById(R.id.cbIss)));
+                    //((TextView)findViewById(R.id.valStopLoss)).setText(df2.format ((new ValorMinParaVendaSemPerdas().valMinVendaDII((((Double.parseDouble(((TextView)findViewById(R.id.valMinVenda)).getText().toString()))  * (Integer.parseInt((((TextView)findViewById(R.id.quantidadeResumo)).getText().toString())))) * (Double.parseDouble(((EditText)findViewById(R.id.pctStoLoss)).getText().toString())/100) ), Integer.parseInt(((TextView) findViewById(R.id.quantidade)).getText().toString()), (Double.parseDouble(((TextView) findViewById(R.id.valNecessarioParaInvestir)).getText().toString())), ((CheckBox)findViewById(R.id.cbFracionario)), (Double.parseDouble(((EditText) findViewById(R.id.pctCorretagem)).getText().toString())), ((CheckBox)findViewById(R.id.cbCorretagem)), (Double.parseDouble(((EditText) findViewById(R.id.pctCustodia)).getText().toString())), ((CheckBox)findViewById(R.id.cbCustodia)), (Double.parseDouble(((EditText) findViewById(R.id.pctLiquidacao)).getText().toString())), ((CheckBox)findViewById(R.id.cbLiquidacao)), (Double.parseDouble(((EditText) findViewById(R.id.pctNegociacao)).getText().toString())), ((CheckBox)findViewById(R.id.cbNegociacao)), (Double.parseDouble(((EditText) findViewById(R.id.pctIss)).getText().toString())), ((CheckBox)findViewById(R.id.cbIss)))) ));
+
+
+
+                    //((TextView)findViewById(R.id.valStopLoss)).setText(df2.format((new ValorMinParaVendaSemPerdas().valMinVendaDII(((Double.parseDouble(((TextView)findViewById(R.id.valMinVenda)).getText().toString()))  * (Integer.parseInt((((TextView)findViewById(R.id.quantidadeResumo)).getText().toString())))), Integer.parseInt(((TextView) findViewById(R.id.quantidade)).getText().toString()), (Double.parseDouble(((TextView) findViewById(R.id.valNecessarioParaInvestir)).getText().toString())), ((CheckBox)findViewById(R.id.cbFracionario)), (Double.parseDouble(((EditText) findViewById(R.id.pctCorretagem)).getText().toString())), ((CheckBox)findViewById(R.id.cbCorretagem)), (Double.parseDouble(((EditText) findViewById(R.id.pctCustodia)).getText().toString())), ((CheckBox)findViewById(R.id.cbCustodia)), (Double.parseDouble(((EditText) findViewById(R.id.pctLiquidacao)).getText().toString())), ((CheckBox)findViewById(R.id.cbLiquidacao)), (Double.parseDouble(((EditText) findViewById(R.id.pctNegociacao)).getText().toString())), ((CheckBox)findViewById(R.id.cbNegociacao)), (Double.parseDouble(((EditText) findViewById(R.id.pctIss)).getText().toString())), ((CheckBox)findViewById(R.id.cbIss))))  /  (Integer.parseInt((((TextView)findViewById(R.id.quantidadeResumo)).getText().toString())))));
+                    //((TextView)findViewById(R.id.valStopLoss)).setText(df2.format(((Double.parseDouble(((TextView)findViewById(R.id.valMinVenda)).getText().toString()))  * (Integer.parseInt((((TextView)findViewById(R.id.quantidadeResumo)).getText().toString())))) * (Double.parseDouble(((EditText)findViewById(R.id.pctStoLoss)).getText().toString())/100) / (Integer.parseInt((((TextView)findViewById(R.id.quantidadeResumo)).getText().toString())))));
+                }
+                catch (Exception e) {
+                    if (((TextView)findViewById(R.id.pctStoLoss)).getText().toString().isEmpty()) {
+                        ((TextView)findViewById(R.id.pctStoLoss)).setText("0.0");
+                        Toast.makeText(custas, "StopLoss nulo - não calculado", Toast.LENGTH_SHORT).show();
+                    }
+                    else {
+                        Toast.makeText(custas, "StopLoss inválido - não calculado", Toast.LENGTH_SHORT).show();
+                        //((TextView)findViewById(R.id.valStopLoss)).setText(df2.format((Double.parseDouble(((TextView)findViewById(R.id.valMinVenda)).getText().toString())) * (Double.parseDouble(((EditText)findViewById(R.id.pctStoLoss)).getText().toString())/100) / (Integer.parseInt((((TextView)findViewById(R.id.quantidadeResumo)).getText().toString())))));
+                    }
+                }*/
+
+
+
+
+
 
 
                 /*tv1.setText("Corretagem FINAL: " + String.valueOf(resultadoCalcCorretagem));
