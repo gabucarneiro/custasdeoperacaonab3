@@ -224,7 +224,13 @@
             <TextView
                 android:id="@+id/txtListaCoin"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"/>
+                android:layout_height="match_parent"
+                android:text=""/>
+            <TextView
+                android:id="@+id/txtListaFile"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:text=""/>
         </LinearLayout>
 
         <Button

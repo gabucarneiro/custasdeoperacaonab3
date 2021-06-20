@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:padding="20dp"
+    style="@style/BasicLayout"
+    tools:context=".Export">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+    <TextView
+        android:id="@+id/txtCriptoHeader"
+        style="@style/Header"
+        android:text="Exportar"
+        android:textAllCaps="true"
+        android:layout_marginTop="30dp"
+        android:layout_marginBottom="30dp"/>
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <Button
+                android:id="@+id/btnListar"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="15dp"
+                android:layout_centerHorizontal="true"
+                android:text="BtnListar"
+                android:onClick="Listar"/>
+            <Button
+                android:id="@+id/btnTxtSalvar"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="15dp"
+                android:layout_alignParentStart="true"
+                android:text="BtnSalvar"
+                android:onClick="criarArquivo"/>
+            <Button
+                android:id="@+id/btnCarregar"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="15dp"
+                android:layout_alignParentEnd="true"
+                android:text="Carregar"
+                android:onClick="carregar"/>
+
+            <TextView
+                android:id="@+id/txtListar"
+                style="@style/Conteudo"
+                android:layout_marginEnd="10dp"
+                android:layout_alignParentStart="true"
+                android:text="Arquivo:"
+                android:layout_below="@+id/btnTxtSalvar">
+            </TextView>
+            <EditText
+                android:id="@+id/edSelectedFile"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_toEndOf="@+id/txtListar"
+                android:layout_alignBaseline="@+id/txtListar"
+                android:hint="Arquivo txt"/>
+
+            <EditText
+                android:id="@+id/edListar"
+                style="@style/Conteudo"
+                android:layout_width="match_parent"
+                android:layout_height="120dp"
+                android:layout_below="@+id/txtListar"
+                android:inputType="textMultiLine"
+                android:lines="5"
+                android:text=""
+                android:singleLine="false"
+                android:textSize="20sp"
+                android:autofillHints=""/>
+
+        </RelativeLayout>
+        <LinearLayout
+            android:id="@+id/arquivosListados"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+            <TextView
+                android:id="@+id/txtaArquivosListados"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text=""
+                android:inputType="textMultiLine"/>
+        </LinearLayout>
+    </LinearLayout>
+</ScrollView>

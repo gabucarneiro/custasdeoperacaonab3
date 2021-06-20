@@ -88,4 +88,8 @@ public class MainActivity extends AppCompatActivity {
             }
         }.start();
     }
+    public void exportar(View view){
+        Intent intent = new Intent(this, Export.class);
+        startActivity(intent);
+    }
 }

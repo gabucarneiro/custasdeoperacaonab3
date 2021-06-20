@@ -11,6 +11,8 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import java.io.File;
+import java.io.IOException;
 import java.text.DecimalFormat;
 
 import static android.view.View.GONE;
@@ -41,7 +43,7 @@ public class Crypto extends AppCompatActivity {
         (findViewById(R.id.custosCrpt)).setVisibility(GONE);
 
     }
-    public void WalletInput (View view){
+    public void WalletInput (View view) {
         Wallet wallet = new Wallet();
         try {
             Coin coin = new Coin(((EditText) findViewById(R.id.edCoinNome)).getText().toString(), Double.parseDouble(((EditText) findViewById(R.id.edCoinValor)).getText().toString()), Integer.parseInt(((EditText) findViewById(R.id.edCoinQuantidade)).getText().toString()));
@@ -54,8 +56,10 @@ public class Crypto extends AppCompatActivity {
             Toast.makeText(this, e.getMessage(), Toast.LENGTH_SHORT).show();
         }
 
-
     }
+
+    //TEMPORARIO
+
     public void ListarCoins (LinearLayout view, Wallet wallet){
         //LinearLayout ll_ADHorizontal = findViewById(R.id.LL_ShowCoins);
         StringBuilder sb = new StringBuilder();
