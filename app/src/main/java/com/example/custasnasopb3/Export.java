@@ -214,101 +214,52 @@ public class Export extends AppCompatActivity {
                             f.setExecutable(true);
                             f.setReadable(true);
                             f.setWritable(true);
-                            Toast.makeText(this, ("Achamos um arquivo: " + f.getName()), Toast.LENGTH_SHORT).show();
+                            Toast.makeText(this, ("Arquivo localizado: " + f.getName()), Toast.LENGTH_SHORT).show();
                             try {
-                                Toast.makeText(this, "FW início", Toast.LENGTH_SHORT).show();
-                                String canwrite2;
-                                if (f.canWrite()){
-                                    canwrite2 = "f CAN WRITE!!";
-                                    if (f.getName()==null){
-                                        Toast.makeText(this, "F.getName é null!!", Toast.LENGTH_SHORT).show();
-                                    }
-                                    else {
-
-                                        Toast.makeText(this, "F.getName NÃO é null!!", Toast.LENGTH_SHORT).show();
-                                    }
-                                }
-                                else {
-                                    canwrite2 = "f não pode ser gravado!";
-                                }
-                                Toast.makeText(this, canwrite2, Toast.LENGTH_SHORT).show();
                                 try {
-                                    fw = new FileWriter(f.getName(), true);
+                                    //File temp = f;
+                                    fw = new FileWriter(f, true);
                                     //Attempt to invoke virtual method 'java.io.Writer java.io.FileWriter.append(char)' on a null object reference
                                     //TENTAR GERAR DIRETAMENTE O ARQUIVO E REALIZAR O APPEND NO INICIO DO CÓDIGO
+                                    //String textToPrint = ((EditText) findViewById(R.id.edListar)).getText().toString();
+                                    fw.append("\n").append(String.valueOf(((EditText) findViewById(R.id.edListar)).getText())).append("\n");
+                                    //char yeahr = textToPrint.charAt(3);
+                                    //fw.append(yeahr+"\n");
                                 }
                                 catch (Exception e){
+
+                                    Toast.makeText(this, "Deu erro ao criar o FileWriter ou no Append: " + e.getMessage(), Toast.LENGTH_LONG).show();
                                     e.printStackTrace();
-                                    fw = new FileWriter("LOG_DE_ERRO", true);
-                                    fw.append(e.getMessage());
+                                    fw = null;
                                     fw.flush();
                                     fw.close();
                                 }
-                                String yeah = "owyear!";
-                                char yeahr = yeah.charAt(1);
-                                Toast.makeText(this, "FW meio", Toast.LENGTH_SHORT).show();
-                                fw.append(yeahr);
-                                fw.append(yeahr);
-                                fw.append(yeahr);
-//                                fw.append("GOD BLESS IT!");
-//                                fw.append("GOD BLESS IT!");
-//                                fw.append("GOD BLESS IT!");
-                                Toast.makeText(this, "FW fim", Toast.LENGTH_SHORT).show();
                                 fw.flush();
                                 fw.close();
-
-                                Toast.makeText(this, "FW testado", Toast.LENGTH_SHORT).show();
-
-                                /*fosExt = openFileOutput(f.getName(), Context.MODE_APPEND); //Já tentei incluindo o .txt no final
-                                fosExt.write((((EditText)findViewById(R.id.edListar)).getText().toString()).getBytes());
-                                fosExt.flush();
-                                fosExt.close();*/
-
-
-
-
-//                                Não funciona
-//                                openFileOutput(f.getName(), MODE_APPEND).write((((EditText)findViewById(R.id.edListar)).getText().toString()).getBytes());
-
-//                                Não funciona
-//                                fosExt = new FileOutputStream(f.getName(), true);
-//                                byte[] edListar = ((EditText)findViewById(R.id.edListar)).getText().toString().getBytes();
-//                                fosExt.write(edListar);
-
-//                                Não funciona
-//                                fosExt = new FileOutputStream(f.getName(), true);
-//                                fosExt.write((((EditText)findViewById(R.id.edListar)).getText().toString()).getBytes());
-
-
                             }
                             catch (IOException ioe){
                                 ioe.printStackTrace();
                                 Toast.makeText(this, ioe.getMessage(), Toast.LENGTH_SHORT).show();
                                 Toast.makeText(this, "IOException", Toast.LENGTH_SHORT).show();
                             }
-                            //fw.append(((EditText)findViewById(R.id.edListar)).getText().toString());
-                            //fosExt.write(("\n").getBytes());
-                            //Toast.makeText(this, ((EditText)findViewById(R.id.edListar)).getText().toString(), Toast.LENGTH_SHORT).show();
-                            //Toast.makeText(this, (((EditText)findViewById(R.id.edListar)).getText().toString().getBytes()).toString(), Toast.LENGTH_SHORT).show();
-                            //fosExt.write(((EditText)findViewById(R.id.edListar)).getText().toString().getBytes());
-                            //fosExt.write(mybytes);
+                            finally {
+                                //fw = null;
+                                //fw.close();
+                                //Quando o FileWriter é setado como Null dá erro pois não é possível fechar um FileWriter null, e ele acusa que a instância fw não foi iniciada.
+                                Toast.makeText(this, "Finally ativado", Toast.LENGTH_SHORT).show();
+                            }
 
                             Toast.makeText(this, "Arquivo existente escrito!", Toast.LENGTH_SHORT).show();
                             fExistente =+ 1;
                         }
-                        else {
-                            Toast.makeText(this, i +" - fExistente = "+ fExistente, Toast.LENGTH_SHORT).show();
-                        }
-                        /*((TextView)findViewById(R.id.txtaArquivosListados)).append("\n");
-                        ((TextView)findViewById(R.id.txtaArquivosListados)).setText(f.getName());*/
-                        //Toast.makeText(this, (f.getName()), Toast.LENGTH_SHORT).show();
                     }
                 }
                 if (fExistente == 0){
-                    //Toast.makeText(this, "If fora do array!", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(this, "Arquivo não localizado", Toast.LENGTH_SHORT).show();
                     fosExt = new FileOutputStream(fileExt);
                     fosExt.write(((EditText)findViewById(R.id.edListar)).getText().toString().getBytes());
-                    Toast.makeText(this, "Novo arquivo escrito!", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(this, "Novo arquivo criado!", Toast.LENGTH_SHORT).show();
+                    fosExt.close();
                 }
             }
             else {
@@ -316,28 +267,29 @@ public class Export extends AppCompatActivity {
                 fosExt = new FileOutputStream(fileExt);
                 fosExt.write(((EditText)findViewById(R.id.edListar)).getText().toString().getBytes());
                 Toast.makeText(this, "Novo arquivo criado!", Toast.LENGTH_SHORT).show();
+                fosExt.close();
             }
-
-            /*fosExt = new FileOutputStream(fileExt);
-            fosExt.write(((EditText)findViewById(R.id.edListar)).getText().toString().getBytes());
-            Toast.makeText(this, "Escrivinhado!", Toast.LENGTH_SHORT).show();
-            fosExt.close();*/
             Listar(findViewById(R.id.arquivosListados));
         }
         catch (Exception e){
             Toast.makeText(this, "Não foi possível escrever", Toast.LENGTH_SHORT).show();
             e.printStackTrace();
-            ((EditText)findViewById(R.id.edListar)).setText(e.getMessage());
+            //((EditText)findViewById(R.id.edListar)).setText(e.getMessage());
             Toast.makeText(this, e.getMessage(), Toast.LENGTH_SHORT).show();
         }
-        try {
-            fosExt.close();
-        }
-        catch (Exception e){
-            e.printStackTrace();
-            Toast.makeText(this, e.getMessage(), Toast.LENGTH_SHORT).show();
-            Toast.makeText(this, "Não foi possível fechar", Toast.LENGTH_SHORT).show();
-        }
+//        VERIFICAR NECESSIDADE DO CÓDIGO ABAIXO
+//        try {
+//            fosExt.close();
+//        }
+//        catch (Exception e){
+//            e.printStackTrace();
+//            Toast.makeText(this, e.getMessage(), Toast.LENGTH_SHORT).show();
+//            Toast.makeText(this, "Não foi possível fechar", Toast.LENGTH_SHORT).show();
+//        }
+
+
+
+
 
 //        File file = new File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOCUMENTS) + "/" + nomeDiretorio + "/", "RecebaEssetxt");
 //        FileOutputStream fileOutputStream;
