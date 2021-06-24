@@ -111,26 +111,13 @@ public class Export extends AppCompatActivity {
     public void criarArquivo(View v){
 
         diretorioApp = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).getPath();
-        //diretorioApp = Environment.getExternalStorageDirectory().getAbsolutePath() + "/"+nomeDiretorio+"/";
-//
-//        CÓDIGO ABAIXO CRIADO PARA TESTAR SE ERA POSSÍVEL ESCREVER
-//        File temp = new File(diretorioApp);
-//        String canwrite;
-//        if (temp.canWrite()){
-//            canwrite = "yes!!";
-//        }
-//        else {
-//            canwrite = "NO!";
-//        }
-//        Toast.makeText(this, canwrite, Toast.LENGTH_SHORT).show();
-
+        //NÃO CONSEGUI ALTERAR UM ARQUIVO CRIADO NESSE DIRETÓRIO, APENAS NO DIRECTORY_DOWNLOADS - diretorioApp = Environment.getExternalStorageDirectory().getAbsolutePath() + "/"+nomeDiretorio+"/";
 
         diretorio = new File(diretorioApp);
         diretorio.mkdirs();
 
         //nomeArquivo = String.valueOf(((EditText) findViewById(R.id.edSelectedFile)).getText());
         nomeArquivo = (((EditText) findViewById(R.id.edSelectedFile)).getText().toString()) + ".txt";
-        //Toast.makeText(this, nomeArquivo, Toast.LENGTH_SHORT).show();
         File fileExt;
         FileOutputStream fosExt = null;
         FileInputStream fisExt = null;
@@ -138,72 +125,7 @@ public class Export extends AppCompatActivity {
 
         fileExt = new File(diretorioApp, nomeArquivo);
         fileExt.getParentFile().mkdirs();
-
-//        JÁ DEU MERDA LOGO DE INICIO MESMO! KKK
-//        try{
-//            fw = new FileWriter(diretorioApp, true);
-//            fw.append("\n");
-//        }
-//        catch (IOException io){
-//            io.printStackTrace();
-//            Toast.makeText(this, "Deu merda logo no inicio!", Toast.LENGTH_SHORT).show();
-//        }
-
-        //Fiz para testar, ainda sem resultados.
-//        try {
-//            //save("whatnow", "NovoArquivo.txt");
-//
-//            fosExt = openFileOutput(nomeArquivo, Context.MODE_APPEND);
-//            fosExt.write("whatnow".getBytes());
-//            fosExt.flush();
-//            fosExt.close();
-//        } catch (Exception e) {
-//            e.printStackTrace();
-//            Toast.makeText(this, e.getMessage(), Toast.LENGTH_SHORT).show();
-//        }
-
-
-
-        /*if(diretorioApp.contentEquals(nomeArquivo)){
-            Toast.makeText(this, "Primeiro teste - diretorioApp contem o arquivo!", Toast.LENGTH_SHORT).show();
-            fileExt = new File(diretorioApp);
-        }
-        else {
-            fileExt = new File(diretorioApp, nomeArquivo);
-            fileExt.getParentFile().mkdirs();
-            Toast.makeText(this, "Primeiro teste deu negativo", Toast.LENGTH_SHORT).show();
-            Toast.makeText(this, diretorioApp.toString(), Toast.LENGTH_SHORT).show();
-            Toast.makeText(this, nomeArquivo.toString(), Toast.LENGTH_SHORT).show();
-        }*/
-
-
-
-        //FileOutputStream fosExt = null;
-        /*try {
-            fosExt = new FileOutputStream(fileExt);
-        }
-        catch (Exception e){
-            Toast.makeText(this, "Arquivo não encontrado", Toast.LENGTH_SHORT).show();
-        }*/
-
-
-
-
-
-
-
         try {
-            /*if (((((EditText) findViewById(R.id.edSelectedFile)).getText().toString())).equals(fileExt.getName() + ".txt")){
-                fosExt = openFileOutput(nomeArquivo, MODE_APPEND);
-                fosExt.write(((EditText)findViewById(R.id.edListar)).getText().toString().getBytes());
-
-                Toast.makeText(this, "Arquivo existente!", Toast.LENGTH_SHORT).show();
-            }
-            else {
-                //fosExt.write(((EditText)findViewById(R.id.edListar)).getText().toString().getBytes());
-                Toast.makeText(this, "Arquivo NÃO existente!", Toast.LENGTH_SHORT).show();
-            }*/
-
             File[] listarArquivos = diretorio.listFiles();
             if (listarArquivos != null){
                 int fExistente = 0;
@@ -217,11 +139,7 @@ public class Export extends AppCompatActivity {
                             Toast.makeText(this, ("Arquivo localizado: " + f.getName()), Toast.LENGTH_SHORT).show();
                             try {
                                 try {
-                                    //File temp = f;
                                     fw = new FileWriter(f, true);
-                                    //Attempt to invoke virtual method 'java.io.Writer java.io.FileWriter.append(char)' on a null object reference
-                                    //TENTAR GERAR DIRETAMENTE O ARQUIVO E REALIZAR O APPEND NO INICIO DO CÓDIGO
-                                    //String textToPrint = ((EditText) findViewById(R.id.edListar)).getText().toString();
                                     fw.append("\n").append(String.valueOf(((EditText) findViewById(R.id.edListar)).getText())).append("\n");
                                     //char yeahr = textToPrint.charAt(3);
                                     //fw.append(yeahr+"\n");
@@ -277,37 +195,6 @@ public class Export extends AppCompatActivity {
             //((EditText)findViewById(R.id.edListar)).setText(e.getMessage());
             Toast.makeText(this, e.getMessage(), Toast.LENGTH_SHORT).show();
         }
-//        VERIFICAR NECESSIDADE DO CÓDIGO ABAIXO
-//        try {
-//            fosExt.close();
-//        }
-//        catch (Exception e){
-//            e.printStackTrace();
-//            Toast.makeText(this, e.getMessage(), Toast.LENGTH_SHORT).show();
-//            Toast.makeText(this, "Não foi possível fechar", Toast.LENGTH_SHORT).show();
-//        }
-
-
-
-
-
-//        File file = new File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOCUMENTS) + "/" + nomeDiretorio + "/", "RecebaEssetxt");
-//        FileOutputStream fileOutputStream;
-//
-//        try {
-//            fileOutputStream = new FileOutputStream(file);
-//            fileOutputStream.write("string".getBytes());
-//            fileOutputStream.close();
-//            file.setExecutable(true);
-//            file.setReadable(true);
-//            file.setWritable(true);
-//
-//            MediaScannerConnection.scanFile(this, new String[]{file.getAbsolutePath()}, null, null);
-//        }
-//        catch (Exception e){
-//            Toast.makeText(this, e.getMessage(), Toast.LENGTH_SHORT).show();
-//            e.printStackTrace();
-//        }
     }
 
 
