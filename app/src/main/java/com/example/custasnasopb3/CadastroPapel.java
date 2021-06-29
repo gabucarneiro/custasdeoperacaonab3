@@ -40,6 +40,8 @@ public class CadastroPapel extends AppCompatActivity {
 
     TextView resumoBD;
 
+    Export exp = new Export();
+
     // *** TASKS ***
     //*** OK *** dar continuidade criação do método de cadastro dos papéis; OK
     //*** OK *** fazer lista de papeis para cadastrar; OK
@@ -340,21 +342,21 @@ public class CadastroPapel extends AppCompatActivity {
                     dbh.addPapel(papel);
                     Integer idCustas;
                     Double emptyTempCheck = dbh.getCustas(998).getCorretagem() + dbh.getCustas(998).getCustodia() + dbh.getCustas(998).getTx_liquidacao() + dbh.getCustas(998).getTx_negociacao() + dbh.getCustas(998).getIss();
-                    Toaster("emptyTempCheck = " + emptyTempCheck);
+                    //Toaster("emptyTempCheck = " + emptyTempCheck);
                     if (emptyTempCheck== 0.0){
                         idCustas = 999;
                         //TODO excluir o Toaster teste abaixo
-                        Toaster("ID temporário vazio: " + idCustas);
+                        //Toaster("ID temporário vazio: " + idCustas);
                     }
                     else {
                         idCustas = 998;
                         //TODO excluir o Toaster teste abaixo
-                        Toaster("ID temporário válido: " + idCustas);
+                        //Toaster("ID temporário válido: " + idCustas);
                     }
                     Custas custas;
 
                     Double ultimoCorretagem = dbh.getCustas(idCustas).getCorretagem();
-                    Toaster("Enviado para a possição " + idCustas + " : " + String.valueOf(ultimoCorretagem));
+                    //Toaster("Enviado para a possição " + idCustas + " : " + String.valueOf(ultimoCorretagem));
                     Boolean isCorretagemFixa = dbh.getCustas(idCustas).isCorretagemFixa();
                     Double ultimoCustodia = dbh.getCustas(idCustas).getCustodia();
                     Boolean isCustodiaFixa = dbh.getCustas(idCustas).isCustodiaFixa();
@@ -368,15 +370,24 @@ public class CadastroPapel extends AppCompatActivity {
                     custas = new Custas(ultimo, ultimoCorretagem, ultimoCustodia, ultimoTxLiquidacao, ultimoTxNegociacao, ultimoIss, isCorretagemFixa, isCustodiaFixa, isTxLiquidacaoFixa, isTxNegociacaoFixa, isIssFixo);
                     if(dbh.getCustas(ultimo).getCorretagem()== 0.0 && dbh.getCustas(ultimo).getCustodia()==0.0 && dbh.getCustas(ultimo).getTx_liquidacao()==0.0 && dbh.getCustas(ultimo).getTx_negociacao()==0.0 && dbh.getCustas(ultimo).getIss()==0.0) {
                         dbh.addCustas(custas);
-                        //TODO excluir o Toaster teste abaixo
-                        Toaster("Add na posição " + ultimo + " : " + String.valueOf(ultimoCorretagem));
                     }
                     else {
                         dbh.updateCustas(custas, ultimo);
-                        //TODO excluir o Toaster teste abaixo
-                        Toaster("Updated na possição " + ultimo + " : " + String.valueOf(ultimoCorretagem));
                     }
 
+
+                    StringBuilder sb = new StringBuilder();
+                    sb.append("---- PAPEL INCLUÍDO ----\n");
+                    sb.append("- Papel: "+ dbh.getPapel(ultimo).getNomePapel() + "\n");
+                    sb.append("- Valor: "+ dbh.getPapel(ultimo).getValor() + "\n");
+                    sb.append("- Quantidade: "+ dbh.getPapel(ultimo).getQuantidade() + "\n");
+                    sb.append("- Fracionário: "+ dbh.getPapel(ultimo).isFracionario() + "\n");
+                    sb.append("- TxCorretagem: "+ dbh.getCustas(ultimo).getCorretagem() + "\n");
+                    sb.append("- TxCustodia: "+ dbh.getCustas(ultimo).getCustodia() + "\n");
+                    sb.append("- TxLiquidação: "+ dbh.getCustas(ultimo).getTx_liquidacao() + "\n");
+                    sb.append("- TxNegociação: "+ dbh.getCustas(ultimo).getTx_negociacao() + "\n");
+                    sb.append("- Iss: "+ dbh.getCustas(ultimo).getIss() + "\n");
+                    exp.loggIt(sb.toString());
 
                     Toaster(papel.getNomePapel()+ " foi SALVO com sucesso!");
                 }
@@ -463,17 +474,17 @@ public class CadastroPapel extends AppCompatActivity {
                         if (emptyTempCheck== 0.0){
                             idCustas = 999;
                             //TODO excluir o Toaster teste abaixo
-                            Toaster("else if ID temporário vazio: " + idCustas);
+                            //Toaster("else if ID temporário vazio: " + idCustas);
                         }
                         else {
                             idCustas = 998;
                             //TODO excluir o Toaster teste abaixo
-                            Toaster("else if ID temporário válido: " + idCustas);
+                            //Toaster("else if ID temporário válido: " + idCustas);
                         }
                         Custas custas;
 
                         Double ultimoCorretagem = dbh.getCustas(idCustas).getCorretagem();
-                        Toaster("Enviado para a possição " + idCustas + " : " + String.valueOf(ultimoCorretagem));
+                        //Toaster("Enviado para a possição " + idCustas + " : " + String.valueOf(ultimoCorretagem));
                         Boolean isCorretagemFixa = dbh.getCustas(idCustas).isCorretagemFixa();
                         Double ultimoCustodia = dbh.getCustas(idCustas).getCustodia();
                         Boolean isCustodiaFixa = dbh.getCustas(idCustas).isCustodiaFixa();
@@ -487,13 +498,26 @@ public class CadastroPapel extends AppCompatActivity {
                         custas = new Custas(ID_PAPEL, ultimoCorretagem, ultimoCustodia, ultimoTxLiquidacao, ultimoTxNegociacao, ultimoIss, isCorretagemFixa, isCustodiaFixa, isTxLiquidacaoFixa, isTxNegociacaoFixa, isIssFixo);
                         if(dbh.getCustas(ID_PAPEL).getCorretagem()== 0.0 && dbh.getCustas(ID_PAPEL).getCustodia()==0.0 && dbh.getCustas(ID_PAPEL).getTx_liquidacao()==0.0 && dbh.getCustas(ID_PAPEL).getTx_negociacao()==0.0 && dbh.getCustas(ID_PAPEL).getIss()==0.0) {
                             dbh.addCustas(custas);
-                            Toaster("Add na possição " + ID_PAPEL + " : " + String.valueOf(ultimoCorretagem));
+                            //Toaster("Add na possição " + ID_PAPEL + " : " + String.valueOf(ultimoCorretagem));
                         }
                         else {
                             dbh.updateCustas(custas, ID_PAPEL);
-                            Toaster("Updated na possição " + ID_PAPEL + " : " + String.valueOf(ultimoCorretagem));
+                            //Toaster("Updated na possição " + ID_PAPEL + " : " + String.valueOf(ultimoCorretagem));
                         }
 
+                        StringBuilder sb = new StringBuilder();
+                        sb.append("---- PAPEL ALTERADO ----\n");
+                        sb.append("- ID: "+ dbh.getPapel(ID_PAPEL).getId() + "\n");
+                        sb.append("- Papel: "+ dbh.getPapel(ID_PAPEL).getNomePapel() + "\n");
+                        sb.append("- Valor: "+ dbh.getPapel(ID_PAPEL).getValor() + "\n");
+                        sb.append("- Quantidade: "+ dbh.getPapel(ID_PAPEL).getQuantidade() + "\n");
+                        sb.append("- Fracionário: "+ dbh.getPapel(ID_PAPEL).isFracionario() + "\n");
+                        sb.append("- TxCorretagem: "+ dbh.getCustas(ID_PAPEL).getCorretagem() + "\n");
+                        sb.append("- TxCustodia: "+ dbh.getCustas(ID_PAPEL).getCustodia() + "\n");
+                        sb.append("- TxLiquidação: "+ dbh.getCustas(ID_PAPEL).getTx_liquidacao() + "\n");
+                        sb.append("- TxNegociação: "+ dbh.getCustas(ID_PAPEL).getTx_negociacao() + "\n");
+                        sb.append("- Iss: "+ dbh.getCustas(ID_PAPEL).getIss() + "\n");
+                        exp.loggIt(sb.toString());
                         Toaster(papel.getNomePapel()+ " foi ALTERADO com sucesso!");
                     }
                     else{
@@ -505,17 +529,17 @@ public class CadastroPapel extends AppCompatActivity {
                         if (emptyTempCheck==0.0){
                             idCustas = 999;
                             //TODO excluir o Toaster teste abaixo
-                            Toaster("else else ID temporário vazio: " + idCustas);
+                            //Toaster("else else ID temporário vazio: " + idCustas);
                         }
                         else {
                             idCustas = 998;
                             //TODO excluir o Toaster teste abaixo
-                            Toaster("else else ID temporário válido: " + idCustas);
+                            //Toaster("else else ID temporário válido: " + idCustas);
                         }
                         Custas custas;
 
                         Double ultimoCorretagem = dbh.getCustas(idCustas).getCorretagem();
-                        Toaster("Enviado para a possição " + idCustas + " : " + String.valueOf(ultimoCorretagem));
+                        //Toaster("Enviado para a possição " + idCustas + " : " + String.valueOf(ultimoCorretagem));
                         Boolean isCorretagemFixa = dbh.getCustas(idCustas).isCorretagemFixa();
                         Double ultimoCustodia = dbh.getCustas(idCustas).getCustodia();
                         Boolean isCustodiaFixa = dbh.getCustas(idCustas).isCustodiaFixa();
@@ -529,13 +553,25 @@ public class CadastroPapel extends AppCompatActivity {
                         custas = new Custas(ultimo, ultimoCorretagem, ultimoCustodia, ultimoTxLiquidacao, ultimoTxNegociacao, ultimoIss, isCorretagemFixa, isCustodiaFixa, isTxLiquidacaoFixa, isTxNegociacaoFixa, isIssFixo);
                         if(dbh.getCustas(ultimo).getCorretagem()== 0.0 && dbh.getCustas(ultimo).getCustodia()==0.0 && dbh.getCustas(ultimo).getTx_liquidacao()==0.0 && dbh.getCustas(ultimo).getTx_negociacao()==0.0 && dbh.getCustas(ultimo).getIss()==0.0) {
                             dbh.addCustas(custas);
-                            Toaster("Add na possição " + ultimo + " : " + String.valueOf(ultimoCorretagem));
+                            //Toaster("Add na possição " + ultimo + " : " + String.valueOf(ultimoCorretagem));
                         }
                         else {
                             dbh.updateCustas(custas, ultimo);
-                            Toaster("Updated na possição " + ultimo + " : " + String.valueOf(ultimoCorretagem));
+                            //Toaster("Updated na possição " + ultimo + " : " + String.valueOf(ultimoCorretagem));
                         }
 
+                        StringBuilder sb = new StringBuilder();
+                        sb.append("---- PAPEL INCLUÍDO ----\n");
+                        sb.append("- Papel: "+ dbh.getPapel(ultimo).getNomePapel() + "\n");
+                        sb.append("- Valor: "+ dbh.getPapel(ultimo).getValor() + "\n");
+                        sb.append("- Quantidade: "+ dbh.getPapel(ultimo).getQuantidade() + "\n");
+                        sb.append("- Fracionário: "+ dbh.getPapel(ultimo).isFracionario() + "\n");
+                        sb.append("- TxCorretagem: "+ dbh.getCustas(ultimo).getCorretagem() + "\n");
+                        sb.append("- TxCustodia: "+ dbh.getCustas(ultimo).getCustodia() + "\n");
+                        sb.append("- TxLiquidação: "+ dbh.getCustas(ultimo).getTx_liquidacao() + "\n");
+                        sb.append("- TxNegociação: "+ dbh.getCustas(ultimo).getTx_negociacao() + "\n");
+                        sb.append("- Iss: "+ dbh.getCustas(ultimo).getIss() + "\n");
+                        exp.loggIt(sb.toString());
                         Toaster(papel.getNomePapel()+ " foi SALVO com sucesso!");
                     }
                 }
@@ -602,8 +638,6 @@ public class CadastroPapel extends AppCompatActivity {
     }
 
     public void excluirPapelBD(View view){
-        //TODO excluir o Toaster abaixo ou colocar no final
-        Toaster("Excluído com sucesso!");
         DataBaseHelper dbh = new DataBaseHelper(this);
 
         et_IdPapel =findViewById(R.id.idPapel);
@@ -637,6 +671,17 @@ public class CadastroPapel extends AppCompatActivity {
             }
             else{
                 try{
+                    StringBuilder sb = new StringBuilder();
+                    sb.append("---- PAPEL EXCLUÍDO ----\n");
+                    sb.append("- Papel: "+ dbh.getPapel(ID_PAPEL).getNomePapel() + "\n");
+                    sb.append("- Valor: "+ dbh.getPapel(ID_PAPEL).getValor() + "\n");
+                    sb.append("- Quantidade: "+ dbh.getPapel(ID_PAPEL).getQuantidade() + "\n");
+                    sb.append("- TxCorretagem: "+ dbh.getCustas(ID_PAPEL).getCorretagem() + "\n");
+                    sb.append("- TxCustodia: "+ dbh.getCustas(ID_PAPEL).getCustodia() + "\n");
+                    sb.append("- TxLiquidação: "+ dbh.getCustas(ID_PAPEL).getTx_liquidacao() + "\n");
+                    sb.append("- TxNegociação: "+ dbh.getCustas(ID_PAPEL).getTx_negociacao() + "\n");
+                    sb.append("- Iss: "+ dbh.getCustas(ID_PAPEL).getIss() + "\n");
+                    exp.loggIt(sb.toString());
                     dbh.excludePapel(ID_PAPEL);
                     dbh.excludeCustas(ID_PAPEL);
                     int ID_PAPELPlus = ID_PAPEL+1;
@@ -693,11 +738,11 @@ public class CadastroPapel extends AppCompatActivity {
 
             if (et_IdPapel.getText()!=null || !(String.valueOf(et_IdPapel.getText()).equals(""))){
                 idPapelCustas = Integer.parseInt(String.valueOf(et_IdPapel.getText()));
-                Toaster("If ativado idPapelCustas: " + idPapelCustas);
+                //Toaster("If ativado idPapelCustas: " + idPapelCustas);
             }
             else {
                 idPapelCustas = 998;
-                Toaster("Else ativado idPapelCustas: " + idPapelCustas);
+                //Toaster("Else ativado idPapelCustas: " + idPapelCustas);
             }
         }
         /*catch (NullPointerException npe){
@@ -712,16 +757,16 @@ public class CadastroPapel extends AppCompatActivity {
             if (String.valueOf(et_IdPapel.getText()).equals("")){
                 if (dbhCustas.getCustas(998).getCorretagem() != 0.0 || dbhCustas.getCustas(998).getCustodia() != 0.0 || dbhCustas.getCustas(998).getTx_liquidacao() != 0.0 || dbhCustas.getCustas(998).getTx_negociacao() != 0.0 || dbhCustas.getCustas(998).getIss() != 0.0){
                     idPapelCustas = 998;
-                    Toaster("Else if catch ativado idPapelCustas: " + idPapelCustas);
+                    //Toaster("Else if catch ativado idPapelCustas: " + idPapelCustas);
                 }
                 else {
                     idPapelCustas = 999;
-                    Toaster("ELSE DENTRO DO catch ativado idPapelCustas: " + idPapelCustas);
+                    //Toaster("ELSE DENTRO DO catch ativado idPapelCustas: " + idPapelCustas);
                 }
             }
             else {
                 idPapelCustas = 999;
-                Toaster("ELSE Exception padrão: ID " + idPapelCustas);
+                //Toaster("ELSE Exception padrão: ID " + idPapelCustas);
             }
             //Toaster("Parâmetro padrão utilizado");
             Toaster(e.getMessage());

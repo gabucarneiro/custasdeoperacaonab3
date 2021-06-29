@@ -100,5 +100,13 @@
             android:layout_alignParentEnd="true"
             android:text="CanWrite"
             android:onClick="testeCanWrite"/>
+        <Button
+            android:id="@+id/btnExportarBD"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="15dp"
+            android:layout_alignParentEnd="true"
+            android:text="Exportar Banco de dados"
+            android:onClick="ExportarBD"/>
     </LinearLayout>
 </ScrollView>
