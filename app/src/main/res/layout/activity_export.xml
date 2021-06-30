@@ -116,5 +116,12 @@
             android:layout_alignParentEnd="true"
             android:text="Exportar Banco de dados"
             android:onClick="ExportarBD"/>
+        <Spinner
+            android:id="@+id/spinnerListar"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="15dp"
+            android:layout_alignParentEnd="true"
+            android:onClick="Listar"/>
     </LinearLayout>
 </ScrollView>

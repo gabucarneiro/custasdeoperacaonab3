@@ -8,6 +8,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
 import android.widget.LinearLayout;
+import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -34,7 +35,7 @@ public class Export extends AppCompatActivity {
     private String nomeDiretorio = "DiretorioTeste";
     private File diretorio;
     private String diretorioApp;
-    private String nomeArquivo = "OlhaoBreguecoFuncionando.txt";
+    private String nomeArquivo = "NomeGenerico.txt";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -386,10 +387,11 @@ public class Export extends AppCompatActivity {
     public void Listar(View v){
         LinearLayout LL = findViewById(R.id.arquivosListados);
         LL.setOrientation(LinearLayout.VERTICAL);
-        diretorioApp = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS) + "/"+nomeDiretorio+"/";
+        diretorioApp = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).getPath();
 
         diretorio = new File(diretorioApp);
         diretorio.mkdirs();
+        Spinner spList = new Spinner(this);
         try {
             File[] listarArquivos = diretorio.listFiles();
             if (listarArquivos != null){
