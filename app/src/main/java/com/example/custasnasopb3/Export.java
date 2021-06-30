@@ -47,7 +47,7 @@ public class Export extends AppCompatActivity {
     public Export() {
     }
 
-    public void ExportarBD(View view){
+    public void ExportarBDLeitura(View view){
         DataBaseHelper dbh = new DataBaseHelper(this);
         CharSequence currentTime = android.text.format.DateFormat.format("-yyyy-MM-dd kk-mm-ss", System.currentTimeMillis());
         CharSequence time = currentTime.toString();
@@ -71,8 +71,35 @@ public class Export extends AppCompatActivity {
                 exportIt(sb.toString(), time);
             }
 
-            Toast.makeText(this, "Banco de dados exportado com sucesso!", Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, "Arquivo para leitura pronto!", Toast.LENGTH_SHORT).show();
             Toast.makeText(this, "Arquivo: "+ String.valueOf(time), Toast.LENGTH_SHORT).show();
+        }
+        catch (Exception e){
+            e.printStackTrace();
+        }
+    }
+
+    public void ExportarBD(View view){
+        DataBaseHelper dbh = new DataBaseHelper(this);
+        CharSequence currentTime = android.text.format.DateFormat.format("-yyyy-MM-dd kk-mm-ss", System.currentTimeMillis());
+        CharSequence time = "BackUp" + currentTime.toString();
+        int count = (int) dbh.contador();
+        //Toast.makeText(this, String.valueOf(count), Toast.LENGTH_SHORT).show();
+
+        StringBuilder sb = new StringBuilder();
+        sb.append("\n");
+        sb.append("ID - ").append("Nome - ").append("Valor - ").append("Quant. - ").append("Fracio. - ").append("Corret. - ").append("CorFix - ").append("Custod - ").append("CustFix - ").append("TxLiq - ").append("TxLiFix - ").append("TxNeg - ").append("TxNeFix - ").append("Iss - ").append("IssFix\n");
+        try {
+            for (int i = 1; count >= i; i++){
+                sb.append(dbh.getPapel(i).getId()).append(" - ").append(dbh.getPapel(i).getNomePapel()).append(" - ").append(dbh.getPapel(i).getValor()).append(" - ").append(dbh.getPapel(i).getQuantidade());
+                sb.append(" - ").append(dbh.getCustas(i).getCorretagem()).append(" - ").append(dbh.getCustas(i).isCorretagemFixa()).append(" - ").append(dbh.getCustas(i).getCustodia()).append(" - ").append(dbh.getCustas(i).isCustodiaFixa()).append(" - ").append(dbh.getCustas(i).getTx_liquidacao()).append(" - ").append(dbh.getCustas(i).isTx_liquidacaoFixa()).append(" - ").append(dbh.getCustas(i).getTx_negociacao()).append(" - ").append(dbh.getCustas(i).isTx_negociacaoFixa()).append(" - ").append(dbh.getCustas(i).getIss()).append(" - ").append(dbh.getCustas(i).isIssFixo());
+                sb.append(" -------- \n");
+            }
+            exportIt(sb.toString(), time);
+
+            Toast.makeText(this, "Arquivo exportado com sucesso!", Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, "Arquivo: "+ String.valueOf(time), Toast.LENGTH_SHORT).show();
+
         }
         catch (Exception e){
             e.printStackTrace();
@@ -236,13 +263,12 @@ public class Export extends AppCompatActivity {
         if (time == null){
             time = android.text.format.DateFormat.format("-yyyy-MM-dd kk-mm", System.currentTimeMillis());
         }
-        nomeArquivo = "CustasNaB2BancoDeDados"+ time +".txt";
+        nomeArquivo = "CustasNaB3BancoDeDados"+ time +".txt";
         diretorio = new File(diretorioApp);
         diretorio.mkdirs();
 
 
         File fLog;
-        FileOutputStream fosLog;
         FileWriter fw = null;
 
         fLog = new File(diretorioApp, nomeArquivo);
