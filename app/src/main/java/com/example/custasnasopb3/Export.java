@@ -32,7 +32,7 @@ import java.util.Scanner;
 
 public class Export extends AppCompatActivity {
 
-    private String nomeDiretorio = "DiretorioTeste";
+    //private String nomeDiretorio = "DiretorioTeste";
     private File diretorio;
     private String diretorioApp;
     private String nomeArquivo = "NomeGenerico.txt";
@@ -470,22 +470,81 @@ public class Export extends AppCompatActivity {
         String lstrlinha;
         try {
             lstrNomeArq = ((EditText) findViewById(R.id.edSelectedFile)).getText().toString();
-            ((TextView)findViewById(R.id.edListar)).setText("Not yet");
+            //((TextView)findViewById(R.id.edListar)).setText("Not yet");
 
-            arq = new File(Environment.getExternalStorageDirectory(), lstrNomeArq);
+            arq = new File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).getPath(), lstrNomeArq);
             BufferedReader br = new BufferedReader(new FileReader(arq));
 
             while ((lstrlinha = br.readLine()) != null){
-                if (!((TextView)findViewById(R.id.edListar)).getText().toString().equals("")){
-                    ((TextView)findViewById(R.id.edListar)).append("\n");
-                    ((TextView)findViewById(R.id.edListar)).append(lstrlinha);
-                }
+                ((TextView)findViewById(R.id.edListar)).append("\n");
+                ((TextView)findViewById(R.id.edListar)).append(lstrlinha);
             }
             Toast.makeText(this, "Texto carregado com sucesso!", Toast.LENGTH_SHORT).show();
+            br.close();
         }
         catch (Exception e){
             Toast.makeText(this, (e.getMessage()), Toast.LENGTH_SHORT).show();
             ((TextView)findViewById(R.id.edListar)).setText("Not happening..");
+        }
+    }
+
+    public void carregar2(View v){
+        String lstrNomeArq;
+        File arq;
+        String lstrlinha;
+        int caracteres = Integer.parseInt(((EditText)findViewById(R.id.edCharAt)).getText().toString());
+        int offCharReader = Integer.parseInt(((EditText)findViewById(R.id.edOffCharReader)).getText().toString());
+        int offSequencia = Integer.parseInt(((EditText)findViewById(R.id.edOffSequencia)).getText().toString());
+        //int skip = Integer.parseInt(((EditText)findViewById(R.id.edSkip)).getText().toString());
+        try {
+            lstrNomeArq = ((EditText) findViewById(R.id.edSelectedFile)).getText().toString();
+            //((TextView)findViewById(R.id.edListar)).setText("Not yet");
+
+            arq = new File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).getPath(), lstrNomeArq);
+            BufferedReader br = new BufferedReader(new FileReader(arq));
+
+            char[] chars = new char[8000];
+            String sequencia;
+
+            int charReader = br.read(chars, offCharReader, caracteres);
+
+            if (charReader != -1){
+
+                /*for (int i = 0; i<chars.length && chars != null; i++){
+                    if (chars[i] != skip){
+
+                    }
+                }*/
+                sequencia = new String(chars, offSequencia, charReader);
+            }
+            else {
+                sequencia = "";
+            }
+
+            ((TextView)findViewById(R.id.txtRecebeDoArquivo)).append("\n");
+            ((TextView)findViewById(R.id.txtRecebeDoArquivo)).append(sequencia);
+            /*while ((lstrlinha = br.readLine()) != null){
+                ((TextView)findViewById(R.id.txtRecebeDoArquivo)).append("\n");
+                ((TextView)findViewById(R.id.txtRecebeDoArquivo)).append(lstrlinha);
+
+                br.read(chars, 0,5);
+
+                *//*String str = new String("hello javatpoint how r u");
+                char[] ch = new char[18];
+                try{
+                    str.getChars(0, 16, ch, 0);
+                    System.out.println(ch);
+                }
+                catch(Exception e){System.out.println(e);}*//*
+
+
+            }*/
+            br.close();
+            Toast.makeText(this, "Texto carregado com sucesso!", Toast.LENGTH_SHORT).show();
+        }
+        catch (Exception e){
+            Toast.makeText(this, (e.getMessage()), Toast.LENGTH_SHORT).show();
+            ((TextView)findViewById(R.id.txtRecebeDoArquivo)).setText("Not happening..");
         }
     }
 }

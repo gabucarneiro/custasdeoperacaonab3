@@ -99,7 +99,33 @@
             android:layout_marginTop="15dp"
             android:layout_alignParentEnd="true"
             android:text="CanWrite"
-            android:onClick="testeCanWrite"/>
+            android:onClick="carregar2"/>
+        <EditText
+            android:id="@+id/edCharAt"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:hint="CharAt"/>
+        <EditText
+            android:id="@+id/edOffCharReader"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:hint="OffCharReader"/>
+        <EditText
+            android:id="@+id/edOffSequencia"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:hint="OffSequencia"/>
+        <EditText
+            android:id="@+id/edSkip"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:hint="Skip"/>
+        <TextView
+            android:id="@+id/txtRecebeDoArquivo"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text=""
+            android:inputType="textMultiLine"/>
         <Button
             android:id="@+id/btnExportarBD"
             android:layout_width="wrap_content"
@@ -116,12 +142,12 @@
             android:layout_alignParentEnd="true"
             android:text="Exportar Banco de dados"
             android:onClick="ExportarBD"/>
-        <Spinner
+        <!--<Spinner
             android:id="@+id/spinnerListar"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="15dp"
             android:layout_alignParentEnd="true"
-            android:onClick="Listar"/>
+            android:onClick="Listar"/>-->
     </LinearLayout>
 </ScrollView>
