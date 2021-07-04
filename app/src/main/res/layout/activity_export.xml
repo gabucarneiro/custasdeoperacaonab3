@@ -120,6 +120,26 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:hint="Skip"/>
+        <EditText
+            android:id="@+id/edID"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:hint="ID"/>
+        <EditText
+            android:id="@+id/edNome"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:hint="Papel"/>
+        <EditText
+            android:id="@+id/edValor"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:hint="Valor"/>
+        <EditText
+            android:id="@+id/edQuantidade"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:hint="Quant."/>
         <TextView
             android:id="@+id/txtRecebeDoArquivo"
             android:layout_width="wrap_content"

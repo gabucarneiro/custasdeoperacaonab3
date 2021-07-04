@@ -53,7 +53,7 @@ public class Export extends AppCompatActivity {
         CharSequence currentTime = android.text.format.DateFormat.format("-yyyy-MM-dd kk-mm-ss", System.currentTimeMillis());
         CharSequence time = currentTime.toString();
         int count = (int) dbh.contador();
-        Toast.makeText(this, String.valueOf(count), Toast.LENGTH_SHORT).show();
+        //Toast.makeText(this, String.valueOf(count), Toast.LENGTH_SHORT).show();
 
         try {
             for (int i = 1; count >= i; i++){
@@ -89,12 +89,12 @@ public class Export extends AppCompatActivity {
 
         StringBuilder sb = new StringBuilder();
         sb.append("\n");
-        sb.append("ID - ").append("Nome - ").append("Valor - ").append("Quant. - ").append("Fracio. - ").append("Corret. - ").append("CorFix - ").append("Custod - ").append("CustFix - ").append("TxLiq - ").append("TxLiFix - ").append("TxNeg - ").append("TxNeFix - ").append("Iss - ").append("IssFix\n");
+        //sb.append("ID - ").append("Nome - ").append("Valor - ").append("Quant. - ").append("Fracio. - ").append("Corret. - ").append("CorFix - ").append("Custod - ").append("CustFix - ").append("TxLiq - ").append("TxLiFix - ").append("TxNeg - ").append("TxNeFix - ").append("Iss - ").append("IssFix\n");
         try {
             for (int i = 1; count >= i; i++){
                 sb.append(dbh.getPapel(i).getId()).append(" - ").append(dbh.getPapel(i).getNomePapel()).append(" - ").append(dbh.getPapel(i).getValor()).append(" - ").append(dbh.getPapel(i).getQuantidade());
                 sb.append(" - ").append(dbh.getCustas(i).getCorretagem()).append(" - ").append(dbh.getCustas(i).isCorretagemFixa()).append(" - ").append(dbh.getCustas(i).getCustodia()).append(" - ").append(dbh.getCustas(i).isCustodiaFixa()).append(" - ").append(dbh.getCustas(i).getTx_liquidacao()).append(" - ").append(dbh.getCustas(i).isTx_liquidacaoFixa()).append(" - ").append(dbh.getCustas(i).getTx_negociacao()).append(" - ").append(dbh.getCustas(i).isTx_negociacaoFixa()).append(" - ").append(dbh.getCustas(i).getIss()).append(" - ").append(dbh.getCustas(i).isIssFixo());
-                sb.append(" -------- \n");
+                sb.append(" -\n");
             }
             exportIt(sb.toString(), time);
 
@@ -264,10 +264,9 @@ public class Export extends AppCompatActivity {
         if (time == null){
             time = android.text.format.DateFormat.format("-yyyy-MM-dd kk-mm", System.currentTimeMillis());
         }
-        nomeArquivo = "CustasNaB3BancoDeDados"+ time +".txt";
+        nomeArquivo = "CustasB3BD"+ time +".txt";
         diretorio = new File(diretorioApp);
         diretorio.mkdirs();
-
 
         File fLog;
         FileWriter fw = null;
@@ -282,7 +281,7 @@ public class Export extends AppCompatActivity {
 
         try {
             fw = new FileWriter(fLog, true);
-            fw.append(android.text.format.DateFormat.format("yyyy-MM-dd kk:mm:ss - ", System.currentTimeMillis()));
+            fw.append(android.text.format.DateFormat.format("yyyy-MM-dd kk:mm:ss-", System.currentTimeMillis()));
             fw.append(data + "\n");
             fw.flush();
             fw.close();
@@ -313,7 +312,7 @@ public class Export extends AppCompatActivity {
 
     public void loggIt(String data){
         diretorioApp = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).getPath();
-        nomeArquivo = "CustasNaB3Log.txt";
+        nomeArquivo = "CustasB3Log.txt";
         diretorio = new File(diretorioApp);
         diretorio.mkdirs();
 
@@ -476,7 +475,7 @@ public class Export extends AppCompatActivity {
             BufferedReader br = new BufferedReader(new FileReader(arq));
 
             while ((lstrlinha = br.readLine()) != null){
-                ((TextView)findViewById(R.id.edListar)).append("\n");
+                //((TextView)findViewById(R.id.edListar)).append("\n");
                 ((TextView)findViewById(R.id.edListar)).append(lstrlinha);
             }
             Toast.makeText(this, "Texto carregado com sucesso!", Toast.LENGTH_SHORT).show();
@@ -492,58 +491,131 @@ public class Export extends AppCompatActivity {
         String lstrNomeArq;
         File arq;
         String lstrlinha;
-        int caracteres = Integer.parseInt(((EditText)findViewById(R.id.edCharAt)).getText().toString());
-        int offCharReader = Integer.parseInt(((EditText)findViewById(R.id.edOffCharReader)).getText().toString());
-        int offSequencia = Integer.parseInt(((EditText)findViewById(R.id.edOffSequencia)).getText().toString());
-        //int skip = Integer.parseInt(((EditText)findViewById(R.id.edSkip)).getText().toString());
+        int caracteres, offCharReader, offSequencia, skip;
+        try {
+            caracteres = Integer.parseInt(((EditText)findViewById(R.id.edCharAt)).getText().toString());
+            offCharReader = Integer.parseInt(((EditText)findViewById(R.id.edOffCharReader)).getText().toString());
+            offSequencia = Integer.parseInt(((EditText)findViewById(R.id.edOffSequencia)).getText().toString());
+            skip = Integer.parseInt(((EditText)findViewById(R.id.edSkip)).getText().toString());
+        }
+        catch (Exception e) {
+            ((EditText)findViewById(R.id.edCharAt)).setText(String.valueOf(1000));
+            ((EditText)findViewById(R.id.edOffCharReader)).setText(String.valueOf(0));
+            ((EditText)findViewById(R.id.edOffSequencia)).setText(String.valueOf(20));
+            ((EditText)findViewById(R.id.edSkip)).setText(String.valueOf(128));
+
+            caracteres = Integer.parseInt(((EditText)findViewById(R.id.edCharAt)).getText().toString());
+            offCharReader = Integer.parseInt(((EditText)findViewById(R.id.edOffCharReader)).getText().toString());
+            offSequencia = Integer.parseInt(((EditText)findViewById(R.id.edOffSequencia)).getText().toString());
+            skip = Integer.parseInt(((EditText)findViewById(R.id.edSkip)).getText().toString());
+        }
+
         try {
             lstrNomeArq = ((EditText) findViewById(R.id.edSelectedFile)).getText().toString();
-            //((TextView)findViewById(R.id.edListar)).setText("Not yet");
 
             arq = new File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).getPath(), lstrNomeArq);
             BufferedReader br = new BufferedReader(new FileReader(arq));
 
+
             char[] chars = new char[8000];
             String sequencia;
+            String charAtt;
+            int count = 0;
 
             int charReader = br.read(chars, offCharReader, caracteres);
 
             if (charReader != -1){
-
-                /*for (int i = 0; i<chars.length && chars != null; i++){
-                    if (chars[i] != skip){
-
-                    }
-                }*/
                 sequencia = new String(chars, offSequencia, charReader);
+                char charAt;
+                ((EditText)findViewById(R.id.edCharAt)).setText(String.valueOf(chars.length));
+                System.out.println(chars.length);
+                StringBuilder sb = new StringBuilder();
+                for (int i = 0; i<sequencia.length(); i++){
+                    charAt = sequencia.charAt(i);
+                    charAtt = String.valueOf(charAt);
+                    if (!charAtt.equals("-")){
+                        if (!charAtt.equals(" ")){
+                            if (!charAtt.equals("\n")){
+                                sb.append(charAtt);
+                            }
+                        }
+                    }
+                    else {
+                        //((TextView)findViewById(R.id.txtRecebeDoArquivo)).append(sb.toString());
+                        //((TextView)findViewById(R.id.txtRecebeDoArquivo)).append("\n");
+                        count++;
+                        switch (count){
+                            case 0:
+                                System.out.println("----- START! -----");
+                                break;
+                            case 1:
+                                String id = sb.toString();
+                                System.out.println("ID: " + id);
+                                ((EditText)findViewById(R.id.edID)).setText(id);
+                                break;
+                            case 2:
+                                String nome = sb.toString();
+                                System.out.println("Nome: " + nome);
+                                ((EditText)findViewById(R.id.edNome)).setText(sb.toString());
+                                break;
+                            case 3:
+                                String valor = sb.toString();
+                                System.out.println("Valor: " + valor);
+                                ((EditText)findViewById(R.id.edValor)).setText(sb.toString());
+                                break;
+                            case 4:
+                                String quantidade = sb.toString();
+                                System.out.println("Quantidade: " + quantidade);
+                                ((EditText)findViewById(R.id.edQuantidade)).setText(sb.toString());
+                                break;
+                            case 5:
+                                System.out.println("Corretagem: " + sb.toString());
+                                break;
+                            case 6:
+                                System.out.println("Corretagem fixa: " + sb.toString());
+                                break;
+                            case 7:
+                                System.out.println("Custodia: " + sb.toString());
+                                break;
+                            case 8:
+                                System.out.println("Custodia fixa: " + sb.toString());
+                                break;
+                            case 9:
+                                System.out.println("Tx de Liquidação: " + sb.toString());
+                                break;
+                            case 10:
+                                System.out.println("Tx de Liquidação fixa: " + sb.toString());
+                                break;
+                            case 11:
+                                System.out.println("Tx de Negociação: " + sb.toString());
+                                break;
+                            case 12:
+                                System.out.println("Tx de Negociação fixa: " + sb.toString());
+                                break;
+                            case 13:
+                                System.out.println("ISS: " + sb.toString());
+                                break;
+                            case 14:
+                                System.out.println("ISS fixo: " + sb.toString());
+                                break;
+                        }
+                        sb = new StringBuilder();
+                        if (count == 14){
+                            count = 0;
+                            System.out.println("RESTART COUNT: " + count);
+                        }
+                    }
+                }
             }
             else {
+                charAtt = "Tcharannn!";
                 sequencia = "";
             }
-
-            ((TextView)findViewById(R.id.txtRecebeDoArquivo)).append("\n");
-            ((TextView)findViewById(R.id.txtRecebeDoArquivo)).append(sequencia);
-            /*while ((lstrlinha = br.readLine()) != null){
-                ((TextView)findViewById(R.id.txtRecebeDoArquivo)).append("\n");
-                ((TextView)findViewById(R.id.txtRecebeDoArquivo)).append(lstrlinha);
-
-                br.read(chars, 0,5);
-
-                *//*String str = new String("hello javatpoint how r u");
-                char[] ch = new char[18];
-                try{
-                    str.getChars(0, 16, ch, 0);
-                    System.out.println(ch);
-                }
-                catch(Exception e){System.out.println(e);}*//*
-
-
-            }*/
             br.close();
             Toast.makeText(this, "Texto carregado com sucesso!", Toast.LENGTH_SHORT).show();
         }
         catch (Exception e){
-            Toast.makeText(this, (e.getMessage()), Toast.LENGTH_SHORT).show();
+            System.out.println(e.getMessage());
             ((TextView)findViewById(R.id.txtRecebeDoArquivo)).setText("Not happening..");
         }
     }
