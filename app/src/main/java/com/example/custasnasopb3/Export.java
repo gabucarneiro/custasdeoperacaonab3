@@ -493,13 +493,13 @@ public class Export extends AppCompatActivity {
 
         String lstrNomeArq;
         File arq;
-        int caracteres, offCharReader, offSequencia, skip;
+        //int caracteres, offCharReader, offSequencia, skip;
         String nomePapel = "null";
         double valorPapel = 0.0, ultimoCorretagem = 0.0, ultimoCustodia = 0.0, ultimoTxLiquidacao = 0.0, ultimoTxNegociacao = 0.0, ultimoIss = 0.0;
         int quantidade = 0;
         boolean fracionario = false, isCorretagemFixa = false, isCustodiaFixa = false, isTxLiquidacaoFixa = false, isTxNegociacaoFixa = false, isIssFixo = false;
 
-        try {
+        /*try {
             caracteres = Integer.parseInt(((EditText)findViewById(R.id.edCharAt)).getText().toString());
             offCharReader = Integer.parseInt(((EditText)findViewById(R.id.edOffCharReader)).getText().toString());
             offSequencia = Integer.parseInt(((EditText)findViewById(R.id.edOffSequencia)).getText().toString());
@@ -515,7 +515,7 @@ public class Export extends AppCompatActivity {
             offCharReader = Integer.parseInt(((EditText)findViewById(R.id.edOffCharReader)).getText().toString());
             offSequencia = Integer.parseInt(((EditText)findViewById(R.id.edOffSequencia)).getText().toString());
             skip = Integer.parseInt(((EditText)findViewById(R.id.edSkip)).getText().toString());
-        }
+        }*/
 
         try {
             lstrNomeArq = ((EditText) findViewById(R.id.edSelectedFile)).getText().toString();
@@ -529,10 +529,10 @@ public class Export extends AppCompatActivity {
             String charAtt;
             int count = 0;
 
-            int charReader = br.read(chars, offCharReader, caracteres);
+            int charReader = br.read(chars, 0, chars.length);
 
             if (charReader != -1){
-                sequencia = new String(chars, offSequencia, charReader);
+                sequencia = new String(chars, 20, charReader);
                 char charAt;
                 ((EditText)findViewById(R.id.edCharAt)).setText(String.valueOf(chars.length));
                 System.out.println(chars.length);
@@ -663,8 +663,8 @@ public class Export extends AppCompatActivity {
                             System.out.println("Papel: " + papel.toString3());
                             custas = new Custas(ultimo, ultimoCorretagem, ultimoCustodia, ultimoTxLiquidacao, ultimoTxNegociacao, ultimoIss, isCorretagemFixa, isCustodiaFixa, isTxLiquidacaoFixa, isTxNegociacaoFixa, isIssFixo);
                             System.out.println("Custas: " + custas.getCorretagem() + " - " + custas.getCustodia() + " - " + custas.getTx_liquidacao() + " - " + custas.getTx_negociacao() + " - " + custas.getIss() + " - " + custas.isCorretagemFixa() + " - " + custas.isCustodiaFixa() + " - " + custas.isTx_liquidacaoFixa() + " - " + custas.isTx_negociacaoFixa() + " - " + custas.isIssFixo());
-                            /*dbh.addPapel(papel);
-                            dbh.addCustas(custas);*/
+                            dbh.addPapel(papel);
+                            dbh.addCustas(custas);
                             count = 0;
                             System.out.println("RESTART COUNT: " + count);
                         }
