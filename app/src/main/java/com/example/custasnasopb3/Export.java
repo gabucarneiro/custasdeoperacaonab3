@@ -59,7 +59,7 @@ public class Export extends AppCompatActivity {
 
     public void VerifyPermission(View view){
         if (ContextCompat.checkSelfPermission(Export.this, Manifest.permission.WRITE_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED){
-            Toast.makeText(this, "Got ya! Permission granted already!", Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, "Permissão já concedida!", Toast.LENGTH_SHORT).show();
         }
         else {
             requestStoragePermission();
@@ -70,7 +70,7 @@ public class Export extends AppCompatActivity {
         if (ActivityCompat.shouldShowRequestPermissionRationale(this, Manifest.permission.WRITE_EXTERNAL_STORAGE)){
             new AlertDialog.Builder(this)
                     .setTitle("Permissão necessária")
-                    .setTitle("Permissão necessária para prosseguir com o paranauê!")
+                    .setTitle("Permissão necessária para gravar os dados em .txt no espaço interno. Caso contrário, apenas não teremos essa função disponível.")
                     .setPositiveButton("OK", new DialogInterface.OnClickListener() {
                         @Override
                         public void onClick(DialogInterface dialog, int which) {
@@ -103,7 +103,7 @@ public class Export extends AppCompatActivity {
 
     public void VerifyPermissionRead(View view){
         if (ContextCompat.checkSelfPermission(Export.this, Manifest.permission.READ_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED){
-            Toast.makeText(this, "Got ya! Permission granted already!", Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, "Permissão já concedida!", Toast.LENGTH_SHORT).show();
         }
         else {
             requestStoragePermissionRead();
@@ -114,7 +114,7 @@ public class Export extends AppCompatActivity {
         if (ActivityCompat.shouldShowRequestPermissionRationale(this, Manifest.permission.READ_EXTERNAL_STORAGE)){
             new AlertDialog.Builder(this)
                     .setTitle("Permissão necessária")
-                    .setTitle("Permissão necessária para prosseguir com o paranauê!")
+                    .setTitle("Permissão necessária para gravar os dados em .txt no espaço interno. Caso contrário, apenas não teremos essa função disponível.")
                     .setPositiveButton("OK", new DialogInterface.OnClickListener() {
                         @Override
                         public void onClick(DialogInterface dialog, int which) {
@@ -137,7 +137,7 @@ public class Export extends AppCompatActivity {
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
         if (requestCode == STORAGE_PERMISSION_CODE_READ){
             if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED){
-                Toast.makeText(this, "Hell yeah - onRequestPermitionResult overrided!", Toast.LENGTH_SHORT).show();
+                Toast.makeText(this, "onRequestPermitionResult overrided!", Toast.LENGTH_SHORT).show();
             }
             else {
                 Toast.makeText(this, "Aw no - onRequestPermitionResult overrided!", Toast.LENGTH_SHORT).show();
@@ -290,11 +290,11 @@ public class Export extends AppCompatActivity {
         System.out.println("locFiles canWrite: "+canwrite2);
     }*/
     public void testeCanWrite(View v){
-        //AQUI CONSEGUE ESCREVER!!!!  File temp = new File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_MOVIES).getPath());
+        //AQUI CONSEGUE ESCREVER NO SIMULADOR mas não consegui no celular!!!!  File temp = new File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_MOVIES).getPath());
 
         //diretorioApp = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).getPath();
         //diretorioApp = Environment.getExternalStoragePublicDirectory(Environment.getExternalStorageState()).getPath();
-        nomeArquivo = ((EditText)findViewById(R.id.edSelectedFile)).getText().toString();
+        //nomeArquivo = ((EditText)findViewById(R.id.edSelectedFile)).getText().toString();
         File diretorioFDP = this.getExternalFilesDir(null);
         //diretorioApp = Environment.getExternalStoragePublicDirectory(nomeArquivo).getPath();
         System.out.println("diretorioFDP: "+ diretorioFDP);
@@ -507,22 +507,23 @@ public class Export extends AppCompatActivity {
         }
     }
 
-    public void loggIt(String data){
+    public void loggIt(Context context, String data){
         //diretorioApp = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).getPath();
-        File flDiretorioApp = null;
         try {
-            flDiretorioApp = new File(Export.this.getExternalFilesDir(null).getPath());
+            File flDiretorioApp = new File(context.getExternalFilesDir(null).getPath());
+            System.out.println("loggIt - flDiretorioApp: "+ flDiretorioApp);
+
+            nomeArquivo = "CustasB3Log.txt";
+            diretorio = new File(flDiretorioApp, "/");
+            System.out.println("loggIt - diretorio: "+ diretorio);
+            diretorio.mkdirs();
+            System.out.println("diretorio em loggIt = "+ diretorio);
+            System.out.println("canWrite: "+diretorio.canWrite());
+            System.out.println("canRead: "+diretorio.canRead());
         } catch (Exception e) {
             e.printStackTrace();
             System.out.println("loggIt - flDiretorioApp CATCH: "+ e.getMessage());
         }
-        nomeArquivo = "CustasB3Log.txt";
-        diretorio = new File(flDiretorioApp, "/");
-        diretorio.mkdirs();
-        System.out.println("diretorio em loggIt = "+ diretorio);
-        System.out.println("canWrite: "+diretorio.canWrite());
-        System.out.println("canRead: "+diretorio.canRead());
-
         File fLog;
         FileOutputStream fosLog;
         FileWriter fw = null;
@@ -566,7 +567,7 @@ public class Export extends AppCompatActivity {
         finally {
             if (fw != null){
                 try {
-                    fw.flush();
+                    //fw.flush();
                     fw.close();
                 }
                 catch (IOException ioe){

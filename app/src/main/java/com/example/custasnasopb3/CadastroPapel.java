@@ -70,7 +70,6 @@ public class CadastroPapel extends AppCompatActivity {
         /*et_IdPapel.setText("999");
         Toaster(String.valueOf(et_IdPapel.getText()));*/
 
-
         Button tvteste = (Button) findViewById(R.id.tvteste);
         tvteste.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -387,7 +386,11 @@ public class CadastroPapel extends AppCompatActivity {
                     sb.append("- TxLiquidação: "+ dbh.getCustas(ultimo).getTx_liquidacao() + "\n");
                     sb.append("- TxNegociação: "+ dbh.getCustas(ultimo).getTx_negociacao() + "\n");
                     sb.append("- Iss: "+ dbh.getCustas(ultimo).getIss() + "\n");
-                    exp.loggIt(sb.toString());
+                    try {
+                        exp.loggIt(this, sb.toString());
+                    } catch (Exception e) {
+                        System.out.println("FALHA AO TENTAR INSERIR NO LOG");
+                    }
 
                     Toaster(papel.getNomePapel()+ " foi SALVO com sucesso!");
                 }
@@ -517,7 +520,11 @@ public class CadastroPapel extends AppCompatActivity {
                         sb.append("- TxLiquidação: "+ dbh.getCustas(ID_PAPEL).getTx_liquidacao() + "\n");
                         sb.append("- TxNegociação: "+ dbh.getCustas(ID_PAPEL).getTx_negociacao() + "\n");
                         sb.append("- Iss: "+ dbh.getCustas(ID_PAPEL).getIss() + "\n");
-                        exp.loggIt(sb.toString());
+                        try {
+                            exp.loggIt(this, sb.toString());
+                        } catch (Exception e) {
+                            System.out.println("FALHA AO TENTAR INSERIR NO LOG");
+                        }
                         Toaster(papel.getNomePapel()+ " foi ALTERADO com sucesso!");
                     }
                     else{
@@ -571,7 +578,11 @@ public class CadastroPapel extends AppCompatActivity {
                         sb.append("- TxLiquidação: "+ dbh.getCustas(ultimo).getTx_liquidacao() + "\n");
                         sb.append("- TxNegociação: "+ dbh.getCustas(ultimo).getTx_negociacao() + "\n");
                         sb.append("- Iss: "+ dbh.getCustas(ultimo).getIss() + "\n");
-                        exp.loggIt(sb.toString());
+                        try {
+                            exp.loggIt(this, sb.toString());
+                        } catch (Exception e) {
+                            System.out.println("FALHA AO TENTAR INSERIR NO LOG: " + e.getMessage());
+                        }
                         Toaster(papel.getNomePapel()+ " foi SALVO com sucesso!");
                     }
                 }
@@ -580,6 +591,11 @@ public class CadastroPapel extends AppCompatActivity {
             }
             catch (Exception e){
                 e.printStackTrace();
+                try {
+                    exp.loggIt(this, e.getMessage());
+                } catch (Exception eLog) {
+                    System.out.println("FALHA AO TENTAR INSERIR NO LOG: " + eLog.getMessage());
+                }
                 Toaster("Erro ao salvar!");
             }
         }
@@ -629,6 +645,11 @@ public class CadastroPapel extends AppCompatActivity {
                 listagem.setText(dbh.getPapel(i).toString3());
                 resumoView2BD.addView(listagem);
             }catch (Exception e){
+                try {
+                    exp.loggIt(this, e.toString());
+                } catch (Exception eLog) {
+                    System.out.println("FALHA AO TENTAR INSERIR NO LOG: " + eLog.getMessage());
+                }
                 Toaster("Erro ao listar!");
             }
         }
@@ -663,6 +684,11 @@ public class CadastroPapel extends AppCompatActivity {
                     dbh.excludeCustas(ID_PAPEL);
                 }
                 catch (Exception e){
+                    try {
+                        exp.loggIt(this, e.toString());
+                    } catch (Exception eLog) {
+                        System.out.println("FALHA AO TENTAR INSERIR NO LOG: " + eLog.getMessage());
+                    }
                     //TODO Remover esta mensagem
                     Toaster("Nada na tabela de custas");
                 }
@@ -681,7 +707,11 @@ public class CadastroPapel extends AppCompatActivity {
                     sb.append("- TxLiquidação: "+ dbh.getCustas(ID_PAPEL).getTx_liquidacao() + "\n");
                     sb.append("- TxNegociação: "+ dbh.getCustas(ID_PAPEL).getTx_negociacao() + "\n");
                     sb.append("- Iss: "+ dbh.getCustas(ID_PAPEL).getIss() + "\n");
-                    exp.loggIt(sb.toString());
+                    try {
+                        exp.loggIt(this, sb.toString());
+                    } catch (Exception e) {
+                        System.out.println("FALHA AO TENTAR INSERIR NO LOG: " + e.getMessage());
+                    }
                     dbh.excludePapel(ID_PAPEL);
                     dbh.excludeCustas(ID_PAPEL);
                     int ID_PAPELPlus = ID_PAPEL+1;
@@ -702,6 +732,11 @@ public class CadastroPapel extends AppCompatActivity {
 
                     }
 
+                    try {
+                        exp.loggIt(this, "Papel excluido com sucesso!");
+                    } catch (Exception e) {
+                        System.out.println("FALHA AO TENTAR INSERIR NO LOG: " + e.getMessage());
+                    }
                     Toaster("Papel excluido com sucesso!");
                     Clear();
                 }
@@ -1022,15 +1057,30 @@ public class CadastroPapel extends AppCompatActivity {
                         dbhCustas.addTempIdCustas(custasTemp);
                         dbhCustas.updateTempIdCustas(custasTemp, idTempCustas);
                         Toaster("Salvo nas custas vazias! TRY "+ ultimo);
+                        try {
+                            exp.loggIt(CadastroPapel.this, "Custas salvas");
+                        } catch (Exception e) {
+                            System.out.println("FALHA AO TENTAR INSERIR NO LOG: " + e.getMessage());
+                        }
                     }
                     catch (Exception e){
                         dbhCustas.updateTempIdCustas(custasTemp, idTempCustas);
                         Toaster("CATCH na hora de salvar as custas! "+ ultimo);
+                        try {
+                            exp.loggIt(CadastroPapel.this, "Custas atualizadas");
+                        } catch (Exception eLog) {
+                            System.out.println("FALHA AO TENTAR INSERIR NO LOG: " + e.getMessage());
+                        }
                     }
                 }
                 else {
                     dbhCustas.updateTempIdCustas(custasTemp, idTempCustas);
                     Toaster("Salvo! Else"+ ultimo);
+                    try {
+                        exp.loggIt(CadastroPapel.this, "Custas atualizadas");
+                    } catch (Exception e) {
+                        System.out.println("FALHA AO TENTAR INSERIR NO LOG: " + e.getMessage());
+                    }
                 }
                 //Toaster("Salvo! "+ ultimo);
                 dbhCustas.close();
