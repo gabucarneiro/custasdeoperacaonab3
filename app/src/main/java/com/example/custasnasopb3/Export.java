@@ -1,9 +1,15 @@
 package com.example.custasnasopb3;
 
+import android.Manifest;
+import android.app.AlertDialog;
+import android.app.Instrumentation;
 import android.content.Context;
+import android.content.DialogInterface;
+import android.content.pm.PackageManager;
 import android.media.MediaScannerConnection;
 import android.os.Bundle;
 import android.os.Environment;
+import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
@@ -12,7 +18,10 @@ import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
 import androidx.viewpager.widget.ViewPager;
 
 import java.io.BufferedReader;
@@ -30,8 +39,11 @@ import java.nio.file.Files;
 import java.util.Calendar;
 import java.util.Scanner;
 
+
 public class Export extends AppCompatActivity {
 
+    private int STORAGE_PERMISSION_CODE = 1;
+    private int STORAGE_PERMISSION_CODE_READ = 1;
     //private String nomeDiretorio = "DiretorioTeste";
     private File diretorio;
     private String diretorioApp;
@@ -45,8 +57,120 @@ public class Export extends AppCompatActivity {
         Listar(findViewById(R.id.arquivosListados));
     }
 
+    public void VerifyPermission(View view){
+        if (ContextCompat.checkSelfPermission(Export.this, Manifest.permission.WRITE_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED){
+            Toast.makeText(this, "Got ya! Permission granted already!", Toast.LENGTH_SHORT).show();
+        }
+        else {
+            requestStoragePermission();
+        }
+    }
+
+    private void requestStoragePermission(){
+        if (ActivityCompat.shouldShowRequestPermissionRationale(this, Manifest.permission.WRITE_EXTERNAL_STORAGE)){
+            new AlertDialog.Builder(this)
+                    .setTitle("Permissão necessária")
+                    .setTitle("Permissão necessária para prosseguir com o paranauê!")
+                    .setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            ActivityCompat.requestPermissions(Export.this, new String[] {Manifest.permission.WRITE_EXTERNAL_STORAGE}, STORAGE_PERMISSION_CODE);
+                        }
+                    })
+                    .setNegativeButton("NOP!", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            dialog.dismiss();
+                        }
+                    }).create().show();
+        }
+        else {
+            ActivityCompat.requestPermissions(this, new String[] {Manifest.permission.WRITE_EXTERNAL_STORAGE}, STORAGE_PERMISSION_CODE);
+        }
+    }
+
+    /*@Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        if (requestCode == STORAGE_PERMISSION_CODE){
+            if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED){
+                Toast.makeText(this, "Hell yeah - onRequestPermitionResult overrided!", Toast.LENGTH_SHORT).show();
+            }
+            else {
+                Toast.makeText(this, "Aw no - onRequestPermitionResult overrided!", Toast.LENGTH_SHORT).show();
+            }
+        }
+    }*/
+
+    public void VerifyPermissionRead(View view){
+        if (ContextCompat.checkSelfPermission(Export.this, Manifest.permission.READ_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED){
+            Toast.makeText(this, "Got ya! Permission granted already!", Toast.LENGTH_SHORT).show();
+        }
+        else {
+            requestStoragePermissionRead();
+        }
+    }
+
+    private void requestStoragePermissionRead(){
+        if (ActivityCompat.shouldShowRequestPermissionRationale(this, Manifest.permission.READ_EXTERNAL_STORAGE)){
+            new AlertDialog.Builder(this)
+                    .setTitle("Permissão necessária")
+                    .setTitle("Permissão necessária para prosseguir com o paranauê!")
+                    .setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            ActivityCompat.requestPermissions(Export.this, new String[] {Manifest.permission.READ_EXTERNAL_STORAGE}, STORAGE_PERMISSION_CODE_READ);
+                        }
+                    })
+                    .setNegativeButton("NOP!", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            dialog.dismiss();
+                        }
+                    }).create().show();
+        }
+        else {
+            ActivityCompat.requestPermissions(this, new String[] {Manifest.permission.READ_EXTERNAL_STORAGE}, STORAGE_PERMISSION_CODE_READ);
+        }
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        if (requestCode == STORAGE_PERMISSION_CODE_READ){
+            if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED){
+                Toast.makeText(this, "Hell yeah - onRequestPermitionResult overrided!", Toast.LENGTH_SHORT).show();
+            }
+            else {
+                Toast.makeText(this, "Aw no - onRequestPermitionResult overrided!", Toast.LENGTH_SHORT).show();
+            }
+        }
+    }
+
     public Export() {
     }
+
+    /*private boolean requestPremissionLauncher (){
+        Instrumentation.ActivityResult
+    } = requestForActivityResult(ActivityResultContracts.RequestPermission()
+    ){ isGranted: Boolean ->
+        if(isGranted){
+            Log.i("Permission: ", "Granted")
+        } else {
+            Log.i("Permission: ", "Denied")
+        }
+    }*/
+
+    /*private Instrumentation.ActivityResult<String> requestPermissionLauncher = registerForActivityResult(new RequestPermission(), isGranted -> {
+                if (isGranted) {
+                    // Permission is granted. Continue the action or workflow in your
+                    // app.
+                } else {
+                    // Explain to the user that the feature is unavailable because the
+                    // features requires a permission that the user has denied. At the
+                    // same time, respect the user's decision. Don't link to system
+                    // settings in an effort to convince the user to change their
+                    // decision.
+                }
+            });*/
 
     public void ExportarBDLeitura(View view){
         DataBaseHelper dbh = new DataBaseHelper(this);
@@ -140,16 +264,67 @@ public class Export extends AppCompatActivity {
 
         //sc.close();
     }
+    /*
+    FUNÇÃO UTILIZADA PARA DESCOBRIR ONDE SERIA POSSÍVEL CRIAR/MODIFICAR ARQUIVOS NO CELULAR
+    private File mApplicationDirectory;
+    public void initial(Context context) {
+        mApplicationDirectory = context.getExternalFilesDir(null);
+        System.out.println("*****mApplicationDirectory: "+context.getExternalFilesDir(null));
+        String canwrite2;
+        if (mApplicationDirectory.canWrite()){
+            canwrite2 = "mApplicationDirectory yes!!";
+        }
+        else {
+            canwrite2 = "mApplicationDirectory NO!";
+        }
+        System.out.println("mApplicationDirectory canWrite: "+canwrite2);
+
+        File locFiles = getFilesDir();
+        String canwrite3;
+        if (locFiles.canWrite()){
+            canwrite3 = "locFiles yes!!";
+        }
+        else {
+            canwrite3 = "locFiles NO!";
+        }
+        System.out.println("locFiles canWrite: "+canwrite2);
+    }*/
     public void testeCanWrite(View v){
         //AQUI CONSEGUE ESCREVER!!!!  File temp = new File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_MOVIES).getPath());
 
-        diretorioApp = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).getPath();
-        //diretorioApp = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_MOVIES);
-        //Environment.getExternalStorageDirectory().canWrite();
+        //diretorioApp = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).getPath();
+        //diretorioApp = Environment.getExternalStoragePublicDirectory(Environment.getExternalStorageState()).getPath();
+        nomeArquivo = ((EditText)findViewById(R.id.edSelectedFile)).getText().toString();
+        File diretorioFDP = this.getExternalFilesDir(null);
+        //diretorioApp = Environment.getExternalStoragePublicDirectory(nomeArquivo).getPath();
+        System.out.println("diretorioFDP: "+ diretorioFDP);
 
+//        String secStore = null;
+//        File f_secs;
+//        try {
+//            initial(this);
+//            secStore = System.getenv("EXTERNAL_STORAGE");
+//            System.out.println("secStore: "+secStore);
+//            f_secs = new File(secStore);
+//        } catch (Exception e) {
+//            System.out.println(e.getMessage());
+//            e.printStackTrace();
+//            f_secs = new File(diretorioApp);
+//        }
+
+//        String canwrite2;
+//        if (f_secs.canWrite()){
+//            canwrite2 = "yes!!";
+//        }
+//        else {
+//            canwrite2 = "NO!";
+//        }
+//        System.out.println("canWrite: "+canwrite2);
 
         //File temp = new File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_MOVIES).getPath());
-        File temp = new File(diretorioApp);
+        //*** Funciona no emulador ***
+        File temp = new File(diretorioFDP, "/");
+        temp.mkdirs();
         String canwrite;
         if (temp.canWrite()){
             canwrite = "yes!!";
@@ -171,20 +346,32 @@ public class Export extends AppCompatActivity {
 
     public void criarArquivo(View v){
 
-        diretorioApp = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).getPath();
+        //1 diretorioApp = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).getPath();
+
+
         //NÃO CONSEGUI ALTERAR UM ARQUIVO CRIADO NESSE DIRETÓRIO, APENAS NO DIRECTORY_DOWNLOADS - diretorioApp = Environment.getExternalStorageDirectory().getAbsolutePath() + "/"+nomeDiretorio+"/";
 
-        diretorio = new File(diretorioApp);
-        diretorio.mkdirs();
+        //1 diretorio = new File(diretorioApp);
+        //1 diretorio.mkdirs();
 
         //nomeArquivo = String.valueOf(((EditText) findViewById(R.id.edSelectedFile)).getText());
         nomeArquivo = (((EditText) findViewById(R.id.edSelectedFile)).getText().toString()) + ".txt";
+
         File fileExt;
         FileOutputStream fosExt = null;
         FileInputStream fisExt = null;
         FileWriter fw;
+        //1 *******
+        File flDiretorioApp = new File(this.getExternalFilesDir(null).getPath());
+        diretorio = new File(flDiretorioApp, "/");
+        diretorio.mkdirs();
+        System.out.println("diretorio em loggIt = "+diretorio);
+        System.out.println("canWrite: "+diretorio.canWrite());
+        System.out.println("canRead: "+diretorio.canRead());
+        //1 ********
 
-        fileExt = new File(diretorioApp, nomeArquivo);
+        //'fileExt = new File(diretorioApp, nomeArquivo);
+        fileExt = new File(diretorio, nomeArquivo);
         fileExt.getParentFile().mkdirs();
         try {
             File[] listarArquivos = diretorio.listFiles();
@@ -259,20 +446,29 @@ public class Export extends AppCompatActivity {
     }
 
     public void exportIt(String data, CharSequence time){
-        diretorioApp = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).getPath();
+        //1 diretorioApp = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).getPath();
+        File flDiretorioApp = new File(this.getExternalFilesDir(null).getPath());
+
+
         if (time == null){
             time = android.text.format.DateFormat.format("-yyyy-MM-dd kk-mm", System.currentTimeMillis());
         }
         nomeArquivo = "CustasB3BD"+ time +".txt";
-        diretorio = new File(diretorioApp);
+        diretorio = new File(flDiretorioApp, "/");
         diretorio.mkdirs();
+        System.out.println("diretorio em loggIt = "+ diretorio);
+        System.out.println("canWrite: "+ diretorio.canWrite());
+        System.out.println("canRead: "+ diretorio.canRead());
+        //1 diretorio = new File(diretorioApp);
+        //1 diretorio.mkdirs();
 
         File fLog;
         FileWriter fw = null;
 
-        fLog = new File(diretorioApp, nomeArquivo);
+        fLog = new File(diretorio, nomeArquivo);
         try {
             fLog.getParentFile().mkdirs();
+            System.out.println(" *** fLog.getParentFile().mkdirs(): "+fLog.getParentFile().mkdirs());
         }
         catch (NullPointerException npe){
             npe.printStackTrace();
@@ -293,39 +489,58 @@ public class Export extends AppCompatActivity {
                 }
                 catch (IOException ioe){
                     ioe.printStackTrace();
+                    System.out.println("exportIt 1 IOExcep");
                 }
             }
         }
         finally {
             if (fw != null){
                 try {
-                    fw.flush();
+                    //fw.flush();
                     fw.close();
                 }
                 catch (IOException ioe){
                     ioe.printStackTrace();
+                    System.out.println("exportIt finally IOExcep");
                 }
             }
         }
     }
 
     public void loggIt(String data){
-        diretorioApp = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).getPath();
+        //diretorioApp = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).getPath();
+        File flDiretorioApp = null;
+        try {
+            flDiretorioApp = new File(Export.this.getExternalFilesDir(null).getPath());
+        } catch (Exception e) {
+            e.printStackTrace();
+            System.out.println("loggIt - flDiretorioApp CATCH: "+ e.getMessage());
+        }
         nomeArquivo = "CustasB3Log.txt";
-        diretorio = new File(diretorioApp);
+        diretorio = new File(flDiretorioApp, "/");
         diretorio.mkdirs();
-
+        System.out.println("diretorio em loggIt = "+ diretorio);
+        System.out.println("canWrite: "+diretorio.canWrite());
+        System.out.println("canRead: "+diretorio.canRead());
 
         File fLog;
         FileOutputStream fosLog;
         FileWriter fw = null;
 
-        fLog = new File(diretorioApp, nomeArquivo);
+        //fLog = new File(diretorioApp, nomeArquivo);
+
+
+        //quando tento excluir um papel, existe um erro nessa função - acusando nullpointerexception
+        // java.lang.NullPointerException: Attempt to invoke virtual method 'java.io.File android.content.Context.getExternalFilesDir(java.lang.String)' on a null object reference
+        fLog = new File(diretorio, nomeArquivo);
         try {
             fLog.getParentFile().mkdirs();
+            System.out.println(" *** fLog.getParentFile().mkdirs(): "+fLog.getParentFile().mkdirs());
         }
         catch (NullPointerException npe){
             npe.printStackTrace();
+            System.out.println(" *** CATCH NullPointerException: "+ npe.getMessage());
+            System.out.println(" *** CATCH fLog.getParentFile().mkdirs(): "+fLog.getParentFile().mkdirs());
         }
 
         try {
@@ -337,12 +552,14 @@ public class Export extends AppCompatActivity {
         }
         catch (Exception e){
             e.printStackTrace();
+            System.out.println(" *** Exception loggIt: "+e.getMessage());
             if (fw != null){
                 try {
                     fw.close();
                 }
                 catch (IOException ioe){
                     ioe.printStackTrace();
+                    System.out.println("loggIt 1 IOExcep");
                 }
             }
         }
@@ -354,8 +571,10 @@ public class Export extends AppCompatActivity {
                 }
                 catch (IOException ioe){
                     ioe.printStackTrace();
+                    System.out.println("loggIt finally IOExcep");
                 }
             }
+            System.out.println("*** fLog está oculto: "+fLog.isHidden());
         }
     }
 
@@ -385,19 +604,33 @@ public class Export extends AppCompatActivity {
     public void Listar(View v){
         LinearLayout LL = findViewById(R.id.arquivosListados);
         LL.setOrientation(LinearLayout.VERTICAL);
-        diretorioApp = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).getPath();
+        //diretorioApp = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).getPath();
 
-        diretorio = new File(diretorioApp);
+        //diretorio = new File(diretorioApp);
+
+        diretorio = new File(this.getExternalFilesDir(null).getPath());
+        System.out.println("diretorio em Listar = "+diretorio);
         diretorio.mkdirs();
+        System.out.println("canWrite: "+diretorio.canWrite());
+        System.out.println("canRead: "+diretorio.canRead());
         Spinner spList = new Spinner(this);
         try {
             File[] listarArquivos = diretorio.listFiles();
+            try {
+                System.out.println("listarArquivos length: "+listarArquivos.length);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
             if (listarArquivos != null){
                 //Toast.makeText(this, "Array criado!", Toast.LENGTH_SHORT).show();
                 LL.removeAllViews();
                 for (int i = 0; i< listarArquivos.length; i++){
+                    //System.out.println("listarArquivos - dentro do For");
                     File f = listarArquivos[i];
-                    if (f.isFile()){
+                    //if (f.isFile()){
+                    if (f.canRead()){
+                        System.out.println("for i = "+i);
+                        System.out.println("f.Name(): "+f.getName());
                         TextView tv = new TextView(this);
                         tv.setText(f.getName());
                         LL.addView(tv);
@@ -406,7 +639,9 @@ public class Export extends AppCompatActivity {
             }
         }
         catch (Exception e){
+            System.out.println("Diretorio do catch: "+diretorio);
             TextView tv = new TextView(this);
+            System.out.println("Pasta vazia");
             tv.setText("Pasta vazia");
             LL.addView(tv);
         }
@@ -469,8 +704,14 @@ public class Export extends AppCompatActivity {
         try {
             lstrNomeArq = ((EditText) findViewById(R.id.edSelectedFile)).getText().toString();
             //((TextView)findViewById(R.id.edListar)).setText("Not yet");
+//            diretorio = new File(this.getExternalFilesDir(null).getPath());
+//        System.out.println("diretorio em Listar = "+diretorio);
+//        diretorio.mkdirs();
+//        System.out.println("canWrite: "+diretorio.canWrite());
+//        System.out.println("canRead: "+diretorio.canRead());
 
-            arq = new File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).getPath(), lstrNomeArq);
+            //arq = new File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).getPath(), lstrNomeArq);
+            arq = new File(this.getExternalFilesDir(null).getPath(), lstrNomeArq);
             BufferedReader br = new BufferedReader(new FileReader(arq));
 
             while ((lstrlinha = br.readLine()) != null){
@@ -482,7 +723,7 @@ public class Export extends AppCompatActivity {
         }
         catch (Exception e){
             Toast.makeText(this, (e.getMessage()), Toast.LENGTH_SHORT).show();
-            ((TextView)findViewById(R.id.edListar)).setText("Not happening..");
+            ((TextView)findViewById(R.id.edListar)).setText(e.getMessage());
         }
     }
 
@@ -520,7 +761,8 @@ public class Export extends AppCompatActivity {
         try {
             lstrNomeArq = ((EditText) findViewById(R.id.edSelectedFile)).getText().toString();
 
-            arq = new File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).getPath(), lstrNomeArq);
+            //arq = new File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).getPath(), lstrNomeArq);
+            arq = new File(this.getExternalFilesDir(null).getPath(), lstrNomeArq);
             BufferedReader br = new BufferedReader(new FileReader(arq));
 
 
