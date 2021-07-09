@@ -65,6 +65,11 @@
                 android:layout_toEndOf="@+id/txtListar"
                 android:layout_alignBaseline="@+id/txtListar"
                 android:hint="Arquivo txt"/>
+            <Spinner
+                android:id="@+id/spinFiles"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/txtListar"/>
 
             <EditText
                 android:id="@+id/edListar"

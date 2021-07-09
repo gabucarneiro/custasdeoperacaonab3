@@ -12,6 +12,7 @@ import android.os.Environment;
 import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.Spinner;
@@ -36,7 +37,10 @@ import java.io.IOException;
 import java.io.OutputStream;
 import java.io.OutputStreamWriter;
 import java.nio.file.Files;
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Calendar;
+import java.util.List;
 import java.util.Scanner;
 
 
@@ -54,6 +58,13 @@ public class Export extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_export);
 
+        try {
+            SpinnerList();
+            System.out.println("*** SpinnerList onCreate");
+        }
+        catch (Exception e){
+            System.out.println("*** SpinnerList catch: "+ e.getMessage());
+        }
         Listar(findViewById(R.id.arquivosListados));
     }
 
@@ -614,7 +625,7 @@ public class Export extends AppCompatActivity {
         diretorio.mkdirs();
         System.out.println("canWrite: "+diretorio.canWrite());
         System.out.println("canRead: "+diretorio.canRead());
-        Spinner spList = new Spinner(this);
+
         try {
             File[] listarArquivos = diretorio.listFiles();
             try {
@@ -647,6 +658,34 @@ public class Export extends AppCompatActivity {
             LL.addView(tv);
         }
     }
+
+
+    public void SpinnerList (){
+        diretorio = new File(this.getExternalFilesDir(null).getPath());
+        System.out.println("*** SpinnerList *** ");
+        System.out.println("*** diretorio: "+ diretorio);
+        File[] listarArquivos = diretorio.listFiles();
+        List<String> stringListarArquivos = new ArrayList<>();
+        for (int i = 0; i< listarArquivos.length; i++){
+            File f = listarArquivos[i];
+            stringListarArquivos.add(f.getName());
+            System.out.println("*** f = "+f.getName());
+        }
+
+        for (int i = 0; i< stringListarArquivos.size(); i++){
+            System.out.println("*** stringListarArquivos: "+ i + " - "+ stringListarArquivos.get(i));
+        }
+        List<File> filesList = new ArrayList<>(Arrays.asList(listarArquivos));
+
+        //ArrayAdapter<File> fileAdapter = new ArrayAdapter<File>(this, android.R.layout.simple_spinner_item, listarArquivos);
+        ArrayAdapter<String> fileAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item, stringListarArquivos);
+        fileAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+
+        Spinner spinner = findViewById(R.id.spinFiles);
+        spinner.setAdapter(fileAdapter);
+    }
+
+
 
     /*private String Diretorio(){
         File root = android.os.Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOCUMENTS);
@@ -703,7 +742,8 @@ public class Export extends AppCompatActivity {
         File arq;
         String lstrlinha;
         try {
-            lstrNomeArq = ((EditText) findViewById(R.id.edSelectedFile)).getText().toString();
+            //lstrNomeArq = ((EditText) findViewById(R.id.edSelectedFile)).getText().toString();
+            lstrNomeArq = ((Spinner) findViewById(R.id.spinFiles)).getSelectedItem().toString();
             //((TextView)findViewById(R.id.edListar)).setText("Not yet");
 //            diretorio = new File(this.getExternalFilesDir(null).getPath());
 //        System.out.println("diretorio em Listar = "+diretorio);
