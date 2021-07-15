@@ -213,6 +213,12 @@ public class Export extends AppCompatActivity {
         catch (Exception e){
             e.printStackTrace();
         }
+        try {
+            SpinnerList();
+        }
+        catch (Exception e){
+            System.out.println(this + e.getMessage());
+        }
     }
 
     public void ExportarBD(View view){
@@ -231,13 +237,19 @@ public class Export extends AppCompatActivity {
                 sb.append(" -\n");
             }
             exportIt(sb.toString(), time);
-
+            //TODO SETAR ARQUIVO PARA NÃO SER ALTERADO.
             Toast.makeText(this, "Arquivo exportado com sucesso!", Toast.LENGTH_SHORT).show();
             Toast.makeText(this, "Arquivo: "+ String.valueOf(time), Toast.LENGTH_SHORT).show();
 
         }
         catch (Exception e){
             e.printStackTrace();
+        }
+        try {
+            SpinnerList();
+        }
+        catch (Exception e){
+            System.out.println(this + e.getMessage());
         }
     }
 
@@ -454,6 +466,12 @@ public class Export extends AppCompatActivity {
             //((EditText)findViewById(R.id.edListar)).setText(e.getMessage());
             Toast.makeText(this, e.getMessage(), Toast.LENGTH_SHORT).show();
         }
+        try {
+            SpinnerList();
+        }
+        catch (Exception e){
+            System.out.println(this + e.getMessage());
+        }
     }
 
     public void exportIt(String data, CharSequence time){
@@ -669,13 +687,13 @@ public class Export extends AppCompatActivity {
         for (int i = 0; i< listarArquivos.length; i++){
             File f = listarArquivos[i];
             stringListarArquivos.add(f.getName());
-            System.out.println("*** f = "+f.getName());
+            //System.out.println("*** f = "+f.getName());
         }
 
         for (int i = 0; i< stringListarArquivos.size(); i++){
             System.out.println("*** stringListarArquivos: "+ i + " - "+ stringListarArquivos.get(i));
         }
-        List<File> filesList = new ArrayList<>(Arrays.asList(listarArquivos));
+        //List<File> filesList = new ArrayList<>(Arrays.asList(listarArquivos));
 
         //ArrayAdapter<File> fileAdapter = new ArrayAdapter<File>(this, android.R.layout.simple_spinner_item, listarArquivos);
         ArrayAdapter<String> fileAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item, stringListarArquivos);
@@ -695,7 +713,7 @@ public class Export extends AppCompatActivity {
 
     /*public void Listar(View v){
 
-        ((TextView)findViewById(R.id.edListar)).append("\nListar OK");
+        ((EditText)findViewById(R.id.edListar)).append("\nListar OK");
 
         File diretorio = new File(Diretorio());
         File[] arquivos = diretorio.listFiles();
@@ -705,8 +723,8 @@ public class Export extends AppCompatActivity {
                 File f = arquivos[i];
                 if (f.isFile()){
                     Toast.makeText(this, f.getName(), Toast.LENGTH_SHORT).show();
-                    ((TextView)findViewById(R.id.edListar)).append("\n");
-                    ((TextView)findViewById(R.id.edListar)).setText(f.getName());
+                    ((EditText)findViewById(R.id.edListar)).append("\n");
+                    ((EditText)findViewById(R.id.edListar)).setText(f.getName());
                 }
             }
         }
@@ -744,7 +762,7 @@ public class Export extends AppCompatActivity {
         try {
             //lstrNomeArq = ((EditText) findViewById(R.id.edSelectedFile)).getText().toString();
             lstrNomeArq = ((Spinner) findViewById(R.id.spinFiles)).getSelectedItem().toString();
-            //((TextView)findViewById(R.id.edListar)).setText("Not yet");
+            //((EditText)findViewById(R.id.edListar)).setText("Not yet");
 //            diretorio = new File(this.getExternalFilesDir(null).getPath());
 //        System.out.println("diretorio em Listar = "+diretorio);
 //        diretorio.mkdirs();
@@ -756,15 +774,15 @@ public class Export extends AppCompatActivity {
             BufferedReader br = new BufferedReader(new FileReader(arq));
 
             while ((lstrlinha = br.readLine()) != null){
-                //((TextView)findViewById(R.id.edListar)).append("\n");
-                ((TextView)findViewById(R.id.edListar)).append(lstrlinha);
+                //((EditText)findViewById(R.id.edListar)).append("\n");
+                ((EditText)findViewById(R.id.edListar)).append(lstrlinha + "\n");
             }
             Toast.makeText(this, "Texto carregado com sucesso!", Toast.LENGTH_SHORT).show();
             br.close();
         }
         catch (Exception e){
             Toast.makeText(this, (e.getMessage()), Toast.LENGTH_SHORT).show();
-            ((TextView)findViewById(R.id.edListar)).setText(e.getMessage());
+            ((EditText)findViewById(R.id.edListar)).setText(e.getMessage());
         }
     }
 
@@ -817,7 +835,7 @@ public class Export extends AppCompatActivity {
             if (charReader != -1){
                 sequencia = new String(chars, 20, charReader);
                 char charAt;
-                ((EditText)findViewById(R.id.edCharAt)).setText(String.valueOf(chars.length));
+                //((EditText)findViewById(R.id.edCharAt)).setText(String.valueOf(chars.length));
                 System.out.println(chars.length);
                 StringBuilder sb = new StringBuilder();
                 for (int i = 0; i<sequencia.length(); i++){
@@ -963,7 +981,8 @@ public class Export extends AppCompatActivity {
         }
         catch (Exception e){
             System.out.println(e.getMessage());
-            ((TextView)findViewById(R.id.txtRecebeDoArquivo)).setText("Not happening..");
+            ((TextView)findViewById(R.id.txtRecebeDoArquivo)).setText("Falha ao carregar");
+            loggIt(this, e.getMessage());
         }
     }
     public boolean Bool (String string){

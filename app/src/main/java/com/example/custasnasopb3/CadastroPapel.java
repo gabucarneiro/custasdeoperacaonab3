@@ -733,7 +733,7 @@ public class CadastroPapel extends AppCompatActivity {
                     }
 
                     try {
-                        exp.loggIt(this, "Papel excluido com sucesso!");
+                        exp.loggIt(this, "Papel excluido com sucesso!\n");
                     } catch (Exception e) {
                         System.out.println("FALHA AO TENTAR INSERIR NO LOG: " + e.getMessage());
                     }
@@ -741,6 +741,11 @@ public class CadastroPapel extends AppCompatActivity {
                     Clear();
                 }
                 catch (Exception e){
+                    try {
+                        exp.loggIt(this, e.getMessage());
+                    } catch (Exception eLog) {
+                        System.out.println("FALHA AO TENTAR INSERIR NO LOG");
+                    }
                     e.printStackTrace();
                     Toaster("Erro ao buscar!");
                 }

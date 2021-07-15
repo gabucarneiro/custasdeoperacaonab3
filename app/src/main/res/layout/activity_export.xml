@@ -10,7 +10,7 @@
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="wrap_content"
         android:orientation="vertical">
     <TextView
         android:id="@+id/txtCriptoHeader"
@@ -31,7 +31,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="15dp"
                 android:layout_centerHorizontal="true"
-                android:text="BtnListar"
+                android:text="Listar"
                 android:onClick="Listar"/>
             <Button
                 android:id="@+id/btnTxtSalvar"
@@ -39,16 +39,9 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="15dp"
                 android:layout_alignParentStart="true"
-                android:text="BtnSalvar"
+                android:text="Salvar"
                 android:onClick="criarArquivo"/>
-            <Button
-                android:id="@+id/btnCarregar"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="15dp"
-                android:layout_alignParentEnd="true"
-                android:text="Carregar"
-                android:onClick="carregar"/>
+
 
             <TextView
                 android:id="@+id/txtListar"
@@ -65,20 +58,34 @@
                 android:layout_toEndOf="@+id/txtListar"
                 android:layout_alignBaseline="@+id/txtListar"
                 android:hint="Arquivo txt"/>
+
+            <Button
+                android:id="@+id/btnCarregar"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/edListar"
+                android:layout_marginTop="5dp"
+                android:text="Carregar"
+                android:onClick="carregar"/>
             <Spinner
                 android:id="@+id/spinFiles"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_below="@+id/txtListar"/>
+                android:fadingEdge="horizontal"
+                android:layout_marginTop="5dp"
+                android:layout_marginBottom="5dp"
+                android:layout_below="@+id/btnCarregar"
+                android:autofillHints="Escolha o arquivo.."/>
 
             <EditText
                 android:id="@+id/edListar"
                 style="@style/Conteudo"
                 android:layout_width="match_parent"
-                android:layout_height="120dp"
+                android:layout_height="wrap_content"
                 android:layout_below="@+id/txtListar"
                 android:inputType="textMultiLine"
-                android:lines="5"
+                android:scrollbars="vertical"
+                android:minLines="3"
                 android:text=""
                 android:singleLine="false"
                 android:textSize="20sp"
@@ -97,7 +104,7 @@
                 android:text=""
                 android:inputType="textMultiLine"/>
         </LinearLayout>
-        <Button
+        <!--<Button
             android:id="@+id/btnCanWrite"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -120,8 +127,8 @@
             android:layout_marginTop="15dp"
             android:layout_alignParentEnd="true"
             android:text="CanRead"
-            android:onClick="VerifyPermissionRead"/>
-        <EditText
+            android:onClick="VerifyPermissionRead"/>-->
+        <!--<EditText
             android:id="@+id/edCharAt"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -160,7 +167,7 @@
             android:id="@+id/edQuantidade"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:hint="Quant."/>
+            android:hint="Quant."/>-->
         <TextView
             android:id="@+id/txtRecebeDoArquivo"
             android:layout_width="wrap_content"
