@@ -9,6 +9,7 @@
         android:paddingLeft="20dp"
         android:paddingRight="20dp"
         android:id="@+id/sv_ActivityCustas"
+        android:background="@drawable/mosaicfullcolor"
         style="@style/BasicLayout">
     <LinearLayout
         android:layout_width="match_parent"

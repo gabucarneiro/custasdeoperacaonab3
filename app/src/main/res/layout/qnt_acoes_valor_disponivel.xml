@@ -8,6 +8,7 @@
     android:orientation="vertical"
     android:paddingLeft="20dp"
     android:paddingRight="20dp"
+    android:background="@drawable/mosaictransparent"
     style="@style/BasicLayout">
         <LinearLayout
             android:layout_width="match_parent"

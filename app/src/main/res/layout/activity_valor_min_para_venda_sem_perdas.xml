@@ -6,6 +6,7 @@
         android:layout_height="match_parent"
         android:orientation="vertical"
         style="@style/BasicLayout"
+        android:background="@drawable/mosaictransparent"
         tools:context=".ValorMinParaVendaSemPerdas">
     <LinearLayout
         android:layout_width="match_parent"
