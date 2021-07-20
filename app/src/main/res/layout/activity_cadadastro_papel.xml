@@ -127,6 +127,19 @@
                         android:layout_alignBaseline="@+id/txtQuantidade"
                         android:text="Fracionário">
                     </CheckBox>
+
+                    <CheckBox
+                        android:id="@+id/cadastroCbDataCompra"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@+id/cadastroCbFracionario"
+                        android:layout_alignParentEnd="true"
+                        android:text="Data da compra"/>
+                    <CalendarView
+                        android:id="@+id/cadastroDpDataCompra"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@+id/cadastroCbDataCompra"/>
                 </RelativeLayout>
                 <!--<LinearLayout
                     android:layout_width="wrap_content"

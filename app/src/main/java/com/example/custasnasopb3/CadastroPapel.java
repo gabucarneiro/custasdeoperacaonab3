@@ -1,24 +1,28 @@
 package com.example.custasnasopb3;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.content.ContextCompat;
 
 import android.content.Context;
-import android.content.DialogInterface;
 import android.os.Bundle;
 import android.text.InputType;
-import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
+import android.view.autofill.AutofillValue;
 import android.widget.Button;
+import android.widget.CalendarView;
 import android.widget.CheckBox;
+import android.widget.CompoundButton;
+import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
+import java.util.Locale;
 
 public class CadastroPapel extends AppCompatActivity {
 
@@ -36,7 +40,7 @@ public class CadastroPapel extends AppCompatActivity {
 
     EditText et_nomePapel, et_valCadastroPapel;
     EditText et_IdPapel, et_QuantidadePapel;
-    CheckBox cadastroCbFracionario;
+    CheckBox cadastroCbFracionario, cadastroCbDataCompra;
 
     TextView resumoBD;
 
@@ -65,10 +69,33 @@ public class CadastroPapel extends AppCompatActivity {
         et_valCadastroPapel = findViewById(R.id.valCadastroPapel);
         et_QuantidadePapel = findViewById(R.id.valQuantidadePapel);
         cadastroCbFracionario = findViewById(R.id.cadastroCbFracionario);
+        cadastroCbDataCompra = findViewById(R.id.cadastroCbDataCompra);
+        ((CalendarView) findViewById(R.id.cadastroDpDataCompra)).setVisibility(View.GONE);
+
+        CalendarView today = new CalendarView(this);
+        SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy", Locale.getDefault());
+        ((CheckBox) findViewById(R.id.cadastroCbDataCompra)).setText("Data da compra: " + sdf.format(today.getDate()));
 
         et_IdPapel = (EditText) findViewById(R.id.idPapel);
         /*et_IdPapel.setText("999");
         Toaster(String.valueOf(et_IdPapel.getText()));*/
+
+
+        ((CheckBox) findViewById(R.id.cadastroCbDataCompra)).setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                System.out.println("*****cadastroCbDataCompra onClickListen OK!!!");
+                if (isChecked){
+                    ((CheckBox) findViewById(R.id.cadastroCbDataCompra)).setText("Data da compra:");
+                    ((CalendarView) findViewById(R.id.cadastroDpDataCompra)).setVisibility(View.VISIBLE);
+                }
+                else {
+                    ((CalendarView) findViewById(R.id.cadastroDpDataCompra)).setVisibility(View.GONE);
+                    ((CheckBox) findViewById(R.id.cadastroCbDataCompra)).setText("Data da compra: " + sdf.format(today.getDate()));
+                }
+                CalendarViewFunc(findViewById(R.id.cadastroDpDataCompra));
+            }
+        });
 
         Button tvteste = (Button) findViewById(R.id.tvteste);
         tvteste.setOnClickListener(new View.OnClickListener() {
@@ -1130,5 +1157,17 @@ public class CadastroPapel extends AppCompatActivity {
 
         alert.show();
         dbhCustas.close();
+    }
+
+    public void CalendarViewFunc(CalendarView calendarView){
+        calendarView.setOnDateChangeListener(new CalendarView.OnDateChangeListener() {
+            @Override
+            public void onSelectedDayChange(@NonNull CalendarView view, int year, int month, int dayOfMonth) {
+                String date = dayOfMonth + "/" + (month + 1) + "/" + year;
+                ((CheckBox) findViewById(R.id.cadastroCbDataCompra)).setText("Data da compra: "+date);
+                System.out.println("***** DatePickerFund resuldado: "+ date);
+                calendarView.setVisibility(View.GONE);
+            }
+        });
     }
 }
