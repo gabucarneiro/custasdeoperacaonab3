@@ -27,16 +27,16 @@ import java.util.Locale;
 public class CadastroPapel extends AppCompatActivity {
 
     //TODO *** EM CASO DE EXCLUSÃO DAS FUNÇÕES COMENTADAS, EXCLUIR TAMBÉM AS DECLARAÇÕES ABAIXO
-    private int idPapel=0;
-    private String cpNomePapel;
-    private Double cpValor;
-    private int cpQuantidade;
+    //private int idPapel=0;
+    //private String cpNomePapel;
+    //private Double cpValor;
+    //private int cpQuantidade;
 
     String idaux = "";
     int ID_PAPEL;
 
     Papel papel = new Papel();
-    ArrayList<Papel> papelList = new ArrayList<>();
+    //ArrayList<Papel> papelList = new ArrayList<>();
 
     EditText et_nomePapel, et_valCadastroPapel;
     EditText et_IdPapel, et_QuantidadePapel;
@@ -56,8 +56,8 @@ public class CadastroPapel extends AppCompatActivity {
     //*** OK *** Montar sistema de pilha para os papeis cadastrados; ok
     //*** OK *** Transformar o cadastro de papel em WatchList; (não será necessário - talvez atualização futura)
     //TODO fazer limpeza no que não for necessário - iniciado: comentada as funções e views a serem excluidas;
-    // Retirar lista inicial (Hard-included);
-    // Retirar a visibilidade dos contadores;
+    //*** OK *** Retirar lista inicial (Hard-included);
+    //*** OK *** Retirar a visibilidade dos contadores;
     //TODO refatorar a classe;
 
     @Override
