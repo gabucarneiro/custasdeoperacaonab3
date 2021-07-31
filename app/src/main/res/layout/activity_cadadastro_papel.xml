@@ -132,41 +132,35 @@
                         android:id="@+id/cadastroTxDataCompra"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
+                        android:layout_marginTop="15dp"
+                        android:layout_alignParentStart="true"
                         android:layout_below="@+id/cadastroCbFracionario"
-                        android:layout_toStartOf="@+id/cadastroEdDataCompra"
                         android:text="Data da compra: "/>
-                    <EditText
-                        android:id="@+id/cadastroEdDataCompra"
-                        style="@style/Conteudo"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_below="@+id/cadastroCbFracionario"
-                        android:layout_alignBaseline="@+id/cadastroTxDataCompra"
-                        android:layout_toStartOf="@+id/cadastroCalendarBtn"
-                        android:inputType="date"
-                        android:text=""/>
                     <Spinner
                         android:id="@+id/spinnerData"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
+                        android:layout_alignParentStart="true"
                         android:layout_below="@id/cadastroTxDataCompra"/>
                     <Spinner
                         android:id="@+id/spinnerMes"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_alignBaseline="@id/spinnerData"
+                        android:layout_below="@id/cadastroTxDataCompra"
                         android:layout_toEndOf="@+id/spinnerData"/>
                     <Spinner
                         android:id="@+id/spinnerAno"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_alignBaseline="@id/spinnerData"
+                        android:layout_below="@id/cadastroTxDataCompra"
                         android:layout_toEndOf="@+id/spinnerMes"/>
-                    <Button
+                    <ImageButton
                         android:id="@+id/cadastroCalendarBtn"
                         android:layout_width="30dp"
                         android:layout_height="wrap_content"
-                        android:layout_alignBaseline="@+id/cadastroEdDataCompra"
+                        android:background="@null"
+                        android:src = "@drawable/icocalendar2"
+                        android:layout_alignBaseline="@+id/cadastroTxDataCompra"
                         android:layout_alignParentEnd="true"/>
                     <!--<TextView
                         android:id="@+id/cadastroTvDataCompra"
@@ -196,7 +190,7 @@
                         android:id="@+id/cadastroDpDataCompra"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_below="@+id/cadastroTxDataCompra"
+                        android:layout_below="@+id/spinnerData"
                         android:layout_alignParentEnd="true"/>
                 </RelativeLayout>
 

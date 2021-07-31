@@ -16,6 +16,7 @@ import android.widget.Button;
 import android.widget.CalendarView;
 import android.widget.CheckBox;
 import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.Spinner;
 import android.widget.SpinnerAdapter;
@@ -23,8 +24,13 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import java.text.SimpleDateFormat;
+import java.time.temporal.Temporal;
+import java.time.temporal.TemporalAmount;
+import java.time.temporal.TemporalUnit;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
+import java.util.List;
 import java.util.Locale;
 
 public class CadastroPapel extends AppCompatActivity {
@@ -38,14 +44,14 @@ public class CadastroPapel extends AppCompatActivity {
     String idaux = "";
     int ID_PAPEL;
 
-    String dataParaBD;
+    String dataParaBD, dataCompra, mesCompra, anoCompra;
     Papel papel = new Papel();
     //ArrayList<Papel> papelList = new ArrayList<>();
 
     EditText et_nomePapel, et_valCadastroPapel;
     EditText et_IdPapel, et_QuantidadePapel;
     CheckBox cadastroCbFracionario, cadastroCbDataCompra;
-    EditText cadastroEdDataCompra;
+    //EditText cadastroEdDataCompra;
 
     TextView resumoBD;
 
@@ -75,63 +81,62 @@ public class CadastroPapel extends AppCompatActivity {
         et_QuantidadePapel = findViewById(R.id.valQuantidadePapel);
         cadastroCbFracionario = findViewById(R.id.cadastroCbFracionario);
         //cadastroCbDataCompra = findViewById(R.id.cadastroCbDataCompra);
-        cadastroEdDataCompra = findViewById(R.id.cadastroEdDataCompra);
+        //cadastroEdDataCompra = findViewById(R.id.cadastroEdDataCompra);
         (findViewById(R.id.cadastroDpDataCompra)).setVisibility(View.GONE);
 
-        CalendarView today = new CalendarView(this);
+        //CalendarView today = new CalendarView(this);
         SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy", Locale.getDefault());
-        ((EditText) findViewById(R.id.cadastroEdDataCompra)).setText(sdf.format(today.getDate()));
+        //((EditText) findViewById(R.id.cadastroEdDataCompra)).setText(sdf.format(today.getDate()));
         //((EditText) findViewById(R.id.cadastroEdDataCompra)).setInputType(InputType.TYPE_NULL);
 
         Spinner spinnerData = findViewById(R.id.spinnerData);
         Spinner spinnerMes = findViewById(R.id.spinnerMes);
         Spinner spinnerAno = findViewById(R.id.spinnerAno);
-        SpinnerDataMesAno(spinnerData, 1);
-        SpinnerDataMesAno(spinnerMes, 2);
-        SpinnerDataMesAno(spinnerAno, 3);
+        SpinnerDataMesAno(this, spinnerData, 1);
+        SpinnerDataMesAno(this, spinnerMes, 2);
+        SpinnerDataMesAno(this, spinnerAno, 3);
 
 
         spinnerData.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                 dataParaBD = spinnerData.getSelectedItem().toString() + "/" + spinnerMes.getSelectedItem().toString() + "/" + spinnerAno.getSelectedItem().toString();
-                System.out.println("******* Spinner selecionado no ONITEMSELECTEDLISTENER: "+spinnerData.getSelectedItem().toString());
-                System.out.println("******* DATAPARABD: \n" + dataParaBD);
-                System.out.println("******* AGORA: " + sdf.format(new Date().getTime()));
+                dataCompra = spinnerData.getSelectedItem().toString();
+                //System.out.println("******* Spinner selecionado no ONITEMSELECTEDLISTENER: "+spinnerData.getSelectedItem().toString());
+                System.out.println("\n******* DATA SELECIONADA - RUMO AO BD: " + dataCompra);
+                //System.out.println("******* AGORA: " + sdf.format(new Date().getTime()));
             }
 
             @Override
             public void onNothingSelected(AdapterView<?> parent) {
-
             }
         });
         spinnerMes.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                 dataParaBD = spinnerData.getSelectedItem().toString() + "/" + spinnerMes.getSelectedItem().toString() + "/" + spinnerAno.getSelectedItem().toString();
-                System.out.println("******* Spinner selecionado no spinnerMes: "+spinnerMes.getSelectedItem().toString());
-                System.out.println("******* DATAPARABD: \n" + dataParaBD);
+                mesCompra = spinnerMes.getSelectedItem().toString();
+                System.out.println("******* MES SELECIONADO - RUMO AO BD: " + mesCompra);
             }
 
             @Override
             public void onNothingSelected(AdapterView<?> parent) {
-
             }
         });
         spinnerAno.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                 dataParaBD = spinnerData.getSelectedItem().toString() + "/" + spinnerMes.getSelectedItem().toString() + "/" + spinnerAno.getSelectedItem().toString();
-                System.out.println("******* Spinner selecionado no spinnerAno: "+spinnerAno.getSelectedItem().toString());
-                System.out.println("******* DATAPARABD: \n" + dataParaBD);
+                anoCompra = spinnerAno.getSelectedItem().toString();
+                System.out.println("******* ANO SELECIONADO - RUMO AO BD: " + anoCompra);
             }
 
             @Override
             public void onNothingSelected(AdapterView<?> parent) {
-
             }
         });
 
+        System.out.println("DATA - MES - ANO para BD: " + spinnerData.getSelectedItem().toString() + "/" + spinnerMes.getSelectedItem().toString() + "/" + spinnerAno.getSelectedItem().toString());
 
         /* ---- DEIXADO PARA CONSULTA FUTURA ---- TODO Excluir após pesquisa e conclusão ----
         ((EditText) findViewById(R.id.cadastroEdDataCompra)).addTextChangedListener(new TextWatcher() {
@@ -177,26 +182,13 @@ public class CadastroPapel extends AppCompatActivity {
         /*et_IdPapel.setText("999");
         Toaster(String.valueOf(et_IdPapel.getText()));*/
 
-//        ((EditText) findViewById(R.id.cadastroEdDataCompra)).setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                String dataCompra;
-//                ((EditText) findViewById(R.id.cadastroEdDataCompra)).setText("");
-//                ((CalendarView) findViewById(R.id.cadastroDpDataCompra)).setVisibility(View.VISIBLE);
-//                try {
-//                    CalendarViewFunc(findViewById(R.id.cadastroDpDataCompra), findViewById(R.id.cadastroEdDataCompra), "");
-//                    dataCompra = (((EditText) findViewById(R.id.cadastroEdDataCompra)).getText().toString());
-//                    System.out.println("String: "+ dataCompra);
-//                }
-//                catch (Exception e){
-//                    System.out.println("Exception no CalendarViewFunc");
-//                }
-//            }
-//        });
 
-
-        ((CalendarView)findViewById(R.id.cadastroDpDataCompra)).setMaxDate(new Date().getTime());
-        (findViewById(R.id.cadastroCalendarBtn)).setOnClickListener(new View.OnClickListener() {
+        Calendar calendar = Calendar.getInstance();
+        calendar.setTime(new Date());
+        calendar.add(Calendar.YEAR, 1);
+        Date yearLater = calendar.getTime();
+        ((CalendarView)findViewById(R.id.cadastroDpDataCompra)).setMaxDate(yearLater.getTime());
+        ((ImageButton)findViewById(R.id.cadastroCalendarBtn)).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 if (findViewById(R.id.cadastroDpDataCompra).getVisibility() == View.VISIBLE){
@@ -204,30 +196,12 @@ public class CadastroPapel extends AppCompatActivity {
                 }
                 else {
                     (findViewById(R.id.cadastroDpDataCompra)).setVisibility(View.VISIBLE);
-                    CalendarViewFunc(findViewById(R.id.cadastroDpDataCompra), findViewById(R.id.cadastroEdDataCompra), spinnerData, spinnerMes, spinnerAno);
-                    System.out.println("----EditText result: " + ((EditText)findViewById(R.id.cadastroEdDataCompra)).getText().toString());
+                    CalendarViewFunc(findViewById(R.id.cadastroDpDataCompra), spinnerData, spinnerMes, spinnerAno);
                 }
             }
         });
 
-//        (findViewById(R.id.cadastroEdDataCompra)).setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                String dataCompra;
-//                //(findViewById(R.id.cadastroTvDataCompra)).setVisibility(View.GONE);
-//                try {
-//                    (findViewById(R.id.cadastroDpDataCompra)).setVisibility(View.VISIBLE);
-//                    CalendarViewFunc(findViewById(R.id.cadastroDpDataCompra), findViewById(R.id.cadastroEdDataCompra), "");
-//                    dataCompra = (((EditText) findViewById(R.id.cadastroEdDataCompra)).getText().toString());
-//                    System.out.println("String: "+ dataCompra);
-//                    ((EditText) findViewById(R.id.cadastroEdDataCompra)).setInputType(InputType.TYPE_CLASS_DATETIME);
-//                }
-//                catch (Exception e){
-//                    System.out.println("Exception no CalendarViewFunc");
-//                }
-//            }
-//        });
-
+        System.out.println("DATA - MES - ANO para BD: " + spinnerData.getSelectedItem().toString() + "/" + spinnerMes.getSelectedItem().toString() + "/" + spinnerAno.getSelectedItem().toString());
 
         Button btnCustas = (Button) findViewById(R.id.btnCustas);
         btnCustas.setOnClickListener(new View.OnClickListener() {
@@ -867,7 +841,7 @@ public class CadastroPapel extends AppCompatActivity {
                     int ID_CUSTASPlus = ID_PAPELPlus;
                     while (ID_PAPELPlus!= 0){
                         Papel temp = dbh.getPapel(ID_PAPELPlus);
-                        Custas tempCustas = dbh.getCustas(ID_CUSTASPlus);
+                        //Custas tempCustas = dbh.getCustas(ID_CUSTASPlus);
                         if(temp.getNomePapel() != ""){
                             dbh.updateIDPapel(ID_PAPELPlus);
                             ID_PAPELPlus+=1;
@@ -1281,44 +1255,33 @@ public class CadastroPapel extends AppCompatActivity {
         dbhCustas.close();
     }
 
-    public void CalendarViewFunc(CalendarView calendarView, EditText editText, Spinner data, Spinner mes, Spinner ano){
+    public void CalendarViewFunc(CalendarView calendarView, Spinner data, Spinner mes, Spinner ano){
         calendarView.setOnDateChangeListener(new CalendarView.OnDateChangeListener() {
+            //Método que recebe os dados de um CalendarView e seta em Spinners de data, mês e ano
+            //Menor ano possível: 2008 (ano do início das operações na B3
+
             @Override
             public void onSelectedDayChange(@NonNull CalendarView view, int year, int month, int dayOfMonth) {
-                System.out.println("Valores int do calendar:\n"+ dayOfMonth + "\n" + (month + 1) + "\n" + year);
+                //System.out.println("Valores int do calendar:\n"+ dayOfMonth + "\n" + (month + 1) + "\n" + year);
                 //daOfMonth é int e o setSelection pega a posição, onde dayOfMonth recebe 12, a posição 12 corresponde ao dia 13
                 data.setSelection(dayOfMonth-1);
                 mes.setSelection(month);
-                ArrayList<String> arrayAno = new ArrayList<>();
-                for (int i = 0; i<mes.getCount(); i++){
-                    System.out.println("mes.getCount():"+mes.getCount());
-                    arrayAno.add(String.valueOf(mes.getItemAtPosition(i)));
-                    System.out.println(String.valueOf(i+ ": " + mes.getItemAtPosition(i)));
-                }
+                ano.setSelection(year - 2008);
                 String date = dayOfMonth + "/" + (month + 1) + "/" + year;
-                editText.setText(date);
-                System.out.println("***** Resuldado: "+ date);
-                calendarView.setVisibility(View.GONE);
+                //System.out.println("***** Resuldado: "+ date);
+                try {
+                    calendarView.setVisibility(View.GONE);
+                } catch (Exception e) {
+                    System.out.println(e.getMessage());
+                    e.printStackTrace();
+                }
             }
         });
-        /*editText.setOnKeyListener(new View.OnKeyListener() {
-            @Override
-            public boolean onKey(View v, int keyCode, KeyEvent event) {
-                System.out.println("***** keyCode: " + keyCode);
-                System.out.println("**** event: " + event);
-
-                //android:imeOptions="actionDone"
-
-                if (keyCode == 66){
-                    System.out.println("**** here it goes!!");
-                    editText.setImeOptions(EditorInfo.IME_ACTION_DONE);
-                }
-                return true;
-            }
-        });*/
     }
 
-    public void SpinnerDataMesAno(Spinner spinner, int selectData1Mes2Ano3){
+    public void SpinnerDataMesAno(Context context, Spinner spinner, int selectData1Mes2Ano3){
+        //Método que recebe um Spinner e, recebendo um número de 1 à 3, seta as opções para data, mês e ano
+
         SimpleDateFormat sdf;
         Date dateData = new Date();
         switch (selectData1Mes2Ano3){
@@ -1328,7 +1291,7 @@ public class CadastroPapel extends AppCompatActivity {
                 for (int i = 1; i<=31; i++){
                     data.add(i);
                 }
-                spinner.setAdapter(new ArrayAdapter<>(this, android.R.layout.simple_spinner_dropdown_item, data));
+                spinner.setAdapter(new ArrayAdapter<>(context, android.R.layout.simple_spinner_dropdown_item, data));
                 int intDateData = Integer.parseInt(sdf.format(dateData));
                 spinner.setSelection(intDateData-1);
                 break;
@@ -1339,7 +1302,7 @@ public class CadastroPapel extends AppCompatActivity {
                 for (int i = 1; i<=12; i++){
                     mes.add(i);
                 }
-                spinner.setAdapter(new ArrayAdapter<>(this, android.R.layout.simple_spinner_dropdown_item, mes));
+                spinner.setAdapter(new ArrayAdapter<>(context, android.R.layout.simple_spinner_dropdown_item, mes));
                 int intDateMes = Integer.parseInt(sdf.format(dateData));
                 spinner.setSelection(intDateMes-1);
                 break;
@@ -1347,11 +1310,12 @@ public class CadastroPapel extends AppCompatActivity {
             case 3:
                 sdf = new SimpleDateFormat("yyyy", Locale.getDefault());
                 int intYear = Integer.parseInt(sdf.format(dateData));
+                int intYearPlus1 = intYear+1;
                 ArrayList<Integer> ano = new ArrayList<>();
-                for (int i = 2008; i<=intYear; i++){
+                for (int i = 2008; i<=intYearPlus1; i++){
                     ano.add(i);
                 }
-                spinner.setAdapter(new ArrayAdapter<>(this, android.R.layout.simple_spinner_dropdown_item, ano));
+                spinner.setAdapter(new ArrayAdapter<>(context, android.R.layout.simple_spinner_dropdown_item, ano));
                 if (ano.contains(intYear)) {
                     spinner.setSelection(ano.indexOf(intYear));
                 }

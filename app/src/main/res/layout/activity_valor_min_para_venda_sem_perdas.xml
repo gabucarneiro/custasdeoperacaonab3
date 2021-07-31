@@ -10,7 +10,7 @@
         tools:context=".ValorMinParaVendaSemPerdas">
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="wrap_content"
         tools:context=".acoesDiferencaCompraVenda"
         android:orientation="vertical"
         android:paddingLeft="20dp"
@@ -109,6 +109,7 @@
         </RelativeLayout>
 
         <Button
+            android:id="@+id/valMinvendaBtnCalcular"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:gravity="center"
@@ -118,6 +119,56 @@
             android:layout_marginTop="10dp"
             android:onClick="calcular">
         </Button>
+        <CheckBox
+            android:id="@+id/valVendaCBDataVenda"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Inserir data da venda"/>
+
+        <RelativeLayout
+            android:id="@+id/RLDatadaVenda"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content">
+            <TextView
+                android:id="@+id/valMinVendaTxDataVenda"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="15dp"
+                android:text="Data da venda: "/>
+            <Spinner
+                android:id="@+id/valMinVendaspinnerData"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/valMinVendaTxDataVenda"/>
+            <Spinner
+                android:id="@+id/valMinVendaspinnerMes"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignBaseline="@id/valMinVendaspinnerData"
+                android:layout_toEndOf="@+id/valMinVendaspinnerData"
+                android:layout_below="@+id/valMinVendaTxDataVenda"/>
+            <Spinner
+                android:id="@+id/valMinVendaspinnerAno"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignBaseline="@id/valMinVendaspinnerMes"
+                android:layout_toEndOf="@+id/valMinVendaspinnerMes"
+                android:layout_below="@+id/valMinVendaTxDataVenda"/>
+            <ImageButton
+                android:id="@+id/valMinVendaCalendarBtn"
+                android:layout_width="30dp"
+                android:layout_height="wrap_content"
+                android:background="@null"
+                android:src = "@drawable/icocalendar2"
+                android:layout_alignBaseline="@+id/valMinVendaTxDataVenda"
+                android:layout_alignParentEnd="true"/>
+            <CalendarView
+                android:id="@+id/valMinVendaDpDataCompra"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/valMinVendaspinnerData"
+                android:layout_alignParentEnd="true"/>
+        </RelativeLayout>
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -797,7 +848,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_alignParentEnd="true"
-                android:layout_alignBaseline="@+id/txtIss2">
+                android:layout_alignBaseline="@+id/txtPctIr2">
             </CheckBox>
         </RelativeLayout>
 

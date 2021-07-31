@@ -11,18 +11,27 @@ import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.os.Handler;
 import android.view.View;
+import android.widget.AdapterView;
+import android.widget.CalendarView;
 import android.widget.CheckBox;
+import android.widget.CompoundButton;
 import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
+import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import org.w3c.dom.Text;
 
 import java.text.DecimalFormat;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
+import java.util.Locale;
 
 public class ValorMinParaVendaSemPerdas extends AppCompatActivity {
 
@@ -61,11 +70,15 @@ public class ValorMinParaVendaSemPerdas extends AppCompatActivity {
     DecimalFormat df3 = new DecimalFormat("0.000");
     DecimalFormat df4 = new DecimalFormat("0.0000");
 
+    SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy", Locale.getDefault());
+
     //TODO pesquisar se esta é a melhor forma de criar instâncias para EditTexts/TextViews/CheckBoxes.
     EditText et_valPapelAdquirido, et_quantidade, et_valPretendidoVenda, pct_Corretagem, pct_Custodia, pct_Liquidacao, pct_Negociacao, pct_Iss, pctCorretagem2Compra, pctCustodia2Compra, pctLiquidacao2Compra, pctNegociacao2Compra, pctIss2Compra;
     TextView pct_Emolumentos, pctEmolumentos2Compra, corretagem2Compra, custodia2Compra, tax_liquidacao2Compra, tax_negociacao2Compra, iss2Compra, emolumentos2Compra, tvCorretagem, val_Custodia, val_tx_liquidacao, val_tx_negociacao, val_emolumentos, val_iss, tv_valVendaDoPapel, TV_valMinVendaSemPerdas, tv_valCompraDoPapel;
     CheckBox cbCorretagem2, cbCustodia2, cbLiquidacao2, cbNegociacao2, cbIss2, cbCorretagem2Compra, cbCustodia2Compra, cbLiquidacao2Compra, cbNegociacao2Compra, cbIss2Compra;
+    Spinner spinnerData, spinnerMes, spinnerAno;
 
+    String dataVendaParaBD, dataVenda, mesVenda, anoVenda;
 
     private Handler handler2 = new Handler();
 
@@ -75,6 +88,93 @@ public class ValorMinParaVendaSemPerdas extends AppCompatActivity {
         setContentView(R.layout.activity_valor_min_para_venda_sem_perdas);
 
         DataBaseHelper dbhCustas = new DataBaseHelper(this);
+        findViewById(R.id.RLDatadaVenda).setVisibility(View.GONE);
+        spinnerData = findViewById(R.id.valMinVendaspinnerData);
+        spinnerMes = findViewById(R.id.valMinVendaspinnerMes);
+        spinnerAno = findViewById(R.id.valMinVendaspinnerAno);
+        new CadastroPapel().SpinnerDataMesAno(this, spinnerData, 1);
+        new CadastroPapel().SpinnerDataMesAno(this, spinnerMes, 2);
+        new CadastroPapel().SpinnerDataMesAno(this, spinnerAno, 3);
+
+        ((CheckBox)findViewById(R.id.valVendaCBDataVenda)).setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                if (isChecked){
+                    (findViewById(R.id.RLDatadaVenda)).setVisibility(View.VISIBLE);
+                }
+                else {
+                    (findViewById(R.id.RLDatadaVenda)).setVisibility(View.GONE);
+                }
+            }
+        });
+
+        Calendar calendar = Calendar.getInstance();
+        calendar.setTime(new Date());
+        calendar.add(Calendar.YEAR, 1);
+        Date yearLater = calendar.getTime();
+        ((CalendarView)findViewById(R.id.valMinVendaDpDataCompra)).setMaxDate(yearLater.getTime());
+        (findViewById(R.id.valMinVendaDpDataCompra)).setVisibility(View.GONE);
+        ((ImageButton)findViewById(R.id.valMinVendaCalendarBtn)).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (findViewById(R.id.valMinVendaDpDataCompra).getVisibility() == View.VISIBLE){
+                    (findViewById(R.id.valMinVendaDpDataCompra)).setVisibility(View.GONE);
+                }
+                else {
+                    (findViewById(R.id.valMinVendaDpDataCompra)).setVisibility(View.VISIBLE);
+                    new CadastroPapel().CalendarViewFunc(findViewById(R.id.valMinVendaDpDataCompra), spinnerData, spinnerMes, spinnerAno);
+                }
+            }
+        });
+
+        spinnerData.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                //dataVendaParaBD = spinnerData.getSelectedItem().toString() + "/" + spinnerMes.getSelectedItem().toString() + "/" + spinnerAno.getSelectedItem().toString();
+                //System.out.println("******* Spinner selecionado no ONITEMSELECTEDLISTENER: "+spinnerData.getSelectedItem().toString());
+                //System.out.println("******* DATAPARABD: \n" + dataVendaParaBD);
+                System.out.println("******* AGORA: " + sdf.format(new Date().getTime()));
+                dataVenda = spinnerData.getSelectedItem().toString();
+                System.out.println("******* MES SELECIONADO - RUMO AO BD: " + dataVenda);
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+
+            }
+        });
+        spinnerMes.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                //dataVendaParaBD = spinnerData.getSelectedItem().toString() + "/" + spinnerMes.getSelectedItem().toString() + "/" + spinnerAno.getSelectedItem().toString();
+                //System.out.println("******* Spinner selecionado no spinnerMes: "+spinnerMes.getSelectedItem().toString());
+                //System.out.println("******* DATAPARABD: \n" + dataVendaParaBD);
+                mesVenda = spinnerMes.getSelectedItem().toString();
+                System.out.println("******* ANO SELECIONADO - RUMO AO BD: " + mesVenda);
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+
+            }
+        });
+        spinnerAno.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                //dataVendaParaBD = spinnerData.getSelectedItem().toString() + "/" + spinnerMes.getSelectedItem().toString() + "/" + spinnerAno.getSelectedItem().toString();
+                //System.out.println("******* Spinner selecionado no spinnerAno: "+spinnerAno.getSelectedItem().toString());
+                //System.out.println("******* DATAPARABD: \n" + dataVendaParaBD);
+                anoVenda = spinnerAno.getSelectedItem().toString();
+                System.out.println("******* ANO SELECIONADO - RUMO AO BD: " + anoVenda);
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+
+            }
+        });
+
+        System.out.println("DATA - MES - ANO para BD: " + spinnerData.getSelectedItem().toString() + "/" + spinnerMes.getSelectedItem().toString() + "/" + spinnerAno.getSelectedItem().toString());
         /*double stdCorretagem;
         double stdCustodia;
         double stdTx_liquidacao;
