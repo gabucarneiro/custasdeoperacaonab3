@@ -8,12 +8,6 @@ public class Papel extends AppCompatActivity {
     private Double valor;
     private int quantidade;
     private boolean fracionario;
-    private int dataCompra;
-    private int mesCompra;
-    private int anoCompra;
-    private int dataVenda;
-    private int mesVenda;
-    private int anoVenda;
 
     public int getId(){return id;}
 
@@ -51,53 +45,7 @@ public class Papel extends AppCompatActivity {
         this.fracionario = fracionario;
     }
 
-    public int getDataCompra(){
-        return dataCompra;
-    }
 
-    public void setDataCompra(int dataCompra){
-        this.dataCompra = dataCompra;
-    }
-
-    public int getMesCompra() {
-        return mesCompra;
-    }
-
-    public void setMesCompra(int mesCompra) {
-        this.mesCompra = mesCompra;
-    }
-
-    public int getAnoCompra() {
-        return anoCompra;
-    }
-
-    public void setAnoCompra(int anoCompra) {
-        this.anoCompra = anoCompra;
-    }
-
-    public int getDataVenda() {
-        return dataVenda;
-    }
-
-    public void setDataVenda(int dataVenda) {
-        this.dataVenda = dataVenda;
-    }
-
-    public int getMesVenda() {
-        return mesVenda;
-    }
-
-    public void setMesVenda(int mesVenda) {
-        this.mesVenda = mesVenda;
-    }
-
-    public int getAnoVenda() {
-        return anoVenda;
-    }
-
-    public void setAnoVenda(int anoVenda) {
-        this.anoVenda = anoVenda;
-    }
 
     public Papel(String nomePapel, Double valor) {
         this.nomePapel = nomePapel;
@@ -128,12 +76,6 @@ public class Papel extends AppCompatActivity {
         this.valor = valor;
         this.quantidade = quantidade;
         this.fracionario = fracionario;
-        this.dataCompra = dataCompra;
-        this.mesCompra = mesCompra;
-        this.anoCompra = anoCompra;
-        this.dataVenda = dataVenda;
-        this.mesVenda = mesVenda;
-        this.anoVenda = anoVenda;
     }
 
     public Papel() {
@@ -177,8 +119,6 @@ public class Papel extends AppCompatActivity {
                 "Papel: " + nomePapel + "\n" +
                 "Valor: R$" + valor + "\n" +
                 "Quantidade: " + quantidade + "\n" +
-                "Fracionário: " + fracionario + "\n" +
-                "Data da compra: " + dataCompra + "/" + mesCompra + "/" + anoCompra + "/" + "\n" +
-                "Data da venda: " + dataVenda + "/" + mesVenda + "/" + anoVenda + "/" + "\n";
+                "Fracionário: " + fracionario + "\n";
     }
 }

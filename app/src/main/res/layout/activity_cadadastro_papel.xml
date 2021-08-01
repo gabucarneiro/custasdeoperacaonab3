@@ -127,73 +127,60 @@
                         android:layout_alignBaseline="@+id/txtQuantidade"
                         android:text="Fracionário">
                     </CheckBox>
+                    <CheckBox
+                        android:id="@+id/CadastroCBDataCompra"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Inserir data da compra"
+                        android:layout_below="@+id/cadastroCbFracionario"/>
 
-                    <TextView
-                        android:id="@+id/cadastroTxDataCompra"
+                <!--        -->
+                    <RelativeLayout
+                        android:id="@+id/RLDatadaCompra"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginTop="15dp"
-                        android:layout_alignParentStart="true"
-                        android:layout_below="@+id/cadastroCbFracionario"
-                        android:text="Data da compra: "/>
-                    <Spinner
-                        android:id="@+id/spinnerData"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_alignParentStart="true"
-                        android:layout_below="@id/cadastroTxDataCompra"/>
-                    <Spinner
-                        android:id="@+id/spinnerMes"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_below="@id/cadastroTxDataCompra"
-                        android:layout_toEndOf="@+id/spinnerData"/>
-                    <Spinner
-                        android:id="@+id/spinnerAno"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_below="@id/cadastroTxDataCompra"
-                        android:layout_toEndOf="@+id/spinnerMes"/>
-                    <ImageButton
-                        android:id="@+id/cadastroCalendarBtn"
-                        android:layout_width="30dp"
-                        android:layout_height="wrap_content"
-                        android:background="@null"
-                        android:src = "@drawable/icocalendar2"
-                        android:layout_alignBaseline="@+id/cadastroTxDataCompra"
-                        android:layout_alignParentEnd="true"/>
-                    <!--<TextView
-                        android:id="@+id/cadastroTvDataCompra"
-                        style="@style/Conteudo"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_below="@+id/cadastroCbFracionario"
-                        android:layout_alignBaseline="@+id/cadastroTxDataCompra"
-                        android:layout_toEndOf="@+id/cadastroTxDataCompra"
-                        android:layout_alignParentEnd="true"
-                        android:text=""/>-->
-                    <!--<CheckBox
-                        android:id="@+id/cadastroCbDataCompra"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_below="@+id/cadastroCbFracionario"
-                        android:layout_alignBaseline="@+id/cadastroTxDataCompra"
-                        android:layout_toStartOf="@+id/cadastroEdDataCompra"/>-->
-                    <!--<TextView
-                        android:id="@+id/cadastroBtnDataCompra"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_below="@+id/cadastroCbFracionario"
-                        android:layout_alignParentEnd="true"
-                        android:text=""/>-->
-                    <CalendarView
-                        android:id="@+id/cadastroDpDataCompra"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_below="@+id/spinnerData"
-                        android:layout_alignParentEnd="true"/>
+                        android:layout_below="@+id/CadastroCBDataCompra">
+                        <TextView
+                            android:id="@+id/cadastroTxDataCompra"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="15dp"
+                            android:layout_alignParentStart="true"
+                            android:text="Data da compra: "/>
+                        <Spinner
+                            android:id="@+id/spinnerData"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_alignParentStart="true"
+                            android:layout_below="@id/cadastroTxDataCompra"/>
+                        <Spinner
+                            android:id="@+id/spinnerMes"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_below="@id/cadastroTxDataCompra"
+                            android:layout_toEndOf="@+id/spinnerData"/>
+                        <Spinner
+                            android:id="@+id/spinnerAno"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_below="@id/cadastroTxDataCompra"
+                            android:layout_toEndOf="@+id/spinnerMes"/>
+                        <ImageButton
+                            android:id="@+id/cadastroCalendarBtn"
+                            android:layout_width="30dp"
+                            android:layout_height="wrap_content"
+                            android:background="@null"
+                            android:src = "@drawable/icocalendar2"
+                            android:layout_alignBaseline="@+id/cadastroTxDataCompra"
+                            android:layout_alignParentEnd="true"/>
+                        <CalendarView
+                            android:id="@+id/cadastroDpDataCompra"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_below="@+id/spinnerData"
+                            android:layout_alignParentEnd="true"/>
+                    </RelativeLayout>
                 </RelativeLayout>
-
             <Button
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"

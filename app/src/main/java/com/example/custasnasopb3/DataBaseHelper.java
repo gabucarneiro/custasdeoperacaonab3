@@ -1,4 +1,4 @@
- package com.example.custasnasopb3;
+package com.example.custasnasopb3;
 
 import android.content.ContentValues;
 import android.content.Context;
@@ -34,6 +34,7 @@ public class DataBaseHelper extends SQLiteOpenHelper {
                 "LIQUIDACAO DOUBLE(10), " +
                 "NEGOCIACAO DOUBLE(10), " +
                 "ISS DOUBLE(10))");*/
+        db.execSQL("CREATE TABLE DATAS (ID INTEGER(3), CONFIRMACOMPRA INTEGER(1), DATACOMPRA INTEGER(2), MESCOMPRA INTEGER(2), ANOCOMPRA INTEGER(4), CONFIRMAVENDA INTEGER(1), DATAVENDA INTEGER(2), MESVENDA INTEGER(2), ANOVENDA INTEGER(2))");
     }
 
     @Override
@@ -514,6 +515,223 @@ public class DataBaseHelper extends SQLiteOpenHelper {
         values.put("ID", id_CustasMinus);
 
         long id = db.update("CUSTAS", values, "id = ?", new String[]{String.valueOf(id_custas)});
+
+        db.close();
+        return id;
+    }
+
+//    TODO -------------------- DATAS -----------------------
+
+    public long addDatas(Datas datas){
+        SQLiteDatabase db = this.getWritableDatabase();
+
+        ContentValues values = new ContentValues();
+
+        values.put("CONFIRMACOMPRA", datas.isConfirmaCompra());
+        values.put("DATACOMPRA", datas.getDataCompra());
+        values.put("MESCOMPRA", datas.getMesCompra());
+        values.put("ANOCOMPRA", datas.getAnoCompra());
+        values.put("CONFIRMAVENDA", datas.isConfirmaVenda());
+        values.put("DATAVENDA", datas.getDataVenda());
+        values.put("MESVENDA", datas.getMesVenda());
+        values.put("ANOVENDA", datas.getAnoVenda());
+
+
+        long id = db.insert("DATAS", null, values);
+
+        db.close();
+        return id;
+    }
+
+    public long addTempIdDatas(Datas datas){
+        SQLiteDatabase db = this.getWritableDatabase();
+        Papel papel = new Papel();
+
+        ContentValues values = new ContentValues();
+
+        /*MODIFICAR PARA UMA VERIFICAÇÃO MELHOR*/
+        if(datas.isConfirmaCompra() && datas.getDataCompra()==0 && datas.getMesCompra()==0 && datas.getAnoCompra()==0 && datas.isConfirmaVenda() && datas.getDataVenda()==0 && datas.getMesVenda()==0 && datas.getAnoVenda()==0){
+            values.put("ID", datas.getId());
+            values.put("CONFIRMACOMPRA", 0);
+            values.put("DATACOMPRA", 0);
+            values.put("MESCOMPRA", 0);
+            values.put("ANOCOMPRA", 0);
+            values.put("CONFIRMAVENDA", 0);
+            values.put("DATAVENDA", 0);
+            values.put("MESVENDA", 0);
+            values.put("ANOVENDA", 0);
+        }
+        else{
+            values.put("CONFIRMACOMPRA", papel.boolToInt(datas.isConfirmaCompra()));
+            values.put("DATACOMPRA", datas.getDataCompra());
+            values.put("MESCOMPRA", datas.getMesCompra());
+            values.put("ANOCOMPRA", datas.getAnoCompra());
+            values.put("CONFIRMAVENDA", papel.boolToInt(datas.isConfirmaVenda()));
+            values.put("DATAVENDA", datas.getDataVenda());
+            values.put("MESVENDA", datas.getMesVenda());
+            values.put("ANOVENDA", datas.getAnoVenda());
+        }
+
+        long id = db.insert("DATAS", null, values);
+
+        db.close();
+        return id;
+    }
+
+    public long updateTempIdDatas(Datas datas, int id_datas){
+        SQLiteDatabase db = this.getWritableDatabase();
+        Papel papel = new Papel();
+
+        ContentValues values = new ContentValues();
+
+        values.put("CONFIRMACOMPRA", papel.boolToInt(datas.isConfirmaCompra()));
+        values.put("DATACOMPRA", datas.getDataCompra());
+        values.put("MESCOMPRA", datas.getMesCompra());
+        values.put("ANOCOMPRA", datas.getAnoCompra());
+        values.put("CONFIRMAVENDA", papel.boolToInt(datas.isConfirmaVenda()));
+        values.put("DATAVENDA", datas.getDataVenda());
+        values.put("MESVENDA", datas.getMesVenda());
+        values.put("ANOVENDA", datas.getAnoVenda());
+
+        long id = db.update("DATAS", values, "id = ?", new String[]{String.valueOf(id_datas)});
+
+        db.close();
+        return id;
+    }
+
+    public long clearTempIdDatas(int id_datas){
+        SQLiteDatabase db = this.getWritableDatabase();
+
+        ContentValues values = new ContentValues();
+
+        values.put("ID", id_datas);
+        values.put("CONFIRMACOMPRA", 0);
+        values.put("DATACOMPRA", 0);
+        values.put("MESCOMPRA", 0);
+        values.put("ANOCOMPRA", 0);
+        values.put("CONFIRMAVENDA", 0);
+        values.put("DATAVENDA", 0);
+        values.put("MESVENDA", 0);
+        values.put("ANOVENDA", 0);
+
+        long id = db.update("DATAS", values, "id = ?", new String[]{String.valueOf(id_datas)});
+
+        db.close();
+        return id;
+    }
+
+    public Papel excludeDatas(int id){
+        SQLiteDatabase db = this.getWritableDatabase();
+        Datas datas = new Datas();
+        Papel papel = new Papel();
+        Cursor cursor = db.rawQuery("DELETE FROM DATAS WHERE ID = ?", new String[]{String.valueOf(id)});
+
+        if(cursor.getCount()>0){
+            cursor.moveToFirst();
+
+            datas.setId(cursor.getInt(0));
+            datas.setConfirmaCompra(papel.intToBool(cursor.getInt(1)));
+            datas.setDataCompra(cursor.getInt(2));
+            datas.setMesCompra(cursor.getInt(3));
+            datas.setAnoCompra(cursor.getInt(4));
+            datas.setConfirmaVenda(papel.intToBool(cursor.getInt(5)));
+            datas.setDataVenda(cursor.getInt(6));
+            datas.setMesVenda(cursor.getInt(7));
+            datas.setAnoVenda(cursor.getInt(8));
+
+        }
+
+        cursor.close();
+        db.close();
+        return papel;
+    }
+
+    public void clearDBDatas(){
+        SQLiteDatabase db = this.getWritableDatabase();
+
+        Datas datas = new Datas();
+        //Papel papel = new Papel();
+        Cursor cursor = db.rawQuery("DELETE FROM DATAS WHERE ID = '0' AND CONFIRMACOMPRA = ''", null);
+
+        if(cursor.getCount()>0){
+            cursor.moveToFirst();
+
+            datas.setId(cursor.getInt(0));
+            datas.setConfirmaCompra(new Papel().intToBool(cursor.getInt(1)));
+            datas.setDataCompra(cursor.getInt(2));
+            datas.setMesCompra(cursor.getInt(3));
+            datas.setAnoCompra(cursor.getInt(4));
+            datas.setConfirmaVenda(new Papel().intToBool(cursor.getInt(5)));
+            datas.setDataVenda(cursor.getInt(6));
+            datas.setMesVenda(cursor.getInt(7));
+            datas.setAnoVenda(cursor.getInt(8));
+        }
+        cursor.close();
+        db.close();
+    }
+
+    public Datas getDatas(int id){
+        SQLiteDatabase db = this.getReadableDatabase();
+
+        Datas datas = new Datas();
+        Cursor cursor = db.rawQuery("SELECT * FROM DATAS WHERE ID = ?", new String[]{String.valueOf(id)});
+
+        if(cursor.getCount()>0){
+            cursor.moveToFirst();
+
+            datas.setId(cursor.getInt(0));
+            datas.setConfirmaCompra(new Papel().intToBool(cursor.getInt(1)));
+            datas.setDataCompra(cursor.getInt(2));
+            datas.setMesCompra(cursor.getInt(3));
+            datas.setAnoCompra(cursor.getInt(4));
+            datas.setConfirmaVenda(new Papel().intToBool(cursor.getInt(5)));
+            datas.setDataVenda(cursor.getInt(6));
+            datas.setMesVenda(cursor.getInt(7));
+            datas.setAnoVenda(cursor.getInt(8));
+        }
+        else{
+            datas.setId(0);
+            datas.setConfirmaCompra(false);
+            datas.setDataCompra(0);
+            datas.setMesCompra(0);
+            datas.setAnoCompra(0);
+            datas.setConfirmaVenda(false);
+            datas.setDataVenda(0);
+            datas.setMesVenda(0);
+            datas.setAnoVenda(0);
+        }
+        cursor.close();
+        db.close();
+        return datas;
+    }
+
+    public long updateDatas(Datas datas, int id_datas){
+        SQLiteDatabase db = this.getWritableDatabase();
+
+        ContentValues values = new ContentValues();
+
+        values.put("CONFIRMACOMPRA", new Papel().boolToInt(datas.isConfirmaCompra()));
+        values.put("DATACOMPRA", datas.getDataCompra());
+        values.put("MESCOMPRA", datas.getMesCompra());
+        values.put("ANOCOMPRA", datas.getAnoCompra());
+        values.put("CONFIRMAVENDA", new Papel().boolToInt(datas.isConfirmaVenda()));
+        values.put("DATAVENDA", datas.getDataVenda());
+        values.put("MESVENDA", datas.getMesVenda());
+        values.put("ANOVENDA", datas.getAnoVenda());
+
+        long id = db.update("DATAS", values, "id = ?", new String[]{String.valueOf(id_datas)});
+
+        db.close();
+        return id;
+    }
+    public long updateIDDatas(int id_datas){
+        SQLiteDatabase db = this.getWritableDatabase();
+
+        ContentValues values = new ContentValues();
+        int id_DatasMinus = id_datas-1;
+        values.put("ID", id_DatasMinus);
+
+        long id = db.update("DATAS", values, "id = ?", new String[]{String.valueOf(id_datas)});
 
         db.close();
         return id;

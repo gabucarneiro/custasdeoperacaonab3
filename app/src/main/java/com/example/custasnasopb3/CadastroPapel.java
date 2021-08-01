@@ -15,6 +15,7 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.CalendarView;
 import android.widget.CheckBox;
+import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.LinearLayout;
@@ -82,6 +83,7 @@ public class CadastroPapel extends AppCompatActivity {
         cadastroCbFracionario = findViewById(R.id.cadastroCbFracionario);
         //cadastroCbDataCompra = findViewById(R.id.cadastroCbDataCompra);
         //cadastroEdDataCompra = findViewById(R.id.cadastroEdDataCompra);
+        (findViewById(R.id.RLDatadaCompra)).setVisibility(View.GONE);
         (findViewById(R.id.cadastroDpDataCompra)).setVisibility(View.GONE);
 
         //CalendarView today = new CalendarView(this);
@@ -182,6 +184,17 @@ public class CadastroPapel extends AppCompatActivity {
         /*et_IdPapel.setText("999");
         Toaster(String.valueOf(et_IdPapel.getText()));*/
 
+        ((CheckBox)findViewById(R.id.CadastroCBDataCompra)).setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                if (isChecked){
+                    (findViewById(R.id.RLDatadaCompra)).setVisibility(View.VISIBLE);
+                }
+                else {
+                    (findViewById(R.id.RLDatadaCompra)).setVisibility(View.GONE);
+                }
+            }
+        });
 
         Calendar calendar = Calendar.getInstance();
         calendar.setTime(new Date());
