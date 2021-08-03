@@ -87,7 +87,7 @@ public class CadastroPapel extends AppCompatActivity {
         (findViewById(R.id.cadastroDpDataCompra)).setVisibility(View.GONE);
 
         //CalendarView today = new CalendarView(this);
-        SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy", Locale.getDefault());
+        //SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy", Locale.getDefault());
         //((EditText) findViewById(R.id.cadastroEdDataCompra)).setText(sdf.format(today.getDate()));
         //((EditText) findViewById(R.id.cadastroEdDataCompra)).setInputType(InputType.TYPE_NULL);
 
@@ -200,6 +200,10 @@ public class CadastroPapel extends AppCompatActivity {
         calendar.setTime(new Date());
         calendar.add(Calendar.YEAR, 1);
         Date yearLater = calendar.getTime();
+        Calendar minCalendar = Calendar.getInstance();
+        minCalendar.set(2008, 0, 01);
+        Date minDate = minCalendar.getTime();
+        ((CalendarView)findViewById(R.id.cadastroDpDataCompra)).setMinDate(minDate.getTime());
         ((CalendarView)findViewById(R.id.cadastroDpDataCompra)).setMaxDate(yearLater.getTime());
         ((ImageButton)findViewById(R.id.cadastroCalendarBtn)).setOnClickListener(new View.OnClickListener() {
             @Override

@@ -164,15 +164,16 @@
                 android:layout_alignBaseline="@+id/valMinVendaTxDataVenda"
                 android:layout_alignParentEnd="true"/>
             <CalendarView
-                android:id="@+id/valMinVendaDpDataCompra"
+                android:id="@+id/valMinVendaDpDataVenda"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_below="@+id/valMinVendaspinnerData"
                 android:layout_alignParentEnd="true"/>
             <Button
+                android:id="@+id/valMinVendaBtnConfirmarVenda"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_below="@+id/valMinVendaDpDataCompra"
+                android:layout_below="@+id/valMinVendaDpDataVenda"
                 android:text="Confirmar venda"
                 android:layout_centerInParent="true"/>
         </RelativeLayout>

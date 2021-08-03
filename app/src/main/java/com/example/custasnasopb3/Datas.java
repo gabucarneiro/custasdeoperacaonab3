@@ -91,6 +91,7 @@ public class Datas extends AppCompatActivity {
 
     public void datasCompra(boolean confirmaCompra, int dataCompra, int mesCompra, int anoCompra) {
         if (confirmaCompra){
+            this.confirmaCompra= confirmaCompra;
             this.dataCompra = dataCompra;
             this.mesCompra = mesCompra;
             this.anoCompra = anoCompra;
@@ -99,10 +100,25 @@ public class Datas extends AppCompatActivity {
 
     public void datasVenda (boolean confirmaVenda, int dataVenda, int mesVenda, int anoVenda){
         if (confirmaVenda){
+            this.confirmaVenda = confirmaVenda;
             this.dataVenda = dataVenda;
             this.mesVenda = mesVenda;
             this.anoVenda = anoVenda;
         }
     }
 
+    @Override
+    public String toString() {
+        return "Confirma Compra: " + confirmaCompra +
+                " - Data da compra: " + dataCompra +
+                "/" + mesCompra +
+                "/" + anoCompra;
+    }
+
+    public String toString1() {
+        return " Confirma Venda: " + confirmaVenda +
+                " - Data da venda: " + dataVenda +
+                "/" + mesVenda +
+                "/" + anoVenda;
+    }
 }
