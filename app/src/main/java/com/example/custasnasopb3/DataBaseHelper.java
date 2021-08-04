@@ -522,19 +522,50 @@ public class DataBaseHelper extends SQLiteOpenHelper {
 
 //    TODO -------------------- DATAS -----------------------
 
-    public long addDatas(Datas datas){
+    public long addDataCompra(Datas datas){
         SQLiteDatabase db = this.getWritableDatabase();
+        Papel papel = new Papel();
 
         ContentValues values = new ContentValues();
 
-        values.put("CONFIRMACOMPRA", datas.isConfirmaCompra());
-        values.put("DATACOMPRA", datas.getDataCompra());
-        values.put("MESCOMPRA", datas.getMesCompra());
-        values.put("ANOCOMPRA", datas.getAnoCompra());
-        values.put("CONFIRMAVENDA", datas.isConfirmaVenda());
-        values.put("DATAVENDA", datas.getDataVenda());
-        values.put("MESVENDA", datas.getMesVenda());
-        values.put("ANOVENDA", datas.getAnoVenda());
+        values.put("ID", datas.getId());
+        values.put("CONFIRMACOMPRA", papel.boolToInt(datas.isConfirmaCompra()));
+        if (datas.isConfirmaCompra()) {
+            values.put("DATACOMPRA", datas.getDataCompra());
+            values.put("MESCOMPRA", datas.getMesCompra());
+            values.put("ANOCOMPRA", datas.getAnoCompra());
+        }
+        else {
+            values.put("DATACOMPRA", 0);
+            values.put("MESCOMPRA", 0);
+            values.put("ANOCOMPRA", 0);
+        }
+
+
+        long id = db.insert("DATAS", null, values);
+
+        db.close();
+        return id;
+    }
+
+    public long addDataVenda(Datas datas){
+        SQLiteDatabase db = this.getWritableDatabase();
+        Papel papel = new Papel();
+
+        ContentValues values = new ContentValues();
+
+        values.put("ID", datas.getId());
+        values.put("CONFIRMAVENDA", papel.boolToInt(datas.isConfirmaVenda()));
+        if (datas.isConfirmaVenda()) {
+            values.put("DATAVENDA", datas.getDataVenda());
+            values.put("MESVENDA", datas.getMesVenda());
+            values.put("ANOVENDA", datas.getAnoVenda());
+        }
+        else {
+            values.put("DATAVENDA", 0);
+            values.put("MESVENDA", 0);
+            values.put("ANOVENDA", 0);
+        }
 
 
         long id = db.insert("DATAS", null, values);
@@ -578,7 +609,36 @@ public class DataBaseHelper extends SQLiteOpenHelper {
         return id;
     }
 
-    public long updateTempIdDatas(Datas datas, int id_datas){
+    public long updateTempIdDatasCompra(Datas datas, int id_datas){
+        SQLiteDatabase db = this.getWritableDatabase();
+        Papel papel = new Papel();
+
+        ContentValues values = new ContentValues();
+
+        values.put("CONFIRMACOMPRA", papel.boolToInt(datas.isConfirmaCompra()));
+        if (datas.isConfirmaCompra()) {
+            values.put("DATACOMPRA", datas.getDataCompra());
+            values.put("MESCOMPRA", datas.getMesCompra());
+            values.put("ANOCOMPRA", datas.getAnoCompra());
+        }
+        else {
+            values.put("DATACOMPRA", 0);
+            values.put("MESCOMPRA", 0);
+            values.put("ANOCOMPRA", 0);
+        }
+
+        /*values.put("CONFIRMACOMPRA", papel.boolToInt(datas.isConfirmaCompra()));
+        values.put("DATACOMPRA", datas.getDataCompra());
+        values.put("MESCOMPRA", datas.getMesCompra());
+        values.put("ANOCOMPRA", datas.getAnoCompra());*/
+
+        long id = db.update("DATAS", values, "id = ?", new String[]{String.valueOf(id_datas)});
+
+        db.close();
+        return id;
+    }
+
+    public long updateTempIdDatasVenda(Datas datas, int id_datas){
         SQLiteDatabase db = this.getWritableDatabase();
         Papel papel = new Papel();
 

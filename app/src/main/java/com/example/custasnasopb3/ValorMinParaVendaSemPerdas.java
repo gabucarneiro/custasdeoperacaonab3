@@ -72,7 +72,7 @@ public class ValorMinParaVendaSemPerdas extends AppCompatActivity {
     CheckBox cbCorretagem2, cbCustodia2, cbLiquidacao2, cbNegociacao2, cbIss2, cbCorretagem2Compra, cbCustodia2Compra, cbLiquidacao2Compra, cbNegociacao2Compra, cbIss2Compra;
     Spinner spinnerData, spinnerMes, spinnerAno;
 
-    String dataVendaParaBD, dataVenda, mesVenda, anoVenda;
+    int dataVenda, mesVenda, anoVenda;
 
     private Handler handler2 = new Handler();
 
@@ -107,7 +107,7 @@ public class ValorMinParaVendaSemPerdas extends AppCompatActivity {
                 if (isChecked){
                     (findViewById(R.id.RLDatadaVenda)).setVisibility(View.VISIBLE);
                     System.out.println(" IS IT CHECKED? "+((CheckBox)findViewById(R.id.valVendaCBDataVenda)).isChecked());
-                    datas.datasVenda(((CheckBox)findViewById(R.id.valVendaCBDataVenda)).isChecked(), Integer.parseInt(spinnerData.getSelectedItem().toString()), Integer.parseInt(spinnerMes.getSelectedItem().toString()), Integer.parseInt(spinnerAno.getSelectedItem().toString()));
+                    //datas.datasVenda(((CheckBox)findViewById(R.id.valVendaCBDataVenda)).isChecked(), Integer.parseInt(spinnerData.getSelectedItem().toString()), Integer.parseInt(spinnerMes.getSelectedItem().toString()), Integer.parseInt(spinnerAno.getSelectedItem().toString()));
 
                     System.out.println("\n"+ datas.toString1());
                 }
@@ -130,7 +130,7 @@ public class ValorMinParaVendaSemPerdas extends AppCompatActivity {
         calendar.add(Calendar.YEAR, 1);
         Date yearLater = calendar.getTime();
         Calendar minCalendar = Calendar.getInstance();
-        minCalendar.set(2008, 0, 01);
+        minCalendar.set(2008, 0, 1);
         Date minDate = minCalendar.getTime();
         ((CalendarView)findViewById(R.id.valMinVendaDpDataVenda)).setMinDate(minDate.getTime());
         ((CalendarView)findViewById(R.id.valMinVendaDpDataVenda)).setMaxDate(yearLater.getTime());
@@ -152,8 +152,8 @@ public class ValorMinParaVendaSemPerdas extends AppCompatActivity {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                 System.out.println("******* AGORA: " + sdf.format(new Date().getTime())); //TODO excluir
-                dataVenda = spinnerData.getSelectedItem().toString();
-                datas.setDataVenda(Integer.parseInt(dataVenda));
+                dataVenda = Integer.parseInt(spinnerData.getSelectedItem().toString());
+                datas.setDataVenda(dataVenda);
 
                 System.out.println("\n"+ datas.toString1());
 
@@ -169,8 +169,8 @@ public class ValorMinParaVendaSemPerdas extends AppCompatActivity {
         spinnerMes.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                mesVenda = spinnerMes.getSelectedItem().toString();
-                datas.setMesVenda(Integer.parseInt(mesVenda));
+                mesVenda = Integer.parseInt(spinnerMes.getSelectedItem().toString());
+                datas.setMesVenda(mesVenda);
 
                 System.out.println("\n"+ datas.toString1());
             }
@@ -185,8 +185,8 @@ public class ValorMinParaVendaSemPerdas extends AppCompatActivity {
         spinnerAno.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                anoVenda = spinnerAno.getSelectedItem().toString();
-                datas.setAnoVenda(Integer.parseInt(anoVenda));
+                anoVenda = Integer.parseInt(spinnerAno.getSelectedItem().toString());
+                datas.setAnoVenda(anoVenda);
 
                 System.out.println("\n"+ datas.toString1());
             }

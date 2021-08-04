@@ -89,8 +89,9 @@ public class Datas extends AppCompatActivity {
     public Datas() {
     }
 
-    public void datasCompra(boolean confirmaCompra, int dataCompra, int mesCompra, int anoCompra) {
+    public void datasCompra(boolean confirmaCompra, int id, int dataCompra, int mesCompra, int anoCompra) {
         if (confirmaCompra){
+            this.id = id;
             this.confirmaCompra= confirmaCompra;
             this.dataCompra = dataCompra;
             this.mesCompra = mesCompra;
@@ -98,8 +99,9 @@ public class Datas extends AppCompatActivity {
         }
     }
 
-    public void datasVenda (boolean confirmaVenda, int dataVenda, int mesVenda, int anoVenda){
+    public void datasVenda (boolean confirmaVenda, int id, int dataVenda, int mesVenda, int anoVenda){
         if (confirmaVenda){
+            this.id = id;
             this.confirmaVenda = confirmaVenda;
             this.dataVenda = dataVenda;
             this.mesVenda = mesVenda;
