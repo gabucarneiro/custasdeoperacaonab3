@@ -627,11 +627,6 @@ public class DataBaseHelper extends SQLiteOpenHelper {
             values.put("ANOCOMPRA", 0);
         }
 
-        /*values.put("CONFIRMACOMPRA", papel.boolToInt(datas.isConfirmaCompra()));
-        values.put("DATACOMPRA", datas.getDataCompra());
-        values.put("MESCOMPRA", datas.getMesCompra());
-        values.put("ANOCOMPRA", datas.getAnoCompra());*/
-
         long id = db.update("DATAS", values, "id = ?", new String[]{String.valueOf(id_datas)});
 
         db.close();

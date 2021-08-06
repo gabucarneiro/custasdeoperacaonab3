@@ -5,6 +5,7 @@ import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Context;
+import android.content.RestrictionEntry;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.InputType;
@@ -389,6 +390,7 @@ public class CadastroPapel extends AppCompatActivity {
         et_valCadastroPapel.setText("");
         et_QuantidadePapel.setText("");
         cadastroCbFracionario.setChecked(false);
+        ((CheckBox) findViewById(R.id.CadastroCBDataCompra)).setChecked(false);
     }
 
 
@@ -439,7 +441,41 @@ public class CadastroPapel extends AppCompatActivity {
                     else {
                         cadastroCbFracionario.setChecked(false);
                     }
-                    //Toaster("Sucesso!");
+
+                    // ***** DATAS *****
+                    try {
+                        if (dbh.getDatas(ID_PAPEL).isConfirmaCompra()){
+                            ((CheckBox) findViewById(R.id.CadastroCBDataCompra)).setChecked(true);
+                            try {
+                                ((Spinner)findViewById(R.id.spinnerData)).setSelection((dbh.getDatas(ID_PAPEL).getDataCompra()) - 1);
+                                ((Spinner)findViewById(R.id.spinnerMes)).setSelection((dbh.getDatas(ID_PAPEL).getMesCompra()) - 1);
+                                ArrayList<Integer> ano = new ArrayList<>();
+                                for (int i = 2008; i<= (2007 + ((Spinner)findViewById(R.id.spinnerAno)).getCount()); i++){
+                                    ano.add(i);
+                                }
+                                if (ano.contains(dbh.getDatas(ID_PAPEL).getAnoCompra())) {
+                                    ((Spinner)findViewById(R.id.spinnerAno)).setSelection(ano.indexOf(dbh.getDatas(ID_PAPEL).getAnoCompra()));
+                                }
+                                System.out.println("ENCONTRAR PAPEL -> idaux != null -> DATAS -> Try Spinner ok - ANO: " + ((Spinner)findViewById(R.id.spinnerAno)).getSelectedItem().toString());
+                                //((Spinner)findViewById(R.id.spinnerAno)).setSelection(dbh.getDatas(ID_PAPEL).getAnoCompra());
+
+                            } catch (Exception e) {
+                                e.printStackTrace();
+                            }
+                        }
+                        else {
+                            ((CheckBox) findViewById(R.id.CadastroCBDataCompra)).setChecked(false);
+                            System.out.println("ENCONTRAR PAPEL ->idaux != null -> DATAS -> Try Spinner ELSE - CheckBoxisSelected: " + ((CheckBox) findViewById(R.id.CadastroCBDataCompra)).isChecked());
+                        }
+                    System.out.println("IsChecked do ID "+ ID_PAPEL + " é:" + dbh.getDatas(ID_PAPEL).isConfirmaCompra());
+                    System.out.println("Data da compra do ID "+ ID_PAPEL + " é:" + dbh.getDatas(ID_PAPEL).getDataCompra());
+                    System.out.println("Mês da compra do ID "+ ID_PAPEL + " é:" + dbh.getDatas(ID_PAPEL).getMesCompra());
+                    System.out.println("Ano da compra do ID "+ ID_PAPEL + " é:" + dbh.getDatas(ID_PAPEL).getAnoCompra());
+                    }
+                    catch (Exception e){
+                        System.out.println(e.getMessage());
+                    }
+
                     dbh.close();
                 }
                 catch (Exception e){
@@ -535,7 +571,7 @@ public class CadastroPapel extends AppCompatActivity {
                         Datas datas = new Datas();
                         if (((CheckBox)findViewById(R.id.CadastroCBDataCompra)).isChecked()) {
                             datas.datasCompra(((CheckBox) findViewById(R.id.CadastroCBDataCompra)).isChecked(), ultimo, Integer.parseInt(((Spinner) findViewById(R.id.spinnerData)).getSelectedItem().toString()), Integer.parseInt(((Spinner) findViewById(R.id.spinnerMes)).getSelectedItem().toString()), Integer.parseInt(((Spinner) findViewById(R.id.spinnerAno)).getSelectedItem().toString()));
-                            if (dbh.getDatas(ultimo).getDataCompra() == 0 && dbh.getDatas(ultimo).getMesCompra() == 0 && dbh.getDatas(ultimo).getAnoCompra() == 0) {
+                            if (!dbh.getDatas(ultimo).isConfirmaCompra() && dbh.getDatas(ultimo).getDataCompra() == 0 && dbh.getDatas(ultimo).getMesCompra() == 0 && dbh.getDatas(ultimo).getAnoCompra() == 0) {
                                 dbh.addDataCompra(datas);
                                 System.out.println("CheckBox checked: " + datas.toString());
                             }
@@ -556,7 +592,7 @@ public class CadastroPapel extends AppCompatActivity {
                         System.out.println("Ano da compra do ID "+ ultimo + " é:" + dbh.getDatas(ultimo).getAnoCompra());
                     } catch (NumberFormatException e) {
                         e.printStackTrace();
-                        System.out.println("NUUUMBERFORMATEXCEPTION: "+e.getMessage());
+                        System.out.println("NUMBERFORMATEXCEPTION: "+e.getMessage());
                     } catch (Exception e){
                         System.out.println(e.getMessage());
                     }
@@ -630,6 +666,8 @@ public class CadastroPapel extends AppCompatActivity {
             //Toaster("Último: " + String.valueOf(ultimo));
         }
         else {
+
+            System.out.println("SALVAR PAPEL -> idaux != null -> ENTRADA DO ELSE");
             try {
                 ID_PAPEL = 0;
                 ID_PAPEL = Integer.parseInt(idaux);
@@ -650,13 +688,29 @@ public class CadastroPapel extends AppCompatActivity {
                 if(valorPapel!= null && !(valorPapel<= 0) && !(nomePapel.equals("")) && !(quantidade<= 0) && quantidade!= null){
                     papel = new Papel(ultimo, nomePapel, valorPapel, quantidade, fracionario);
 
+                    System.out.println("SALVAR PAPEL -> idaux != null -> ENTRADA DA VALIDAÇÃO DO PAPEL - Ultimo: " + ultimo + " / ID_PAPEL: "+ ID_PAPEL);
+
+                    Datas datasTemp = new Datas();
+                    System.out.println("CHECKBOX IS CHECKED?   "+((CheckBox)findViewById(R.id.CadastroCBDataCompra)).isChecked());
+                    if (((CheckBox)findViewById(R.id.CadastroCBDataCompra)).isChecked()) {
+                        System.out.println("DATATEMP 1.1 - SO FAR - OK!");
+                        datasTemp.datasCompra(((CheckBox) findViewById(R.id.CadastroCBDataCompra)).isChecked(), ID_PAPEL, Integer.parseInt(((Spinner) findViewById(R.id.spinnerData)).getSelectedItem().toString()), Integer.parseInt(((Spinner) findViewById(R.id.spinnerMes)).getSelectedItem().toString()), Integer.parseInt(((Spinner) findViewById(R.id.spinnerAno)).getSelectedItem().toString()));
+                        System.out.println(datasTemp.toString());
+                    }
+                    else {
+                        System.out.println("DATATEMP 1.2 - SO FAR - OK!");
+                        System.out.println("CHECKBOX IS CHECKED AGAIN?   "+((CheckBox)findViewById(R.id.CadastroCBDataCompra)).isChecked());
+                        datasTemp.datasCompra(((CheckBox)findViewById(R.id.CadastroCBDataCompra)).isChecked(), ID_PAPEL, 0, 0, 0);
+                    }
+
+
                     long encontrado = encontrarPapel();
 
                     if(encontrado>0){
                         DataBaseHelper helper = new DataBaseHelper(this);
                         helper.updatePapel(papel, ID_PAPEL);
-                        Clear();
 
+                        // ***** CUSTAS *****
 
                         Integer idCustas;
                         Double emptyTempCheck = dbh.getCustas(998).getCorretagem() + dbh.getCustas(998).getCustodia() + dbh.getCustas(998).getTx_liquidacao() + dbh.getCustas(998).getTx_negociacao() + dbh.getCustas(998).getIss();
@@ -697,35 +751,40 @@ public class CadastroPapel extends AppCompatActivity {
                         //***** DATAS *****
 
                         try {
-                            Datas datas = new Datas();
-                            if (((CheckBox)findViewById(R.id.CadastroCBDataCompra)).isChecked()) {
-                                datas.datasCompra(((CheckBox) findViewById(R.id.CadastroCBDataCompra)).isChecked(), ultimo, Integer.parseInt(((Spinner) findViewById(R.id.spinnerData)).getSelectedItem().toString()), Integer.parseInt(((Spinner) findViewById(R.id.spinnerMes)).getSelectedItem().toString()), Integer.parseInt(((Spinner) findViewById(R.id.spinnerAno)).getSelectedItem().toString()));
-                                if (dbh.getDatas(ultimo).getDataCompra() == 0 && dbh.getDatas(ultimo).getMesCompra() == 0 && dbh.getDatas(ultimo).getAnoCompra() == 0) {
-                                    dbh.addDataCompra(datas);
-                                    System.out.println("CheckBox checked: " + datas.toString());
+                            //Datas datas = new Datas();
+                            System.out.println("CHECKBOX  do datasTemp WAS CHECKED?   "+(datasTemp.isConfirmaCompra()));
+                            if (datasTemp.isConfirmaCompra()) {
+                                System.out.println("1 - SO FAR - OK!");
+                                if (dbh.getDatas(ID_PAPEL).getDataCompra() == 0 && dbh.getDatas(ID_PAPEL).getMesCompra() == 0 && dbh.getDatas(ID_PAPEL).getAnoCompra() == 0) {
+                                    System.out.println(datasTemp.toString());
+                                    dbh.addDataCompra(datasTemp);
+                                    System.out.println("1.1 - SO FAR - OK!");
+                                    System.out.println("CheckBox checked: " + datasTemp.toString());
                                 }
                                 else {
-                                    dbh.updateTempIdDatasCompra(datas, ultimo);
-                                    System.out.println("CheckBox checked: UPDATED!!! " + datas.toString());
+                                    System.out.println("1.2 - SO FAR - OK!");
+                                    dbh.updateTempIdDatasCompra(datasTemp, ID_PAPEL);
+                                    System.out.println("CheckBox checked: UPDATED!!! " + datasTemp.toString());
                                 }
                             }
                             else {
-                                System.out.println("dbh.addDataCompra" + ((CheckBox)findViewById(R.id.CadastroCBDataCompra)).isChecked());
-                                datas.datasCompra(((CheckBox) findViewById(R.id.CadastroCBDataCompra)).isChecked(), ultimo, 0, 0, 0);
-                                dbh.addDataCompra(datas);
+                                System.out.println("2 - SO FAR - OK!");
+                                System.out.println("dbh.addDataCompra: " + ((CheckBox)findViewById(R.id.CadastroCBDataCompra)).isChecked());
+                                //datasTemp.datasCompra(datasTemp.isConfirmaCompra(), ID_PAPEL, 0, 0, 0);
+                                System.out.println("DATATEMP ESTÁ ASSIM: "+ datasTemp.toString());
+                                dbh.updateTempIdDatasCompra(datasTemp, ID_PAPEL);
                             }
-                            System.out.println("CheckBox outside: " + datas.toString());
-                            System.out.println("IsChecked do ID "+ ultimo + " é:" + dbh.getDatas(ultimo).isConfirmaCompra());
-                            System.out.println("Data da compra do ID "+ ultimo + " é:" + dbh.getDatas(ultimo).getDataCompra());
-                            System.out.println("Mês da compra do ID "+ ultimo + " é:" + dbh.getDatas(ultimo).getMesCompra());
-                            System.out.println("Ano da compra do ID "+ ultimo + " é:" + dbh.getDatas(ultimo).getAnoCompra());
+                            System.out.println("CheckBox outside: " + datasTemp.toString());
+                            System.out.println("IsChecked do ID "+ ID_PAPEL + " é: " + dbh.getDatas(ID_PAPEL).isConfirmaCompra());
+                            System.out.println("Data da compra do ID "+ ID_PAPEL + " é: " + dbh.getDatas(ID_PAPEL).getDataCompra());
+                            System.out.println("Mês da compra do ID "+ ID_PAPEL + " é: " + dbh.getDatas(ID_PAPEL).getMesCompra());
+                            System.out.println("Ano da compra do ID "+ ID_PAPEL + " é: " + dbh.getDatas(ID_PAPEL).getAnoCompra());
                         } catch (NumberFormatException e) {
                             e.printStackTrace();
                             System.out.println("NUUUMBERFORMATEXCEPTION: "+e.getMessage());
                         } catch (Exception e){
                             System.out.println(e.getMessage());
                         }
-
 
                         StringBuilder sb = new StringBuilder();
                         sb.append("---- PAPEL ALTERADO ----\n");
@@ -744,6 +803,8 @@ public class CadastroPapel extends AppCompatActivity {
                         } catch (Exception e) {
                             System.out.println("FALHA AO TENTAR INSERIR NO LOG");
                         }
+
+                        Clear();
                         Toaster(papel.getNomePapel()+ " foi ALTERADO com sucesso!");
                     }
                     else{
@@ -898,9 +959,11 @@ public class CadastroPapel extends AppCompatActivity {
                 et_valCadastroPapel.setText("");
                 et_QuantidadePapel.setText("");
                 cadastroCbFracionario.setChecked(false);
+                ((CheckBox) findViewById(R.id.CadastroCBDataCompra)).setChecked(false);
 
                 try {
                     dbh.excludeCustas(ID_PAPEL);
+                    dbh.excludeDatas(ID_PAPEL);
                 }
                 catch (Exception e){
                     try {
@@ -933,8 +996,10 @@ public class CadastroPapel extends AppCompatActivity {
                     }
                     dbh.excludePapel(ID_PAPEL);
                     dbh.excludeCustas(ID_PAPEL);
+                    dbh.excludeDatas(ID_PAPEL);
                     int ID_PAPELPlus = ID_PAPEL+1;
                     int ID_CUSTASPlus = ID_PAPELPlus;
+                    int ID_DATASPlus = ID_PAPELPlus;
                     while (ID_PAPELPlus!= 0){
                         Papel temp = dbh.getPapel(ID_PAPELPlus);
                         //Custas tempCustas = dbh.getCustas(ID_CUSTASPlus);
@@ -943,12 +1008,26 @@ public class CadastroPapel extends AppCompatActivity {
                             ID_PAPELPlus+=1;
                             dbh.updateIDCustas(ID_CUSTASPlus);
                             ID_CUSTASPlus+=1;
+                            dbh.updateIDDatas(ID_DATASPlus);
+                            ID_DATASPlus+=1;
                         }
                         else{
                             ID_PAPELPlus = 0;
                             ID_CUSTASPlus = 0;
+                            ID_DATASPlus = 0;
                         }
 
+                    }
+
+                    //TODO DELETAR APÓS TESTES DE EXCLUSÃO DAS DATAS
+
+                    try {
+                        for (int i = 0; i < dbh.contador(); i++ ){
+                            System.out.println( i + ": " + dbh.getDatas(i).toString());
+                        }
+                    }
+                    catch (Exception e){
+                        System.out.println(e.getMessage());
                     }
 
                     try {
