@@ -1019,17 +1019,6 @@ public class CadastroPapel extends AppCompatActivity {
 
                     }
 
-                    //TODO DELETAR APÓS TESTES DE EXCLUSÃO DAS DATAS
-
-                    try {
-                        for (int i = 0; i < dbh.contador(); i++ ){
-                            System.out.println( i + ": " + dbh.getDatas(i).toString());
-                        }
-                    }
-                    catch (Exception e){
-                        System.out.println(e.getMessage());
-                    }
-
                     try {
                         exp.loggIt(this, "Papel excluido com sucesso!\n");
                     } catch (Exception e) {

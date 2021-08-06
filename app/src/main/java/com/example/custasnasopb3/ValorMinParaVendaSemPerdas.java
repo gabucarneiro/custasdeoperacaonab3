@@ -10,6 +10,7 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.view.View;
 import android.widget.AdapterView;
+import android.widget.Button;
 import android.widget.CalendarView;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
@@ -23,6 +24,7 @@ import android.widget.Toast;
 
 import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.Locale;
@@ -110,6 +112,7 @@ public class ValorMinParaVendaSemPerdas extends AppCompatActivity {
                     //datas.datasVenda(((CheckBox)findViewById(R.id.valVendaCBDataVenda)).isChecked(), Integer.parseInt(spinnerData.getSelectedItem().toString()), Integer.parseInt(spinnerMes.getSelectedItem().toString()), Integer.parseInt(spinnerAno.getSelectedItem().toString()));
 
                     System.out.println("\n"+ datas.toString1());
+
                 }
                 else {
                     (findViewById(R.id.RLDatadaVenda)).setVisibility(View.GONE);
@@ -955,9 +958,9 @@ public class ValorMinParaVendaSemPerdas extends AppCompatActivity {
                                     //Custas custas;
                                     //custas = dbh.getCustas(which+1);
                                     int selected = which+1;
-                                    Toaster(String.valueOf(selected));
+                                    System.out.println(selected);
                                     Custas custas = new Custas(selected, dbhCustas.getCustas(selected).getCorretagem(), dbhCustas.getCustas(selected).getCustodia(), dbhCustas.getCustas(selected).getTx_liquidacao(), dbhCustas.getCustas(selected).getTx_negociacao(), dbhCustas.getCustas(selected).getIss(), dbhCustas.getCustas(selected).isCorretagemFixa(), dbhCustas.getCustas(selected).isCustodiaFixa(), dbhCustas.getCustas(selected).isTx_liquidacaoFixa(), dbhCustas.getCustas(selected).isTx_negociacaoFixa(), dbhCustas.getCustas(selected).isIssFixo());
-                                    Toaster(String.valueOf(custas.getCorretagem()));
+                                    System.out.println(custas.getCorretagem());
 
                                     SetCbTrueFalse(findViewById(R.id.cbFracionarioDCVP), papel.isFracionario());
                                     /*CheckBox cbFracionarioDCVP = findViewById(R.id.cbFracionarioDCVP);
@@ -1035,6 +1038,61 @@ public class ValorMinParaVendaSemPerdas extends AppCompatActivity {
                                     TV_valMinVendaSemPerdas = findViewById(R.id.valMinVendaSemPerdas);
                                     ((TextView) findViewById(R.id.valMinVendaSemPerdas)).setText(df2.format(valMinVenda(papel.getValor(), papel.getQuantidade(), calculoCorretagemCompra, calculoCustodiaCompra, calculoLiquidacaoCompra, calculoNegociacaoCompra, calculoIssCompra)));
                                     //TV_valMinVendaSemPerdas.setText(df2.format(valMinVendaDII(valPapelAdquirido, quantidade, valTotalCompraDoPapel2, cbFracionarioDCVP, dbCorretagem2Venda, cbCorretagem2, dbCustodia2Venda, cbCustodia2, dbLiquidacao2Venda, cbLiquidacao2, dbNegociacao2Venda, cbNegociacao2, dbIss2Venda, cbIss2)));
+
+                                    // ***** DATAS *****
+
+                                    try {
+                                        if (dbh.getDatas(selected).isConfirmaVenda()){
+                                            ((CheckBox) findViewById(R.id.valVendaCBDataVenda)).setChecked(true);
+                                            //((CheckBox) findViewById(R.id.valVendaCBDataVenda)).setEnabled(false);
+                                            try {
+                                                ((Spinner)findViewById(R.id.spinnerData)).setSelection((dbh.getDatas(selected).getDataVenda()) - 1);
+                                                ((Spinner)findViewById(R.id.spinnerMes)).setSelection((dbh.getDatas(selected).getMesVenda()) - 1);
+                                                ArrayList<Integer> ano = new ArrayList<>();
+                                                for (int i = 2008; i<= (2007 + ((Spinner)findViewById(R.id.spinnerAno)).getCount()); i++){
+                                                    ano.add(i);
+                                                }
+                                                if (ano.contains(dbh.getDatas(selected).getAnoVenda())) {
+                                                    ((Spinner)findViewById(R.id.spinnerAno)).setSelection(ano.indexOf(dbh.getDatas(selected).getAnoVenda()));
+                                                }
+                                                System.out.println("ENCONTRAR PAPEL -> idaux != null -> DATAS -> Try Spinner ok - ANO: " + ((Spinner)findViewById(R.id.spinnerAno)).getSelectedItem().toString());
+                                                //((Spinner)findViewById(R.id.spinnerAno)).setSelection(dbh.getDatas(selected).getAnoVenda());
+
+                                            } catch (Exception e) {
+                                                e.printStackTrace();
+                                            }
+                                        }
+                                        else {
+                                            ((CheckBox) findViewById(R.id.valVendaCBDataVenda)).setChecked(false);
+                                            System.out.println("ENCONTRAR PAPEL ->idaux != null -> DATAS -> Try Spinner ELSE - CheckBoxisSelected: " + ((CheckBox) findViewById(R.id.valVendaCBDataVenda)).isChecked());
+                                        }
+                                        System.out.println("IsChecked do ID "+ selected + " é:" + dbh.getDatas(selected).isConfirmaCompra());
+                                        System.out.println("Data da compra do ID "+ selected + " é:" + dbh.getDatas(selected).getDataCompra());
+                                        System.out.println("Mês da compra do ID "+ selected + " é:" + dbh.getDatas(selected).getMesCompra());
+                                        System.out.println("Ano da compra do ID "+ selected + " é:" + dbh.getDatas(selected).getAnoCompra());
+                                        System.out.println("IsChecked do ID "+ selected + " é:" + dbh.getDatas(selected).isConfirmaCompra());
+                                        System.out.println("Data da venda do ID "+ selected + " é:" + dbh.getDatas(selected).getDataVenda());
+                                        System.out.println("Mês da venda do ID "+ selected + " é:" + dbh.getDatas(selected).getMesVenda());
+                                        System.out.println("Ano da venda do ID "+ selected + " é:" + dbh.getDatas(selected).getAnoVenda());
+
+                                        try {
+                                            ((Button)findViewById(R.id.valMinVendaBtnConfirmarVenda)).setOnClickListener(new View.OnClickListener() {
+                                                @Override
+                                                public void onClick(View v) {
+                                                    System.out.println("WORKING NICELY!");
+                                                }
+                                            });
+                                        }
+                                        catch (Exception ei){
+                                            System.out.println(ei.getMessage());
+                                        }
+
+
+                                    }
+                                    catch (Exception e){
+                                        System.out.println(e.getMessage());
+                                    }
+
                                     dbh.close();
                                     dbhCustas.close();
                                 }

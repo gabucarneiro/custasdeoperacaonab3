@@ -639,14 +639,17 @@ public class DataBaseHelper extends SQLiteOpenHelper {
 
         ContentValues values = new ContentValues();
 
-        values.put("CONFIRMACOMPRA", papel.boolToInt(datas.isConfirmaCompra()));
-        values.put("DATACOMPRA", datas.getDataCompra());
-        values.put("MESCOMPRA", datas.getMesCompra());
-        values.put("ANOCOMPRA", datas.getAnoCompra());
         values.put("CONFIRMAVENDA", papel.boolToInt(datas.isConfirmaVenda()));
-        values.put("DATAVENDA", datas.getDataVenda());
-        values.put("MESVENDA", datas.getMesVenda());
-        values.put("ANOVENDA", datas.getAnoVenda());
+        if (datas.isConfirmaVenda()) {
+            values.put("DATAVENDA", datas.getDataVenda());
+            values.put("MESVENDA", datas.getMesVenda());
+            values.put("ANOVENDA", datas.getAnoVenda());
+        }
+        else {
+            values.put("DATAVENDA", 0);
+            values.put("MESVENDA", 0);
+            values.put("ANOVENDA", 0);
+        }
 
         long id = db.update("DATAS", values, "id = ?", new String[]{String.valueOf(id_datas)});
 
