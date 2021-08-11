@@ -46,7 +46,6 @@ public class Papel extends AppCompatActivity {
     }
 
 
-
     public Papel(String nomePapel, Double valor) {
         this.nomePapel = nomePapel;
         this.valor = valor;

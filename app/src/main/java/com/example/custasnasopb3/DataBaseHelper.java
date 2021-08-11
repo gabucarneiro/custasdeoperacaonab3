@@ -35,6 +35,8 @@ public class DataBaseHelper extends SQLiteOpenHelper {
                 "NEGOCIACAO DOUBLE(10), " +
                 "ISS DOUBLE(10))");*/
         db.execSQL("CREATE TABLE DATAS (ID INTEGER(3), CONFIRMACOMPRA INTEGER(1), DATACOMPRA INTEGER(2), MESCOMPRA INTEGER(2), ANOCOMPRA INTEGER(4), CONFIRMAVENDA INTEGER(1), DATAVENDA INTEGER(2), MESVENDA INTEGER(2), ANOVENDA INTEGER(4))");
+
+        db.execSQL("CREATE TABLE DADOSVENDA (ID INTEGER(3), VALORVENDA DOUBLE(10), CORRETAGEM DOUBLE(10), CUSTODIA DOUBLE(10), LIQUIDACAO DOUBLE(10), NEGOCIACAO DOUBLE(10), ISS DOUBLE(10), CORRETAGEMFIXA INTEGER(1), CUSTODIAFIXA INTEGER(1), LIQUIDACAOFIXA INTEGER(1), NEGOCIACAOFIXA INTEGER(1), ISSFIXO INTEGER(1))");
     }
 
     @Override
@@ -790,6 +792,269 @@ public class DataBaseHelper extends SQLiteOpenHelper {
         values.put("ID", id_DatasMinus);
 
         long id = db.update("DATAS", values, "id = ?", new String[]{String.valueOf(id_datas)});
+
+        db.close();
+        return id;
+    }
+
+
+    //TODO ---------------- DADOS DA VENDA -------------------
+
+    public long addDadosVenda(DadosVenda dadosVenda){
+        SQLiteDatabase db = this.getWritableDatabase();
+
+        Custas custas = new Custas();
+        ContentValues values = new ContentValues();
+
+        values.put("ID", dadosVenda.getId());
+        values.put("VALORVENDA", dadosVenda.getValorVenda());
+        values.put("CORRETAGEM", dadosVenda.getCorretagem());
+        values.put("CUSTODIA", dadosVenda.getCustodia());
+        values.put("LIQUIDACAO", dadosVenda.getTx_liquidacao());
+        values.put("NEGOCIACAO", dadosVenda.getTx_negociacao());
+        values.put("ISS", dadosVenda.getIss());
+
+        values.put("CORRETAGEMFIXA", custas.boolToInt(dadosVenda.isCorretagemFixa()));
+        values.put("CUSTODIAFIXA", custas.boolToInt(dadosVenda.isCustodiaFixa()));
+        values.put("LIQUIDACAOFIXA", custas.boolToInt(dadosVenda.isTx_liquidacaoFixa()));
+        values.put("NEGOCIACAOFIXA", custas.boolToInt(dadosVenda.isTx_negociacaoFixa()));
+        values.put("ISSFIXO", custas.boolToInt(dadosVenda.isIssFixo()));
+
+
+        long id = db.insert("DADOSVENDA", null, values);
+
+        db.close();
+        return id;
+    }
+
+    public long addTempIdDadosVenda(DadosVenda dadosVenda){
+        SQLiteDatabase db = this.getWritableDatabase();
+
+        Custas custas = new Custas();
+        ContentValues values = new ContentValues();
+
+        /*MODIFICAR PARA UMA VERIFICAÇÃO MELHOR*/
+        if(dadosVenda.getCorretagem()== 0.0 && dadosVenda.getCustodia()==0.0 && dadosVenda.getTx_liquidacao()==0.0 && dadosVenda.getTx_negociacao()==0.0 && dadosVenda.getIss()==0.0){
+            values.put("ID", dadosVenda.getId());
+            values.put("VALORVENDA", 0.0);
+            values.put("CORRETAGEM", 0.0);
+            values.put("CUSTODIA", 0.0);
+            values.put("LIQUIDACAO", 0.0);
+            values.put("NEGOCIACAO", 0.0);
+            values.put("ISS", 0.0);
+
+            values.put("CORRETAGEMFIXA", 0);
+            values.put("CUSTODIAFIXA", 0);
+            values.put("LIQUIDACAOFIXA", 0);
+            values.put("NEGOCIACAOFIXA", 0);
+            values.put("ISSFIXO", 0);
+        }
+        else{
+            values.put("ID", dadosVenda.getId());
+            values.put("VALORVENDA", dadosVenda.getValorVenda());
+            values.put("CORRETAGEM", dadosVenda.getCorretagem());
+            values.put("CUSTODIA", dadosVenda.getCustodia());
+            values.put("LIQUIDACAO", dadosVenda.getTx_liquidacao());
+            values.put("NEGOCIACAO", dadosVenda.getTx_negociacao());
+            values.put("ISS", dadosVenda.getIss());
+
+            values.put("CORRETAGEMFIXA", custas.boolToInt(dadosVenda.isCorretagemFixa()));
+            values.put("CUSTODIAFIXA", custas.boolToInt(dadosVenda.isCustodiaFixa()));
+            values.put("LIQUIDACAOFIXA", custas.boolToInt(dadosVenda.isTx_liquidacaoFixa()));
+            values.put("NEGOCIACAOFIXA", custas.boolToInt(dadosVenda.isTx_negociacaoFixa()));
+            values.put("ISSFIXO", custas.boolToInt(dadosVenda.isIssFixo()));
+        }
+
+        long id = db.insert("DADOSVENDA", null, values);
+
+        db.close();
+        return id;
+    }
+
+    public long updateTempIdDadosVenda(DadosVenda dadosVenda, int id_custas){
+        SQLiteDatabase db = this.getWritableDatabase();
+
+        Custas custas = new Custas();
+        ContentValues values = new ContentValues();
+
+        values.put("VALORVENDA", dadosVenda.getValorVenda());
+        values.put("CORRETAGEM", dadosVenda.getCorretagem());
+        values.put("CUSTODIA", dadosVenda.getCustodia());
+        values.put("LIQUIDACAO",dadosVenda.getTx_liquidacao());
+        values.put("NEGOCIACAO",dadosVenda.getTx_negociacao());
+        values.put("ISS",dadosVenda.getIss());
+
+        values.put("CORRETAGEMFIXA", custas.boolToInt(dadosVenda.isCorretagemFixa()));
+        values.put("CUSTODIAFIXA", custas.boolToInt(dadosVenda.isCustodiaFixa()));
+        values.put("LIQUIDACAOFIXA", custas.boolToInt(dadosVenda.isTx_liquidacaoFixa()));
+        values.put("NEGOCIACAOFIXA", custas.boolToInt(dadosVenda.isTx_negociacaoFixa()));
+        values.put("ISSFIXO", custas.boolToInt(dadosVenda.isIssFixo()));
+
+        long id = db.update("DADOSVENDA", values, "id = ?", new String[]{String.valueOf(id_custas)});
+
+        db.close();
+        return id;
+    }
+
+    public long clearTempIdDadosVenda(int id_custas){
+        SQLiteDatabase db = this.getWritableDatabase();
+
+        ContentValues values = new ContentValues();
+
+        values.put("ID", id_custas);
+        values.put("VALORVENDA", 0.0);
+        values.put("CORRETAGEM", 0.0);
+        values.put("CUSTODIA", 0.0);
+        values.put("LIQUIDACAO", 0.0);
+        values.put("NEGOCIACAO", 0.0);
+        values.put("ISS", 0.0);
+
+        values.put("CORRETAGEMFIXA", 0);
+        values.put("CUSTODIAFIXA", 0);
+        values.put("LIQUIDACAOFIXA", 0);
+        values.put("NEGOCIACAOFIXA", 0);
+        values.put("ISSFIXO", 0);
+
+        long id = db.update("DADOSVENDA", values, "id = ?", new String[]{String.valueOf(id_custas)});
+
+        db.close();
+        return id;
+    }
+
+    public DadosVenda excludeDadosVenda(int id){
+        SQLiteDatabase db = this.getWritableDatabase();
+
+        DadosVenda dadosVenda = new DadosVenda();
+        Custas custas = new Custas();
+        Cursor cursor = db.rawQuery("DELETE FROM DADOSVENDA WHERE ID = ?", new String[]{String.valueOf(id)});
+
+        if(cursor.getCount()>0){
+            cursor.moveToFirst();
+
+            dadosVenda.setId(cursor.getInt(0));
+            dadosVenda.setValorVenda(cursor.getDouble(1));
+            dadosVenda.setCorretagem(cursor.getDouble(2));
+            dadosVenda.setCustodia(cursor.getDouble(3));
+            dadosVenda.setTx_liquidacao(cursor.getDouble(4));
+            dadosVenda.setTx_negociacao(cursor.getDouble(5));
+            dadosVenda.setIss(cursor.getDouble(6));
+
+            dadosVenda.setCorretagemFixa(custas.intToBool(cursor.getInt(7)));
+            dadosVenda.setCustodiaFixa(custas.intToBool(cursor.getInt(8)));
+            dadosVenda.setTx_liquidacaoFixa(custas.intToBool(cursor.getInt(9)));
+            dadosVenda.setTx_negociacaoFixa(custas.intToBool(cursor.getInt(10)));
+            dadosVenda.setIssFixo(custas.intToBool(cursor.getInt(11)));
+        }
+
+        cursor.close();
+        db.close();
+        return dadosVenda;
+    }
+
+    public void clearDBDadosVenda(){
+        SQLiteDatabase db = this.getWritableDatabase();
+
+        DadosVenda dadosVenda = new DadosVenda();
+        Custas custas = new Custas();
+        Cursor cursor = db.rawQuery("DELETE FROM DADOSVENDA WHERE ID = '0' AND CORRETAGEM = ''", null);
+
+        if(cursor.getCount()>0){
+            cursor.moveToFirst();
+
+            dadosVenda.setId(cursor.getInt(0));
+            dadosVenda.setValorVenda(cursor.getDouble(1));
+            dadosVenda.setCorretagem(cursor.getDouble(2));
+            dadosVenda.setCustodia(cursor.getDouble(3));
+            dadosVenda.setTx_liquidacao(cursor.getDouble(4));
+            dadosVenda.setTx_negociacao(cursor.getDouble(5));
+            dadosVenda.setIss(cursor.getDouble(6));
+
+            dadosVenda.setCorretagemFixa(custas.intToBool(cursor.getInt(7)));
+            dadosVenda.setCustodiaFixa(custas.intToBool(cursor.getInt(8)));
+            dadosVenda.setTx_liquidacaoFixa(custas.intToBool(cursor.getInt(9)));
+            dadosVenda.setTx_negociacaoFixa(custas.intToBool(cursor.getInt(10)));
+            dadosVenda.setIssFixo(custas.intToBool(cursor.getInt(11)));
+        }
+        cursor.close();
+        db.close();
+    }
+
+    public DadosVenda getDadosVenda(int id){
+        SQLiteDatabase db = this.getReadableDatabase();
+
+        Custas custas = new Custas();
+        DadosVenda dadosVenda = new DadosVenda();
+        Cursor cursor = db.rawQuery("SELECT * FROM DADOSVENDA WHERE ID = ?", new String[]{String.valueOf(id)});
+
+        if(cursor.getCount()>0){
+            cursor.moveToFirst();
+
+            dadosVenda.setId(cursor.getInt(0));
+            dadosVenda.setValorVenda(cursor.getDouble(1));
+            dadosVenda.setCorretagem(cursor.getDouble(2));
+            dadosVenda.setCustodia(cursor.getDouble(3));
+            dadosVenda.setTx_liquidacao(cursor.getDouble(4));
+            dadosVenda.setTx_negociacao(cursor.getDouble(5));
+            dadosVenda.setIss(cursor.getDouble(6));
+
+            dadosVenda.setCorretagemFixa(custas.intToBool(cursor.getInt(7)));
+            dadosVenda.setCustodiaFixa(custas.intToBool(cursor.getInt(8)));
+            dadosVenda.setTx_liquidacaoFixa(custas.intToBool(cursor.getInt(9)));
+            dadosVenda.setTx_negociacaoFixa(custas.intToBool(cursor.getInt(10)));
+            dadosVenda.setIssFixo(custas.intToBool(cursor.getInt(11)));
+        }
+        else{
+            dadosVenda.setId(0);
+            dadosVenda.setValorVenda(0.0);
+            dadosVenda.setCorretagem(0.0);
+            dadosVenda.setCustodia(0.0);
+            dadosVenda.setTx_liquidacao(0.0);
+            dadosVenda.setTx_negociacao(0.0);
+            dadosVenda.setIss(0.0);
+
+            dadosVenda.setCorretagemFixa(custas.intToBool(0));
+            dadosVenda.setCustodiaFixa(custas.intToBool(0));
+            dadosVenda.setTx_liquidacaoFixa(custas.intToBool(0));
+            dadosVenda.setTx_negociacaoFixa(custas.intToBool(0));
+            dadosVenda.setIssFixo(custas.intToBool(0));
+        }
+        cursor.close();
+        db.close();
+        return dadosVenda;
+    }
+
+    public long updateDadosVenda(DadosVenda dadosVenda, int id_custas){
+        SQLiteDatabase db = this.getWritableDatabase();
+
+        Custas custas = new Custas();
+        ContentValues values = new ContentValues();
+
+        values.put("VALORVENDA", dadosVenda.getValorVenda());
+        values.put("CORRETAGEM", dadosVenda.getCorretagem());
+        values.put("CUSTODIA", dadosVenda.getCustodia());
+        values.put("LIQUIDACAO",dadosVenda.getTx_liquidacao());
+        values.put("NEGOCIACAO",dadosVenda.getTx_negociacao());
+        values.put("ISS",dadosVenda.getIss());
+
+        values.put("CORRETAGEMFIXA", custas.boolToInt(dadosVenda.isCorretagemFixa()));
+        values.put("CUSTODIAFIXA", custas.boolToInt(dadosVenda.isCustodiaFixa()));
+        values.put("LIQUIDACAOFIXA", custas.boolToInt(dadosVenda.isTx_liquidacaoFixa()));
+        values.put("NEGOCIACAOFIXA", custas.boolToInt(dadosVenda.isTx_negociacaoFixa()));
+        values.put("ISSFIXO", custas.boolToInt(dadosVenda.isIssFixo()));
+
+        long id = db.update("DADOSVENDA", values, "id = ?", new String[]{String.valueOf(id_custas)});
+
+        db.close();
+        return id;
+    }
+    public long updateIDDadosVenda(int id_custas){
+        SQLiteDatabase db = this.getWritableDatabase();
+
+        ContentValues values = new ContentValues();
+        int id_CustasMinus = id_custas-1;
+        values.put("ID", id_CustasMinus);
+
+        long id = db.update("DADOSVENDA", values, "id = ?", new String[]{String.valueOf(id_custas)});
 
         db.close();
         return id;

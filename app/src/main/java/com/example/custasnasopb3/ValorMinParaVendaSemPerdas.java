@@ -96,7 +96,7 @@ public class ValorMinParaVendaSemPerdas extends AppCompatActivity {
 
 
 
-        System.out.println(" IS IT CHECKED? "+((CheckBox)findViewById(R.id.valVendaCBDataVenda)).isChecked());
+        //System.out.println(" IS IT CHECKED? "+((CheckBox)findViewById(R.id.valVendaCBDataVenda)).isChecked());
         datas.setConfirmaVenda(false);
         datas.setDataVenda(0);
         datas.setMesVenda(0);
@@ -1046,21 +1046,34 @@ public class ValorMinParaVendaSemPerdas extends AppCompatActivity {
                                             ((CheckBox) findViewById(R.id.valVendaCBDataVenda)).setChecked(true);
                                             //((CheckBox) findViewById(R.id.valVendaCBDataVenda)).setEnabled(false);
                                             try {
-                                                ((Spinner)findViewById(R.id.spinnerData)).setSelection((dbh.getDatas(selected).getDataVenda()) - 1);
-                                                ((Spinner)findViewById(R.id.spinnerMes)).setSelection((dbh.getDatas(selected).getMesVenda()) - 1);
+                                                ((Spinner)findViewById(R.id.valMinVendaspinnerData)).setSelection((dbh.getDatas(selected).getDataVenda()) - 1);
+                                                ((Spinner)findViewById(R.id.valMinVendaspinnerMes)).setSelection((dbh.getDatas(selected).getMesVenda()) - 1);
                                                 ArrayList<Integer> ano = new ArrayList<>();
-                                                for (int i = 2008; i<= (2007 + ((Spinner)findViewById(R.id.spinnerAno)).getCount()); i++){
+                                                for (int i = 2008; i<= (2007 + ((Spinner)findViewById(R.id.valMinVendaspinnerAno)).getCount()); i++){
                                                     ano.add(i);
                                                 }
                                                 if (ano.contains(dbh.getDatas(selected).getAnoVenda())) {
-                                                    ((Spinner)findViewById(R.id.spinnerAno)).setSelection(ano.indexOf(dbh.getDatas(selected).getAnoVenda()));
+                                                    ((Spinner)findViewById(R.id.valMinVendaspinnerAno)).setSelection(ano.indexOf(dbh.getDatas(selected).getAnoVenda()));
                                                 }
-                                                System.out.println("ENCONTRAR PAPEL -> idaux != null -> DATAS -> Try Spinner ok - ANO: " + ((Spinner)findViewById(R.id.spinnerAno)).getSelectedItem().toString());
+                                                //System.out.println("ENCONTRAR PAPEL -> idaux != null -> DATAS -> Try Spinner ok - ANO: " + ((Spinner)findViewById(R.id.valMinVendaspinnerAno)).getSelectedItem().toString());
                                                 //((Spinner)findViewById(R.id.spinnerAno)).setSelection(dbh.getDatas(selected).getAnoVenda());
 
+                                                try {
+                                                    double valorVenda = dbh.getDadosVenda(selected).getValorVenda();
+                                                } catch (Exception e) {
+                                                    e.printStackTrace();
+                                                }
                                             } catch (Exception e) {
                                                 e.printStackTrace();
                                             }
+
+                                            try {
+
+                                            }
+                                            catch (Exception ex){
+
+                                            }
+
                                         }
                                         else {
                                             ((CheckBox) findViewById(R.id.valVendaCBDataVenda)).setChecked(false);
@@ -1075,11 +1088,45 @@ public class ValorMinParaVendaSemPerdas extends AppCompatActivity {
                                         System.out.println("Mês da venda do ID "+ selected + " é:" + dbh.getDatas(selected).getMesVenda());
                                         System.out.println("Ano da venda do ID "+ selected + " é:" + dbh.getDatas(selected).getAnoVenda());
 
+
                                         try {
                                             ((Button)findViewById(R.id.valMinVendaBtnConfirmarVenda)).setOnClickListener(new View.OnClickListener() {
                                                 @Override
                                                 public void onClick(View v) {
-                                                    System.out.println("WORKING NICELY!");
+                                                    Datas datasVenda = new Datas();
+                                                    datasVenda.setConfirmaVenda(((CheckBox)findViewById(R.id.valVendaCBDataVenda)).isChecked());
+                                                    datasVenda.setDataVenda(Integer.parseInt(((Spinner)findViewById(R.id.valMinVendaspinnerData)).getSelectedItem().toString()));
+                                                    datasVenda.setMesVenda(Integer.parseInt(((Spinner)findViewById(R.id.valMinVendaspinnerMes)).getSelectedItem().toString()));
+                                                    datasVenda.setAnoVenda(Integer.parseInt(((Spinner)findViewById(R.id.valMinVendaspinnerAno)).getSelectedItem().toString()));
+                                                    System.out.println(datasVenda.toString1());
+                                                    AlertDialog.Builder ad = new AlertDialog.Builder(ValorMinParaVendaSemPerdas.this);
+                                                    ad.setTitle("Confirma venda?");
+                                                    ad.setMessage("O papel em questão não poderá ser mais alterado.");
+                                                    ad.setPositiveButton("OK!", new DialogInterface.OnClickListener() {
+                                                        @Override
+                                                        public void onClick(DialogInterface dialog, int which) {
+                                                            System.out.println("Botão de confirmar acionado! \n" + datasVenda.toString1());
+                                                            dbh.updateTempIdDatasVenda(datasVenda ,selected);
+
+                                                            DadosVenda dv;
+                                                            try {
+                                                                dv = new DadosVenda(selected, Double.parseDouble(((EditText)findViewById(R.id.valPretendidoVenda)).getText().toString()), ((CheckBox)findViewById(R.id.cbCorretagem2)).isChecked(), Double.parseDouble(((EditText)findViewById(R.id.pctCorretagem2)).getText().toString()), ((CheckBox)findViewById(R.id.cbCustodia2)).isChecked(), Double.parseDouble(((EditText)findViewById(R.id.pctCustodia2)).getText().toString()), ((CheckBox)findViewById(R.id.cbLiquidacao2)).isChecked(), Double.parseDouble(((EditText)findViewById(R.id.pctLiquidacao2)).getText().toString()), ((CheckBox)findViewById(R.id.cbNegociacao2)).isChecked(), Double.parseDouble(((EditText)findViewById(R.id.pctNegociacao2)).getText().toString()), ((CheckBox)findViewById(R.id.cbIss2)).isChecked(), Double.parseDouble(((EditText)findViewById(R.id.pctIss2)).getText().toString()));
+                                                                System.out.println(dv.toString());
+                                                                //TODO CONTINUAR IMPLEMENTANDO O UPLOAD DAS INFORMAÇÕES DE VENDA NO BANCO DE DADOS.
+                                                            } catch (NumberFormatException e) {
+                                                                System.out.println(e.getMessage());
+                                                                e.printStackTrace();
+                                                            }
+                                                            //dbh.addDadosVenda(dv);
+                                                        }
+                                                    });
+                                                    ad.setNegativeButton("Cancelar", new DialogInterface.OnClickListener() {
+                                                        @Override
+                                                        public void onClick(DialogInterface dialog, int which) {
+                                                            System.out.println("Cancelar ativado!");
+                                                        }
+                                                    }).show();
+
                                                 }
                                             });
                                         }
