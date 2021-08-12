@@ -964,6 +964,7 @@ public class CadastroPapel extends AppCompatActivity {
                 try {
                     dbh.excludeCustas(ID_PAPEL);
                     dbh.excludeDatas(ID_PAPEL);
+                    dbh.excludeDadosVenda(ID_PAPEL);
                 }
                 catch (Exception e){
                     try {
@@ -997,24 +998,29 @@ public class CadastroPapel extends AppCompatActivity {
                     dbh.excludePapel(ID_PAPEL);
                     dbh.excludeCustas(ID_PAPEL);
                     dbh.excludeDatas(ID_PAPEL);
+                    dbh.excludeDadosVenda(ID_PAPEL);
                     int ID_PAPELPlus = ID_PAPEL+1;
                     int ID_CUSTASPlus = ID_PAPELPlus;
                     int ID_DATASPlus = ID_PAPELPlus;
+                    int ID_DATAS_VENDAPlus = ID_PAPELPlus;
                     while (ID_PAPELPlus!= 0){
                         Papel temp = dbh.getPapel(ID_PAPELPlus);
                         //Custas tempCustas = dbh.getCustas(ID_CUSTASPlus);
-                        if(temp.getNomePapel() != ""){
+                        if(!temp.getNomePapel().equals("")){
                             dbh.updateIDPapel(ID_PAPELPlus);
                             ID_PAPELPlus+=1;
                             dbh.updateIDCustas(ID_CUSTASPlus);
                             ID_CUSTASPlus+=1;
                             dbh.updateIDDatas(ID_DATASPlus);
                             ID_DATASPlus+=1;
+                            dbh.updateIDDadosVenda(ID_DATAS_VENDAPlus);
+                            ID_DATAS_VENDAPlus+=1;
                         }
                         else{
                             ID_PAPELPlus = 0;
                             ID_CUSTASPlus = 0;
                             ID_DATASPlus = 0;
+                            ID_DATAS_VENDAPlus = 0;
                         }
 
                     }

@@ -918,6 +918,9 @@ public class ValorMinParaVendaSemPerdas extends AppCompatActivity {
             Toaster("Exception AlertDialogListar" + e.getMessage());
         }
 
+//        ((CheckBox) findViewById(R.id.valVendaCBDataVenda)).setChecked(false);
+//        ((CheckBox) findViewById(R.id.valVendaCBDataVenda)).setEnabled(true);
+
         AlertDialog.Builder listaPapeisCadastrados = new AlertDialog.Builder(this);
         listaPapeisCadastrados.setTitle("Selecione o papel:");
 
@@ -934,6 +937,7 @@ public class ValorMinParaVendaSemPerdas extends AppCompatActivity {
                 et_valPapelAdquirido = findViewById(R.id.valPapelAdquirido);
                 et_quantidade = findViewById(R.id.quantidade2);
                 DataBaseHelper dbhCustas = new DataBaseHelper(ValorMinParaVendaSemPerdas.this);
+                ((EditText) findViewById(R.id.valPretendidoVenda)).setText("");
 
                 Papel papel;
                 papel = dbh.getPapel(which+1);
@@ -958,9 +962,9 @@ public class ValorMinParaVendaSemPerdas extends AppCompatActivity {
                                     //Custas custas;
                                     //custas = dbh.getCustas(which+1);
                                     int selected = which+1;
-                                    System.out.println(selected);
+                                    //System.out.println(selected);
                                     Custas custas = new Custas(selected, dbhCustas.getCustas(selected).getCorretagem(), dbhCustas.getCustas(selected).getCustodia(), dbhCustas.getCustas(selected).getTx_liquidacao(), dbhCustas.getCustas(selected).getTx_negociacao(), dbhCustas.getCustas(selected).getIss(), dbhCustas.getCustas(selected).isCorretagemFixa(), dbhCustas.getCustas(selected).isCustodiaFixa(), dbhCustas.getCustas(selected).isTx_liquidacaoFixa(), dbhCustas.getCustas(selected).isTx_negociacaoFixa(), dbhCustas.getCustas(selected).isIssFixo());
-                                    System.out.println(custas.getCorretagem());
+                                    //System.out.println(custas.getCorretagem());
 
                                     SetCbTrueFalse(findViewById(R.id.cbFracionarioDCVP), papel.isFracionario());
                                     /*CheckBox cbFracionarioDCVP = findViewById(R.id.cbFracionarioDCVP);
@@ -1037,15 +1041,56 @@ public class ValorMinParaVendaSemPerdas extends AppCompatActivity {
 
                                     TV_valMinVendaSemPerdas = findViewById(R.id.valMinVendaSemPerdas);
                                     ((TextView) findViewById(R.id.valMinVendaSemPerdas)).setText(df2.format(valMinVenda(papel.getValor(), papel.getQuantidade(), calculoCorretagemCompra, calculoCustodiaCompra, calculoLiquidacaoCompra, calculoNegociacaoCompra, calculoIssCompra)));
-                                    //TV_valMinVendaSemPerdas.setText(df2.format(valMinVendaDII(valPapelAdquirido, quantidade, valTotalCompraDoPapel2, cbFracionarioDCVP, dbCorretagem2Venda, cbCorretagem2, dbCustodia2Venda, cbCustodia2, dbLiquidacao2Venda, cbLiquidacao2, dbNegociacao2Venda, cbNegociacao2, dbIss2Venda, cbIss2)));
+
+                                    ((EditText) findViewById(R.id.valPretendidoVenda)).setEnabled(true);
+
+                                    ((EditText) findViewById(R.id.pctCorretagem2)).setEnabled(true);
+                                    ((EditText) findViewById(R.id.pctCorretagem2)).setText(String.valueOf(dbh.getCustas(999).getCorretagem()));
+                                    ((CheckBox) findViewById(R.id.cbCorretagem2)).setEnabled(true);
+
+                                    ((EditText) findViewById(R.id.pctCustodia2)).setEnabled(true);
+                                    ((EditText) findViewById(R.id.pctCustodia2)).setText(String.valueOf(dbh.getCustas(999).getCustodia()));
+                                    ((CheckBox) findViewById(R.id.cbCustodia2)).setEnabled(true);
+
+                                    ((EditText) findViewById(R.id.pctLiquidacao2)).setEnabled(true);
+                                    ((EditText) findViewById(R.id.pctLiquidacao2)).setText(String.valueOf(dbh.getCustas(999).getTx_liquidacao()));
+                                    ((CheckBox) findViewById(R.id.cbLiquidacao2)).setEnabled(true);
+
+                                    ((EditText) findViewById(R.id.pctNegociacao2)).setEnabled(true);
+                                    ((EditText) findViewById(R.id.pctNegociacao2)).setText(String.valueOf(dbh.getCustas(999).getTx_negociacao()));
+                                    ((CheckBox) findViewById(R.id.cbNegociacao2)).setEnabled(true);
+
+                                    ((EditText) findViewById(R.id.pctIss2)).setEnabled(true);
+                                    ((EditText) findViewById(R.id.pctIss2)).setText(String.valueOf(dbh.getCustas(999).getIss()));
+                                    ((CheckBox) findViewById(R.id.cbIss2)).setEnabled(true);
+
+                                    ((ImageButton)findViewById(R.id.valMinVendaCalendarBtn)).setEnabled(true);
+
+                                    ((CheckBox) findViewById(R.id.valVendaCBDataVenda)).setEnabled(true);
+
+                                    ((Spinner)findViewById(R.id.valMinVendaspinnerData)).setEnabled(true);
+                                    ((Spinner)findViewById(R.id.valMinVendaspinnerMes)).setEnabled(true);
+                                    ((Spinner)findViewById(R.id.valMinVendaspinnerAno)).setEnabled(true);
+
+                                    ((Button)findViewById(R.id.valMinVendaBtnConfirmarVenda)).setEnabled(true);
+
 
                                     // ***** DATAS *****
 
                                     try {
-                                        if (dbh.getDatas(selected).isConfirmaVenda()){
+                                        //SE o Checkbox de Compra e o de Venda estiverem marcados no BD, o programa trará as informações e bloqueará tudo.
+                                        if (dbh.getDatas(selected).isConfirmaVenda() && dbh.getDatas(selected).isConfirmaCompra()){
                                             ((CheckBox) findViewById(R.id.valVendaCBDataVenda)).setChecked(true);
                                             //((CheckBox) findViewById(R.id.valVendaCBDataVenda)).setEnabled(false);
+                                            System.out.println("***** ------ *****");
+                                            System.out.println(dbh.getPapel(selected).getNomePapel());
+                                            System.out.println(dbh.getCustas(selected).toString());
+                                            System.out.println(dbh.getDatas(selected).toString());
+                                            System.out.println(dbh.getDatas(selected).toString1());
+                                            System.out.println(dbh.getDadosVenda(selected).toString());
+                                            System.out.println("***** ------ *****");
                                             try {
+                                                //Spinner da data de venda
                                                 ((Spinner)findViewById(R.id.valMinVendaspinnerData)).setSelection((dbh.getDatas(selected).getDataVenda()) - 1);
                                                 ((Spinner)findViewById(R.id.valMinVendaspinnerMes)).setSelection((dbh.getDatas(selected).getMesVenda()) - 1);
                                                 ArrayList<Integer> ano = new ArrayList<>();
@@ -1055,77 +1100,186 @@ public class ValorMinParaVendaSemPerdas extends AppCompatActivity {
                                                 if (ano.contains(dbh.getDatas(selected).getAnoVenda())) {
                                                     ((Spinner)findViewById(R.id.valMinVendaspinnerAno)).setSelection(ano.indexOf(dbh.getDatas(selected).getAnoVenda()));
                                                 }
-                                                //System.out.println("ENCONTRAR PAPEL -> idaux != null -> DATAS -> Try Spinner ok - ANO: " + ((Spinner)findViewById(R.id.valMinVendaspinnerAno)).getSelectedItem().toString());
-                                                //((Spinner)findViewById(R.id.spinnerAno)).setSelection(dbh.getDatas(selected).getAnoVenda());
 
-                                                try {
-                                                    double valorVenda = dbh.getDadosVenda(selected).getValorVenda();
-                                                } catch (Exception e) {
-                                                    e.printStackTrace();
-                                                }
+
+                                                //Dados de valor de venda e custos de venda.
+                                                DadosVenda getdadosvenda = new DadosVenda(selected, dbh.getDadosVenda(selected).getValorVenda(), dbh.getDadosVenda(selected).isCorretagemFixa(), dbh.getDadosVenda(selected).getCorretagem(), dbh.getDadosVenda(selected).isCustodiaFixa(), dbh.getDadosVenda(selected).getCustodia(), dbh.getDadosVenda(selected).isTx_liquidacaoFixa(), dbh.getDadosVenda(selected).getTx_liquidacao(), dbh.getDadosVenda(selected).isTx_negociacaoFixa(), dbh.getDadosVenda(selected).getTx_negociacao(), dbh.getDadosVenda(selected).isIssFixo(), dbh.getDadosVenda(selected).getIss());
+
+                                                ((EditText) findViewById(R.id.valPretendidoVenda)).setText(String.valueOf(getdadosvenda.getValorVenda()));
+                                                ((EditText) findViewById(R.id.pctCorretagem2)).setText(String.valueOf(getdadosvenda.getCorretagem()));
+                                                ((EditText) findViewById(R.id.pctCustodia2)).setText(String.valueOf(getdadosvenda.getCustodia()));
+                                                ((EditText) findViewById(R.id.pctLiquidacao2)).setText(String.valueOf(getdadosvenda.getTx_liquidacao()));
+                                                ((EditText) findViewById(R.id.pctNegociacao2)).setText(String.valueOf(getdadosvenda.getTx_negociacao()));
+                                                ((EditText) findViewById(R.id.pctIss2)).setText(String.valueOf(getdadosvenda.getIss()));
+                                                System.out.println("************ \n" + getdadosvenda.toString());
+
                                             } catch (Exception e) {
                                                 e.printStackTrace();
                                             }
 
                                             try {
 
+                                                //ATIVA O MÉTODO DE CALCULAR E BLOQUEIA AS VIEWS REFERENTE À VENDA
+                                                calcular((Button)findViewById(R.id.valMinvendaBtnCalcular));
+
+                                                ((EditText) findViewById(R.id.valPretendidoVenda)).setEnabled(false);
+
+                                                ((EditText) findViewById(R.id.pctCorretagem2)).setEnabled(false);
+                                                ((CheckBox) findViewById(R.id.cbCorretagem2)).setEnabled(false);
+
+                                                ((EditText) findViewById(R.id.pctCustodia2)).setEnabled(false);
+                                                ((CheckBox) findViewById(R.id.cbCustodia2)).setEnabled(false);
+
+                                                ((EditText) findViewById(R.id.pctLiquidacao2)).setEnabled(false);
+                                                ((CheckBox) findViewById(R.id.cbLiquidacao2)).setEnabled(false);
+
+                                                ((EditText) findViewById(R.id.pctNegociacao2)).setEnabled(false);
+                                                ((CheckBox) findViewById(R.id.cbNegociacao2)).setEnabled(false);
+
+                                                ((EditText) findViewById(R.id.pctIss2)).setEnabled(false);
+                                                ((CheckBox) findViewById(R.id.cbIss2)).setEnabled(false);
+
+                                                ((ImageButton)findViewById(R.id.valMinVendaCalendarBtn)).setEnabled(false);
+
+                                                ((CheckBox) findViewById(R.id.valVendaCBDataVenda)).setEnabled(false);
+
+                                                ((Spinner)findViewById(R.id.valMinVendaspinnerData)).setEnabled(false);
+                                                ((Spinner)findViewById(R.id.valMinVendaspinnerMes)).setEnabled(false);
+                                                ((Spinner)findViewById(R.id.valMinVendaspinnerAno)).setEnabled(false);
+
+                                                ((Button)findViewById(R.id.valMinVendaBtnConfirmarVenda)).setEnabled(false);
+                                                Toaster("Papel já vendido!");
                                             }
                                             catch (Exception ex){
-
+                                                System.out.println(ex.getMessage());
                                             }
 
                                         }
-                                        else {
-                                            ((CheckBox) findViewById(R.id.valVendaCBDataVenda)).setChecked(false);
-                                            System.out.println("ENCONTRAR PAPEL ->idaux != null -> DATAS -> Try Spinner ELSE - CheckBoxisSelected: " + ((CheckBox) findViewById(R.id.valVendaCBDataVenda)).isChecked());
+                                        else if (!dbh.getDatas(selected).isConfirmaCompra()){
+                                            //SE o Checkbox da data da COMPRA NÃO estiver selecionado, significa que é apenas um papel de monitoria,
+                                            // sendo assim, bloqueia a checkbox e tudo referente a cadastro da venda,
+                                            // contudo, os cálculos ainda poderão ser realizados
+                                            ((CheckBox) findViewById(R.id.valVendaCBDataVenda)).setEnabled(false);
+                                            System.out.println("** ConfirmaCompra ** = false");
+                                            System.out.println("----- ****** -----");
+                                            System.out.println(dbh.getPapel(selected).getNomePapel());
+                                            System.out.println(dbh.getCustas(selected).toString());
+                                            System.out.println(dbh.getDatas(selected).toString());
+                                            System.out.println(dbh.getDatas(selected).toString1());
+                                            System.out.println(dbh.getDadosVenda(selected).toString());
+                                            System.out.println("----- ****** -----");
                                         }
-                                        System.out.println("IsChecked do ID "+ selected + " é:" + dbh.getDatas(selected).isConfirmaCompra());
+                                        else {
+                                            //SE o Checkbox de Compra estiver selecionado mas o de venda não, significa que o papel foi comprado
+                                            // mas ainda não foi vendido.
+                                            // A opção do cadastro da venda está disponível.
+                                            ((CheckBox) findViewById(R.id.valVendaCBDataVenda)).setChecked(false);
+                                            ((CheckBox) findViewById(R.id.valVendaCBDataVenda)).setEnabled(true);
+                                            System.out.println("----- ****** -----");
+                                            System.out.println(dbh.getPapel(selected).getNomePapel());
+                                            System.out.println(dbh.getCustas(selected).toString());
+                                            System.out.println(dbh.getDatas(selected).toString());
+                                            System.out.println(dbh.getDatas(selected).toString1());
+                                            System.out.println(dbh.getDadosVenda(selected).toString());
+                                            System.out.println("----- ****** -----");
+                                            //System.out.println("ENCONTRAR PAPEL ->idaux != null -> DATAS -> Try Spinner ELSE - CheckBoxisSelected: " + ((CheckBox) findViewById(R.id.valVendaCBDataVenda)).isChecked());
+                                        }
+                                        /*System.out.println("IsChecked do ID "+ selected + " é:" + dbh.getDatas(selected).isConfirmaCompra());
                                         System.out.println("Data da compra do ID "+ selected + " é:" + dbh.getDatas(selected).getDataCompra());
                                         System.out.println("Mês da compra do ID "+ selected + " é:" + dbh.getDatas(selected).getMesCompra());
                                         System.out.println("Ano da compra do ID "+ selected + " é:" + dbh.getDatas(selected).getAnoCompra());
-                                        System.out.println("IsChecked do ID "+ selected + " é:" + dbh.getDatas(selected).isConfirmaCompra());
+                                        System.out.println("IsChecked do ID "+ selected + " é:" + dbh.getDatas(selected).isConfirmaVenda());
                                         System.out.println("Data da venda do ID "+ selected + " é:" + dbh.getDatas(selected).getDataVenda());
                                         System.out.println("Mês da venda do ID "+ selected + " é:" + dbh.getDatas(selected).getMesVenda());
-                                        System.out.println("Ano da venda do ID "+ selected + " é:" + dbh.getDatas(selected).getAnoVenda());
+                                        System.out.println("Ano da venda do ID "+ selected + " é:" + dbh.getDatas(selected).getAnoVenda());*/
 
 
                                         try {
                                             ((Button)findViewById(R.id.valMinVendaBtnConfirmarVenda)).setOnClickListener(new View.OnClickListener() {
                                                 @Override
                                                 public void onClick(View v) {
-                                                    Datas datasVenda = new Datas();
-                                                    datasVenda.setConfirmaVenda(((CheckBox)findViewById(R.id.valVendaCBDataVenda)).isChecked());
-                                                    datasVenda.setDataVenda(Integer.parseInt(((Spinner)findViewById(R.id.valMinVendaspinnerData)).getSelectedItem().toString()));
-                                                    datasVenda.setMesVenda(Integer.parseInt(((Spinner)findViewById(R.id.valMinVendaspinnerMes)).getSelectedItem().toString()));
-                                                    datasVenda.setAnoVenda(Integer.parseInt(((Spinner)findViewById(R.id.valMinVendaspinnerAno)).getSelectedItem().toString()));
-                                                    System.out.println(datasVenda.toString1());
-                                                    AlertDialog.Builder ad = new AlertDialog.Builder(ValorMinParaVendaSemPerdas.this);
-                                                    ad.setTitle("Confirma venda?");
-                                                    ad.setMessage("O papel em questão não poderá ser mais alterado.");
-                                                    ad.setPositiveButton("OK!", new DialogInterface.OnClickListener() {
-                                                        @Override
-                                                        public void onClick(DialogInterface dialog, int which) {
-                                                            System.out.println("Botão de confirmar acionado! \n" + datasVenda.toString1());
-                                                            dbh.updateTempIdDatasVenda(datasVenda ,selected);
+                                                    Datas dataVenda = new Datas();
+                                                    dataVenda.datasVenda((((CheckBox)findViewById(R.id.valVendaCBDataVenda)).isChecked()), selected, (Integer.parseInt(((Spinner)findViewById(R.id.valMinVendaspinnerData)).getSelectedItem().toString())), (Integer.parseInt(((Spinner)findViewById(R.id.valMinVendaspinnerMes)).getSelectedItem().toString())), (Integer.parseInt(((Spinner)findViewById(R.id.valMinVendaspinnerAno)).getSelectedItem().toString())));
+                                                    //System.out.println(dataVenda.toString1());
 
-                                                            DadosVenda dv;
-                                                            try {
-                                                                dv = new DadosVenda(selected, Double.parseDouble(((EditText)findViewById(R.id.valPretendidoVenda)).getText().toString()), ((CheckBox)findViewById(R.id.cbCorretagem2)).isChecked(), Double.parseDouble(((EditText)findViewById(R.id.pctCorretagem2)).getText().toString()), ((CheckBox)findViewById(R.id.cbCustodia2)).isChecked(), Double.parseDouble(((EditText)findViewById(R.id.pctCustodia2)).getText().toString()), ((CheckBox)findViewById(R.id.cbLiquidacao2)).isChecked(), Double.parseDouble(((EditText)findViewById(R.id.pctLiquidacao2)).getText().toString()), ((CheckBox)findViewById(R.id.cbNegociacao2)).isChecked(), Double.parseDouble(((EditText)findViewById(R.id.pctNegociacao2)).getText().toString()), ((CheckBox)findViewById(R.id.cbIss2)).isChecked(), Double.parseDouble(((EditText)findViewById(R.id.pctIss2)).getText().toString()));
-                                                                System.out.println(dv.toString());
-                                                                //TODO CONTINUAR IMPLEMENTANDO O UPLOAD DAS INFORMAÇÕES DE VENDA NO BANCO DE DADOS.
-                                                            } catch (NumberFormatException e) {
-                                                                System.out.println(e.getMessage());
-                                                                e.printStackTrace();
+                                                    if (((EditText)findViewById(R.id.valPretendidoVenda)).getText().toString() == null || ((EditText)findViewById(R.id.valPretendidoVenda)).getText().toString().equals("")){
+                                                        ((EditText)findViewById(R.id.valPretendidoVenda)).setError("Requer valor > 0");
+                                                    }
+                                                    else {
+                                                        AlertDialog.Builder ad = new AlertDialog.Builder(ValorMinParaVendaSemPerdas.this);
+                                                        ad.setTitle("Confirma venda?");
+                                                        ad.setMessage("Ao sair da tela, o papel em questão não poderá mais ser alterado.");
+                                                        ad.setPositiveButton("OK!", new DialogInterface.OnClickListener() {
+                                                            @Override
+                                                            public void onClick(DialogInterface dialog, int which) {
+                                                                //System.out.println("Botão de confirmar acionado! \n" + dataVenda.toString1());
+
+                                                                DadosVenda dv;
+                                                                try {
+                                                                    dbh.updateTempIdDatasVenda(dataVenda, selected);
+                                                                    dv = new DadosVenda(selected, Double.parseDouble(((EditText)findViewById(R.id.valPretendidoVenda)).getText().toString()),
+                                                                            ((CheckBox)findViewById(R.id.cbCorretagem2)).isChecked(),
+                                                                            Double.parseDouble(((EditText)findViewById(R.id.pctCorretagem2)).getText().toString()),
+                                                                            ((CheckBox)findViewById(R.id.cbCustodia2)).isChecked(),
+                                                                            Double.parseDouble(((EditText)findViewById(R.id.pctCustodia2)).getText().toString()),
+                                                                            ((CheckBox)findViewById(R.id.cbLiquidacao2)).isChecked(),
+                                                                            Double.parseDouble(((EditText)findViewById(R.id.pctLiquidacao2)).getText().toString()),
+                                                                            ((CheckBox)findViewById(R.id.cbNegociacao2)).isChecked(),
+                                                                            Double.parseDouble(((EditText)findViewById(R.id.pctNegociacao2)).getText().toString()),
+                                                                            ((CheckBox)findViewById(R.id.cbIss2)).isChecked(),
+                                                                            Double.parseDouble(((EditText)findViewById(R.id.pctIss2)).getText().toString()));
+                                                                    System.out.println(dv.toString());
+                                                                    //TODO CONTINUAR IMPLEMENTANDO O UPLOAD DAS INFORMAÇÕES DE VENDA NO BANCO DE DADOS.
+                                                                    dbh.addDadosVenda(dv);
+
+                                                                    try {
+                                                                        calcular((Button)findViewById(R.id.valMinvendaBtnCalcular));
+
+                                                                        ((EditText) findViewById(R.id.valPretendidoVenda)).setEnabled(false);
+
+                                                                        ((EditText) findViewById(R.id.pctCorretagem2)).setEnabled(false);
+                                                                        ((CheckBox) findViewById(R.id.cbCorretagem2)).setEnabled(false);
+
+                                                                        ((EditText) findViewById(R.id.pctCustodia2)).setEnabled(false);
+                                                                        ((CheckBox) findViewById(R.id.cbCustodia2)).setEnabled(false);
+
+                                                                        ((EditText) findViewById(R.id.pctLiquidacao2)).setEnabled(false);
+                                                                        ((CheckBox) findViewById(R.id.cbLiquidacao2)).setEnabled(false);
+
+                                                                        ((EditText) findViewById(R.id.pctNegociacao2)).setEnabled(false);
+                                                                        ((CheckBox) findViewById(R.id.cbNegociacao2)).setEnabled(false);
+
+                                                                        ((EditText) findViewById(R.id.pctIss2)).setEnabled(false);
+                                                                        ((CheckBox) findViewById(R.id.cbIss2)).setEnabled(false);
+
+                                                                        ((ImageButton)findViewById(R.id.valMinVendaCalendarBtn)).setEnabled(false);
+
+                                                                        ((CheckBox) findViewById(R.id.valVendaCBDataVenda)).setEnabled(false);
+
+                                                                        ((Spinner)findViewById(R.id.valMinVendaspinnerData)).setEnabled(false);
+                                                                        ((Spinner)findViewById(R.id.valMinVendaspinnerMes)).setEnabled(false);
+                                                                        ((Spinner)findViewById(R.id.valMinVendaspinnerAno)).setEnabled(false);
+
+                                                                        ((Button)findViewById(R.id.valMinVendaBtnConfirmarVenda)).setEnabled(false);
+                                                                        Toaster("Papel já vendido!");
+                                                                    }
+                                                                    catch (Exception ex){
+                                                                        System.out.println(ex.getMessage());
+                                                                    }
+
+                                                                } catch (NumberFormatException e) {
+                                                                    System.out.println(e.getMessage());
+                                                                    e.printStackTrace();
+                                                                }
                                                             }
-                                                            //dbh.addDadosVenda(dv);
-                                                        }
-                                                    });
-                                                    ad.setNegativeButton("Cancelar", new DialogInterface.OnClickListener() {
-                                                        @Override
-                                                        public void onClick(DialogInterface dialog, int which) {
-                                                            System.out.println("Cancelar ativado!");
-                                                        }
-                                                    }).show();
+                                                        });
+                                                        ad.setNegativeButton("Cancelar", new DialogInterface.OnClickListener() {
+                                                            @Override
+                                                            public void onClick(DialogInterface dialog, int which) {
+                                                                System.out.println("Cancelar ativado!");
+                                                            }
+                                                        }).show();
+                                                    }
 
                                                 }
                                             });
