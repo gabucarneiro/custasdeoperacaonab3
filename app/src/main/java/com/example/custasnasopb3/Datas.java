@@ -112,14 +112,14 @@ public class Datas extends AppCompatActivity {
     @Override
     public String toString() {
         return "Confirma Compra: " + confirmaCompra +
-                " - Data da compra: " + dataCompra +
+                "\nData da compra: " + dataCompra +
                 "/" + mesCompra +
                 "/" + anoCompra;
     }
 
     public String toString1() {
-        return " Confirma Venda: " + confirmaVenda +
-                " - Data da venda: " + dataVenda +
+        return "Confirma Venda: " + confirmaVenda +
+                "\nData da venda: " + dataVenda +
                 "/" + mesVenda +
                 "/" + anoVenda;
     }

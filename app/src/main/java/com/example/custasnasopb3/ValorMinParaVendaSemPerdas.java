@@ -501,7 +501,8 @@ public class ValorMinParaVendaSemPerdas extends AppCompatActivity {
                                 resulCalcVendaLiquido.setTextColor(ContextCompat.getColor(this, R.color.darkred));
                             }
                         }
-                        catch (Exception e){Toaster("Cor não funcionando");}
+                        catch (Exception e){
+                            System.out.println(this.getClass() +"Cor não funcionando");}
 
                         String str_venda_Liquido = df2.format(calcVendaLiquido);
                         resulCalcVendaLiquido.setText(str_venda_Liquido);
@@ -532,15 +533,21 @@ public class ValorMinParaVendaSemPerdas extends AppCompatActivity {
             }
             catch (Exception e){
                 e.getMessage();
-                et_valPapelAdquirido.setError("Não pode ser nulo ou menor que 0");
-                et_quantidade.setError("Não pode ser nulo ou menor que 0");
-                et_valPretendidoVenda.setError("Não pode ser nulo ou menor que 0");
-                Toaster("Parse indisponível");
+                Toaster("Campos vazios");
             }
 
         }
         catch (Exception e){
-            Toaster("EditTexts vazios");
+
+            if (et_valPapelAdquirido.toString().equals("")) {
+                et_valPapelAdquirido.setError("Não pode ser nulo ou menor que 0");
+            }
+            if (et_quantidade.toString().equals("")) {
+                et_quantidade.setError("Não pode ser nulo ou menor que 0");
+            }
+            if (et_valPretendidoVenda.toString().equals("")) {
+                et_valPretendidoVenda.setError("Não pode ser nulo ou menor que 0");
+            }
         }
     }
 
@@ -854,6 +861,7 @@ public class ValorMinParaVendaSemPerdas extends AppCompatActivity {
         return temp_valMinVenda;
     }
 
+    //TODO NÃO ESTÁ LEVANDO EM CONTA A QUANTIDADE DE LOTES FRACIONÁRIOS
     public double valMinVendaDII(Double valPapelAdquirido, int quantidadeCompra, Double valTotalCompraDoPapel2, CheckBox cbFracionarioDCVP, Double dbCorretagem2Venda, CheckBox cbCorretagem2, Double dbCustodia2Venda, CheckBox cbCustodia2, Double dbLiquidacao2Venda, CheckBox cbLiquidacao2, Double dbNegociacao2Venda, CheckBox cbNegociacao2, Double dbIss2Venda, CheckBox cbIss2){
 
         Custas custas = new Custas();
@@ -938,6 +946,8 @@ public class ValorMinParaVendaSemPerdas extends AppCompatActivity {
                 et_quantidade = findViewById(R.id.quantidade2);
                 DataBaseHelper dbhCustas = new DataBaseHelper(ValorMinParaVendaSemPerdas.this);
                 ((EditText) findViewById(R.id.valPretendidoVenda)).setText("");
+                ((TextView) findViewById(R.id.valVendaDoPapel2)).setText("");
+                ((TextView) findViewById(R.id.resultVendaLiquido)).setText("");
 
                 Papel papel;
                 papel = dbh.getPapel(which+1);
@@ -1030,7 +1040,7 @@ public class ValorMinParaVendaSemPerdas extends AppCompatActivity {
                                     ((EditText) findViewById(R.id.pctIss2Compra)).setText(String.valueOf(custas.getIss()));
                                     (findViewById(R.id.pctIss2Compra)).setEnabled(false);
 
-                                    SetCbTrueFalse(findViewById(R.id.cbNegociacao2Compra), custas.isTx_negociacaoFixa());
+                                    SetCbTrueFalse(findViewById(R.id.cbIss2Compra), custas.isIssFixo());
                                     (findViewById(R.id.cbIss2Compra)).setEnabled(false);
 
                                     et_valPapelAdquirido.setEnabled(false);
@@ -1148,7 +1158,7 @@ public class ValorMinParaVendaSemPerdas extends AppCompatActivity {
                                                 ((Spinner)findViewById(R.id.valMinVendaspinnerAno)).setEnabled(false);
 
                                                 ((Button)findViewById(R.id.valMinVendaBtnConfirmarVenda)).setEnabled(false);
-                                                Toaster("Papel já vendido!");
+                                                Toaster("Papel vendido!");
                                             }
                                             catch (Exception ex){
                                                 System.out.println(ex.getMessage());
@@ -1229,7 +1239,6 @@ public class ValorMinParaVendaSemPerdas extends AppCompatActivity {
                                                                             ((CheckBox)findViewById(R.id.cbIss2)).isChecked(),
                                                                             Double.parseDouble(((EditText)findViewById(R.id.pctIss2)).getText().toString()));
                                                                     System.out.println(dv.toString());
-                                                                    //TODO CONTINUAR IMPLEMENTANDO O UPLOAD DAS INFORMAÇÕES DE VENDA NO BANCO DE DADOS.
                                                                     dbh.addDadosVenda(dv);
 
                                                                     try {
@@ -1261,7 +1270,7 @@ public class ValorMinParaVendaSemPerdas extends AppCompatActivity {
                                                                         ((Spinner)findViewById(R.id.valMinVendaspinnerAno)).setEnabled(false);
 
                                                                         ((Button)findViewById(R.id.valMinVendaBtnConfirmarVenda)).setEnabled(false);
-                                                                        Toaster("Papel já vendido!");
+                                                                        Toaster("Papel vendido!");
                                                                     }
                                                                     catch (Exception ex){
                                                                         System.out.println(ex.getMessage());

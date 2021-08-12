@@ -485,7 +485,7 @@ public class Custas extends AppCompatActivity {
         try {
             dbhCustas.addCustas(custas);
         }catch (Exception e){
-            Toast.makeText(this, "Exception ao salvar no BD!", Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, "Erro ao salvar!", Toast.LENGTH_SHORT).show();
         }
         dbhCustas.updateCustas(custas, id);
         Toast.makeText(this, "Salvo!", Toast.LENGTH_SHORT).show();

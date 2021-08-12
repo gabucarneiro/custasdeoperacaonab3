@@ -52,7 +52,7 @@ public class CadastroPapel extends AppCompatActivity {
 
     EditText et_nomePapel, et_valCadastroPapel;
     EditText et_IdPapel, et_QuantidadePapel;
-    CheckBox cadastroCbFracionario, cadastroCbDataCompra;
+    CheckBox cadastroCbFracionario;
     //EditText cadastroEdDataCompra;
 
     TextView resumoBD;
@@ -84,15 +84,9 @@ public class CadastroPapel extends AppCompatActivity {
         et_valCadastroPapel = findViewById(R.id.valCadastroPapel);
         et_QuantidadePapel = findViewById(R.id.valQuantidadePapel);
         cadastroCbFracionario = findViewById(R.id.cadastroCbFracionario);
-        //cadastroCbDataCompra = findViewById(R.id.cadastroCbDataCompra);
-        //cadastroEdDataCompra = findViewById(R.id.cadastroEdDataCompra);
         (findViewById(R.id.RLDatadaCompra)).setVisibility(View.GONE);
         (findViewById(R.id.cadastroDpDataCompra)).setVisibility(View.GONE);
 
-        //CalendarView today = new CalendarView(this);
-        //SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy", Locale.getDefault());
-        //((EditText) findViewById(R.id.cadastroEdDataCompra)).setText(sdf.format(today.getDate()));
-        //((EditText) findViewById(R.id.cadastroEdDataCompra)).setInputType(InputType.TYPE_NULL);
 
         Spinner spinnerData = findViewById(R.id.spinnerData);
         Spinner spinnerMes = findViewById(R.id.spinnerMes);
@@ -108,7 +102,7 @@ public class CadastroPapel extends AppCompatActivity {
                 //dataParaBD = spinnerData.getSelectedItem().toString() + "/" + spinnerMes.getSelectedItem().toString() + "/" + spinnerAno.getSelectedItem().toString();
                 dataCompra = Integer.parseInt(spinnerData.getSelectedItem().toString());
                 //System.out.println("******* Spinner selecionado no ONITEMSELECTEDLISTENER: "+spinnerData.getSelectedItem().toString());
-                System.out.println("******* DATA SELECIONADA - RUMO AO BD: " + dataCompra);
+                //System.out.println("******* DATA SELECIONADA - RUMO AO BD: " + dataCompra);
                 //System.out.println("******* AGORA: " + sdf.format(new Date().getTime()));
             }
 
@@ -121,7 +115,7 @@ public class CadastroPapel extends AppCompatActivity {
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                 //dataParaBD = spinnerData.getSelectedItem().toString() + "/" + spinnerMes.getSelectedItem().toString() + "/" + spinnerAno.getSelectedItem().toString();
                 mesCompra = Integer.parseInt(spinnerMes.getSelectedItem().toString());
-                System.out.println("******* MES SELECIONADO - RUMO AO BD: " + mesCompra);
+                //System.out.println("******* MES SELECIONADO - RUMO AO BD: " + mesCompra);
             }
 
             @Override
@@ -133,7 +127,7 @@ public class CadastroPapel extends AppCompatActivity {
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                 //dataParaBD = spinnerData.getSelectedItem().toString() + "/" + spinnerMes.getSelectedItem().toString() + "/" + spinnerAno.getSelectedItem().toString();
                 anoCompra = Integer.parseInt(spinnerAno.getSelectedItem().toString());
-                System.out.println("******* ANO SELECIONADO - RUMO AO BD: " + anoCompra);
+                //System.out.println("******* ANO SELECIONADO - RUMO AO BD: " + anoCompra);
             }
 
             @Override
@@ -438,14 +432,6 @@ public class CadastroPapel extends AppCompatActivity {
             }
             else{
                 try{
-                    /*int i = ID_PAPEL;
-                    dbh.getPapel(i).getId();
-                    int idTemp = dbh.getPapel(ID_PAPEL).getId();
-                    String nomeTemp = dbh.getPapel(ID_PAPEL).getNomePapel();
-                    Double valorTemp = dbh.getPapel(ID_PAPEL).getValor();
-                    String nomeTmp = papel.getNomePapel();*/
-
-                    //et_IdPapel.setText(dbh.getPapel(ID_PAPEL).getId());
                     et_nomePapel.setText(dbh.getPapel(ID_PAPEL).getNomePapel());
                     et_valCadastroPapel.setText(String.valueOf(dbh.getPapel(ID_PAPEL).getValor()));
                     et_QuantidadePapel.setText(String.valueOf(dbh.getPapel(ID_PAPEL).getQuantidade()));
@@ -528,7 +514,6 @@ public class CadastroPapel extends AppCompatActivity {
 
         if (idaux.equals("")) {
             //Se não insere um ID específico para sobrepor, é adicionado ao último ID
-
 
             long longUltimo = dbh.contador();
             if (longUltimo == 0){
@@ -953,7 +938,7 @@ public class CadastroPapel extends AppCompatActivity {
             try{
                 TextView listagem = new TextView(this);
                 papel = dbh.getPapel(i).toString3();
-                listagem.setText(dbh.getPapel(i).toString3());
+                listagem.setText(dbh.getPapel(i).toString4() + (dbh.getDatas(i).toString()) +"\n"+ (dbh.getDatas(i).toString1())+"\n");
                 resumoView2BD.addView(listagem);
             }catch (Exception e){
                 try {
@@ -1133,7 +1118,7 @@ public class CadastroPapel extends AppCompatActivity {
                 //Toaster("ELSE Exception padrão: ID " + idPapelCustas);
             }
             //Toaster("Parâmetro padrão utilizado");
-            Toaster(e.getMessage());
+            System.out.println(e.getMessage());
         }
 
 
@@ -1298,6 +1283,27 @@ public class CadastroPapel extends AppCompatActivity {
         ll_ADHorizontalIss.setOrientation(LinearLayout.HORIZONTAL);
 
         Button btnConfirmaCustaTemp = new Button(this);
+
+        //SE o papel já estiver vendido, de acordo com a classe Datas.java, o nome do botão mudará para "Cancelar" e não salvará as custas.
+        if (dbhCustas.getDatas(idPapelCustas).isConfirmaVenda()){
+            //btnConfirmaCustaTemp.setEnabled(false);
+            btnConfirmaCustaTemp.setText("Cancelar");
+            btnConfirmaCustaTemp.setTextColor(getColor(R.color.white));
+            btnConfirmaCustaTemp.setGravity(1);
+            btnConfirmaCustaTemp.setBackgroundColor(getColor(R.color.darkblue));
+            btnConfirmaCustaTemp.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    dbhCustas.close();
+                    alert.cancel();
+                    Toaster("Não alterado, papel vendido");
+                }
+            });
+        }
+        //SE o papel não estiver vendido, de acordo com a classe Datas.java, o nome do botão murará para "OK" e salvará as custas em um ID temporário
+        // até a conclusão do cadastro.
+        else {
+            //btnConfirmaCustaTemp.setEnabled(true);
         btnConfirmaCustaTemp.setText("OK");
         btnConfirmaCustaTemp.setTextColor(getColor(R.color.white));
         btnConfirmaCustaTemp.setGravity(1);
@@ -1317,7 +1323,7 @@ public class CadastroPapel extends AppCompatActivity {
                 Boolean boo_cb_ADIssTemp;
                 if (!String.valueOf(et_ADCorretagemTemp.getText()).equals("")){
                     db_ADCorretagemTemp = Double.valueOf(String.valueOf(et_ADCorretagemTemp.getText()));
-                    Toaster("db_ADCorretagemTemp: "+ db_ADCorretagemTemp);
+                    //Toaster("db_ADCorretagemTemp: "+ db_ADCorretagemTemp);
                 }
                 else {
                     db_ADCorretagemTemp = 0.0;
@@ -1385,7 +1391,7 @@ public class CadastroPapel extends AppCompatActivity {
                     try{
                         dbhCustas.addTempIdCustas(custasTemp);
                         dbhCustas.updateTempIdCustas(custasTemp, idTempCustas);
-                        Toaster("Salvo nas custas vazias! TRY "+ ultimo);
+                        System.out.println("Salvo nas custas vazias! TRY "+ ultimo);
                         try {
                             exp.loggIt(CadastroPapel.this, "Custas salvas");
                         } catch (Exception e) {
@@ -1394,7 +1400,7 @@ public class CadastroPapel extends AppCompatActivity {
                     }
                     catch (Exception e){
                         dbhCustas.updateTempIdCustas(custasTemp, idTempCustas);
-                        Toaster("CATCH na hora de salvar as custas! "+ ultimo);
+                        System.out.println("CATCH na hora de salvar as custas! "+ ultimo);
                         try {
                             exp.loggIt(CadastroPapel.this, "Custas atualizadas");
                         } catch (Exception eLog) {
@@ -1404,7 +1410,7 @@ public class CadastroPapel extends AppCompatActivity {
                 }
                 else {
                     dbhCustas.updateTempIdCustas(custasTemp, idTempCustas);
-                    Toaster("Salvo! Else"+ ultimo);
+                    System.out.println("Salvo! Else"+ ultimo);
                     try {
                         exp.loggIt(CadastroPapel.this, "Custas atualizadas");
                     } catch (Exception e) {
@@ -1416,6 +1422,7 @@ public class CadastroPapel extends AppCompatActivity {
                 alert.cancel();
             }
         });
+        }
 
         //Layouts horizontais chamando as Views
         ll_ADHorizontalCorretagem.addView(TV_lltoStringCorretagem);
