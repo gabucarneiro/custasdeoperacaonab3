@@ -506,338 +506,68 @@ public class CadastroPapel extends AppCompatActivity {
     }
 
     public void salvarPapel(View view) {
-        et_IdPapel =findViewById(R.id.idPapel);
+        et_IdPapel = findViewById(R.id.idPapel);
         idaux = et_IdPapel.getText().toString();
         resumoBD = (TextView) findViewById(R.id.resumoBD);
         cadastroCbFracionario = findViewById(R.id.cadastroCbFracionario);
         DataBaseHelper dbh = new DataBaseHelper(this);
 
-        if (idaux.equals("")) {
-            //Se não insere um ID específico para sobrepor, é adicionado ao último ID
-
-            long longUltimo = dbh.contador();
-            if (longUltimo == 0){
-                longUltimo = 1;
-            }
-            else {
-                longUltimo+=1;
-            }
-            String nomePapel = et_nomePapel.getText().toString();
-            Double valorPapel=0.0;
-            Integer quantidade=0;
-            boolean fracionario = false;
-            try {
-                valorPapel = Double.parseDouble(et_valCadastroPapel.getText().toString());
-                quantidade = Integer.parseInt(et_QuantidadePapel.getText().toString());
-                fracionario = cadastroCbFracionario.isChecked();
-            }
-            catch (Exception e){
-                valorPapel=0.0;
-                quantidade = 0;
-                fracionario = false;
-            }
-
-            try {
-                int ultimo = Integer.parseInt(String.valueOf(longUltimo));
-
-                if(valorPapel!= null && !(valorPapel<= 0) && !(nomePapel.equals("")) && !(quantidade<= 0) && quantidade!= null){
-
-                    // ***** PAPEL *****
-                    papel = new Papel(ultimo, nomePapel, valorPapel, quantidade, fracionario);
-                    dbh.addPapel(papel);
-
-                    // ***** CUSTAS *****
-                    Integer idCustas;
-                    Double emptyTempCheck = dbh.getCustas(998).getCorretagem() + dbh.getCustas(998).getCustodia() + dbh.getCustas(998).getTx_liquidacao() + dbh.getCustas(998).getTx_negociacao() + dbh.getCustas(998).getIss();
-                    //Toaster("emptyTempCheck = " + emptyTempCheck);
-                    if (emptyTempCheck== 0.0){
-                        idCustas = 999;
-                        //TODO excluir o Toaster teste abaixo
-                        //Toaster("ID temporário vazio: " + idCustas);
-                    }
-                    else {
-                        idCustas = 998;
-                        //TODO excluir o Toaster teste abaixo
-                        //Toaster("ID temporário válido: " + idCustas);
-                    }
-                    Custas custas;
-
-                    Double ultimoCorretagem = dbh.getCustas(idCustas).getCorretagem();
-                    //Toaster("Enviado para a possição " + idCustas + " : " + String.valueOf(ultimoCorretagem));
-                    Boolean isCorretagemFixa = dbh.getCustas(idCustas).isCorretagemFixa();
-                    Double ultimoCustodia = dbh.getCustas(idCustas).getCustodia();
-                    Boolean isCustodiaFixa = dbh.getCustas(idCustas).isCustodiaFixa();
-                    Double ultimoTxLiquidacao = dbh.getCustas(idCustas).getTx_liquidacao();
-                    Boolean isTxLiquidacaoFixa = dbh.getCustas(idCustas).isTx_liquidacaoFixa();
-                    Double ultimoTxNegociacao = dbh.getCustas(idCustas).getTx_negociacao();
-                    Boolean isTxNegociacaoFixa = dbh.getCustas(idCustas).isTx_negociacaoFixa();
-                    Double ultimoIss = dbh.getCustas(idCustas).getIss();
-                    Boolean isIssFixo = dbh.getCustas(idCustas).isIssFixo();
-
-                    custas = new Custas(ultimo, ultimoCorretagem, ultimoCustodia, ultimoTxLiquidacao, ultimoTxNegociacao, ultimoIss, isCorretagemFixa, isCustodiaFixa, isTxLiquidacaoFixa, isTxNegociacaoFixa, isIssFixo);
-                    if(dbh.getCustas(ultimo).getCorretagem()== 0.0 && dbh.getCustas(ultimo).getCustodia()==0.0 && dbh.getCustas(ultimo).getTx_liquidacao()==0.0 && dbh.getCustas(ultimo).getTx_negociacao()==0.0 && dbh.getCustas(ultimo).getIss()==0.0) {
-                        dbh.addCustas(custas);
-                    }
-                    else {
-                        dbh.updateCustas(custas, ultimo);
-                    }
-
-                    // ***** DATA *****
-                    try {
-                        Datas datas = new Datas();
-                        if (((CheckBox)findViewById(R.id.CadastroCBDataCompra)).isChecked()) {
-                            datas.datasCompra(((CheckBox) findViewById(R.id.CadastroCBDataCompra)).isChecked(), ultimo, Integer.parseInt(((Spinner) findViewById(R.id.spinnerData)).getSelectedItem().toString()), Integer.parseInt(((Spinner) findViewById(R.id.spinnerMes)).getSelectedItem().toString()), Integer.parseInt(((Spinner) findViewById(R.id.spinnerAno)).getSelectedItem().toString()));
-                            if (!dbh.getDatas(ultimo).isConfirmaCompra() && dbh.getDatas(ultimo).getDataCompra() == 0 && dbh.getDatas(ultimo).getMesCompra() == 0 && dbh.getDatas(ultimo).getAnoCompra() == 0) {
-                                dbh.addDataCompra(datas);
-                                System.out.println("CheckBox checked: " + datas.toString());
-                            }
-                            else {
-                                dbh.updateTempIdDatasCompra(datas, ultimo);
-                                System.out.println("CheckBox checked: UPDATED!!! " + datas.toString());
-                            }
-                        }
-                        else {
-                            System.out.println("dbh.addDataCompra" + ((CheckBox)findViewById(R.id.CadastroCBDataCompra)).isChecked());
-                            datas.datasCompra(((CheckBox) findViewById(R.id.CadastroCBDataCompra)).isChecked(), ultimo, 0, 0, 0);
-                            dbh.addDataCompra(datas);
-                        }
-                        System.out.println("CheckBox outside: " + datas.toString());
-                        System.out.println("IsChecked do ID "+ ultimo + " é:" + dbh.getDatas(ultimo).isConfirmaCompra());
-                        System.out.println("Data da compra do ID "+ ultimo + " é:" + dbh.getDatas(ultimo).getDataCompra());
-                        System.out.println("Mês da compra do ID "+ ultimo + " é:" + dbh.getDatas(ultimo).getMesCompra());
-                        System.out.println("Ano da compra do ID "+ ultimo + " é:" + dbh.getDatas(ultimo).getAnoCompra());
-                    } catch (NumberFormatException e) {
-                        e.printStackTrace();
-                        System.out.println("NUMBERFORMATEXCEPTION: "+e.getMessage());
-                    } catch (Exception e){
-                        System.out.println(e.getMessage());
-                    }
-
-                    StringBuilder sb = new StringBuilder();
-                    sb.append("---- PAPEL INCLUÍDO ----\n");
-                    sb.append("- Papel: "+ dbh.getPapel(ultimo).getNomePapel() + "\n");
-                    sb.append("- Valor: "+ dbh.getPapel(ultimo).getValor() + "\n");
-                    sb.append("- Quantidade: "+ dbh.getPapel(ultimo).getQuantidade() + "\n");
-                    sb.append("- Fracionário: "+ dbh.getPapel(ultimo).isFracionario() + "\n");
-                    sb.append("- TxCorretagem: "+ dbh.getCustas(ultimo).getCorretagem() + "\n");
-                    sb.append("- TxCustodia: "+ dbh.getCustas(ultimo).getCustodia() + "\n");
-                    sb.append("- TxLiquidação: "+ dbh.getCustas(ultimo).getTx_liquidacao() + "\n");
-                    sb.append("- TxNegociação: "+ dbh.getCustas(ultimo).getTx_negociacao() + "\n");
-                    sb.append("- Iss: "+ dbh.getCustas(ultimo).getIss() + "\n");
-                    try {
-                        exp.loggIt(this, sb.toString());
-                    } catch (Exception e) {
-                        System.out.println("FALHA AO TENTAR INSERIR NO LOG");
-                    }
-
-                    Toaster(papel.getNomePapel()+ " foi SALVO com sucesso!");
-                }
-                else{
-                    if(valorPapel == null){
-                        CharSequence texto = "Valor não pode ser nulo";
-                        Toaster(texto);
-                    }
-                    else if(valorPapel <= 0){
-                        CharSequence texto = "Valor não pode ser menor ou igual a zero";
-                        Toaster(texto);
-                    }
-                    else if(nomePapel.equals("")){
-                        CharSequence texto = "Nome do papel não pode ser nulo";
-                        Toaster(texto);
-                    }
-                    else if(quantidade <= 0){
-                        CharSequence texto = "Quantidade não pode ser menor ou igual a zero";
-                        Toaster(texto);
-                    }
-                }
-            }
-            catch(Exception e){
-                if(valorPapel == null){
-                    CharSequence texto = "Valor não pode ser nulo";
-                    Toaster(texto);
-                }
-                else if(valorPapel <= 0){
-                    CharSequence texto = "Valor não pode ser menor ou igual a zero";
-                    Toaster(texto);
-                }
-                else if(nomePapel.equals("")){
-                    CharSequence texto = "Nome do papel não pode ser nulo";
-                    Toaster(texto);
-                }
-                else if(quantidade <= 0){
-                    CharSequence texto = "Quantidade não pode ser menor ou igual a zero";
-                    Toaster(texto);
-                }
-            }
+        if (cadastroCbFracionario.isChecked() && Integer.parseInt(((EditText) findViewById(R.id.valQuantidadePapel)).getText().toString()) > 99) {
+            System.out.println("É FRACIONÁRIO! MAS É MAIOR DO QUE 99");
+            ((EditText) findViewById(R.id.valQuantidadePapel)).setError("Papel fracionário não pode ser maior que 99");
+            ((EditText) findViewById(R.id.valQuantidadePapel)).setText("");
+        } else if (!(cadastroCbFracionario.isChecked()) && (Integer.parseInt(((EditText) findViewById(R.id.valQuantidadePapel)).getText().toString()) % 100 != 0)) {
+            System.out.println("NÃO É FRACIONÁRIO! MAS TAMBÉM NÃO É DIVISÍVEL POR 100");
+            ((EditText) findViewById(R.id.valQuantidadePapel)).setError("Papel em lotes de 100");
+            ((EditText) findViewById(R.id.valQuantidadePapel)).setText("");
+        } else {
+            System.out.println("GOOOOOO!");
 
 
+            if (idaux.equals("")) {
+                //Se não insere um ID específico para sobrepor, é adicionado ao último ID
 
-            /*try {
-                resumoBD.setText(papel.toString2());
-            } catch (Exception e){
-                Toaster("Erro de TargetException");
-            }*/
-
-            dbh.close();
-            //Toaster("Último: " + String.valueOf(ultimo));
-        }
-        else {
-
-            System.out.println("SALVAR PAPEL -> idaux != null -> ENTRADA DO ELSE");
-            try {
-                ID_PAPEL = 0;
-                ID_PAPEL = Integer.parseInt(idaux);
                 long longUltimo = dbh.contador();
-                if (longUltimo ==0){
+                if (longUltimo == 0) {
                     longUltimo = 1;
+                } else {
+                    longUltimo += 1;
                 }
-                else {
-                    longUltimo+=1;
-                }
-                int ultimo = Integer.parseInt(String.valueOf(longUltimo));
-
                 String nomePapel = et_nomePapel.getText().toString();
-                Double valorPapel = Double.parseDouble(et_valCadastroPapel.getText().toString());
-                Integer quantidade = Integer.parseInt(et_QuantidadePapel.getText().toString());
-                boolean fracionario = cadastroCbFracionario.isChecked();
+                Double valorPapel = 0.0;
+                Integer quantidade = 0;
+                boolean fracionario = false;
+                try {
+                    valorPapel = Double.parseDouble(et_valCadastroPapel.getText().toString());
+                    quantidade = Integer.parseInt(et_QuantidadePapel.getText().toString());
+                    fracionario = cadastroCbFracionario.isChecked();
+                } catch (Exception e) {
+                    valorPapel = 0.0;
+                    quantidade = 0;
+                    fracionario = false;
+                }
 
-                if(valorPapel!= null && !(valorPapel<= 0) && !(nomePapel.equals("")) && !(quantidade<= 0) && quantidade!= null){
-                    papel = new Papel(ultimo, nomePapel, valorPapel, quantidade, fracionario);
+                try {
+                    int ultimo = Integer.parseInt(String.valueOf(longUltimo));
 
-                    System.out.println("SALVAR PAPEL -> idaux != null -> ENTRADA DA VALIDAÇÃO DO PAPEL - Ultimo: " + ultimo + " / ID_PAPEL: "+ ID_PAPEL);
+                    if (valorPapel != null && !(valorPapel <= 0) && !(nomePapel.equals("")) && !(quantidade <= 0) && quantidade != null) {
 
-                    Datas datasTemp = new Datas();
-                    System.out.println("CHECKBOX IS CHECKED?   "+((CheckBox)findViewById(R.id.CadastroCBDataCompra)).isChecked());
-                    if (((CheckBox)findViewById(R.id.CadastroCBDataCompra)).isChecked()) {
-                        System.out.println("DATATEMP 1.1 - SO FAR - OK!");
-                        datasTemp.datasCompra(((CheckBox) findViewById(R.id.CadastroCBDataCompra)).isChecked(), ID_PAPEL, Integer.parseInt(((Spinner) findViewById(R.id.spinnerData)).getSelectedItem().toString()), Integer.parseInt(((Spinner) findViewById(R.id.spinnerMes)).getSelectedItem().toString()), Integer.parseInt(((Spinner) findViewById(R.id.spinnerAno)).getSelectedItem().toString()));
-                        System.out.println(datasTemp.toString());
-                    }
-                    else {
-                        System.out.println("DATATEMP 1.2 - SO FAR - OK!");
-                        System.out.println("CHECKBOX IS CHECKED AGAIN?   "+((CheckBox)findViewById(R.id.CadastroCBDataCompra)).isChecked());
-                        datasTemp.datasCompra(((CheckBox)findViewById(R.id.CadastroCBDataCompra)).isChecked(), ID_PAPEL, 0, 0, 0);
-                    }
-
-
-                    long encontrado = encontrarPapel();
-
-                    if(encontrado>0){
-                        DataBaseHelper helper = new DataBaseHelper(this);
-                        helper.updatePapel(papel, ID_PAPEL);
+                        // ***** PAPEL *****
+                        papel = new Papel(ultimo, nomePapel, valorPapel, quantidade, fracionario);
+                        dbh.addPapel(papel);
 
                         // ***** CUSTAS *****
-
                         Integer idCustas;
                         Double emptyTempCheck = dbh.getCustas(998).getCorretagem() + dbh.getCustas(998).getCustodia() + dbh.getCustas(998).getTx_liquidacao() + dbh.getCustas(998).getTx_negociacao() + dbh.getCustas(998).getIss();
-                        if (emptyTempCheck== 0.0){
+                        //Toaster("emptyTempCheck = " + emptyTempCheck);
+                        if (emptyTempCheck == 0.0) {
                             idCustas = 999;
                             //TODO excluir o Toaster teste abaixo
-                            //Toaster("else if ID temporário vazio: " + idCustas);
-                        }
-                        else {
+                            //Toaster("ID temporário vazio: " + idCustas);
+                        } else {
                             idCustas = 998;
                             //TODO excluir o Toaster teste abaixo
-                            //Toaster("else if ID temporário válido: " + idCustas);
-                        }
-                        Custas custas;
-
-                        Double ultimoCorretagem = dbh.getCustas(idCustas).getCorretagem();
-                        //Toaster("Enviado para a possição " + idCustas + " : " + String.valueOf(ultimoCorretagem));
-                        Boolean isCorretagemFixa = dbh.getCustas(idCustas).isCorretagemFixa();
-                        Double ultimoCustodia = dbh.getCustas(idCustas).getCustodia();
-                        Boolean isCustodiaFixa = dbh.getCustas(idCustas).isCustodiaFixa();
-                        Double ultimoTxLiquidacao = dbh.getCustas(idCustas).getTx_liquidacao();
-                        Boolean isTxLiquidacaoFixa = dbh.getCustas(idCustas).isTx_liquidacaoFixa();
-                        Double ultimoTxNegociacao = dbh.getCustas(idCustas).getTx_negociacao();
-                        Boolean isTxNegociacaoFixa = dbh.getCustas(idCustas).isTx_negociacaoFixa();
-                        Double ultimoIss = dbh.getCustas(idCustas).getIss();
-                        Boolean isIssFixo = dbh.getCustas(idCustas).isIssFixo();
-
-                        custas = new Custas(ID_PAPEL, ultimoCorretagem, ultimoCustodia, ultimoTxLiquidacao, ultimoTxNegociacao, ultimoIss, isCorretagemFixa, isCustodiaFixa, isTxLiquidacaoFixa, isTxNegociacaoFixa, isIssFixo);
-                        if(dbh.getCustas(ID_PAPEL).getCorretagem()== 0.0 && dbh.getCustas(ID_PAPEL).getCustodia()==0.0 && dbh.getCustas(ID_PAPEL).getTx_liquidacao()==0.0 && dbh.getCustas(ID_PAPEL).getTx_negociacao()==0.0 && dbh.getCustas(ID_PAPEL).getIss()==0.0) {
-                            dbh.addCustas(custas);
-                            //Toaster("Add na possição " + ID_PAPEL + " : " + String.valueOf(ultimoCorretagem));
-                        }
-                        else {
-                            dbh.updateCustas(custas, ID_PAPEL);
-                            //Toaster("Updated na possição " + ID_PAPEL + " : " + String.valueOf(ultimoCorretagem));
-                        }
-
-                        //***** DATAS *****
-
-                        try {
-                            //Datas datas = new Datas();
-                            System.out.println("CHECKBOX  do datasTemp WAS CHECKED?   "+(datasTemp.isConfirmaCompra()));
-                            if (datasTemp.isConfirmaCompra()) {
-                                System.out.println("1 - SO FAR - OK!");
-                                if (dbh.getDatas(ID_PAPEL).getDataCompra() == 0 && dbh.getDatas(ID_PAPEL).getMesCompra() == 0 && dbh.getDatas(ID_PAPEL).getAnoCompra() == 0) {
-                                    System.out.println(datasTemp.toString());
-                                    dbh.addDataCompra(datasTemp);
-                                    System.out.println("1.1 - SO FAR - OK!");
-                                    System.out.println("CheckBox checked: " + datasTemp.toString());
-                                }
-                                else {
-                                    System.out.println("1.2 - SO FAR - OK!");
-                                    dbh.updateTempIdDatasCompra(datasTemp, ID_PAPEL);
-                                    System.out.println("CheckBox checked: UPDATED!!! " + datasTemp.toString());
-                                }
-                            }
-                            else {
-                                System.out.println("2 - SO FAR - OK!");
-                                System.out.println("dbh.addDataCompra: " + ((CheckBox)findViewById(R.id.CadastroCBDataCompra)).isChecked());
-                                //datasTemp.datasCompra(datasTemp.isConfirmaCompra(), ID_PAPEL, 0, 0, 0);
-                                System.out.println("DATATEMP ESTÁ ASSIM: "+ datasTemp.toString());
-                                dbh.updateTempIdDatasCompra(datasTemp, ID_PAPEL);
-                            }
-                            System.out.println("CheckBox outside: " + datasTemp.toString());
-                            System.out.println("IsChecked do ID "+ ID_PAPEL + " é: " + dbh.getDatas(ID_PAPEL).isConfirmaCompra());
-                            System.out.println("Data da compra do ID "+ ID_PAPEL + " é: " + dbh.getDatas(ID_PAPEL).getDataCompra());
-                            System.out.println("Mês da compra do ID "+ ID_PAPEL + " é: " + dbh.getDatas(ID_PAPEL).getMesCompra());
-                            System.out.println("Ano da compra do ID "+ ID_PAPEL + " é: " + dbh.getDatas(ID_PAPEL).getAnoCompra());
-                        } catch (NumberFormatException e) {
-                            e.printStackTrace();
-                            System.out.println("NUUUMBERFORMATEXCEPTION: "+e.getMessage());
-                        } catch (Exception e){
-                            System.out.println(e.getMessage());
-                        }
-
-                        StringBuilder sb = new StringBuilder();
-                        sb.append("---- PAPEL ALTERADO ----\n");
-                        sb.append("- ID: "+ dbh.getPapel(ID_PAPEL).getId() + "\n");
-                        sb.append("- Papel: "+ dbh.getPapel(ID_PAPEL).getNomePapel() + "\n");
-                        sb.append("- Valor: "+ dbh.getPapel(ID_PAPEL).getValor() + "\n");
-                        sb.append("- Quantidade: "+ dbh.getPapel(ID_PAPEL).getQuantidade() + "\n");
-                        sb.append("- Fracionário: "+ dbh.getPapel(ID_PAPEL).isFracionario() + "\n");
-                        sb.append("- TxCorretagem: "+ dbh.getCustas(ID_PAPEL).getCorretagem() + "\n");
-                        sb.append("- TxCustodia: "+ dbh.getCustas(ID_PAPEL).getCustodia() + "\n");
-                        sb.append("- TxLiquidação: "+ dbh.getCustas(ID_PAPEL).getTx_liquidacao() + "\n");
-                        sb.append("- TxNegociação: "+ dbh.getCustas(ID_PAPEL).getTx_negociacao() + "\n");
-                        sb.append("- Iss: "+ dbh.getCustas(ID_PAPEL).getIss() + "\n");
-                        try {
-                            exp.loggIt(this, sb.toString());
-                        } catch (Exception e) {
-                            System.out.println("FALHA AO TENTAR INSERIR NO LOG");
-                        }
-
-                        Clear();
-                        Toaster(papel.getNomePapel()+ " foi ALTERADO com sucesso!");
-                    }
-                    else{
-                        DataBaseHelper helper = new DataBaseHelper(this);
-                        helper.addPapel(papel);
-
-                        Integer idCustas;
-                        Double emptyTempCheck = dbh.getCustas(998).getCorretagem() + dbh.getCustas(998).getCustodia() + dbh.getCustas(998).getTx_liquidacao() + dbh.getCustas(998).getTx_negociacao() + dbh.getCustas(998).getIss();
-                        if (emptyTempCheck==0.0){
-                            idCustas = 999;
-                            //TODO excluir o Toaster teste abaixo
-                            //Toaster("else else ID temporário vazio: " + idCustas);
-                        }
-                        else {
-                            idCustas = 998;
-                            //TODO excluir o Toaster teste abaixo
-                            //Toaster("else else ID temporário válido: " + idCustas);
+                            //Toaster("ID temporário válido: " + idCustas);
                         }
                         Custas custas;
 
@@ -854,47 +584,305 @@ public class CadastroPapel extends AppCompatActivity {
                         Boolean isIssFixo = dbh.getCustas(idCustas).isIssFixo();
 
                         custas = new Custas(ultimo, ultimoCorretagem, ultimoCustodia, ultimoTxLiquidacao, ultimoTxNegociacao, ultimoIss, isCorretagemFixa, isCustodiaFixa, isTxLiquidacaoFixa, isTxNegociacaoFixa, isIssFixo);
-                        if(dbh.getCustas(ultimo).getCorretagem()== 0.0 && dbh.getCustas(ultimo).getCustodia()==0.0 && dbh.getCustas(ultimo).getTx_liquidacao()==0.0 && dbh.getCustas(ultimo).getTx_negociacao()==0.0 && dbh.getCustas(ultimo).getIss()==0.0) {
+                        if (dbh.getCustas(ultimo).getCorretagem() == 0.0 && dbh.getCustas(ultimo).getCustodia() == 0.0 && dbh.getCustas(ultimo).getTx_liquidacao() == 0.0 && dbh.getCustas(ultimo).getTx_negociacao() == 0.0 && dbh.getCustas(ultimo).getIss() == 0.0) {
                             dbh.addCustas(custas);
-                            //Toaster("Add na possição " + ultimo + " : " + String.valueOf(ultimoCorretagem));
-                        }
-                        else {
+                        } else {
                             dbh.updateCustas(custas, ultimo);
-                            //Toaster("Updated na possição " + ultimo + " : " + String.valueOf(ultimoCorretagem));
+                        }
+
+                        // ***** DATA *****
+                        try {
+                            Datas datas = new Datas();
+                            if (((CheckBox) findViewById(R.id.CadastroCBDataCompra)).isChecked()) {
+                                datas.datasCompra(((CheckBox) findViewById(R.id.CadastroCBDataCompra)).isChecked(), ultimo, Integer.parseInt(((Spinner) findViewById(R.id.spinnerData)).getSelectedItem().toString()), Integer.parseInt(((Spinner) findViewById(R.id.spinnerMes)).getSelectedItem().toString()), Integer.parseInt(((Spinner) findViewById(R.id.spinnerAno)).getSelectedItem().toString()));
+                                if (!dbh.getDatas(ultimo).isConfirmaCompra() && dbh.getDatas(ultimo).getDataCompra() == 0 && dbh.getDatas(ultimo).getMesCompra() == 0 && dbh.getDatas(ultimo).getAnoCompra() == 0) {
+                                    dbh.addDataCompra(datas);
+                                    System.out.println("CheckBox checked: " + datas.toString());
+                                } else {
+                                    dbh.updateTempIdDatasCompra(datas, ultimo);
+                                    System.out.println("CheckBox checked: UPDATED!!! " + datas.toString());
+                                }
+                            } else {
+                                System.out.println("dbh.addDataCompra" + ((CheckBox) findViewById(R.id.CadastroCBDataCompra)).isChecked());
+                                datas.datasCompra(((CheckBox) findViewById(R.id.CadastroCBDataCompra)).isChecked(), ultimo, 0, 0, 0);
+                                dbh.addDataCompra(datas);
+                            }
+                            System.out.println("CheckBox outside: " + datas.toString());
+                            System.out.println("IsChecked do ID " + ultimo + " é:" + dbh.getDatas(ultimo).isConfirmaCompra());
+                            System.out.println("Data da compra do ID " + ultimo + " é:" + dbh.getDatas(ultimo).getDataCompra());
+                            System.out.println("Mês da compra do ID " + ultimo + " é:" + dbh.getDatas(ultimo).getMesCompra());
+                            System.out.println("Ano da compra do ID " + ultimo + " é:" + dbh.getDatas(ultimo).getAnoCompra());
+                        } catch (NumberFormatException e) {
+                            e.printStackTrace();
+                            System.out.println("NUMBERFORMATEXCEPTION: " + e.getMessage());
+                        } catch (Exception e) {
+                            System.out.println(e.getMessage());
                         }
 
                         StringBuilder sb = new StringBuilder();
                         sb.append("---- PAPEL INCLUÍDO ----\n");
-                        sb.append("- Papel: "+ dbh.getPapel(ultimo).getNomePapel() + "\n");
-                        sb.append("- Valor: "+ dbh.getPapel(ultimo).getValor() + "\n");
-                        sb.append("- Quantidade: "+ dbh.getPapel(ultimo).getQuantidade() + "\n");
-                        sb.append("- Fracionário: "+ dbh.getPapel(ultimo).isFracionario() + "\n");
-                        sb.append("- TxCorretagem: "+ dbh.getCustas(ultimo).getCorretagem() + "\n");
-                        sb.append("- TxCustodia: "+ dbh.getCustas(ultimo).getCustodia() + "\n");
-                        sb.append("- TxLiquidação: "+ dbh.getCustas(ultimo).getTx_liquidacao() + "\n");
-                        sb.append("- TxNegociação: "+ dbh.getCustas(ultimo).getTx_negociacao() + "\n");
-                        sb.append("- Iss: "+ dbh.getCustas(ultimo).getIss() + "\n");
+                        sb.append("- Papel: " + dbh.getPapel(ultimo).getNomePapel() + "\n");
+                        sb.append("- Valor: " + dbh.getPapel(ultimo).getValor() + "\n");
+                        sb.append("- Quantidade: " + dbh.getPapel(ultimo).getQuantidade() + "\n");
+                        sb.append("- Fracionário: " + dbh.getPapel(ultimo).isFracionario() + "\n");
+                        sb.append("- TxCorretagem: " + dbh.getCustas(ultimo).getCorretagem() + "\n");
+                        sb.append("- TxCustodia: " + dbh.getCustas(ultimo).getCustodia() + "\n");
+                        sb.append("- TxLiquidação: " + dbh.getCustas(ultimo).getTx_liquidacao() + "\n");
+                        sb.append("- TxNegociação: " + dbh.getCustas(ultimo).getTx_negociacao() + "\n");
+                        sb.append("- Iss: " + dbh.getCustas(ultimo).getIss() + "\n");
                         try {
                             exp.loggIt(this, sb.toString());
                         } catch (Exception e) {
-                            System.out.println("FALHA AO TENTAR INSERIR NO LOG: " + e.getMessage());
+                            System.out.println("FALHA AO TENTAR INSERIR NO LOG");
                         }
-                        Toaster(papel.getNomePapel()+ " foi SALVO com sucesso!");
+
+                        Toaster(papel.getNomePapel() + " foi SALVO com sucesso!");
+                    } else {
+                        if (valorPapel == null) {
+                            CharSequence texto = "Valor não pode ser nulo";
+                            Toaster(texto);
+                        } else if (valorPapel <= 0) {
+                            CharSequence texto = "Valor não pode ser menor ou igual a zero";
+                            Toaster(texto);
+                        } else if (nomePapel.equals("")) {
+                            CharSequence texto = "Nome do papel não pode ser nulo";
+                            Toaster(texto);
+                        } else if (quantidade <= 0) {
+                            CharSequence texto = "Quantidade não pode ser menor ou igual a zero";
+                            Toaster(texto);
+                        }
+                    }
+                } catch (Exception e) {
+                    if (valorPapel == null) {
+                        CharSequence texto = "Valor não pode ser nulo";
+                        Toaster(texto);
+                    } else if (valorPapel <= 0) {
+                        CharSequence texto = "Valor não pode ser menor ou igual a zero";
+                        Toaster(texto);
+                    } else if (nomePapel.equals("")) {
+                        CharSequence texto = "Nome do papel não pode ser nulo";
+                        Toaster(texto);
+                    } else if (quantidade <= 0) {
+                        CharSequence texto = "Quantidade não pode ser menor ou igual a zero";
+                        Toaster(texto);
                     }
                 }
+
+
+
+                /*try {
+                    resumoBD.setText(papel.toString2());
+                } catch (Exception e){
+                    Toaster("Erro de TargetException");
+                }*/
+
                 dbh.close();
-                Clear();
-            }
-            catch (Exception e){
-                e.printStackTrace();
+                //Toaster("Último: " + String.valueOf(ultimo));
+            } else {
+
+                System.out.println("SALVAR PAPEL -> idaux != null -> ENTRADA DO ELSE");
                 try {
-                    exp.loggIt(this, e.getMessage());
-                } catch (Exception eLog) {
-                    System.out.println("FALHA AO TENTAR INSERIR NO LOG: " + eLog.getMessage());
+                    ID_PAPEL = 0;
+                    ID_PAPEL = Integer.parseInt(idaux);
+                    long longUltimo = dbh.contador();
+                    if (longUltimo == 0) {
+                        longUltimo = 1;
+                    } else {
+                        longUltimo += 1;
+                    }
+                    int ultimo = Integer.parseInt(String.valueOf(longUltimo));
+
+                    String nomePapel = et_nomePapel.getText().toString();
+                    Double valorPapel = Double.parseDouble(et_valCadastroPapel.getText().toString());
+                    Integer quantidade = Integer.parseInt(et_QuantidadePapel.getText().toString());
+                    boolean fracionario = cadastroCbFracionario.isChecked();
+
+                    if (valorPapel != null && !(valorPapel <= 0) && !(nomePapel.equals("")) && !(quantidade <= 0) && quantidade != null) {
+                        papel = new Papel(ultimo, nomePapel, valorPapel, quantidade, fracionario);
+
+                        System.out.println("SALVAR PAPEL -> idaux != null -> ENTRADA DA VALIDAÇÃO DO PAPEL - Ultimo: " + ultimo + " / ID_PAPEL: " + ID_PAPEL);
+
+                        Datas datasTemp = new Datas();
+                        System.out.println("CHECKBOX IS CHECKED?   " + ((CheckBox) findViewById(R.id.CadastroCBDataCompra)).isChecked());
+                        if (((CheckBox) findViewById(R.id.CadastroCBDataCompra)).isChecked()) {
+                            System.out.println("DATATEMP 1.1 - SO FAR - OK!");
+                            datasTemp.datasCompra(((CheckBox) findViewById(R.id.CadastroCBDataCompra)).isChecked(), ID_PAPEL, Integer.parseInt(((Spinner) findViewById(R.id.spinnerData)).getSelectedItem().toString()), Integer.parseInt(((Spinner) findViewById(R.id.spinnerMes)).getSelectedItem().toString()), Integer.parseInt(((Spinner) findViewById(R.id.spinnerAno)).getSelectedItem().toString()));
+                            System.out.println(datasTemp.toString());
+                        } else {
+                            System.out.println("DATATEMP 1.2 - SO FAR - OK!");
+                            System.out.println("CHECKBOX IS CHECKED AGAIN?   " + ((CheckBox) findViewById(R.id.CadastroCBDataCompra)).isChecked());
+                            datasTemp.datasCompra(((CheckBox) findViewById(R.id.CadastroCBDataCompra)).isChecked(), ID_PAPEL, 0, 0, 0);
+                        }
+
+
+                        long encontrado = encontrarPapel();
+
+                        if (encontrado > 0) {
+                            DataBaseHelper helper = new DataBaseHelper(this);
+                            helper.updatePapel(papel, ID_PAPEL);
+
+                            // ***** CUSTAS *****
+
+                            Integer idCustas;
+                            Double emptyTempCheck = dbh.getCustas(998).getCorretagem() + dbh.getCustas(998).getCustodia() + dbh.getCustas(998).getTx_liquidacao() + dbh.getCustas(998).getTx_negociacao() + dbh.getCustas(998).getIss();
+                            if (emptyTempCheck == 0.0) {
+                                idCustas = 999;
+                                //TODO excluir o Toaster teste abaixo
+                                //Toaster("else if ID temporário vazio: " + idCustas);
+                            } else {
+                                idCustas = 998;
+                                //TODO excluir o Toaster teste abaixo
+                                //Toaster("else if ID temporário válido: " + idCustas);
+                            }
+                            Custas custas;
+
+                            Double ultimoCorretagem = dbh.getCustas(idCustas).getCorretagem();
+                            //Toaster("Enviado para a possição " + idCustas + " : " + String.valueOf(ultimoCorretagem));
+                            Boolean isCorretagemFixa = dbh.getCustas(idCustas).isCorretagemFixa();
+                            Double ultimoCustodia = dbh.getCustas(idCustas).getCustodia();
+                            Boolean isCustodiaFixa = dbh.getCustas(idCustas).isCustodiaFixa();
+                            Double ultimoTxLiquidacao = dbh.getCustas(idCustas).getTx_liquidacao();
+                            Boolean isTxLiquidacaoFixa = dbh.getCustas(idCustas).isTx_liquidacaoFixa();
+                            Double ultimoTxNegociacao = dbh.getCustas(idCustas).getTx_negociacao();
+                            Boolean isTxNegociacaoFixa = dbh.getCustas(idCustas).isTx_negociacaoFixa();
+                            Double ultimoIss = dbh.getCustas(idCustas).getIss();
+                            Boolean isIssFixo = dbh.getCustas(idCustas).isIssFixo();
+
+                            custas = new Custas(ID_PAPEL, ultimoCorretagem, ultimoCustodia, ultimoTxLiquidacao, ultimoTxNegociacao, ultimoIss, isCorretagemFixa, isCustodiaFixa, isTxLiquidacaoFixa, isTxNegociacaoFixa, isIssFixo);
+                            if (dbh.getCustas(ID_PAPEL).getCorretagem() == 0.0 && dbh.getCustas(ID_PAPEL).getCustodia() == 0.0 && dbh.getCustas(ID_PAPEL).getTx_liquidacao() == 0.0 && dbh.getCustas(ID_PAPEL).getTx_negociacao() == 0.0 && dbh.getCustas(ID_PAPEL).getIss() == 0.0) {
+                                dbh.addCustas(custas);
+                                //Toaster("Add na possição " + ID_PAPEL + " : " + String.valueOf(ultimoCorretagem));
+                            } else {
+                                dbh.updateCustas(custas, ID_PAPEL);
+                                //Toaster("Updated na possição " + ID_PAPEL + " : " + String.valueOf(ultimoCorretagem));
+                            }
+
+                            //***** DATAS *****
+
+                            try {
+                                //Datas datas = new Datas();
+                                System.out.println("CHECKBOX  do datasTemp WAS CHECKED?   " + (datasTemp.isConfirmaCompra()));
+                                if (datasTemp.isConfirmaCompra()) {
+                                    System.out.println("1 - SO FAR - OK!");
+                                    if (dbh.getDatas(ID_PAPEL).getDataCompra() == 0 && dbh.getDatas(ID_PAPEL).getMesCompra() == 0 && dbh.getDatas(ID_PAPEL).getAnoCompra() == 0) {
+                                        System.out.println(datasTemp.toString());
+                                        dbh.addDataCompra(datasTemp);
+                                        System.out.println("1.1 - SO FAR - OK!");
+                                        System.out.println("CheckBox checked: " + datasTemp.toString());
+                                    } else {
+                                        System.out.println("1.2 - SO FAR - OK!");
+                                        dbh.updateTempIdDatasCompra(datasTemp, ID_PAPEL);
+                                        System.out.println("CheckBox checked: UPDATED!!! " + datasTemp.toString());
+                                    }
+                                } else {
+                                    System.out.println("2 - SO FAR - OK!");
+                                    System.out.println("dbh.addDataCompra: " + ((CheckBox) findViewById(R.id.CadastroCBDataCompra)).isChecked());
+                                    //datasTemp.datasCompra(datasTemp.isConfirmaCompra(), ID_PAPEL, 0, 0, 0);
+                                    System.out.println("DATATEMP ESTÁ ASSIM: " + datasTemp.toString());
+                                    dbh.updateTempIdDatasCompra(datasTemp, ID_PAPEL);
+                                }
+                                System.out.println("CheckBox outside: " + datasTemp.toString());
+                                System.out.println("IsChecked do ID " + ID_PAPEL + " é: " + dbh.getDatas(ID_PAPEL).isConfirmaCompra());
+                                System.out.println("Data da compra do ID " + ID_PAPEL + " é: " + dbh.getDatas(ID_PAPEL).getDataCompra());
+                                System.out.println("Mês da compra do ID " + ID_PAPEL + " é: " + dbh.getDatas(ID_PAPEL).getMesCompra());
+                                System.out.println("Ano da compra do ID " + ID_PAPEL + " é: " + dbh.getDatas(ID_PAPEL).getAnoCompra());
+                            } catch (NumberFormatException e) {
+                                e.printStackTrace();
+                                System.out.println("NUUUMBERFORMATEXCEPTION: " + e.getMessage());
+                            } catch (Exception e) {
+                                System.out.println(e.getMessage());
+                            }
+
+                            StringBuilder sb = new StringBuilder();
+                            sb.append("---- PAPEL ALTERADO ----\n");
+                            sb.append("- ID: " + dbh.getPapel(ID_PAPEL).getId() + "\n");
+                            sb.append("- Papel: " + dbh.getPapel(ID_PAPEL).getNomePapel() + "\n");
+                            sb.append("- Valor: " + dbh.getPapel(ID_PAPEL).getValor() + "\n");
+                            sb.append("- Quantidade: " + dbh.getPapel(ID_PAPEL).getQuantidade() + "\n");
+                            sb.append("- Fracionário: " + dbh.getPapel(ID_PAPEL).isFracionario() + "\n");
+                            sb.append("- TxCorretagem: " + dbh.getCustas(ID_PAPEL).getCorretagem() + "\n");
+                            sb.append("- TxCustodia: " + dbh.getCustas(ID_PAPEL).getCustodia() + "\n");
+                            sb.append("- TxLiquidação: " + dbh.getCustas(ID_PAPEL).getTx_liquidacao() + "\n");
+                            sb.append("- TxNegociação: " + dbh.getCustas(ID_PAPEL).getTx_negociacao() + "\n");
+                            sb.append("- Iss: " + dbh.getCustas(ID_PAPEL).getIss() + "\n");
+                            try {
+                                exp.loggIt(this, sb.toString());
+                            } catch (Exception e) {
+                                System.out.println("FALHA AO TENTAR INSERIR NO LOG");
+                            }
+
+                            Clear();
+                            Toaster(papel.getNomePapel() + " foi ALTERADO com sucesso!");
+                        } else {
+                            DataBaseHelper helper = new DataBaseHelper(this);
+                            helper.addPapel(papel);
+
+                            Integer idCustas;
+                            Double emptyTempCheck = dbh.getCustas(998).getCorretagem() + dbh.getCustas(998).getCustodia() + dbh.getCustas(998).getTx_liquidacao() + dbh.getCustas(998).getTx_negociacao() + dbh.getCustas(998).getIss();
+                            if (emptyTempCheck == 0.0) {
+                                idCustas = 999;
+                                //TODO excluir o Toaster teste abaixo
+                                //Toaster("else else ID temporário vazio: " + idCustas);
+                            } else {
+                                idCustas = 998;
+                                //TODO excluir o Toaster teste abaixo
+                                //Toaster("else else ID temporário válido: " + idCustas);
+                            }
+                            Custas custas;
+
+                            Double ultimoCorretagem = dbh.getCustas(idCustas).getCorretagem();
+                            //Toaster("Enviado para a possição " + idCustas + " : " + String.valueOf(ultimoCorretagem));
+                            Boolean isCorretagemFixa = dbh.getCustas(idCustas).isCorretagemFixa();
+                            Double ultimoCustodia = dbh.getCustas(idCustas).getCustodia();
+                            Boolean isCustodiaFixa = dbh.getCustas(idCustas).isCustodiaFixa();
+                            Double ultimoTxLiquidacao = dbh.getCustas(idCustas).getTx_liquidacao();
+                            Boolean isTxLiquidacaoFixa = dbh.getCustas(idCustas).isTx_liquidacaoFixa();
+                            Double ultimoTxNegociacao = dbh.getCustas(idCustas).getTx_negociacao();
+                            Boolean isTxNegociacaoFixa = dbh.getCustas(idCustas).isTx_negociacaoFixa();
+                            Double ultimoIss = dbh.getCustas(idCustas).getIss();
+                            Boolean isIssFixo = dbh.getCustas(idCustas).isIssFixo();
+
+                            custas = new Custas(ultimo, ultimoCorretagem, ultimoCustodia, ultimoTxLiquidacao, ultimoTxNegociacao, ultimoIss, isCorretagemFixa, isCustodiaFixa, isTxLiquidacaoFixa, isTxNegociacaoFixa, isIssFixo);
+                            if (dbh.getCustas(ultimo).getCorretagem() == 0.0 && dbh.getCustas(ultimo).getCustodia() == 0.0 && dbh.getCustas(ultimo).getTx_liquidacao() == 0.0 && dbh.getCustas(ultimo).getTx_negociacao() == 0.0 && dbh.getCustas(ultimo).getIss() == 0.0) {
+                                dbh.addCustas(custas);
+                                //Toaster("Add na possição " + ultimo + " : " + String.valueOf(ultimoCorretagem));
+                            } else {
+                                dbh.updateCustas(custas, ultimo);
+                                //Toaster("Updated na possição " + ultimo + " : " + String.valueOf(ultimoCorretagem));
+                            }
+
+                            StringBuilder sb = new StringBuilder();
+                            sb.append("---- PAPEL INCLUÍDO ----\n");
+                            sb.append("- Papel: " + dbh.getPapel(ultimo).getNomePapel() + "\n");
+                            sb.append("- Valor: " + dbh.getPapel(ultimo).getValor() + "\n");
+                            sb.append("- Quantidade: " + dbh.getPapel(ultimo).getQuantidade() + "\n");
+                            sb.append("- Fracionário: " + dbh.getPapel(ultimo).isFracionario() + "\n");
+                            sb.append("- TxCorretagem: " + dbh.getCustas(ultimo).getCorretagem() + "\n");
+                            sb.append("- TxCustodia: " + dbh.getCustas(ultimo).getCustodia() + "\n");
+                            sb.append("- TxLiquidação: " + dbh.getCustas(ultimo).getTx_liquidacao() + "\n");
+                            sb.append("- TxNegociação: " + dbh.getCustas(ultimo).getTx_negociacao() + "\n");
+                            sb.append("- Iss: " + dbh.getCustas(ultimo).getIss() + "\n");
+                            try {
+                                exp.loggIt(this, sb.toString());
+                            } catch (Exception e) {
+                                System.out.println("FALHA AO TENTAR INSERIR NO LOG: " + e.getMessage());
+                            }
+                            Toaster(papel.getNomePapel() + " foi SALVO com sucesso!");
+                        }
+                    }
+                    dbh.close();
+                    Clear();
+                } catch (Exception e) {
+                    e.printStackTrace();
+                    try {
+                        exp.loggIt(this, e.getMessage());
+                    } catch (Exception eLog) {
+                        System.out.println("FALHA AO TENTAR INSERIR NO LOG: " + eLog.getMessage());
+                    }
+                    Toaster("Erro ao salvar!");
                 }
-                Toaster("Erro ao salvar!");
             }
-        }
+    }
         //*** OK *** Função para setar 0.0s e falses em todos dados do ID temporário: 998 APÓS SALVAR NO BANCO DE DADOS NO ID REAL;
         dbh.clearTempIdCustas(998);
 
