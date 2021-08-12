@@ -401,6 +401,20 @@ public class CadastroPapel extends AppCompatActivity {
 
     public long encontrarPapel(){
         DataBaseHelper dbh = new DataBaseHelper(this);
+        ((EditText) findViewById(R.id.nomePapel)).setEnabled(true);
+        ((EditText) findViewById(R.id.valCadastroPapel)).setEnabled(true);
+        ((EditText) findViewById(R.id.valQuantidadePapel)).setEnabled(true);
+        ((CheckBox) findViewById(R.id.cadastroCbFracionario)).setEnabled(true);
+
+        ((ImageButton)findViewById(R.id.cadastroCalendarBtn)).setEnabled(true);
+
+        ((CheckBox) findViewById(R.id.CadastroCBDataCompra)).setEnabled(true);
+
+        ((Spinner)findViewById(R.id.spinnerData)).setEnabled(true);
+        ((Spinner)findViewById(R.id.spinnerMes)).setEnabled(true);
+        ((Spinner)findViewById(R.id.spinnerAno)).setEnabled(true);
+
+        ((Button)findViewById(R.id.cadastroPapelBtnSalvar)).setEnabled(true);
 
         et_IdPapel =findViewById(R.id.idPapel);
         idaux = et_IdPapel.getText().toString();
@@ -467,10 +481,27 @@ public class CadastroPapel extends AppCompatActivity {
                             ((CheckBox) findViewById(R.id.CadastroCBDataCompra)).setChecked(false);
                             System.out.println("ENCONTRAR PAPEL ->idaux != null -> DATAS -> Try Spinner ELSE - CheckBoxisSelected: " + ((CheckBox) findViewById(R.id.CadastroCBDataCompra)).isChecked());
                         }
-                    System.out.println("IsChecked do ID "+ ID_PAPEL + " é:" + dbh.getDatas(ID_PAPEL).isConfirmaCompra());
+                    /*System.out.println("IsChecked do ID "+ ID_PAPEL + " é:" + dbh.getDatas(ID_PAPEL).isConfirmaCompra());
                     System.out.println("Data da compra do ID "+ ID_PAPEL + " é:" + dbh.getDatas(ID_PAPEL).getDataCompra());
                     System.out.println("Mês da compra do ID "+ ID_PAPEL + " é:" + dbh.getDatas(ID_PAPEL).getMesCompra());
-                    System.out.println("Ano da compra do ID "+ ID_PAPEL + " é:" + dbh.getDatas(ID_PAPEL).getAnoCompra());
+                    System.out.println("Ano da compra do ID "+ ID_PAPEL + " é:" + dbh.getDatas(ID_PAPEL).getAnoCompra());*/
+
+                        if (dbh.getDatas(ID_PAPEL).isConfirmaVenda()){
+                            ((EditText) findViewById(R.id.nomePapel)).setEnabled(false);
+                            ((EditText) findViewById(R.id.valCadastroPapel)).setEnabled(false);
+                            ((EditText) findViewById(R.id.valQuantidadePapel)).setEnabled(false);
+                            ((CheckBox) findViewById(R.id.cadastroCbFracionario)).setEnabled(false);
+
+                            ((ImageButton)findViewById(R.id.cadastroCalendarBtn)).setEnabled(false);
+
+                            ((CheckBox) findViewById(R.id.CadastroCBDataCompra)).setEnabled(false);
+
+                            ((Spinner)findViewById(R.id.spinnerData)).setEnabled(false);
+                            ((Spinner)findViewById(R.id.spinnerMes)).setEnabled(false);
+                            ((Spinner)findViewById(R.id.spinnerAno)).setEnabled(false);
+
+                            ((Button)findViewById(R.id.cadastroPapelBtnSalvar)).setEnabled(false);
+                        }
                     }
                     catch (Exception e){
                         System.out.println(e.getMessage());
