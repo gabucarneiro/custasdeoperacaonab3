@@ -70,7 +70,7 @@ public class Export extends AppCompatActivity {
 
     public void VerifyPermission(View view){
         if (ContextCompat.checkSelfPermission(Export.this, Manifest.permission.WRITE_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED){
-            Toast.makeText(this, "Permissão já concedida!", Toast.LENGTH_SHORT).show();
+            //Toast.makeText(this, "Permissão concedida!", Toast.LENGTH_SHORT).show();
         }
         else {
             requestStoragePermission();
@@ -82,13 +82,13 @@ public class Export extends AppCompatActivity {
             new AlertDialog.Builder(this)
                     .setTitle("Permissão necessária")
                     .setTitle("Permissão necessária para gravar os dados em .txt no espaço interno. Caso contrário, apenas não teremos essa função disponível.")
-                    .setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                    .setPositiveButton("Permitir", new DialogInterface.OnClickListener() {
                         @Override
                         public void onClick(DialogInterface dialog, int which) {
                             ActivityCompat.requestPermissions(Export.this, new String[] {Manifest.permission.WRITE_EXTERNAL_STORAGE}, STORAGE_PERMISSION_CODE);
                         }
                     })
-                    .setNegativeButton("NOP!", new DialogInterface.OnClickListener() {
+                    .setNegativeButton("Negar", new DialogInterface.OnClickListener() {
                         @Override
                         public void onClick(DialogInterface dialog, int which) {
                             dialog.dismiss();
@@ -114,7 +114,7 @@ public class Export extends AppCompatActivity {
 
     public void VerifyPermissionRead(View view){
         if (ContextCompat.checkSelfPermission(Export.this, Manifest.permission.READ_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED){
-            Toast.makeText(this, "Permissão já concedida!", Toast.LENGTH_SHORT).show();
+            //Toast.makeText(this, "Permissão já concedida!", Toast.LENGTH_SHORT).show();
         }
         else {
             requestStoragePermissionRead();
@@ -184,6 +184,7 @@ public class Export extends AppCompatActivity {
             });*/
 
     public void ExportarBDLeitura(View view){
+        VerifyPermissionRead(view);
         DataBaseHelper dbh = new DataBaseHelper(this);
         CharSequence currentTime = android.text.format.DateFormat.format("-yyyy-MM-dd kk-mm-ss", System.currentTimeMillis());
         CharSequence time = currentTime.toString();
@@ -203,8 +204,25 @@ public class Export extends AppCompatActivity {
                 sb.append("- TxLiquidação: "+ dbh.getCustas(i).getTx_liquidacao() + " - Fixo: " + dbh.getCustas(i).isTx_liquidacaoFixa() + "\n");
                 sb.append("- TxNegociação: "+ dbh.getCustas(i).getTx_negociacao() + " - Fixo: " + dbh.getCustas(i).isTx_negociacaoFixa() + "\n");
                 sb.append("- Iss: "+ dbh.getCustas(i).getIss() + " - Fixo: " + dbh.getCustas(i).isIssFixo() + "\n");
+                if (dbh.getDatas(i).isConfirmaCompra()){
+                    sb.append("- Compra em: "+ dbh.getDatas(i).getDataCompra() + "/" + dbh.getDatas(i).getMesCompra() + "/" + dbh.getDatas(i).getAnoCompra() +"\n");
+                    if (dbh.getDatas(i).isConfirmaVenda()){
+                        sb.append("-- Venda em: "+ dbh.getDatas(i).getDataVenda() + "/" + dbh.getDatas(i).getMesVenda() + "/" + dbh.getDatas(i).getAnoVenda() +"\n");
+                        sb.append("-- Valor: "+ dbh.getDadosVenda(i).getValorVenda() + "\n");
+                        sb.append("-- TxCorretagem: "+ dbh.getDadosVenda(i).getCorretagem() + " - Fixo: " + dbh.getDadosVenda(i).isCorretagemFixa() + "\n");
+                        sb.append("-- TxCustodia: "+ dbh.getDadosVenda(i).getCustodia() + " - Fixo: " + dbh.getDadosVenda(i).isCustodiaFixa() + "\n");
+                        sb.append("-- TxLiquidação: "+ dbh.getDadosVenda(i).getTx_liquidacao() + " - Fixo: " + dbh.getDadosVenda(i).isTx_liquidacaoFixa() + "\n");
+                        sb.append("-- TxNegociação: "+ dbh.getDadosVenda(i).getTx_negociacao() + " - Fixo: " + dbh.getDadosVenda(i).isTx_negociacaoFixa() + "\n");
+                        sb.append("-- Iss: "+ dbh.getDadosVenda(i).getIss() + " - Fixo: " + dbh.getDadosVenda(i).isIssFixo() + "\n");
+                    }
+                }
+                else {
+                    sb.append("- WhatchList" + "\n");
+                }
+
                 sb.append("--------\n");
-                exportIt(sb.toString(), time);
+                System.out.println(sb.toString() + time);
+                exportIt(view, sb.toString(), time);
             }
 
             Toast.makeText(this, "Arquivo para leitura pronto!", Toast.LENGTH_SHORT).show();
@@ -222,6 +240,7 @@ public class Export extends AppCompatActivity {
     }
 
     public void ExportarBD(View view){
+        VerifyPermission(view);
         DataBaseHelper dbh = new DataBaseHelper(this);
         CharSequence currentTime = android.text.format.DateFormat.format("-yyyy-MM-dd kk-mm-ss", System.currentTimeMillis());
         CharSequence time = "BackUp" + currentTime.toString();
@@ -234,9 +253,26 @@ public class Export extends AppCompatActivity {
             for (int i = 1; count >= i; i++){
                 sb.append(dbh.getPapel(i).getId()).append(" - ").append(dbh.getPapel(i).getNomePapel()).append(" - ").append(dbh.getPapel(i).getValor()).append(" - ").append(dbh.getPapel(i).getQuantidade()).append(" - ").append(dbh.getPapel(i).isFracionario());
                 sb.append(" - ").append(dbh.getCustas(i).getCorretagem()).append(" - ").append(dbh.getCustas(i).getCustodia()).append(" - ").append(dbh.getCustas(i).getTx_liquidacao()).append(" - ").append(dbh.getCustas(i).getTx_negociacao()).append(" - ").append(dbh.getCustas(i).getIss()).append(" - ").append(dbh.getCustas(i).isCorretagemFixa()).append(" - ").append(dbh.getCustas(i).isCustodiaFixa()).append(" - ").append(dbh.getCustas(i).isTx_liquidacaoFixa()).append(" - ").append(dbh.getCustas(i).isTx_negociacaoFixa()).append(" - ").append(dbh.getCustas(i).isIssFixo());
+                if (dbh.getDatas(i).isConfirmaCompra()){
+                    sb.append(" - " + dbh.getDatas(i).isConfirmaCompra());
+                    sb.append(" - " + dbh.getDatas(i).getDataCompra() + " - " + dbh.getDatas(i).getMesCompra() + " - " + dbh.getDatas(i).getAnoCompra());
+                    if (dbh.getDatas(i).isConfirmaVenda()){
+                        sb.append(" - " + dbh.getDatas(i).isConfirmaVenda());
+                        sb.append(" - "+ dbh.getDatas(i).getDataVenda() + " - " + dbh.getDatas(i).getMesVenda() + " - " + dbh.getDatas(i).getAnoVenda());
+                        sb.append(" - "+ dbh.getDadosVenda(i).getValorVenda());
+                        sb.append(" - "+ dbh.getDadosVenda(i).getCorretagem() + " - "+ dbh.getDadosVenda(i).getCustodia() + " - "+ dbh.getDadosVenda(i).getTx_liquidacao() + " - "+ dbh.getDadosVenda(i).getTx_negociacao() + " - "+ dbh.getDadosVenda(i).getIss() + " - " + dbh.getDadosVenda(i).isCorretagemFixa() + " - " + dbh.getDadosVenda(i).isCustodiaFixa() + " - " + dbh.getDadosVenda(i).isTx_liquidacaoFixa() + " - " + dbh.getDadosVenda(i).isTx_negociacaoFixa() + " - " + dbh.getDadosVenda(i).isIssFixo());
+                    }
+                    else {
+                        sb.append(" - " + dbh.getDatas(i).isConfirmaVenda());
+                    }
+                }
+                else {
+                    sb.append(" - WhatchList");
+                }
                 sb.append(" -\n");
             }
-            exportIt(sb.toString(), time);
+            System.out.println(sb.toString() + time);
+            exportIt(view, sb.toString(), time);
             //TODO SETAR ARQUIVO PARA NÃO SER ALTERADO.
             Toast.makeText(this, "Arquivo exportado com sucesso!", Toast.LENGTH_SHORT).show();
             Toast.makeText(this, "Arquivo: "+ String.valueOf(time), Toast.LENGTH_SHORT).show();
@@ -378,6 +414,7 @@ public class Export extends AppCompatActivity {
         //1 diretorio.mkdirs();
 
         //nomeArquivo = String.valueOf(((EditText) findViewById(R.id.edSelectedFile)).getText());
+        VerifyPermission(v);
         nomeArquivo = (((EditText) findViewById(R.id.edSelectedFile)).getText().toString()) + ".txt";
 
         File fileExt;
@@ -474,7 +511,8 @@ public class Export extends AppCompatActivity {
         }
     }
 
-    public void exportIt(String data, CharSequence time){
+    public void exportIt(View view, String data, CharSequence time){
+        VerifyPermission(view);
         //1 diretorioApp = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).getPath();
         File flDiretorioApp = new File(this.getExternalFilesDir(null).getPath());
 
@@ -540,13 +578,13 @@ public class Export extends AppCompatActivity {
         //diretorioApp = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).getPath();
         try {
             File flDiretorioApp = new File(context.getExternalFilesDir(null).getPath());
-            System.out.println("loggIt - flDiretorioApp: "+ flDiretorioApp);
+            //System.out.println("loggIt - flDiretorioApp: "+ flDiretorioApp);
 
             nomeArquivo = "CustasB3Log.txt";
             diretorio = new File(flDiretorioApp, "/");
             System.out.println("loggIt - diretorio: "+ diretorio);
             diretorio.mkdirs();
-            System.out.println("diretorio em loggIt = "+ diretorio);
+            //System.out.println("diretorio em loggIt = "+ diretorio);
             System.out.println("canWrite: "+diretorio.canWrite());
             System.out.println("canRead: "+diretorio.canRead());
         } catch (Exception e) {
@@ -565,7 +603,7 @@ public class Export extends AppCompatActivity {
         fLog = new File(diretorio, nomeArquivo);
         try {
             fLog.getParentFile().mkdirs();
-            System.out.println(" *** fLog.getParentFile().mkdirs(): "+fLog.getParentFile().mkdirs());
+            //System.out.println(" *** fLog.getParentFile().mkdirs(): "+fLog.getParentFile().mkdirs());
         }
         catch (NullPointerException npe){
             npe.printStackTrace();
@@ -632,6 +670,7 @@ public class Export extends AppCompatActivity {
     }
 
     public void Listar(View v){
+        VerifyPermissionRead(v);
         LinearLayout LL = findViewById(R.id.arquivosListados);
         LL.setOrientation(LinearLayout.VERTICAL);
         //diretorioApp = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).getPath();
@@ -756,6 +795,7 @@ public class Export extends AppCompatActivity {
         }
     }
     public void carregar(View v){
+        VerifyPermissionRead(v);
         String lstrNomeArq;
         File arq;
         String lstrlinha;
@@ -786,44 +826,31 @@ public class Export extends AppCompatActivity {
         }
     }
 
-    public void carregar2(View v){
+    public void importar(View v){
+        VerifyPermissionRead(v);
         DataBaseHelper dbh = new DataBaseHelper(getApplicationContext());
         Papel papel;
         Custas custas;
+        Datas datas;
+        DadosVenda dadosVenda;
 
         String lstrNomeArq;
         File arq;
         //int caracteres, offCharReader, offSequencia, skip;
         String nomePapel = "null";
-        double valorPapel = 0.0, ultimoCorretagem = 0.0, ultimoCustodia = 0.0, ultimoTxLiquidacao = 0.0, ultimoTxNegociacao = 0.0, ultimoIss = 0.0;
-        int quantidade = 0;
-        boolean fracionario = false, isCorretagemFixa = false, isCustodiaFixa = false, isTxLiquidacaoFixa = false, isTxNegociacaoFixa = false, isIssFixo = false;
+        double valorPapel = 0.0, ultimoCorretagem = 0.0, ultimoCustodia = 0.0, ultimoTxLiquidacao = 0.0, ultimoTxNegociacao = 0.0, ultimoIss = 0.0, valorVenda = 0.0, corretagemVenda = 0.0, custodiaVenda = 0.0, tx_liquidacaoVenda = 0.0, tx_negociacaoVenda = 0.0, issVenda = 0.0;
+        int quantidade = 0, dataCompra = 0, mesCompra = 0, anoCompra = 0, dataVenda = 0, mesVenda = 0, anoVenda = 0;
+        boolean fracionario = false, isCorretagemFixa = false, isCustodiaFixa = false, isTxLiquidacaoFixa = false, isTxNegociacaoFixa = false, isIssFixo = false, confirmaCompra = false, confirmaVenda = false, corretagemVendaFixa = false, custodiaVendaFixa = false, tx_liquidacaoVendaFixa = false, tx_negociacaoVendaFixa = false, issVendaFixo = false;
 
-        /*try {
-            caracteres = Integer.parseInt(((EditText)findViewById(R.id.edCharAt)).getText().toString());
-            offCharReader = Integer.parseInt(((EditText)findViewById(R.id.edOffCharReader)).getText().toString());
-            offSequencia = Integer.parseInt(((EditText)findViewById(R.id.edOffSequencia)).getText().toString());
-            skip = Integer.parseInt(((EditText)findViewById(R.id.edSkip)).getText().toString());
-        }
-        catch (Exception e) {
-            ((EditText)findViewById(R.id.edCharAt)).setText(String.valueOf(1000));
-            ((EditText)findViewById(R.id.edOffCharReader)).setText(String.valueOf(0));
-            ((EditText)findViewById(R.id.edOffSequencia)).setText(String.valueOf(20));
-            ((EditText)findViewById(R.id.edSkip)).setText(String.valueOf(128));
-
-            caracteres = Integer.parseInt(((EditText)findViewById(R.id.edCharAt)).getText().toString());
-            offCharReader = Integer.parseInt(((EditText)findViewById(R.id.edOffCharReader)).getText().toString());
-            offSequencia = Integer.parseInt(((EditText)findViewById(R.id.edOffSequencia)).getText().toString());
-            skip = Integer.parseInt(((EditText)findViewById(R.id.edSkip)).getText().toString());
-        }*/
 
         try {
-            lstrNomeArq = ((EditText) findViewById(R.id.edSelectedFile)).getText().toString();
+            //lstrNomeArq = ((EditText) findViewById(R.id.edSelectedFile)).getText().toString();
+            lstrNomeArq = ((Spinner)findViewById(R.id.spinFiles)).getSelectedItem().toString();
+            //System.out.println(" -- lstrNomeArq: "+lstrNomeArq);
 
             //arq = new File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).getPath(), lstrNomeArq);
             arq = new File(this.getExternalFilesDir(null).getPath(), lstrNomeArq);
             BufferedReader br = new BufferedReader(new FileReader(arq));
-
 
             char[] chars = new char[8000];
             String sequencia;
@@ -836,11 +863,13 @@ public class Export extends AppCompatActivity {
                 sequencia = new String(chars, 20, charReader);
                 char charAt;
                 //((EditText)findViewById(R.id.edCharAt)).setText(String.valueOf(chars.length));
-                System.out.println(chars.length);
+                //System.out.println(chars.length);
                 StringBuilder sb = new StringBuilder();
                 for (int i = 0; i<sequencia.length(); i++){
+                    //System.out.println("******* i: " + i + "     - sequencia.length(): "+ sequencia.length());
                     charAt = sequencia.charAt(i);
                     charAtt = String.valueOf(charAt);
+                    //System.out.println("i (" + i + ") CHARATT: " + charAtt);
                     if (!charAtt.equals("-")){
                         if (!charAtt.equals(" ")){
                             if (!charAtt.equals("\n")){
@@ -863,79 +892,191 @@ public class Export extends AppCompatActivity {
                                 break;
                             case 2:
                                 nomePapel = sb.toString();
-//                                System.out.println("Nome: " + nomePapel);
+                                System.out.println("Nome: " + nomePapel);
                                 //((EditText)findViewById(R.id.edNome)).setText(sb.toString());
                                 break;
                             case 3:
                                 valorPapel = Double.parseDouble(sb.toString());
-//                                System.out.println("Valor: " + valorPapel);
+                                System.out.println("Valor: " + valorPapel);
                                 //((EditText)findViewById(R.id.edValor)).setText(sb.toString());
                                 break;
                             case 4:
                                 quantidade = Integer.parseInt(sb.toString());
-//                                System.out.println("Quantidade: " + quantidade);
+                                System.out.println("Quantidade: " + quantidade);
                                 //((EditText)findViewById(R.id.edQuantidade)).setText(sb.toString());
                                 break;
                             case 5:
                                 fracionario = Bool(sb.toString());
 //                                System.out.println("Fracionário: " + sb.toString());
-//                                System.out.println("Fracionário: " + fracionario);
+                                System.out.println("Fracionário: " + fracionario);
                                 break;
                             case 6:
                                 ultimoCorretagem = Double.parseDouble(sb.toString());
 //                                System.out.println("Corretagem: " + sb.toString());
-//                                System.out.println("Corretagem: " + ultimoCorretagem);
+                                System.out.println("Corretagem: " + ultimoCorretagem);
                                 break;
                             case 7:
                                 ultimoCustodia = Double.parseDouble(sb.toString());
 //                                System.out.println("Custodia: " + sb.toString());
-//                                System.out.println("Custodia: " + ultimoCustodia);
+                                System.out.println("Custodia: " + ultimoCustodia);
                                 break;
                             case 8:
                                 ultimoTxLiquidacao = Double.parseDouble(sb.toString());
 //                                System.out.println("Tx de Liquidação: " + sb.toString());
-//                                System.out.println("Tx de Liquidação: " + ultimoTxLiquidacao);
+                                System.out.println("Tx de Liquidação: " + ultimoTxLiquidacao);
                                 break;
                             case 9:
                                 ultimoTxNegociacao = Double.parseDouble(sb.toString());
 //                                System.out.println("Tx de Negociação: " + sb.toString());
-//                                System.out.println("Tx de Negociação: " + ultimoTxNegociacao);
+                                System.out.println("Tx de Negociação: " + ultimoTxNegociacao);
                                 break;
                             case 10:
                                 ultimoIss = Double.parseDouble(sb.toString());
 //                                System.out.println("ISS: " + sb.toString());
-//                                System.out.println("ISS: " + ultimoIss);
+                                System.out.println("ISS: " + ultimoIss);
                                 break;
                             case 11:
                                 isCorretagemFixa = Bool(sb.toString());
 //                                System.out.println("Corretagem fixa: " + sb.toString());
-//                                System.out.println("Corretagem fixa: " + isCorretagemFixa);
+                                System.out.println("Corretagem fixa: " + isCorretagemFixa);
                                 break;
                             case 12:
                                 isCustodiaFixa = Bool(sb.toString());
 //                                System.out.println("Custodia fixa: " + sb.toString());
-//                                System.out.println("Custodia fixa: " + isCustodiaFixa);
+                                System.out.println("Custodia fixa: " + isCustodiaFixa);
                                 break;
                             case 13:
                                 isTxLiquidacaoFixa = Bool(sb.toString());
 //                                System.out.println("Tx de Liquidação fixa: " + sb.toString());
-//                                System.out.println("Tx de Liquidação fixa: " + isTxLiquidacaoFixa);
+                                System.out.println("Tx de Liquidação fixa: " + isTxLiquidacaoFixa);
                                 break;
                             case 14:
                                 isTxNegociacaoFixa = Bool(sb.toString());
 //                                System.out.println("Tx de Negociação fixa: " + sb.toString());
-//                                System.out.println("Tx de Negociação fixa: " + isTxNegociacaoFixa);
+                                System.out.println("Tx de Negociação fixa: " + isTxNegociacaoFixa);
                                 break;
                             case 15:
                                 isIssFixo = Bool(sb.toString());
 //                                System.out.println("ISS fixo: " + sb.toString());
-//                                System.out.println("ISS fixo: " + isIssFixo);
+                                System.out.println("ISS fixo: " + isIssFixo);
+                                break;
+                            case 16:
+                                if (sb.toString().equals("WhatchList")){
+                                    dataCompra = 0;
+                                    mesCompra = 0;
+                                    anoCompra = 0;
+                                    confirmaVenda = false;
+                                    dataVenda = 0;
+                                    mesVenda = 0;
+                                    anoVenda = 0;
+                                    valorVenda = 0.0;
+                                    corretagemVenda = 0.0;
+                                    custodiaVenda = 0.0;
+                                    tx_liquidacaoVenda = 0.0;
+                                    tx_negociacaoVenda = 0.0;
+                                    issVenda = 0.0;
+                                    corretagemVendaFixa = false;
+                                    custodiaVendaFixa = false;
+                                    tx_liquidacaoVendaFixa = false;
+                                    tx_negociacaoVendaFixa = false;
+                                    issVendaFixo = false;
+                                    count = 34;
+                                }
+                                confirmaCompra = Bool(sb.toString());
+                                System.out.println("confirmaCompra: " + confirmaCompra);
+                                break;
+                            case 17:
+                                dataCompra = Integer.parseInt(sb.toString());
+                                break;
+                            case 18:
+                                mesCompra = Integer.parseInt(sb.toString());
+                                break;
+                            case 19:
+                                anoCompra = Integer.parseInt(sb.toString());
+                                break;
+                            case 20:
+                                if (sb.toString().equals("false")){
+                                    dataVenda = 0;
+                                    mesVenda = 0;
+                                    anoVenda = 0;
+                                    valorVenda = 0.0;
+                                    corretagemVenda = 0.0;
+                                    custodiaVenda = 0.0;
+                                    tx_liquidacaoVenda = 0.0;
+                                    tx_negociacaoVenda = 0.0;
+                                    issVenda = 0.0;
+                                    corretagemVendaFixa = false;
+                                    custodiaVendaFixa = false;
+                                    tx_liquidacaoVendaFixa = false;
+                                    tx_negociacaoVendaFixa = false;
+                                    issVendaFixo = false;
+                                    count = 34;
+                                    System.out.println("CASE 20: " + charAtt.toString());
+                                    System.out.println("count: " + count);
+                                }
+                                confirmaVenda = Bool(sb.toString());
+                                System.out.println("confirmaVenda: " + confirmaVenda);
+                                break;
+                            case 21:
+                                dataVenda = Integer.parseInt(sb.toString());
+                                break;
+                            case 22:
+                                mesVenda = Integer.parseInt(sb.toString());
+                                break;
+                            case 23:
+                                anoVenda = Integer.parseInt(sb.toString());
+                                break;
+                            case 24:
+                                valorVenda = Double.parseDouble(sb.toString());
+                                System.out.println("valorVenda: " + valorVenda);
+                                break;
+                            case 25:
+                                corretagemVenda = Double.parseDouble(sb.toString());
+                                System.out.println("corretagemVenda: " + corretagemVenda);
+                                break;
+                            case 26:
+                                custodiaVenda = Double.parseDouble(sb.toString());
+                                System.out.println("custodiaVenda: " + custodiaVenda);
+                                break;
+                            case 27:
+                                tx_liquidacaoVenda = Double.parseDouble(sb.toString());
+                                System.out.println("tx_liquidacaoVenda: " + tx_liquidacaoVenda);
+                                break;
+                            case 28:
+                                tx_negociacaoVenda = Double.parseDouble(sb.toString());
+                                System.out.println("tx_negociacaoVenda: " + tx_negociacaoVenda);
+                                break;
+                            case 29:
+                                issVenda = Double.parseDouble(sb.toString());
+                                System.out.println("issVenda: " + issVenda);
+                                break;
+                            case 30:
+                                corretagemVendaFixa = Bool(sb.toString());
+                                System.out.println("corretagemVendaFixa: " + corretagemVendaFixa);
+                                break;
+                            case 31:
+                                custodiaVendaFixa = Bool(sb.toString());
+                                System.out.println("custodiaVendaFixa: " + custodiaVendaFixa);
+                                break;
+                            case 32:
+                                tx_liquidacaoVendaFixa = Bool(sb.toString());
+                                System.out.println("tx_liquidacaoVendaFixa: " + tx_liquidacaoVendaFixa);
+                                break;
+                            case 33:
+                                tx_negociacaoVendaFixa = Bool(sb.toString());
+                                System.out.println("tx_negociacaoVendaFixa: " + tx_negociacaoVendaFixa);
+                                break;
+                            case 34:
+                                issVendaFixo = Bool(sb.toString());
+                                System.out.println("issVendaFixo: " + issVendaFixo);
                                 break;
                         }
                         sb = new StringBuilder();
+                        //System.out.println("** SB TO STRING: "+sb.toString());
 
 
-                        if (count == 15){
+                        if (count == 34){
+                            System.out.println("count: " + count);
                             long longUltimo = dbh.contador();
                             if (longUltimo == 0){
                                 longUltimo = 1;
@@ -962,14 +1103,42 @@ public class Export extends AppCompatActivity {
 //                            System.out.println("ISS fixo: " + isIssFixo);
                             papel = new Papel(ultimo, nomePapel, valorPapel, quantidade, fracionario);
                             System.out.println("Papel: " + papel.toString3());
+
                             custas = new Custas(ultimo, ultimoCorretagem, ultimoCustodia, ultimoTxLiquidacao, ultimoTxNegociacao, ultimoIss, isCorretagemFixa, isCustodiaFixa, isTxLiquidacaoFixa, isTxNegociacaoFixa, isIssFixo);
                             System.out.println("Custas: " + custas.getCorretagem() + " - " + custas.getCustodia() + " - " + custas.getTx_liquidacao() + " - " + custas.getTx_negociacao() + " - " + custas.getIss() + " - " + custas.isCorretagemFixa() + " - " + custas.isCustodiaFixa() + " - " + custas.isTx_liquidacaoFixa() + " - " + custas.isTx_negociacaoFixa() + " - " + custas.isIssFixo());
+
+                            datas = new Datas(ultimo, confirmaCompra, dataCompra, mesCompra, anoCompra, confirmaVenda, dataVenda, mesVenda, anoVenda);
+
+                            //TODO EXCLUIR - CRIADO PARA TESTE!
+                            /*System.out.println(datas.toString());
+                            System.out.println(datas.toString1());*/
+
+                            dadosVenda = new DadosVenda(ultimo, valorVenda, corretagemVendaFixa, corretagemVenda, custodiaVendaFixa, custodiaVenda, tx_liquidacaoVendaFixa, tx_liquidacaoVenda, tx_negociacaoVendaFixa, tx_negociacaoVenda, issVendaFixo, issVenda);
+                            //TODO EXCLUIR - CRIADO PARA TESTE!
+                            //System.out.println(dadosVenda.toString());
+
                             dbh.addPapel(papel);
                             dbh.addCustas(custas);
+                            dbh.addDataCompra(datas);
+                            dbh.updateTempIdDatasVenda(datas, ultimo);
+                            dbh.addDadosVenda(dadosVenda);
+
+                            //TODO EXCLUIR - CRIADO PARA TESTE!
+                            /*if (!dbh.getDatas(ultimo).isConfirmaVenda()){
+                                System.out.println("\n CONFIRMA A VENDA DESSA KRALEA? "+ datas.isConfirmaVenda());
+                                System.out.println("\n CONFIRMA A VENDA DESSA KRALEA no BANCO DE DADOS? "+ dbh.getDatas(ultimo).isConfirmaVenda());
+                            }
+                            else {
+                                System.out.println("FINALMENTE!!!!!");
+                            }*/
+
+                            System.out.println("*** SALVO NO BANCO DE DADOS as datas: "+ dbh.getDatas(ultimo).toString() + dbh.getDatas(ultimo).toString1());
+                            System.out.println("*** SALVO NO BANCO DE DADOS os dados de venda: "+ dbh.getDadosVenda(ultimo).toString());
                             count = 0;
                             System.out.println("RESTART COUNT: " + count);
                         }
                     }
+                    //System.out.println("** END ***** i: " + i + "     - sequencia.length(): "+ sequencia.length());
                 }
             }
             else {
@@ -984,6 +1153,7 @@ public class Export extends AppCompatActivity {
             ((TextView)findViewById(R.id.txtRecebeDoArquivo)).setText("Falha ao carregar");
             loggIt(this, e.getMessage());
         }
+        //TODO INSERIR FINALLY PARA FECHAR O BD???
     }
     public boolean Bool (String string){
         if (string.equals("true")){

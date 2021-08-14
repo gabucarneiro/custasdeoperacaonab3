@@ -89,6 +89,18 @@ public class Datas extends AppCompatActivity {
     public Datas() {
     }
 
+    public Datas(int id, boolean confirmaCompra, int dataCompra, int mesCompra, int anoCompra, boolean confirmaVenda, int dataVenda, int mesVenda, int anoVenda) {
+        this.id = id;
+        this.confirmaCompra = confirmaCompra;
+        this.dataCompra = dataCompra;
+        this.mesCompra = mesCompra;
+        this.anoCompra = anoCompra;
+        this.confirmaVenda = confirmaVenda;
+        this.dataVenda = dataVenda;
+        this.mesVenda = mesVenda;
+        this.anoVenda = anoVenda;
+    }
+
     public void datasCompra(boolean confirmaCompra, int id, int dataCompra, int mesCompra, int anoCompra) {
         if (confirmaCompra){
             this.id = id;

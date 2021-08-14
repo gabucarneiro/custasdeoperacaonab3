@@ -135,7 +135,7 @@ public class CadastroPapel extends AppCompatActivity {
             }
         });
 
-        System.out.println("DATA - MES - ANO para BD: " + spinnerData.getSelectedItem().toString() + "/" + spinnerMes.getSelectedItem().toString() + "/" + spinnerAno.getSelectedItem().toString());
+        //System.out.println("DATA - MES - ANO para BD: " + spinnerData.getSelectedItem().toString() + "/" + spinnerMes.getSelectedItem().toString() + "/" + spinnerAno.getSelectedItem().toString());
 
         /* ---- DEIXADO PARA CONSULTA FUTURA ---- TODO Excluir após pesquisa e conclusão ----
         ((EditText) findViewById(R.id.cadastroEdDataCompra)).addTextChangedListener(new TextWatcher() {
@@ -225,7 +225,7 @@ public class CadastroPapel extends AppCompatActivity {
             }
         });
 
-        System.out.println("DATA - MES - ANO para BD: " + spinnerData.getSelectedItem().toString() + "/" + spinnerMes.getSelectedItem().toString() + "/" + spinnerAno.getSelectedItem().toString());
+        //System.out.println("DATA - MES - ANO para BD: " + spinnerData.getSelectedItem().toString() + "/" + spinnerMes.getSelectedItem().toString() + "/" + spinnerAno.getSelectedItem().toString());
 
         Button btnCustas = (Button) findViewById(R.id.btnCustas);
         btnCustas.setOnClickListener(new View.OnClickListener() {

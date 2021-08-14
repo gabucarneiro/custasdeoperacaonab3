@@ -198,7 +198,7 @@
             android:layout_marginTop="15dp"
             android:layout_alignParentEnd="true"
             android:text="Importar Banco de dados"
-            android:onClick="carregar2"/>
+            android:onClick="importar"/>
         <!--<Spinner
             android:id="@+id/spinnerListar"
             android:layout_width="wrap_content"
